@@ -1,0 +1,10 @@
+{
+    "appTitle": "Basic chess endgames",
+    "@appTitle": {
+        "description": "The title of the application."
+    },
+    "homeTitle": "Home",
+    "@homeTitle": {
+        "description": "The title of the home page."
+    }
+}
