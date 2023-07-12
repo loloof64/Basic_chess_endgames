@@ -3,8 +3,36 @@
     "@appTitle": {
         "description": "The title of the application."
     },
+    "buttonOk": "Ok",
+    "@buttonOk": {
+        "description": "Label for Ok buttons"
+    },
+    "buttonCancel": "Cancel",
+    "@buttonCancel": {
+        "description": "Label for Cancel buttons"
+    },
+    "buttonAccept": "Accept",
+    "@buttonAccept": {
+        "description": "Label for Accept buttons"
+    },
+    "buttonDeny": "Deny",
+    "@buttonDeny": {
+        "description": "Label for Deny buttons"
+    },
     "homeTitle": "Home",
     "@homeTitle": {
         "description": "The title of the home page."
+    },
+    "rgpdText": "By using this app, you agree with :",
+    "@rgpdText": {
+        "description": "The main rgpd text content"
+    },
+    "rgpdPrivacy": "the Privacy Policy",
+    "@rgpdPrivacy": {
+        "description": "The link to the privacy policy"
+    },
+    "rgpdUseConditions": "the Use Conditions",
+    "@rgpdUseConditions": {
+        "description": "The link to the Use Conditions"
     }
 }

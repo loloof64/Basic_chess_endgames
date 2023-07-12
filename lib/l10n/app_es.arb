@@ -1,4 +1,11 @@
 {
     "appTitle" : "Finales básicos de ajedrez",
-    "homeTitle" : "Inicio"
+    "buttonOk": "De acuerdo",
+    "buttonCancel": "Anular",
+    "buttonAccept": "Aceptar",
+    "buttonDeny": "Rechazar",
+    "homeTitle" : "Inicio",
+    "rgpdText": "Al utilizar esta aplicación, estás de acuerdo con:",
+    "rgpdPrivacy": "la Política de Privacidad",
+    "rgpdUseConditions": "Las Condiciones de Uso"
 }

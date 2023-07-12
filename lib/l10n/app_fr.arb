@@ -1,4 +1,11 @@
 {
     "appTitle": "Finales d'échecs basiques",
-    "homeTitle": "Accueil"
+    "buttonOk": "D'accord",
+    "buttonCancel": "Annuler",
+    "buttonAccept": "Accepter",
+    "buttonDeny": "Refuser",
+    "homeTitle": "Accueil",
+    "rgpdText": "En utilisant cette application, vous vous conformez à :",
+    "rgpdPrivacy": "la Politique de Confidentialité",
+    "rgpdUseConditions": "les Conditions d'Utilisation"
 }
