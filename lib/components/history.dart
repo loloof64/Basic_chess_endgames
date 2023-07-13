@@ -199,6 +199,7 @@ class _HistoryNavigationButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final iconSize = size * 0.5;
     final iconBackground = Theme.of(context).primaryColor;
+    final iconForeground = Theme.of(context).colorScheme.onPrimary;
     return SizedBox(
       width: size,
       height: size,
@@ -208,6 +209,7 @@ class _HistoryNavigationButton extends StatelessWidget {
         style: IconButton.styleFrom(
           shape: const CircleBorder(),
           backgroundColor: iconBackground,
+          foregroundColor: iconForeground,
         ),
         icon: Icon(
           icon,
