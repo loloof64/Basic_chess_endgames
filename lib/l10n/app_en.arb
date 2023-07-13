@@ -23,6 +23,10 @@
     "@homeTitle": {
         "description": "The title of the home page."
     },
+    "home_failedLoadingSampleExercise": "Failed to load exercise : the chess position is not valid.",
+    "@home_failedLoadingSampleExercise": {
+        "description": "Failed to load sample exercise Snackbar message."
+    },
     "rgpdText": "By using this app, you agree with :",
     "@rgpdText": {
         "description": "The main rgpd text content"
@@ -65,7 +69,7 @@
     },
     "gamePage_gameStopped": "Game stopped.",
     "@gamePage_gameStopped": {
-        "description": "Game stopped snackbar message."
+        "description": "Game stopped Snackbar message."
     },
     "gamePage_checkmate_white": "White has won by checkmate.",
     "@gamePage_checkmate_white": {

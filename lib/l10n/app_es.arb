@@ -5,6 +5,7 @@
     "buttonAccept": "Aceptar",
     "buttonDeny": "Rechazar",
     "homeTitle" : "Inicio",
+    "home_failedLoadingSampleExercise": "No se pudo cargar el ejercicio: la posición de ajedrez no es válida.", 
     "rgpdText": "Al utilizar esta aplicación, estás de acuerdo con:",
     "rgpdPrivacy": "la Política de Privacidad",
     "rgpdUseConditions": "Las Condiciones de Uso",

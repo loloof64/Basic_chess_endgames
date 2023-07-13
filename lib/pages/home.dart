@@ -1,3 +1,4 @@
+import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_content.dart';
 import 'package:basicchessendgamestrainer/data/games.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
@@ -41,6 +42,18 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _selectGame(Game game) {
+    final validPositionStatus = chess.Chess.validate_fen(game.startPosition);
+    if (!validPositionStatus['valid']) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.home_failedLoadingSampleExercise,
+          ),
+        ),
+      );
+      return;
+    }
+
     final gameNotifier = ref.read(gameProvider.notifier);
     gameNotifier.updateStartPosition(game.startPosition);
     gameNotifier.updateGoal(game.goal);
