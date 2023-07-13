@@ -90,5 +90,13 @@
     "gamePage_fiftyMovesRule": "Draw by the 50 moves rule.",
     "@gamePage_fiftyMovesRule": {
         "description": "Game ended by 50 moves rule Snackbar message."
+    },
+    "gamePage_beforeExitTitle": "Cancel current game ?",
+    "@gamePage_beforeExitTitle": {
+        "description": "Title of before exiting game page, dialog"
+    },
+    "gamePage_beforeExitMessage": "Do you want to leave this page and cancel current game ?",
+    "@gamePage_beforeExitMessage": {
+        "description": "Message of before exiting game page, dialog"
     }
 }

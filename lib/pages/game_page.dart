@@ -552,81 +552,133 @@ class _GamePageState extends ConsumerState<GamePage> {
     _stockfish.stdin = "go movetime 1200";
   }
 
+  Future<bool> _handleExitPage() async {
+    return await showDialog(
+        context: context,
+        builder: (ctx2) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context)!.gamePage_beforeExitTitle,
+            ),
+            content: Text(
+              AppLocalizations.of(context)!.gamePage_beforeExitMessage,
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    Theme.of(context).colorScheme.onTertiary,
+                  ),
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.buttonCancel,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    Theme.of(context).colorScheme.onSecondary,
+                  ),
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.buttonOk,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final isPortrait =
         MediaQuery.of(context).size.width < MediaQuery.of(context).size.height;
     final gameGoal = ref.read(gameProvider).goal;
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(
-          AppLocalizations.of(context)!.gamePageTitle,
-        ),
-        actions: [
-          IconButton(
-            onPressed: _purposeStartNewGame,
-            icon: const FaIcon(
-              FontAwesomeIcons.plus,
-            ),
+    return WillPopScope(
+      onWillPop: _handleExitPage,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text(
+            AppLocalizations.of(context)!.gamePageTitle,
           ),
-          IconButton(
-            onPressed: _toggleBoardOrientation,
-            icon: const FaIcon(
-              FontAwesomeIcons.arrowsUpDown,
-            ),
-          ),
-          IconButton(
-            onPressed: _onStopRequested,
-            icon: const FaIcon(
-              FontAwesomeIcons.hand,
-            ),
-          ),
-        ],
-      ),
-      body: Center(
-        child: isPortrait
-            ? PortraitWidget(
-                gameInProgress: _gameInProgress,
-                positionFen: _gameLogic?.fen ?? emptyPosition,
-                boardOrientation: _orientation,
-                whitePlayerType: _whitePlayerType ?? PlayerType.computer,
-                blackPlayerType: _blackPlayerType ?? PlayerType.computer,
-                lastMoveToHighlight: _lastMoveToHighlight,
-                onPromote: _onPromote,
-                onMove: _onMove,
-                gameGoal: gameGoal,
-                historySelectedNodeIndex: _selectedHistoryItemIndex,
-                historyNodesDescriptions: _historyhistoryNodesDescriptions,
-                historyScrollController: _historyScrollController,
-                requestGotoFirst: _selectFirstGamePosition,
-                requestGotoPrevious: _selectPreviousHistoryNode,
-                requestGotoNext: _selectNextHistoryNode,
-                requestGotoLast: _selectLastHistoryNode,
-                requestHistoryMove: _onHistoryMoveRequest,
-                engineThinking: _engineThinking,
-              )
-            : LandscapeWidget(
-                gameInProgress: _gameInProgress,
-                positionFen: _gameLogic?.fen ?? emptyPosition,
-                boardOrientation: _orientation,
-                whitePlayerType: _whitePlayerType ?? PlayerType.computer,
-                blackPlayerType: _blackPlayerType ?? PlayerType.computer,
-                lastMoveToHighlight: _lastMoveToHighlight,
-                onPromote: _onPromote,
-                onMove: _onMove,
-                gameGoal: gameGoal,
-                historySelectedNodeIndex: _selectedHistoryItemIndex,
-                historyNodesDescriptions: _historyhistoryNodesDescriptions,
-                historyScrollController: _historyScrollController,
-                requestGotoFirst: _selectFirstGamePosition,
-                requestGotoPrevious: _selectPreviousHistoryNode,
-                requestGotoNext: _selectNextHistoryNode,
-                requestGotoLast: _selectLastHistoryNode,
-                requestHistoryMove: _onHistoryMoveRequest,
-                engineThinking: _engineThinking,
+          actions: [
+            IconButton(
+              onPressed: _purposeStartNewGame,
+              icon: const FaIcon(
+                FontAwesomeIcons.plus,
               ),
+            ),
+            IconButton(
+              onPressed: _toggleBoardOrientation,
+              icon: const FaIcon(
+                FontAwesomeIcons.arrowsUpDown,
+              ),
+            ),
+            IconButton(
+              onPressed: _onStopRequested,
+              icon: const FaIcon(
+                FontAwesomeIcons.hand,
+              ),
+            ),
+          ],
+        ),
+        body: Center(
+          child: isPortrait
+              ? PortraitWidget(
+                  gameInProgress: _gameInProgress,
+                  positionFen: _gameLogic?.fen ?? emptyPosition,
+                  boardOrientation: _orientation,
+                  whitePlayerType: _whitePlayerType ?? PlayerType.computer,
+                  blackPlayerType: _blackPlayerType ?? PlayerType.computer,
+                  lastMoveToHighlight: _lastMoveToHighlight,
+                  onPromote: _onPromote,
+                  onMove: _onMove,
+                  gameGoal: gameGoal,
+                  historySelectedNodeIndex: _selectedHistoryItemIndex,
+                  historyNodesDescriptions: _historyhistoryNodesDescriptions,
+                  historyScrollController: _historyScrollController,
+                  requestGotoFirst: _selectFirstGamePosition,
+                  requestGotoPrevious: _selectPreviousHistoryNode,
+                  requestGotoNext: _selectNextHistoryNode,
+                  requestGotoLast: _selectLastHistoryNode,
+                  requestHistoryMove: _onHistoryMoveRequest,
+                  engineThinking: _engineThinking,
+                )
+              : LandscapeWidget(
+                  gameInProgress: _gameInProgress,
+                  positionFen: _gameLogic?.fen ?? emptyPosition,
+                  boardOrientation: _orientation,
+                  whitePlayerType: _whitePlayerType ?? PlayerType.computer,
+                  blackPlayerType: _blackPlayerType ?? PlayerType.computer,
+                  lastMoveToHighlight: _lastMoveToHighlight,
+                  onPromote: _onPromote,
+                  onMove: _onMove,
+                  gameGoal: gameGoal,
+                  historySelectedNodeIndex: _selectedHistoryItemIndex,
+                  historyNodesDescriptions: _historyhistoryNodesDescriptions,
+                  historyScrollController: _historyScrollController,
+                  requestGotoFirst: _selectFirstGamePosition,
+                  requestGotoPrevious: _selectPreviousHistoryNode,
+                  requestGotoNext: _selectNextHistoryNode,
+                  requestGotoLast: _selectLastHistoryNode,
+                  requestHistoryMove: _onHistoryMoveRequest,
+                  engineThinking: _engineThinking,
+                ),
+        ),
       ),
     );
   }

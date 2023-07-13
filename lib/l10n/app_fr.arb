@@ -21,5 +21,7 @@
     "gamePage_stalemate": "Pat.",
     "gamePage_threeFoldRepetition": "Nulle par triple répétition.",
     "gamePage_missingMaterial": "Nulle par manque de matériel.",
-    "gamePage_fiftyMovesRule": "Nulle par la règle des 50 coups."
+    "gamePage_fiftyMovesRule": "Nulle par la règle des 50 coups.",
+    "gamePage_beforeExitTitle": "Annuler la partie courante ?",
+    "gamePage_beforeExitMessage": "Souhaitez-vous abandonner cette partie et revenir à la page précédente ?"
 }

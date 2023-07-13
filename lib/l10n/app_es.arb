@@ -21,5 +21,7 @@
     "gamePage_stalemate": "Empate.",
     "gamePage_threeFoldRepetition": "Igualdad por repetición triple.",
     "gamePage_missingMaterial": "Igualdad por falta de material.",
-    "gamePage_fiftyMovesRule": "Igualdad por la regla de los 50 movimientos."
+    "gamePage_fiftyMovesRule": "Igualdad por la regla de los 50 movimientos.",
+    "gamePage_beforeExitTitle": "¿Cancelar el juego actual?",
+    "gamePage_beforeExitMessage": "¿Quieres abandonar esta página y cancelar el juego actual?"
 }
