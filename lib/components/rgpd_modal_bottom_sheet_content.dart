@@ -21,7 +21,7 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: height,
-      color: Colors.grey[200],
+      color: Theme.of(context).colorScheme.secondary,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -29,6 +29,9 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.rgpdText,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSecondary,
+              ),
             ),
             SizedBox(
               height: spacerHeight,
@@ -37,7 +40,7 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
               child: Text(
                 AppLocalizations.of(context)!.rgpdPrivacy,
                 style: TextStyle(
-                  color: Colors.blue[300],
+                  color: Theme.of(context).colorScheme.onSecondary,
                   decoration: TextDecoration.underline,
                 ),
               ),
@@ -53,7 +56,7 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
               child: Text(
                 AppLocalizations.of(context)!.rgpdUseConditions,
                 style: TextStyle(
-                  color: Colors.blue[300],
+                  color: Theme.of(context).colorScheme.onSecondary,
                   decoration: TextDecoration.underline,
                 ),
               ),
@@ -68,13 +71,13 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
-                  Colors.greenAccent,
+                  Theme.of(context).colorScheme.tertiary,
                 ),
               ),
               child: Text(
                 AppLocalizations.of(context)!.buttonAccept,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onTertiary,
                 ),
               ),
             )

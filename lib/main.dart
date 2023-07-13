@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -30,10 +31,9 @@ class App extends StatelessWidget {
           Locale.fromSubtags(languageCode: 'es'),
           Locale.fromSubtags(languageCode: 'fr'),
         ],
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
+        theme: FlexThemeData.light(scheme: FlexScheme.greenM3),
+        darkTheme: FlexThemeData.dark(scheme: FlexScheme.blueWhale),
+        themeMode: ThemeMode.system,
         home: const HomePage(),
       ),
     );

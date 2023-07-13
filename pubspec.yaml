@@ -49,6 +49,7 @@ dependencies:
   flutter_riverpod: ^2.3.6
   stockfish: ^1.4.0
   font_awesome_flutter: ^10.5.0
+  flex_color_scheme: ^7.1.2
 
 dev_dependencies:
   flutter_test:

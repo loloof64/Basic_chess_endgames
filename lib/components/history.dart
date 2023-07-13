@@ -113,6 +113,7 @@ class ChessHistory extends StatelessWidget {
     final textStyle = TextStyle(
       fontSize: fontSize,
       fontFamily: 'Free Serif',
+      color: Theme.of(context).colorScheme.onSecondary,
     );
 
     nodesDescriptions.asMap().forEach((index, currentNode) {
@@ -171,7 +172,7 @@ class ChessHistory extends StatelessWidget {
           Expanded(
             flex: 4,
             child: Container(
-              color: Colors.amber[300],
+              color: Theme.of(context).colorScheme.secondary,
               child: SingleChildScrollView(
                 controller: scrollController,
                 child: Wrap(
