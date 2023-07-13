@@ -9,6 +9,7 @@ import 'package:simple_chess_board/widgets/chessboard.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const gapSize = 20.0;
+const historyFontSizeFraction = 0.07;
 
 class PortraitWidget extends StatelessWidget {
   final bool gameInProgress;
@@ -93,7 +94,7 @@ class PortraitWidget extends StatelessWidget {
           flex: 1,
           child: LayoutBuilder(builder: (ctx2, constraints2) {
             return ChessHistory(
-              fontSize: constraints2.biggest.height * 0.1,
+              fontSize: constraints2.biggest.height * historyFontSizeFraction,
               selectedNodeIndex: historySelectedNodeIndex,
               nodesDescriptions: historyNodesDescriptions,
               scrollController: historyScrollController,
