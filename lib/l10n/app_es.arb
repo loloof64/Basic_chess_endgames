@@ -7,5 +7,19 @@
     "homeTitle" : "Inicio",
     "rgpdText": "Al utilizar esta aplicación, estás de acuerdo con:",
     "rgpdPrivacy": "la Política de Privacidad",
-    "rgpdUseConditions": "Las Condiciones de Uso"
+    "rgpdUseConditions": "Las Condiciones de Uso",
+    "gamePageTitle": "Página del juego",
+    "gamePage_goalWin": "Objetivo: ganar",
+    "gamePage_goalDraw": "Objetivo: empate",
+    "gamePage_newGame_title": "¿Iniciar un nuevo juego?",
+    "gamePage_newGame_message": "¿Quiere abandonar el juego actual y comenzar uno nuevo?",
+    "gamePage_stopGame_title": "¿Detener el juego actual?",
+    "gamePage_stopGame_message": "¿Quiere detener el juego actual?",
+    "gamePage_gameStopped": "Juego detenido.",
+    "gamePage_checkmate_white": "Los Blancos han ganado por jaque mate.",
+    "gamePage_checkmate_black": "Los Negros han ganado por jaque mate.",
+    "gamePage_stalemate": "Empate.",
+    "gamePage_threeFoldRepetition": "Igualdad por repetición triple.",
+    "gamePage_missingMaterial": "Igualdad por falta de material.",
+    "gamePage_fiftyMovesRule": "Igualdad por la regla de los 50 movimientos."
 }

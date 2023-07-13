@@ -7,5 +7,19 @@
     "homeTitle": "Accueil",
     "rgpdText": "En utilisant cette application, vous vous conformez à :",
     "rgpdPrivacy": "la Politique de Confidentialité",
-    "rgpdUseConditions": "les Conditions d'Utilisation"
+    "rgpdUseConditions": "les Conditions d'Utilisation",
+    "gamePageTitle": "Page de jeu",
+    "gamePage_goalWin": "Objectif: victoire",
+    "gamePage_goalDraw": "Objectif: nulle",
+    "gamePage_newGame_title": "Nouvelle partie ?",
+    "gamePage_newGame_message": "Souhaitez-vous abandonner la partie en cours et commencer une nouvelle ?",
+    "gamePage_stopGame_title": "Arrêter la partie ?",
+    "gamePage_stopGame_message": "Souhaitez-vous arrêter la partie en cours ?",
+    "gamePage_gameStopped": "Partie interrompue.",
+    "gamePage_checkmate_white": "Les Blancs ont gagné par échec et mat.",
+    "gamePage_checkmate_black": "Les Noirs ont gagné par échec et mat.",
+    "gamePage_stalemate": "Pat.",
+    "gamePage_threeFoldRepetition": "Nulle par triple répétition.",
+    "gamePage_missingMaterial": "Nulle par manque de matériel.",
+    "gamePage_fiftyMovesRule": "Nulle par la règle des 50 coups."
 }

@@ -1,22 +1,25 @@
 import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_content.dart';
 import 'package:basicchessendgamestrainer/data/games.dart';
+import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
+import 'package:basicchessendgamestrainer/pages/game_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 const mainListItemsGap = 8.0;
 const leadingImagesSize = 60.0;
 const titlesFontSize = 26.0;
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     FlutterNativeSplash.remove();
@@ -35,6 +38,18 @@ class _HomePageState extends State<HomePage> {
             height: height,
           );
         });
+  }
+
+  void _selectGame(Game game) {
+    final gameNotifier = ref.read(gameProvider.notifier);
+    gameNotifier.updateStartPosition(game.startPosition);
+    gameNotifier.updateGoal(game.goal);
+    gameNotifier.updatePlayerHasWhite(game.playerHasWhite);
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (ctx2) {
+        return const GamePage();
+      }),
+    );
   }
 
   @override
@@ -82,6 +97,7 @@ class _HomePageState extends State<HomePage> {
                     return ListTile(
                       leading: leadingImage,
                       title: title,
+                      onTap: () => _selectGame(game),
                     );
                   }),
             ),

@@ -34,5 +34,61 @@
     "rgpdUseConditions": "the Use Conditions",
     "@rgpdUseConditions": {
         "description": "The link to the Use Conditions"
+    },
+    "gamePageTitle": "Game page",
+    "@gamePageTitle": {
+        "description": "The title of the game page."
+    },
+    "gamePage_goalWin": "Goal: win",
+    "@gamePage_goalWin": {
+        "description": "The goal of the game is to win."
+    },
+    "gamePage_goalDraw": "Goal: draw",
+    "@gamePage_goalDraw": {
+        "description": "The goal of the game is to make a draw."
+    },
+    "gamePage_newGame_title": "Start a new game ?",
+    "@gamePage_newGame_title": {
+        "description": "Title of start new game dialog."
+    },
+    "gamePage_newGame_message": "Do you want to leave current game and start a new one ?",
+    "@gamePage_newGame_message": {
+        "description": "Message of start new game dialog."
+    },
+    "gamePage_stopGame_title": "Stop current game ?",
+    "@gamePage_stopGame_title": {
+        "description": "Title of stop game dialog."
+    },
+    "gamePage_stopGame_message": "Do you want to stop current game ?",
+    "@gamePage_stopGame_message": {
+        "description": "Message of stop game dialog."
+    },
+    "gamePage_gameStopped": "Game stopped.",
+    "@gamePage_gameStopped": {
+        "description": "Game stopped snackbar message."
+    },
+    "gamePage_checkmate_white": "White has won by checkmate.",
+    "@gamePage_checkmate_white": {
+        "description": "White win by checkmate Snackbar message."
+    },
+    "gamePage_checkmate_black": "Black has won by checkmate.",
+    "@gamePage_checkmate_black": {
+        "description": "Black win by checkmate Snackbar message."
+    },
+    "gamePage_stalemate": "Stalemate.",
+    "@gamePage_stalemate": {
+        "description": "Game ended by statlemate Snackbar message."
+    },
+    "gamePage_threeFoldRepetition": "Draw by three-fold repetition.",
+    "@gamePage_threeFoldRepetition": {
+        "description": "Game ended by three-fold repetition Snackbar message."
+    },
+    "gamePage_missingMaterial": "Draw by missing material.",
+    "@gamePage_missingMaterial": {
+        "description": "Game endeded by missing material Snackbar message."
+    },
+    "gamePage_fiftyMovesRule": "Draw by the 50 moves rule.",
+    "@gamePage_fiftyMovesRule": {
+        "description": "Game ended by 50 moves rule Snackbar message."
     }
 }
