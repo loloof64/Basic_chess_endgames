@@ -63,24 +63,22 @@ class LandscapeWidget extends StatelessWidget {
         ? AppLocalizations.of(context)!.gamePage_goalWin
         : AppLocalizations.of(context)!.gamePage_goalDraw;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Expanded(
-          child: SimpleChessBoard(
-            fen: positionFen,
-            orientation: boardOrientation,
-            whitePlayerType:
-                gameInProgress ? whitePlayerType : PlayerType.computer,
-            blackPlayerType:
-                gameInProgress ? blackPlayerType : PlayerType.computer,
-            onMove: onMove,
-            onPromote: onPromote,
-            lastMoveToHighlight: lastMoveToHighlight,
-            engineThinking: engineThinking,
-            onPromotionCommited: ({required ShortMove moveDone}) {},
-            chessBoardColors: ChessBoardColors(),
-          ),
+        SimpleChessBoard(
+          fen: positionFen,
+          orientation: boardOrientation,
+          whitePlayerType:
+              gameInProgress ? whitePlayerType : PlayerType.computer,
+          blackPlayerType:
+              gameInProgress ? blackPlayerType : PlayerType.computer,
+          onMove: onMove,
+          onPromote: onPromote,
+          lastMoveToHighlight: lastMoveToHighlight,
+          engineThinking: engineThinking,
+          onPromotionCommited: ({required ShortMove moveDone}) {},
+          chessBoardColors: ChessBoardColors(),
         ),
         const SizedBox(
           width: gapSize,
