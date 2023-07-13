@@ -72,7 +72,9 @@ class _GamePageState extends ConsumerState<GamePage> {
   void _doStartNewGame() {
     final startPosition = ref.read(gameProvider).startPosition;
     final newGameLogic = chess.Chess.fromFEN(startPosition);
-    final moveNumberCaption = "${newGameLogic.fen.split(' ')[5]}.";
+    final isWhiteTurn = ref.read(gameProvider).playerHasWhite;
+    final moveNumberCaption =
+        "${newGameLogic.fen.split(' ')[5]}.${isWhiteTurn ? '' : '..'}";
     _gameLogic = newGameLogic;
     _gameStart = true;
     _lastMoveToHighlight = null;
