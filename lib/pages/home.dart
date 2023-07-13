@@ -11,6 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 const mainListItemsGap = 8.0;
 const leadingImagesSize = 60.0;
 const titlesFontSize = 26.0;
+const rgpdWarningHeight = 200.0;
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -28,14 +29,13 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _showRgpdWarning() {
-    const height = 200.0;
     showModalBottomSheet(
         isDismissible: false,
         context: context,
         builder: (ctx2) {
           return RgpdModalBottomSheetContent(
             context: ctx2,
-            height: height,
+            height: rgpdWarningHeight,
           );
         });
   }

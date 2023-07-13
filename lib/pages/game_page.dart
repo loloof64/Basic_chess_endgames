@@ -15,6 +15,9 @@ import 'package:simple_chess_board/widgets/chessboard.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:stockfish/stockfish.dart';
 
+const stockfishLoadingDelayMs = 500;
+const piecesSize = 60.0;
+
 class GamePage extends ConsumerStatefulWidget {
   const GamePage({super.key});
 
@@ -42,7 +45,8 @@ class _GamePageState extends ConsumerState<GamePage> {
     _stockfish.stdout.listen((line) {
       _processStockfishLine(line);
     });
-    Future.delayed(const Duration(milliseconds: 600)).then((value) {
+    Future.delayed(const Duration(milliseconds: stockfishLoadingDelayMs))
+        .then((value) {
       _stockfish.stdin = 'isready';
       final startPosition = ref.read(gameProvider).startPosition;
       final gameStartAsWhite = startPosition.split(" ")[1] == "w";
@@ -256,7 +260,7 @@ class _GamePageState extends ConsumerState<GamePage> {
   Future<PieceType?> _onPromote() {
     if (_gameLogic == null) return Future.value(null);
     final whiteTurn = _gameLogic!.fen.split(' ')[1] == 'w';
-    const piecesSize = 60.0;
+
     return showDialog<PieceType>(
         context: context,
         builder: (ctx2) {

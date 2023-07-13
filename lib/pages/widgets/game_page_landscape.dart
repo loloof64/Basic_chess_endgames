@@ -8,6 +8,8 @@ import 'package:simple_chess_board/models/short_move.dart';
 import 'package:simple_chess_board/widgets/chessboard.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+const gapSize = 20.0;
+
 class LandscapeWidget extends StatelessWidget {
   final bool gameInProgress;
   final bool engineThinking;
@@ -80,7 +82,7 @@ class LandscapeWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          width: 20.0,
+          width: gapSize,
         ),
         Expanded(
           child: Column(
@@ -92,7 +94,7 @@ class LandscapeWidget extends StatelessWidget {
                 ),
               ),
               const Divider(
-                height: 20.0,
+                height: gapSize,
               ),
               Expanded(
                 child: LayoutBuilder(builder: (ctx2, constraints2) {

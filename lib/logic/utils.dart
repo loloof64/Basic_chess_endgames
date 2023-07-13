@@ -1,6 +1,7 @@
+const piecesRefs = "NBRQK";
+
 extension FanConverter on String {
   String toFan({required bool whiteMove}) {
-    const piecesRefs = "NBRQK";
     String result = this;
 
     final thisAsIndexedArray = split('').asMap();

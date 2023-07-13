@@ -8,6 +8,8 @@ import 'package:simple_chess_board/models/short_move.dart';
 import 'package:simple_chess_board/widgets/chessboard.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+const gapSize = 20.0;
+
 class PortraitWidget extends StatelessWidget {
   final bool gameInProgress;
   final bool engineThinking;
@@ -56,8 +58,6 @@ class PortraitWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const gapSize = 20.0;
-
     final goalText = gameGoal == Goal.win
         ? AppLocalizations.of(context)!.gamePage_goalWin
         : AppLocalizations.of(context)!.gamePage_goalDraw;
