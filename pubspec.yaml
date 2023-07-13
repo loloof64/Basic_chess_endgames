@@ -48,6 +48,7 @@ dependencies:
   chess: ^0.8.0
   flutter_riverpod: ^2.3.6
   stockfish: ^1.4.0
+  font_awesome_flutter: ^10.5.0
 
 dev_dependencies:
   flutter_test:

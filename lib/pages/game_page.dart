@@ -14,6 +14,7 @@ import 'package:simple_chess_board/models/short_move.dart';
 import 'package:simple_chess_board/widgets/chessboard.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:stockfish/stockfish.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 const stockfishLoadingDelayMs = 500;
 const piecesSize = 60.0;
@@ -566,20 +567,20 @@ class _GamePageState extends ConsumerState<GamePage> {
         actions: [
           IconButton(
             onPressed: _purposeStartNewGame,
-            icon: const Icon(
-              Icons.start,
+            icon: const FaIcon(
+              FontAwesomeIcons.plus,
             ),
           ),
           IconButton(
             onPressed: _toggleBoardOrientation,
-            icon: const Icon(
-              Icons.swap_vert,
+            icon: const FaIcon(
+              FontAwesomeIcons.arrowsUpDown,
             ),
           ),
           IconButton(
             onPressed: _onStopRequested,
-            icon: const Icon(
-              Icons.back_hand,
+            icon: const FaIcon(
+              FontAwesomeIcons.hand,
             ),
           ),
         ],

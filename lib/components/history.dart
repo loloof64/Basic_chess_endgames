@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum File { fileA, fileB, fileC, fileD, fileE, fileF, fileG, fileH }
 
@@ -211,7 +212,7 @@ class _HistoryNavigationButton extends StatelessWidget {
           backgroundColor: iconBackground,
           foregroundColor: iconForeground,
         ),
-        icon: Icon(
+        icon: FaIcon(
           icon,
         ),
       ),
@@ -244,22 +245,22 @@ class HistoryButtonsZone extends StatelessWidget {
       children: [
         _HistoryNavigationButton(
           size: buttonsSize,
-          icon: Icons.first_page,
+          icon: FontAwesomeIcons.backwardFast,
           onClick: requestGotoFirst,
         ),
         _HistoryNavigationButton(
           size: buttonsSize,
-          icon: Icons.arrow_back,
+          icon: FontAwesomeIcons.backwardStep,
           onClick: requestGotoPrevious,
         ),
         _HistoryNavigationButton(
           size: buttonsSize,
-          icon: Icons.arrow_forward,
+          icon: FontAwesomeIcons.forwardStep,
           onClick: requestGotoNext,
         ),
         _HistoryNavigationButton(
           size: buttonsSize,
-          icon: Icons.last_page,
+          icon: FontAwesomeIcons.forwardFast,
           onClick: requestGotoLast,
         ),
       ],
