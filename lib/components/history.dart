@@ -151,14 +151,17 @@ class ChessHistory extends StatelessWidget {
     });
 
     return LayoutBuilder(builder: (ctx2, constraints) {
-      final commonSize = constraints.maxWidth * 0.18;
+      final isLandscapeMode = constraints.maxWidth > constraints.maxHeight;
+      final commonHistoryButtonsSize = isLandscapeMode
+          ? constraints.maxWidth * 0.12
+          : constraints.maxWidth * 0.18;
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
             flex: 1,
             child: HistoryButtonsZone(
-              buttonsSize: commonSize,
+              buttonsSize: commonHistoryButtonsSize,
               requestGotoFirst: requestGotoFirst,
               requestGotoPrevious: requestGotoPrevious,
               requestGotoNext: requestGotoNext,
