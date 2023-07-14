@@ -108,5 +108,6 @@ class GameNotifier extends StateNotifier<Game> {
   }
 }
 
-final gameProvider =
-    StateNotifierProvider<GameNotifier, Game>((ref) => GameNotifier());
+final gameProvider = StateNotifierProvider<GameNotifier, Game>(
+  (ref) => GameNotifier(),
+);

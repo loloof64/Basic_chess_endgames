@@ -102,5 +102,49 @@
     "gamePage_beforeExitMessage": "Do you want to leave this page and cancel current game ?",
     "@gamePage_beforeExitMessage": {
         "description": "Message of before exiting game page, dialog"
+    },
+    "scriptParser_variableNotAffected": "The variable {name} has been used before having been defined.",
+    "@scriptParser_variableNotAffected": {
+        "description": "Script parsing error message for when a variable has not been set before its use."
+    },
+    "scriptParser_unrecognizedSymbol": "Unrecognized symbol '{symbol}'.",
+    "@scriptParser_unrecognizedSymbol": {
+        "description": "Script parsing error message for when a symbol is not recognized."
+    },
+    "scriptParser_inputMismatch": "Bad input at line '{line}': character number {index}. You should have set '{expected}' but I got '{received}'.",
+    "@scriptParser_inputMismatch": {
+        "description": "Script parsing error message for when a bad input is received."
+    },
+    "scriptParser_noViableAltException": "The input '{input}' does not match any rule. (Line '{line}', character number {index})",
+    "@scriptParser_noViableAltException": {
+        "description": "Script parsing error message for when an input does not match any rule."
+    },
+    "scriptParser_miscParseError": "Miscellaneous parsing error.",
+    "@scriptParser_miscParseError": {
+        "description": "Script parsing error message for when an miscellaneous parse error happened."
+    },
+    "scriptParser_noAntlr4Token": "[No occurence]",
+    "@scriptParser_noAntlr4Token": {
+        "description": "Script parsing error message for when a token is missing."
+    },
+    "scriptParser_eof": "[EndOfFile]",
+    "@scriptParser_eof": {
+        "description": "Script parsing error message for when an EOF token is met prematuraly."
+    },
+    "scriptParser_overridingPredefinedVariable": "You try to change the value of predefined variable {name}.",
+    "@scriptParser_overridingPredefinedVariable": {
+        "description": "Script parsing error message for when user tries to change value of a predefined variable."
+    },
+    "scriptParser_emptyScriptWarning": "An empty script is simply ignored in the position generation process.",
+    "@scriptParser_emptyScriptWarning": {
+        "description": "Empty script warning message."
+    },
+    "scriptParser_parseErrorDialogTitle": "Script error for '{name}'",
+    "@scriptParser_parseErrorDialogTitle": {
+        "description": "Title for misc. script parsing error dialog."
+    },
+    "scriptParser_typeError": "Please check that you don't use int value instead of boolean value and vice versa.",
+    "@scriptParser_typeError": {
+        "description": "Title for class cast exception - while parsing script - error message."
     }
 }

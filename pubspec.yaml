@@ -50,6 +50,7 @@ dependencies:
   stockfish: ^1.4.0
   font_awesome_flutter: ^10.5.0
   flex_color_scheme: ^7.1.2
+  antlr4: ^4.13.0
 
 dev_dependencies:
   flutter_test:
