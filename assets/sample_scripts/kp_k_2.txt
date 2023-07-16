@@ -1,0 +1,42 @@
+# player king
+
+isRightRank := rank = if playerHasWhite then Rank1 else Rank8;
+return isRightRank;
+
+@@@@@@
+
+# computer king
+
+isRightRank := rank = if playerHasWhite then Rank4 else Rank5;
+return isRightRank;
+
+@@@@@@
+
+# kings mutual constraint
+
+kingsAreOnNeighboursColumns := abs(playerKingFile - computerKingFile) <= 1;
+return kingsAreOnNeighboursColumns;
+
+@@@@@@
+
+# other pieces count
+
+player pawn : 1
+
+@@@@@@
+
+# other pieces global constraint
+
+[player pawn]
+
+isRightRankInCasePlayerHasWhite := (rank >= Rank3) and (rank <= Rank5);
+isRightRankInCasePlayerHasBlack := (rank >= Rank4) and (rank <= Rank6);
+
+isRightRank := if playerHasWhite then isRightRankInCasePlayerHasWhite else isRightRankInCasePlayerHasBlack;
+isRightFile := file = playerKingFile;
+
+return isRightFile and isRightRank;
+
+# goal
+
+draw

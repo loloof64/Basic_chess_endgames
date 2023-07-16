@@ -6,6 +6,8 @@ variableAssign:   ID ':=' numericExpr ';' #numericAssign
                 | ID ':=' booleanExpr ';' #booleanAssign
                 ;
 
+comment: '/*' COMMENT_TOKEN* '*/';
+
 terminalExpr : 'return' booleanExpr ';';
 
 booleanExpr: '(' booleanExpr ')'                                                              #parenthesisBooleanExpr
@@ -35,5 +37,6 @@ numericExpr: '(' numericExpr ')'                                                
 
 NumericLitteral: [0-9]+;
 ID: [a-zA-Z][a-zA-Z0-9_]*;
+COMMENT_TOKEN: [^/]+;
 
 WS : [ \t\r\n]+ -> skip;

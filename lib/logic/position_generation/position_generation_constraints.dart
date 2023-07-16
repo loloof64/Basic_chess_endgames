@@ -65,112 +65,54 @@ class PositionConstraints {
   });
 
   bool checkPlayerKingConstraint(
-    int file,
-    int rank,
-    bool playerHasWhite,
+    SingleKingConstraint constraint,
   ) {
     return playerKingIndividualConstraintTester?.call(
-          SingleKingConstraint(
-            file: file,
-            rank: rank,
-            playerHasWhite: playerHasWhite,
-          ),
+          constraint,
         ) ??
         true;
   }
 
   bool checkComputerKingConstraint(
-    int file,
-    int rank,
-    bool playerHasWhite,
+    SingleKingConstraint constraint,
   ) {
     return computerKingIndividualConstraintTester?.call(
-          SingleKingConstraint(
-            file: file,
-            rank: rank,
-            playerHasWhite: playerHasWhite,
-          ),
+          constraint,
         ) ??
         true;
   }
 
   bool checkKingsMutualConstraint(
-    int playerKingFile,
-    int playerKingRank,
-    int computerKingFile,
-    int computerKingRank,
-    bool playerHasWhite,
+    KingsMutualConstraint constraint,
   ) {
     return kingsMutualConstraintTester?.call(
-          KingsMutualConstraint(
-            playerKingFile: playerKingFile,
-            playerKingRank: playerKingRank,
-            computerKingFile: computerKingFile,
-            computerKingRank: computerKingRank,
-            playerHasWhite: playerHasWhite,
-          ),
+          constraint,
         ) ??
         true;
   }
 
   bool checkOtherPieceGlobalConstraint(
-    PieceKind pieceKind,
-    int file,
-    int rank,
-    bool playerHasWhite,
-    int playerKingFile,
-    int playerKingRank,
-    int computerKingFile,
-    int computerKingRank,
+    OtherPiecesGlobalConstraint constraint,
   ) {
     return otherPiecesGlobalConstraintTester?.call(
-          OtherPiecesGlobalConstraint(
-            file: file,
-            rank: rank,
-            playerHasWhite: playerHasWhite,
-            playerKingFile: playerKingFile,
-            playerKingRank: playerKingRank,
-            computerKingFile: computerKingFile,
-            computerKingRank: computerKingRank,
-          ),
+          constraint,
         ) ??
         true;
   }
 
   bool checkOtherPieceMutualConstraint(
-    PieceKind pieceKind,
-    int firstPieceFile,
-    int firstPieceRank,
-    int secondPieceFile,
-    int secondPieceRank,
-    bool playerHasWhite,
+    OtherPiecesMutualConstraint constraint,
   ) {
     return otherPiecesMutualConstraintTester?.call(
-          OtherPiecesMutualConstraint(
-            firstPieceFile: firstPieceFile,
-            firstPieceRank: firstPieceRank,
-            secondPieceFile: secondPieceFile,
-            secondPieceRank: secondPieceRank,
-            playerHasWhite: playerHasWhite,
-          ),
+          constraint,
         ) ??
         true;
   }
 
   bool checkOtherPieceIndexedConstraint(
-    PieceKind pieceKind,
-    int apparitionIndex,
-    int file,
-    int rank,
-    bool playerHasWhite,
-  ) {
+      OtherPiecesIndexedConstraint constraint) {
     return otherPiecesIndexedConstraintTester?.call(
-          OtherPiecesIndexedConstraint(
-            apparitionIndex: apparitionIndex,
-            file: file,
-            rank: rank,
-            playerHasWhite: playerHasWhite,
-          ),
+          constraint,
         ) ??
         true;
   }
@@ -257,11 +199,6 @@ class OtherPiecesGlobalConstraint {
   void set(PieceKind pieceKind, OtherPiecesGlobalConstraintTester constraint) {
     allConstraints[pieceKind] = constraint;
   }
-
-  bool checkConstraint(PieceKind pieceKind) {
-    // If no constraint available then condition is considered as met.
-    return allConstraints[pieceKind]?.call(this) ?? true;
-  }
 }
 
 typedef OtherPiecesMutualConstraintTester = bool Function(
@@ -288,11 +225,6 @@ class OtherPiecesMutualConstraint {
 
   void set(PieceKind pieceKind, OtherPiecesMutualConstraintTester constraint) {
     allConstraints[pieceKind] = constraint;
-  }
-
-  bool checkConstraint(PieceKind pieceKind) {
-    // If no constraint available then condition is considered as met.
-    return allConstraints[pieceKind]?.call(this) ?? true;
   }
 }
 
@@ -321,10 +253,5 @@ class OtherPiecesIndexedConstraint {
 
   void set(PieceKind pieceKind, OtherPiecesIndexedConstraintTester constraint) {
     allConstraints[pieceKind] = constraint;
-  }
-
-  bool checkConstraint(PieceKind pieceKind) {
-    // If no constraint available then condition is considered as met.
-    return allConstraints[pieceKind]?.call(this) ?? true;
   }
 }

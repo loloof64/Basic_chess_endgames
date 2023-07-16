@@ -1,0 +1,54 @@
+# player king
+
+isRightRank := if playerHasWhite Rank1 else Rank8;
+return isRightRank;
+
+@@@@@@
+
+# computer king
+
+isRightRank := if playerHasWhite Rank1 else Rank8;
+return isRightRank;
+
+@@@@@@
+
+# other pieces count
+
+player pawn : 3
+computer pawn : 3
+
+@@@@@@
+
+# other pieces global constraint
+
+[player pawn]
+
+isRightRank := if playerHasWhite Rank5 else Rank4;
+return isRightRank;
+
+---
+
+[computer pawn]
+
+isRightRank := if playerHasWhite Rank7 else Rank2;
+return isRightRank;
+
+@@@@@@
+
+# other pieces indexed constraint
+
+[player pawn]
+
+return file == apparitionIndex;
+
+---
+
+[computer pawn]
+
+return file == apparitionIndex;
+
+@@@@@@
+
+# goal
+
+win

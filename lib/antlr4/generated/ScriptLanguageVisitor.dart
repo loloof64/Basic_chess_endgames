@@ -27,6 +27,11 @@ abstract class ScriptLanguageVisitor<T> extends ParseTreeVisitor<T> {
   /// Return the visitor result.
   T? visitBooleanAssign(BooleanAssignContext ctx);
 
+  /// Visit a parse tree produced by [ScriptLanguageParser.comment].
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitComment(CommentContext ctx);
+
   /// Visit a parse tree produced by [ScriptLanguageParser.terminalExpr].
   /// [ctx] the parse tree.
   /// Return the visitor result.
