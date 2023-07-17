@@ -7,7 +7,6 @@ import 'package:basicchessendgamestrainer/logic/position_generation/position_gen
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 const scriptsSeparator = '@@@@@@';
 const otherPiecesSingleScriptSeparator = '---';
@@ -75,13 +74,11 @@ class UnRecognizedScriptTypeException implements Exception {}
 
 class ScriptTextTransformer {
   final AppLocalizations localizations;
-  final WidgetRef ref;
   final String allConstraintsScriptText;
   var constraints = PositionGeneratorConstraintsExpr();
 
   ScriptTextTransformer({
     required this.localizations,
-    required this.ref,
     required this.allConstraintsScriptText,
   });
 
@@ -163,8 +160,7 @@ class ScriptTextTransformer {
     final parser = ScriptLanguageParser(tokens);
     parser.errorHandler = PositionConstraintBailErrorStrategy(localizations);
     final tree = parser.scriptLanguage();
-    final scriptBuilder =
-        ScriptLanguageBuilder(localizations: localizations, ref: ref);
+    final scriptBuilder = ScriptLanguageBuilder(localizations: localizations);
     return scriptBuilder.visit(tree) as ScriptLanguageBooleanExpr;
   }
 

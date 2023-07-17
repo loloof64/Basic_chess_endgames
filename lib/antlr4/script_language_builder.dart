@@ -9,7 +9,6 @@ import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.da
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BailScriptLanguageLexer extends ScriptLanguageLexer {
   final CharStream input;
@@ -69,12 +68,10 @@ class BuiltVariablesHolder {
 class ScriptLanguageBuilder
     extends ScriptLanguageBaseVisitor<ScriptLanguageGenericExpr> {
   final AppLocalizations localizations;
-  final WidgetRef ref;
   final BuiltVariablesHolder _builtVariables;
 
   ScriptLanguageBuilder({
     required this.localizations,
-    required this.ref,
   }) : _builtVariables = BuiltVariablesHolder(localizations);
 
   void _checkIfScriptStringIsValid(

@@ -23,13 +23,11 @@ const positionGenerationErrorDialogSpacer = 20.0;
 class _SampleScriptGenerationParameters {
   final SendPort sendPort;
   final AppLocalizations localizations;
-  final WidgetRef ref;
   final String gameScript;
 
   _SampleScriptGenerationParameters({
     required this.gameScript,
     required this.localizations,
-    required this.ref,
     required this.sendPort,
   });
 }
@@ -80,7 +78,6 @@ class _HomePageState extends ConsumerState<HomePage> {
         _SampleScriptGenerationParameters(
           gameScript: gameScript,
           localizations: AppLocalizations.of(context)!,
-          ref: ref,
           sendPort: receivePort.sendPort,
         ),
       );
@@ -115,7 +112,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     final (constraintsExpr, generationErrors) = ScriptTextTransformer(
       allConstraintsScriptText: parameters.gameScript,
       localizations: AppLocalizations.of(context)!,
-      ref: parameters.ref,
     ).transformTextIntoConstraints();
     if (generationErrors.isNotEmpty) {
       parameters.sendPort.send((null, generationErrors));
