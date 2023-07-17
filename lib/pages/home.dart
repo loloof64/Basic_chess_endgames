@@ -72,16 +72,17 @@ class _HomePageState extends ConsumerState<HomePage> {
     final gameScript = await rootBundle.loadString(game.assetPath);
     final receivePort = ReceivePort();
 
-    setState(() async {
-      _positionGenerationIsolate = await Isolate.spawn(
-        _generatePositionFromScript,
-        _SampleScriptGenerationParameters(
-          gameScript: gameScript,
-          localizations: AppLocalizations.of(context)!,
-          sendPort: receivePort.sendPort,
-        ),
-      );
-    });
+    if (!mounted) return;
+
+    _positionGenerationIsolate = await Isolate.spawn(
+      _generatePositionFromScript,
+      _SampleScriptGenerationParameters(
+        gameScript: gameScript,
+        localizations: AppLocalizations.of(context)!,
+        sendPort: receivePort.sendPort,
+      ),
+    );
+    setState(() {});
 
     receivePort.listen((message) async {
       receivePort.close();
