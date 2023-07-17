@@ -23,9 +23,13 @@
     "@homeTitle": {
         "description": "The title of the home page."
     },
-    "home_failedLoadingSampleExercise": "Failed to load exercise : the chess position is not valid.",
-    "@home_failedLoadingSampleExercise": {
-        "description": "Failed to load sample exercise Snackbar message."
+    "home_failedLoadingExercise": "Failed to load exercise : the chess position is not valid.",
+    "@home_failedLoadingExercise": {
+        "description": "Failed to load exercise Snackbar message."
+    },
+    "home_failedGeneratingPosition": "Failed to generate the position.",
+    "@home_failedGeneratingPosition": {
+        "description": "Failed to generate exercise position Snackbar message."
     },
     "rgpdText": "By using this app, you agree with :",
     "@rgpdText": {
@@ -146,5 +150,41 @@
     "scriptParser_typeError": "Please check that you don't use int value instead of boolean value and vice versa.",
     "@scriptParser_typeError": {
         "description": "Title for class cast exception - while parsing script - error message."
+    },
+    "scriptParser_missingScriptType": "Failed to generate position : please check that all of the script sections declares a correct script type.",
+    "@scriptParser_missingScriptType": {
+        "description": "Failed to generate a position because the given script has a section with a missing script type declaration."
+    },
+    "scriptParser_miscErrorDialogTitle": "Global error",
+    "@scriptParser_miscErrorDialogTitle": {
+        "description": "Title of dialog for global position generation error (not related to a particular script section)."
+    },
+    "sampleScript_kqK": "King + Queen Vs King",
+    "@sampleScript_kqK": {
+        "description": "Label for the sample script kq_k"
+    },
+    "sampleScript_krK": "King + Rook Vs King",
+    "@sampleScript_krK": {
+        "description": "Label for the sample script kr_k"
+    },
+    "sampleScript_krrK": "King + 2 Rooks Vs King",
+    "@sampleScript_krrK": {
+        "description": "Label for the sample script krr_k"
+    },
+    "sampleScript_kbbK": "King + Rook Vs King",
+    "@sampleScript_kbbK": {
+        "description": "Label for the sample script kbb_k"
+    },
+    "sampleScript_kpK1": "King + Pawn Vs King (1)",
+    "@sampleScript_kpK1": {
+        "description": "Label for the sample script kp_k_1"
+    },
+    "sampleScript_kpK2": "King + Pawn Vs King (2)",
+    "@sampleScript_kpK2": {
+        "description": "Label for the sample script kp_k_2"
+    },
+    "sampleScript_kpppK": "King + 3 Pawns Vs King",
+    "@sampleScript_kpppK": {
+        "description": "Label for the sample script kppp_k"
     }
 }

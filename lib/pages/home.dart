@@ -1,6 +1,11 @@
+import 'dart:isolate';
+
+import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
+import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
+import 'package:basicchessendgamestrainer/models/providers/position_generation_provider.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_content.dart';
-import 'package:basicchessendgamestrainer/data/games.dart';
+import 'package:basicchessendgamestrainer/data/asset_games.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:basicchessendgamestrainer/pages/game_page.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +13,27 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 const mainListItemsGap = 8.0;
 const leadingImagesSize = 60.0;
 const titlesFontSize = 26.0;
 const rgpdWarningHeight = 200.0;
+const positionGenerationErrorDialogSpacer = 20.0;
+
+class _SampleScriptGenerationParameters {
+  final SendPort sendPort;
+  final BuildContext context;
+  final WidgetRef ref;
+  final String gameScript;
+
+  _SampleScriptGenerationParameters({
+    required this.gameScript,
+    required this.context,
+    required this.ref,
+    required this.sendPort,
+  });
+}
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -22,11 +43,19 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  Isolate? _positionGenerationIsolate;
+
   @override
   void initState() {
     FlutterNativeSplash.remove();
     WidgetsBinding.instance.addPostFrameCallback((_) => _showRgpdWarning());
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _positionGenerationIsolate?.kill();
+    super.dispose();
   }
 
   void _showRgpdWarning() {
@@ -41,23 +70,132 @@ class _HomePageState extends ConsumerState<HomePage> {
         });
   }
 
-  void _selectGame(Game game) {
-    final validPositionStatus = chess.Chess.validate_fen(game.startPosition);
+  Future<void> _tryGeneratingAndPlayingPositionFromSample(
+      AssetGame game) async {
+    final gameScript = await rootBundle.loadString(game.assetPath);
+    final receivePort = ReceivePort();
+
+    setState(() async {
+      _positionGenerationIsolate = await Isolate.spawn(
+        _generatePositionFromScript,
+        _SampleScriptGenerationParameters(
+          gameScript: gameScript,
+          context: context,
+          ref: ref,
+          sendPort: receivePort.sendPort,
+        ),
+      );
+    });
+
+    receivePort.listen((newPosition) async {
+      receivePort.close();
+      _positionGenerationIsolate?.kill();
+
+      if (newPosition == null) {
+        await _showGenerationErrorsPopups();
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.home_failedGeneratingPosition,
+            ),
+          ),
+        );
+      } else {
+        _tryPlayingGeneratedPosition(newPosition, game.goal);
+      }
+    });
+  }
+
+  void _generatePositionFromScript(
+      _SampleScriptGenerationParameters parameters) {
+    final constraintsExpr = ScriptTextTransformer(
+      allConstraintsScriptText: parameters.gameScript,
+      context: parameters.context,
+      ref: parameters.ref,
+    ).transformTextIntoConstraints();
+    final hasSomeErrors = parameters.ref
+        .read(positionGenerationProvider)
+        .generationErrors
+        .isNotEmpty;
+    if (hasSomeErrors) {
+      parameters.sendPort.send(null);
+    } else {
+      final positionGenerator = PositionGeneratorFromAntlr();
+      positionGenerator.setConstraints(constraintsExpr);
+      try {
+        final generatedPosition = positionGenerator.generatePosition();
+        parameters.sendPort.send(generatedPosition);
+      } on PositionGenerationLoopException {
+        parameters.sendPort.send(null);
+      }
+    }
+  }
+
+  Future<void> _showGenerationErrorsPopups() async {
+    final allErrors = ref.read(positionGenerationProvider).generationErrors;
+    for (final singleError in allErrors) {
+      showDialog(
+          context: context,
+          builder: (ctx2) {
+            return Dialog(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(singleError.title),
+                  const SizedBox(
+                    height: positionGenerationErrorDialogSpacer,
+                  ),
+                  Text(singleError.message),
+                  const SizedBox(
+                    height: positionGenerationErrorDialogSpacer,
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Theme.of(
+                          context,
+                        ).colorScheme.primary,
+                      ),
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!.buttonOk,
+                      style: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            );
+          });
+    }
+  }
+
+  void _tryPlayingGeneratedPosition(String position, Goal goal) {
+    final validPositionStatus = chess.Chess.validate_fen(position);
     if (!validPositionStatus['valid']) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            AppLocalizations.of(context)!.home_failedLoadingSampleExercise,
+            AppLocalizations.of(context)!.home_failedLoadingExercise,
           ),
         ),
       );
       return;
     }
 
+    final playerHasWhite = position.split(' ')[1] != 'b';
+
     final gameNotifier = ref.read(gameProvider.notifier);
-    gameNotifier.updateStartPosition(game.startPosition);
-    gameNotifier.updateGoal(game.goal);
-    gameNotifier.updatePlayerHasWhite(game.playerHasWhite);
+    gameNotifier.updateStartPosition(position);
+    gameNotifier.updateGoal(goal);
+    gameNotifier.updatePlayerHasWhite(playerHasWhite);
     Navigator.of(context).push(
       MaterialPageRoute(builder: (ctx2) {
         return const GamePage();
@@ -67,6 +205,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final sampleGames = getAssetGames(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -81,9 +221,9 @@ class _HomePageState extends ConsumerState<HomePage> {
             ),
             Expanded(
               child: ListView.builder(
-                  itemCount: games.length,
+                  itemCount: sampleGames.length,
                   itemBuilder: (ctx2, index) {
-                    final game = games[index];
+                    final game = sampleGames[index];
 
                     final leadingImage = game.goal == Goal.draw
                         ? SvgPicture.asset(
@@ -100,7 +240,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           );
 
                     final title = Text(
-                      game.title,
+                      game.label,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: titlesFontSize,
@@ -110,7 +250,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                     return ListTile(
                       leading: leadingImage,
                       title: title,
-                      onTap: () => _selectGame(game),
+                      onTap: () =>
+                          _tryGeneratingAndPlayingPositionFromSample(game),
                     );
                   }),
             ),

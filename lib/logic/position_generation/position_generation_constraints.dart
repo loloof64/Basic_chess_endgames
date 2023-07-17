@@ -17,7 +17,23 @@ class PieceKind {
 
   PieceKind(this.pieceType, this.side);
 
-  PieceKindCount inCount(int count) => PieceKindCount(this, count);
+  static PieceKind from(String line) {
+    return switch (line) {
+      'player pawn' => PieceKind(PieceType.pawn, Side.player),
+      'player knight' => PieceKind(PieceType.knight, Side.player),
+      'player bishop' => PieceKind(PieceType.bishop, Side.player),
+      'player rook' => PieceKind(PieceType.rook, Side.player),
+      'player queen' => PieceKind(PieceType.queen, Side.player),
+      'player king' => PieceKind(PieceType.king, Side.player),
+      'computer pawn' => PieceKind(PieceType.pawn, Side.computer),
+      'computer knight' => PieceKind(PieceType.knight, Side.computer),
+      'computer bishop' => PieceKind(PieceType.bishop, Side.computer),
+      'computer rook' => PieceKind(PieceType.rook, Side.computer),
+      'computer queen' => PieceKind(PieceType.queen, Side.computer),
+      'computer king' => PieceKind(PieceType.king, Side.computer),
+      _ => throw Exception('not a recognized piece kind variant : $line')
+    };
+  }
 }
 
 class PieceKindCount {

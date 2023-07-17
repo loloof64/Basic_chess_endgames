@@ -25,14 +25,13 @@ class PositionGenerationLoopException implements Exception {
 }
 
 class PositionGeneratorConstraintsExpr {
-  final ScriptLanguageBooleanExpr? playerKingConstraint;
-  final ScriptLanguageBooleanExpr? computerKingConstraint;
-  final ScriptLanguageBooleanExpr? kingsMutualConstraint;
-  final List<PieceKindCount> otherPiecesCountConstraint;
-  final Map<PieceKind, ScriptLanguageBooleanExpr?> otherPiecesGlobalConstraints;
-  final Map<PieceKind, ScriptLanguageBooleanExpr?> otherPiecesMutualConstraints;
-  final Map<PieceKind, ScriptLanguageBooleanExpr?>
-      otherPiecesIndexedConstraints;
+  ScriptLanguageBooleanExpr? playerKingConstraint;
+  ScriptLanguageBooleanExpr? computerKingConstraint;
+  ScriptLanguageBooleanExpr? kingsMutualConstraint;
+  List<PieceKindCount> otherPiecesCountConstraint;
+  Map<PieceKind, ScriptLanguageBooleanExpr?> otherPiecesGlobalConstraints;
+  Map<PieceKind, ScriptLanguageBooleanExpr?> otherPiecesMutualConstraints;
+  Map<PieceKind, ScriptLanguageBooleanExpr?> otherPiecesIndexedConstraints;
 
   PositionGeneratorConstraintsExpr({
     this.playerKingConstraint,
@@ -124,6 +123,8 @@ class PositionGeneratorFromAntlr {
     _allConstraints = constraints;
   }
 
+  // can throw
+  // PositionGenerationLoopException
   String generatePosition() {
     _playerKingCell = defaultBoardCoordinate;
     _computerKingCell = defaultBoardCoordinate;

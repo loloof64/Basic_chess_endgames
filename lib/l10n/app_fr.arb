@@ -5,7 +5,8 @@
     "buttonAccept": "Accepter",
     "buttonDeny": "Refuser",
     "homeTitle": "Accueil",
-    "home_failedLoadingSampleExercise": "Echec de chargement de l'exerice : la position d'échecs est invalide.",
+    "home_failedLoadingExercise": "Echec de chargement de l'exerice : la position d'échecs est invalide.",
+    "home_failedGeneratingPosition": "Echec de génération de la position.",
     "rgpdText": "En utilisant cette application, vous vous conformez à :",
     "rgpdPrivacy": "la Politique de Confidentialité",
     "rgpdUseConditions": "les Conditions d'Utilisation",
@@ -35,6 +36,14 @@
     "scriptParser_overridingPredefinedVariable": "Vous essayez de modifier la valeur de la variable prédéfinie {name}.",
     "scriptParser_emptyScriptWarning": "Un script vide est tout simplement ignoré dans le processus de génération de position.",
     "scriptParser_parseErrorDialogTitle": "Erreur de script pour '{name}'",
-    "scriptParser_typeError": "Veuillez vérifier que vous n'utilisez pas de valeur entière à la place de valeur booléenne, et vice versa."
-
+    "scriptParser_typeError": "Veuillez vérifier que vous n'utilisez pas de valeur entière à la place de valeur booléenne, et vice versa.",
+    "scriptParser_missingScriptType": "Echec de génération de la position: veuillez vérifier que toutes les sections du script déclarent un type de script correct.",
+    "scriptParser_miscErrorDialogTitle": "Erreur globale",
+    "sampleScript_kqK": "Roi + Dame Contre Roi",
+    "sampleScript_krK": "Roi + Tour Contre Roi",
+    "sampleScript_krrK": "Roi + 2 Tours Contre Roi",
+    "sampleScript_kbbK": "Roi + 2 Fous Contre Roi",
+    "sampleScript_kpK1": "Roi + Pion Contre Roi (1)",
+    "sampleScript_kpK2": "Roi + Pion Contre Roi (2)",
+    "sampleScript_kpppK": "Roi + 3 Pions Contre Roi"
 }

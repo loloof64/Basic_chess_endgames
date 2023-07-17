@@ -5,7 +5,8 @@
     "buttonAccept": "Aceptar",
     "buttonDeny": "Rechazar",
     "homeTitle" : "Inicio",
-    "home_failedLoadingSampleExercise": "No se pudo cargar el ejercicio: la posición de ajedrez no es válida.", 
+    "home_failedLoadingExercise": "No se pudo cargar el ejercicio: la posición de ajedrez no es válida.",
+    "home_failedGeneratingPosition": "Falló al generar la posición.",
     "rgpdText": "Al utilizar esta aplicación, estás de acuerdo con:",
     "rgpdPrivacy": "la Política de Privacidad",
     "rgpdUseConditions": "Las Condiciones de Uso",
@@ -35,6 +36,14 @@
     "scriptParser_overridingPredefinedVariable": "Intentas cambiar el valor de la variable predefinida {name}.",
     "scriptParser_emptyScriptWarning": "Un script vacío se ignora simplemente en el proceso de generación de posiciones.",
     "scriptParser_parseErrorDialogTitle": "Error de script para '{name}'",
-    "scriptParser_typeError": "Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa."
-
+    "scriptParser_typeError": "Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa.",
+    "scriptParser_missingScriptType": "No se pudo generar la posición: compruebe que todas las secciones del script declaran un tipo de script correcto.", 
+    "scriptParser_miscErrorDialogTitle": "Equivocado global",
+    "sampleScript_kqK": "Rey + Reina Vs Rey",
+    "sampleScript_krK": "Rey + Torre Vs Rey",
+    "sampleScript_krrK": "Rey + 2 Torres Vs Rey",
+    "sampleScript_kbbK": "Rey + 2 Alfiles Vs Rey",
+    "sampleScript_kpK1": "Rey + Peón Vs Rey (1)",
+    "sampleScript_kpK2": "Rey + Peón Vs Rey (2)",
+    "sampleScript_kpppK": "Rey + 3 Peones Vs Rey"
 }

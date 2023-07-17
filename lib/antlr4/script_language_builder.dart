@@ -367,12 +367,12 @@ class ScriptLanguageBuilder
       };
     }
 
-    bool checkIfScriptIsValidAndShowFirstEventualError(
-      String scriptString,
-      String scriptSectionTitle,
-      Map<String, int> sampleIntValues,
-      Map<String, bool> sampleBooleanValues,
-    ) {
+    bool checkIfScriptIsValidAndShowFirstEventualError({
+      required String scriptString,
+      required String scriptSectionTitle,
+      required Map<String, int> sampleIntValues,
+      required Map<String, bool> sampleBooleanValues,
+    }) {
       if (scriptString.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
