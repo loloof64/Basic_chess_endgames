@@ -1,11 +1,10 @@
 import 'package:antlr4/antlr4.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PositionConstraintBailErrorStrategy extends DefaultErrorStrategy {
-  final BuildContext context;
+  final AppLocalizations localizations;
 
-  PositionConstraintBailErrorStrategy(this.context) : super();
+  PositionConstraintBailErrorStrategy(this.localizations) : super();
 
   @override
   void recover(Parser recognizer, RecognitionException<IntStream> e) {
@@ -32,21 +31,21 @@ class PositionConstraintBailErrorStrategy extends DefaultErrorStrategy {
         throw ParseCancellationException(_buildRecognitionExceptionMessage(e));
       default:
         throw ParseCancellationException(
-            AppLocalizations.of(context)!.scriptParser_miscParseError);
+            localizations.scriptParser_miscParseError);
     }
   }
 
   @override
   String getTokenErrorDisplay(Token? t) {
     return t == null
-        ? AppLocalizations.of(context)!.scriptParser_noAntlr4Token
+        ? localizations.scriptParser_noAntlr4Token
         : escapeWSAndQuote("<${_getErrorSymbol(t)}>");
   }
 
   String _getErrorSymbol(Token t) {
     var symbol = getSymbolText(t);
     symbol ??= _tokenIsEOF(t)
-        ? AppLocalizations.of(context)!.scriptParser_eof
+        ? localizations.scriptParser_eof
         : getSymbolType(t).toString();
     return symbol;
   }
@@ -56,8 +55,8 @@ class PositionConstraintBailErrorStrategy extends DefaultErrorStrategy {
     final line = error.offendingToken.line!;
     final positionInLine = error.offendingToken.charPositionInLine;
 
-    return AppLocalizations.of(context)!
-        .scriptParser_noViableAltException(inputToken, line, positionInLine);
+    return localizations.scriptParser_noViableAltException(
+        inputToken, line, positionInLine);
   }
 
   String _buildInputMismatchExceptionMessage(
@@ -68,7 +67,7 @@ class PositionConstraintBailErrorStrategy extends DefaultErrorStrategy {
     final expectedToken =
         error.expectedTokens!.toString(vocabulary: recognizer?.vocabulary);
 
-    return AppLocalizations.of(context)!.scriptParser_inputMismatch(
+    return localizations.scriptParser_inputMismatch(
       line,
       positionInLine,
       expectedToken,

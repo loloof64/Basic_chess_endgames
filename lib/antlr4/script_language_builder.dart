@@ -8,24 +8,23 @@ import 'package:basicchessendgamestrainer/antlr4/position_constraint_bail_error_
 import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/models/providers/position_generation_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BailScriptLanguageLexer extends ScriptLanguageLexer {
   final CharStream input;
-  final BuildContext context;
+  final AppLocalizations localizations;
 
   BailScriptLanguageLexer({
-    required this.context,
+    required this.localizations,
     required this.input,
   }) : super(input);
 
   @override
   void recover(RecognitionException<IntStream> re) {
     final offendingText = re.offendingToken.text!;
-    final message = AppLocalizations.of(context)!
-        .scriptParser_unrecognizedSymbol(offendingText);
+    final message =
+        localizations.scriptParser_unrecognizedSymbol(offendingText);
     throw ParseCancellationException(message);
   }
 }
@@ -38,10 +37,10 @@ class GenericExpressionVariable {
 }
 
 class BuiltVariablesHolder {
-  final BuildContext context;
+  final AppLocalizations localizations;
   final _builtVariables = <GenericExpressionVariable>[];
 
-  BuiltVariablesHolder(this.context);
+  BuiltVariablesHolder(this.localizations);
 
   void add(GenericExpressionVariable variable) => _builtVariables.add(variable);
 
@@ -55,7 +54,7 @@ class BuiltVariablesHolder {
         ?.value;
     if (expression == null) {
       throw ParseCancellationException(
-          AppLocalizations.of(context)!.scriptParser_variableNotAffected(name));
+          localizations.scriptParser_variableNotAffected(name));
     }
     return expression;
   }
@@ -69,14 +68,14 @@ class BuiltVariablesHolder {
 
 class ScriptLanguageBuilder
     extends ScriptLanguageBaseVisitor<ScriptLanguageGenericExpr> {
-  final BuildContext context;
+  final AppLocalizations localizations;
   final WidgetRef ref;
   final BuiltVariablesHolder _builtVariables;
 
   ScriptLanguageBuilder({
-    required this.context,
+    required this.localizations,
     required this.ref,
-  }) : _builtVariables = BuiltVariablesHolder(context);
+  }) : _builtVariables = BuiltVariablesHolder(localizations);
 
   void _checkIfScriptStringIsValid(
     String scriptString,
@@ -94,10 +93,11 @@ class ScriptLanguageBuilder
   ScriptLanguageBooleanExpr _buildExpressionObjectFromScript(
       String scriptString) {
     final inputStream = InputStream.fromString(scriptString);
-    final lexer = BailScriptLanguageLexer(context: context, input: inputStream);
+    final lexer = BailScriptLanguageLexer(
+        localizations: localizations, input: inputStream);
     final tokens = CommonTokenStream(lexer);
     final parser = ScriptLanguageParser(tokens);
-    parser.errorHandler = PositionConstraintBailErrorStrategy(context);
+    parser.errorHandler = PositionConstraintBailErrorStrategy(localizations);
     final tree = parser.scriptLanguage();
     _builtVariables.clearVariables();
     return visit(tree)! as ScriptLanguageBooleanExpr;
@@ -118,8 +118,8 @@ class ScriptLanguageBuilder
         case ScriptLanguageNumericExpr():
           {
             if (sampleIntValues.containsKey(currentVariable.name)) {
-              throw ParseCancellationException(AppLocalizations.of(context)!
-                  .scriptParser_overridingPredefinedVariable(
+              throw ParseCancellationException(
+                  localizations.scriptParser_overridingPredefinedVariable(
                       currentVariable.name));
             } else {
               intValues[currentVariable.name] = evaluateIntExpression(
@@ -132,8 +132,8 @@ class ScriptLanguageBuilder
         case ScriptLanguageBooleanExpr():
           {
             if (sampleBooleanValues.containsKey(currentVariable.name)) {
-              throw ParseCancellationException(AppLocalizations.of(context)!
-                  .scriptParser_overridingPredefinedVariable(
+              throw ParseCancellationException(
+                  localizations.scriptParser_overridingPredefinedVariable(
                       currentVariable.name));
             } else {
               boolValues[currentVariable.name] = evaluateBoolExpression(
@@ -374,13 +374,6 @@ class ScriptLanguageBuilder
       required Map<String, bool> sampleBooleanValues,
     }) {
       if (scriptString.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.scriptParser_emptyScriptWarning,
-            ),
-          ),
-        );
         return true;
       }
 
@@ -392,9 +385,9 @@ class ScriptLanguageBuilder
         );
         return true;
       } on VariableIsNotAffectedException catch (ex) {
-        final message = AppLocalizations.of(context)!
-            .scriptParser_variableNotAffected(ex.varName);
-        final title = AppLocalizations.of(context)!
+        final message =
+            localizations.scriptParser_variableNotAffected(ex.varName);
+        final title = localizations
             .scriptParser_parseErrorDialogTitle(scriptSectionTitle);
         // Add the error to the errors we must show once all scripts for
         // the position generation are built.
@@ -404,7 +397,7 @@ class ScriptLanguageBuilder
         return false;
       } on ParseCancellationException catch (ex) {
         final message = ex.message;
-        final title = AppLocalizations.of(context)!
+        final title = localizations
             .scriptParser_parseErrorDialogTitle(scriptSectionTitle);
         // Add the error to the errors we must show once all scripts for
         // the position generation are built.
@@ -413,8 +406,8 @@ class ScriptLanguageBuilder
             );
         return false;
       } on TypeError {
-        final message = AppLocalizations.of(context)!.scriptParser_typeError;
-        final title = AppLocalizations.of(context)!
+        final message = localizations.scriptParser_typeError;
+        final title = localizations
             .scriptParser_parseErrorDialogTitle(scriptSectionTitle);
         // Add the error to the errors we must show once all scripts for
         // the position generation are built.

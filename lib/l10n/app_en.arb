@@ -139,10 +139,6 @@
     "@scriptParser_overridingPredefinedVariable": {
         "description": "Script parsing error message for when user tries to change value of a predefined variable."
     },
-    "scriptParser_emptyScriptWarning": "An empty script is simply ignored in the position generation process.",
-    "@scriptParser_emptyScriptWarning": {
-        "description": "Empty script warning message."
-    },
     "scriptParser_parseErrorDialogTitle": "Script error for '{name}'",
     "@scriptParser_parseErrorDialogTitle": {
         "description": "Title for misc. script parsing error dialog."

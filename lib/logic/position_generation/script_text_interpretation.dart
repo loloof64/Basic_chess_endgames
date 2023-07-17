@@ -7,7 +7,6 @@ import 'package:basicchessendgamestrainer/logic/position_generation/position_gen
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
 import 'package:basicchessendgamestrainer/models/providers/position_generation_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 const scriptsSeparator = '@@@@@@';
@@ -64,13 +63,13 @@ class MissingOtherPieceScriptTypeException implements Exception {}
 class UnRecognizedScriptTypeException implements Exception {}
 
 class ScriptTextTransformer {
-  final BuildContext context;
+  final AppLocalizations localizations;
   final WidgetRef ref;
   final String allConstraintsScriptText;
   var constraints = PositionGeneratorConstraintsExpr();
 
   ScriptTextTransformer({
-    required this.context,
+    required this.localizations,
     required this.ref,
     required this.allConstraintsScriptText,
   });
@@ -127,18 +126,14 @@ class ScriptTextTransformer {
           break;
       }
     } on MissingScriptTypeException {
-      final title =
-          AppLocalizations.of(context)!.scriptParser_miscErrorDialogTitle;
-      final message =
-          AppLocalizations.of(context)!.scriptParser_missingScriptType;
+      final title = localizations.scriptParser_miscErrorDialogTitle;
+      final message = localizations.scriptParser_missingScriptType;
       ref.read(positionGenerationProvider.notifier).addError(
             PositionGenerationError(title, message),
           );
     } on UnRecognizedScriptTypeException {
-      final title =
-          AppLocalizations.of(context)!.scriptParser_miscErrorDialogTitle;
-      final message =
-          AppLocalizations.of(context)!.scriptParser_missingScriptType;
+      final title = localizations.scriptParser_miscErrorDialogTitle;
+      final message = localizations.scriptParser_missingScriptType;
       ref.read(positionGenerationProvider.notifier).addError(
             PositionGenerationError(title, message),
           );
@@ -151,14 +146,15 @@ class ScriptTextTransformer {
   ScriptLanguageBooleanExpr _parseBooleanExprScript(String scriptContent) {
     final inputStream = InputStream.fromString(scriptContent);
     final lexer = BailScriptLanguageLexer(
-      context: context,
+      localizations: localizations,
       input: inputStream,
     );
     final tokens = CommonTokenStream(lexer);
     final parser = ScriptLanguageParser(tokens);
-    parser.errorHandler = PositionConstraintBailErrorStrategy(context);
+    parser.errorHandler = PositionConstraintBailErrorStrategy(localizations);
     final tree = parser.scriptLanguage();
-    final scriptBuilder = ScriptLanguageBuilder(context: context, ref: ref);
+    final scriptBuilder =
+        ScriptLanguageBuilder(localizations: localizations, ref: ref);
     return scriptBuilder.visit(tree) as ScriptLanguageBooleanExpr;
   }
 

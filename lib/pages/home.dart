@@ -23,13 +23,13 @@ const positionGenerationErrorDialogSpacer = 20.0;
 
 class _SampleScriptGenerationParameters {
   final SendPort sendPort;
-  final BuildContext context;
+  final AppLocalizations localizations;
   final WidgetRef ref;
   final String gameScript;
 
   _SampleScriptGenerationParameters({
     required this.gameScript,
-    required this.context,
+    required this.localizations,
     required this.ref,
     required this.sendPort,
   });
@@ -80,7 +80,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         _generatePositionFromScript,
         _SampleScriptGenerationParameters(
           gameScript: gameScript,
-          context: context,
+          localizations: AppLocalizations.of(context)!,
           ref: ref,
           sendPort: receivePort.sendPort,
         ),
@@ -112,7 +112,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       _SampleScriptGenerationParameters parameters) {
     final constraintsExpr = ScriptTextTransformer(
       allConstraintsScriptText: parameters.gameScript,
-      context: parameters.context,
+      localizations: AppLocalizations.of(context)!,
       ref: parameters.ref,
     ).transformTextIntoConstraints();
     final hasSomeErrors = parameters.ref
