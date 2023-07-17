@@ -5,12 +5,23 @@ import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.da
 import 'package:basicchessendgamestrainer/antlr4/script_language_builder.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
-import 'package:basicchessendgamestrainer/models/providers/position_generation_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 const scriptsSeparator = '@@@@@@';
 const otherPiecesSingleScriptSeparator = '---';
+
+@immutable
+class PositionGenerationError {
+  final String title;
+  final String message;
+
+  const PositionGenerationError(
+    this.title,
+    this.message,
+  );
+}
 
 bool overallScriptGoalIsToWin(String overallScriptContent) {
   final parts = overallScriptContent.split(scriptsSeparator);
@@ -74,16 +85,21 @@ class ScriptTextTransformer {
     required this.allConstraintsScriptText,
   });
 
-  PositionGeneratorConstraintsExpr transformTextIntoConstraints() {
+  (PositionGeneratorConstraintsExpr, List<PositionGenerationError>)
+      transformTextIntoConstraints() {
+    final errors = <PositionGenerationError>[];
     constraints = PositionGeneratorConstraintsExpr();
     final scripts = allConstraintsScriptText.split(scriptsSeparator);
     for (final singleScript in scripts) {
-      _transformScriptIntoConstraint(singleScript);
+      final currentError = _transformScriptIntoConstraint(singleScript);
+      if (currentError != null) {
+        errors.add(currentError);
+      }
     }
-    return constraints;
+    return (constraints, errors);
   }
 
-  void _transformScriptIntoConstraint(String script) {
+  PositionGenerationError? _transformScriptIntoConstraint(String script) {
     try {
       final lines = script.split(RegExp(r'\r?\n')).where(
             (line) => line.trim().isNotEmpty,
@@ -125,21 +141,15 @@ class ScriptTextTransformer {
               _parseMapOfBooleanExprScript(scriptContent);
           break;
       }
+      return null;
     } on MissingScriptTypeException {
       final title = localizations.scriptParser_miscErrorDialogTitle;
       final message = localizations.scriptParser_missingScriptType;
-      ref.read(positionGenerationProvider.notifier).addError(
-            PositionGenerationError(title, message),
-          );
+      return PositionGenerationError(title, message);
     } on UnRecognizedScriptTypeException {
       final title = localizations.scriptParser_miscErrorDialogTitle;
       final message = localizations.scriptParser_missingScriptType;
-      ref.read(positionGenerationProvider.notifier).addError(
-            PositionGenerationError(title, message),
-          );
-      ref.read(positionGenerationProvider.notifier).addError(
-            PositionGenerationError(title, message),
-          );
+      return PositionGenerationError(title, message);
     }
   }
 

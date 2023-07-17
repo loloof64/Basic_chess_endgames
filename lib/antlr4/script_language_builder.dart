@@ -7,7 +7,7 @@ import 'package:basicchessendgamestrainer/antlr4/generated/ScriptLanguageParser.
 import 'package:basicchessendgamestrainer/antlr4/position_constraint_bail_error_strategy.dart';
 import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
-import 'package:basicchessendgamestrainer/models/providers/position_generation_provider.dart';
+import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -367,14 +367,14 @@ class ScriptLanguageBuilder
       };
     }
 
-    bool checkIfScriptIsValidAndShowFirstEventualError({
+    PositionGenerationError? checkIfScriptIsValid({
       required String scriptString,
       required String scriptSectionTitle,
       required Map<String, int> sampleIntValues,
       required Map<String, bool> sampleBooleanValues,
     }) {
       if (scriptString.isEmpty) {
-        return true;
+        return null;
       }
 
       try {
@@ -383,7 +383,7 @@ class ScriptLanguageBuilder
           sampleIntValues,
           sampleBooleanValues,
         );
-        return true;
+        return null;
       } on VariableIsNotAffectedException catch (ex) {
         final message =
             localizations.scriptParser_variableNotAffected(ex.varName);
@@ -391,30 +391,21 @@ class ScriptLanguageBuilder
             .scriptParser_parseErrorDialogTitle(scriptSectionTitle);
         // Add the error to the errors we must show once all scripts for
         // the position generation are built.
-        ref.read(positionGenerationProvider.notifier).addError(
-              PositionGenerationError(title, message),
-            );
-        return false;
+        return PositionGenerationError(title, message);
       } on ParseCancellationException catch (ex) {
         final message = ex.message;
         final title = localizations
             .scriptParser_parseErrorDialogTitle(scriptSectionTitle);
         // Add the error to the errors we must show once all scripts for
         // the position generation are built.
-        ref.read(positionGenerationProvider.notifier).addError(
-              PositionGenerationError(title, message),
-            );
-        return false;
+        return PositionGenerationError(title, message);
       } on TypeError {
         final message = localizations.scriptParser_typeError;
         final title = localizations
             .scriptParser_parseErrorDialogTitle(scriptSectionTitle);
         // Add the error to the errors we must show once all scripts for
         // the position generation are built.
-        ref.read(positionGenerationProvider.notifier).addError(
-              PositionGenerationError(title, message),
-            );
-        return false;
+        return PositionGenerationError(title, message);
       }
     }
   }

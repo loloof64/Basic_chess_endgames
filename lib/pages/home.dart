@@ -2,7 +2,6 @@ import 'dart:isolate';
 
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
-import 'package:basicchessendgamestrainer/models/providers/position_generation_provider.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_content.dart';
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
@@ -87,12 +86,15 @@ class _HomePageState extends ConsumerState<HomePage> {
       );
     });
 
-    receivePort.listen((newPosition) async {
+    receivePort.listen((message) async {
       receivePort.close();
       _positionGenerationIsolate?.kill();
 
+      final (newPosition, errors) =
+          message as (String?, List<PositionGenerationError>);
+
       if (newPosition == null) {
-        await _showGenerationErrorsPopups();
+        await _showGenerationErrorsPopups(errors);
         if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -110,32 +112,37 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   void _generatePositionFromScript(
       _SampleScriptGenerationParameters parameters) {
-    final constraintsExpr = ScriptTextTransformer(
+    final (constraintsExpr, generationErrors) = ScriptTextTransformer(
       allConstraintsScriptText: parameters.gameScript,
       localizations: AppLocalizations.of(context)!,
       ref: parameters.ref,
     ).transformTextIntoConstraints();
-    final hasSomeErrors = parameters.ref
-        .read(positionGenerationProvider)
-        .generationErrors
-        .isNotEmpty;
-    if (hasSomeErrors) {
-      parameters.sendPort.send(null);
+    if (generationErrors.isNotEmpty) {
+      parameters.sendPort.send((null, generationErrors));
     } else {
       final positionGenerator = PositionGeneratorFromAntlr();
       positionGenerator.setConstraints(constraintsExpr);
       try {
         final generatedPosition = positionGenerator.generatePosition();
-        parameters.sendPort.send(generatedPosition);
+        parameters.sendPort
+            .send((generatedPosition, <PositionGenerationError>[]));
       } on PositionGenerationLoopException {
-        parameters.sendPort.send(null);
+        parameters.sendPort.send(
+          (
+            null,
+            PositionGenerationError(
+              AppLocalizations.of(context)!.scriptParser_miscErrorDialogTitle,
+              AppLocalizations.of(context)!.home_failedGeneratingPosition,
+            ),
+          ),
+        );
       }
     }
   }
 
-  Future<void> _showGenerationErrorsPopups() async {
-    final allErrors = ref.read(positionGenerationProvider).generationErrors;
-    for (final singleError in allErrors) {
+  Future<void> _showGenerationErrorsPopups(
+      List<PositionGenerationError> errors) async {
+    for (final singleError in errors) {
       showDialog(
           context: context,
           builder: (ctx2) {
