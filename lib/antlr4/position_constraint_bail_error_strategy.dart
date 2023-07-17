@@ -1,10 +1,10 @@
 import 'package:antlr4/antlr4.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 
 class PositionConstraintBailErrorStrategy extends DefaultErrorStrategy {
-  final AppLocalizations localizations;
+  final TranslationsWrapper translations;
 
-  PositionConstraintBailErrorStrategy(this.localizations) : super();
+  PositionConstraintBailErrorStrategy(this.translations) : super();
 
   @override
   void recover(Parser recognizer, RecognitionException<IntStream> e) {
@@ -30,33 +30,30 @@ class PositionConstraintBailErrorStrategy extends DefaultErrorStrategy {
       case NoViableAltException():
         throw ParseCancellationException(_buildRecognitionExceptionMessage(e));
       default:
-        throw ParseCancellationException(
-            localizations.scriptParser_miscParseError);
+        throw ParseCancellationException(translations.miscParseError);
     }
   }
 
   @override
   String getTokenErrorDisplay(Token? t) {
     return t == null
-        ? localizations.scriptParser_noAntlr4Token
+        ? translations.noAntlr4Token
         : escapeWSAndQuote("<${_getErrorSymbol(t)}>");
   }
 
   String _getErrorSymbol(Token t) {
     var symbol = getSymbolText(t);
-    symbol ??= _tokenIsEOF(t)
-        ? localizations.scriptParser_eof
-        : getSymbolType(t).toString();
+    symbol ??= _tokenIsEOF(t) ? translations.eof : getSymbolType(t).toString();
     return symbol;
   }
 
   String _buildRecognitionExceptionMessage(NoViableAltException? error) {
     final inputToken = escapeWSAndQuote(error!.offendingToken.text!);
-    final line = error.offendingToken.line!;
+    final lineNumber = error.offendingToken.line!;
     final positionInLine = error.offendingToken.charPositionInLine;
 
-    return localizations.scriptParser_noViableAltException(
-        inputToken, line, positionInLine);
+    return translations.noViableAltException(
+        inputToken, lineNumber, positionInLine);
   }
 
   String _buildInputMismatchExceptionMessage(
@@ -67,7 +64,7 @@ class PositionConstraintBailErrorStrategy extends DefaultErrorStrategy {
     final expectedToken =
         error.expectedTokens!.toString(vocabulary: recognizer?.vocabulary);
 
-    return localizations.scriptParser_inputMismatch(
+    return translations.inputMismatch(
       line,
       positionInLine,
       expectedToken,

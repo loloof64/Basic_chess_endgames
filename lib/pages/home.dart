@@ -22,13 +22,13 @@ const positionGenerationErrorDialogSpacer = 20.0;
 
 class _SampleScriptGenerationParameters {
   final SendPort sendPort;
-  final AppLocalizations localizations;
   final String gameScript;
+  final TranslationsWrapper translations;
 
   _SampleScriptGenerationParameters({
     required this.gameScript,
-    required this.localizations,
     required this.sendPort,
+    required this.translations,
   });
 }
 
@@ -74,11 +74,28 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     if (!mounted) return;
 
+    final localizations = AppLocalizations.of(context)!;
+
     _positionGenerationIsolate = await Isolate.spawn(
       _generatePositionFromScript,
       _SampleScriptGenerationParameters(
         gameScript: gameScript,
-        localizations: AppLocalizations.of(context)!,
+        translations: TranslationsWrapper(
+          miscErrorDialogTitle: localizations.scriptParser_miscErrorDialogTitle,
+          missingScriptType: localizations.scriptParser_missingScriptType,
+          miscParseError: localizations.scriptParser_miscParseError,
+          unrecognizedSymbol: localizations.scriptParser_unrecognizedSymbol,
+          typeError: localizations.scriptParser_typeError,
+          noAntlr4Token: localizations.scriptParser_noAntlr4Token,
+          eof: localizations.scriptParser_eof,
+          variableNotAffected: localizations.scriptParser_variableNotAffected,
+          overridingPredefinedVariable:
+              localizations.scriptParser_overridingPredefinedVariable,
+          parseErrorDialogTitle:
+              localizations.scriptParser_parseErrorDialogTitle,
+          noViableAltException: localizations.scriptParser_noViableAltException,
+          inputMismatch: localizations.scriptParser_inputMismatch,
+        ),
         sendPort: receivePort.sendPort,
       ),
     );
@@ -112,7 +129,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       _SampleScriptGenerationParameters parameters) {
     final (constraintsExpr, generationErrors) = ScriptTextTransformer(
       allConstraintsScriptText: parameters.gameScript,
-      localizations: AppLocalizations.of(context)!,
+      translations: parameters.translations,
     ).transformTextIntoConstraints();
     if (generationErrors.isNotEmpty) {
       parameters.sendPort.send((null, generationErrors));

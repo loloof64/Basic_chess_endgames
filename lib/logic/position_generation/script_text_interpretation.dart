@@ -6,7 +6,6 @@ import 'package:basicchessendgamestrainer/antlr4/script_language_builder.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const scriptsSeparator = '@@@@@@';
 const otherPiecesSingleScriptSeparator = '---';
@@ -20,6 +19,43 @@ class PositionGenerationError {
     this.title,
     this.message,
   );
+}
+
+@immutable
+class TranslationsWrapper {
+  final String miscErrorDialogTitle;
+  final String missingScriptType;
+  final String miscParseError;
+  final String typeError;
+  final String noAntlr4Token;
+  final String eof;
+  final String Function(String offendingToken) unrecognizedSymbol;
+  final String Function(String name) variableNotAffected;
+  final String Function(String name) overridingPredefinedVariable;
+  final String Function(String title) parseErrorDialogTitle;
+  final String Function(String token, int lineNumber, int positionInLine)
+      noViableAltException;
+  final String Function(
+    int line,
+    int positionInLine,
+    String expectedToken,
+    String tokenErrorDisplay,
+  ) inputMismatch;
+
+  const TranslationsWrapper({
+    required this.miscErrorDialogTitle,
+    required this.missingScriptType,
+    required this.miscParseError,
+    required this.unrecognizedSymbol,
+    required this.typeError,
+    required this.noAntlr4Token,
+    required this.eof,
+    required this.variableNotAffected,
+    required this.overridingPredefinedVariable,
+    required this.parseErrorDialogTitle,
+    required this.noViableAltException,
+    required this.inputMismatch,
+  });
 }
 
 bool overallScriptGoalIsToWin(String overallScriptContent) {
@@ -73,12 +109,12 @@ class MissingOtherPieceScriptTypeException implements Exception {}
 class UnRecognizedScriptTypeException implements Exception {}
 
 class ScriptTextTransformer {
-  final AppLocalizations localizations;
+  final TranslationsWrapper translations;
   final String allConstraintsScriptText;
   var constraints = PositionGeneratorConstraintsExpr();
 
   ScriptTextTransformer({
-    required this.localizations,
+    required this.translations,
     required this.allConstraintsScriptText,
   });
 
@@ -140,12 +176,12 @@ class ScriptTextTransformer {
       }
       return null;
     } on MissingScriptTypeException {
-      final title = localizations.scriptParser_miscErrorDialogTitle;
-      final message = localizations.scriptParser_missingScriptType;
+      final title = translations.miscErrorDialogTitle;
+      final message = translations.missingScriptType;
       return PositionGenerationError(title, message);
     } on UnRecognizedScriptTypeException {
-      final title = localizations.scriptParser_miscErrorDialogTitle;
-      final message = localizations.scriptParser_missingScriptType;
+      final title = translations.miscErrorDialogTitle;
+      final message = translations.missingScriptType;
       return PositionGenerationError(title, message);
     }
   }
@@ -153,14 +189,14 @@ class ScriptTextTransformer {
   ScriptLanguageBooleanExpr _parseBooleanExprScript(String scriptContent) {
     final inputStream = InputStream.fromString(scriptContent);
     final lexer = BailScriptLanguageLexer(
-      localizations: localizations,
+      translations: translations,
       input: inputStream,
     );
     final tokens = CommonTokenStream(lexer);
     final parser = ScriptLanguageParser(tokens);
-    parser.errorHandler = PositionConstraintBailErrorStrategy(localizations);
+    parser.errorHandler = PositionConstraintBailErrorStrategy(translations);
     final tree = parser.scriptLanguage();
-    final scriptBuilder = ScriptLanguageBuilder(localizations: localizations);
+    final scriptBuilder = ScriptLanguageBuilder(translations: translations);
     return scriptBuilder.visit(tree) as ScriptLanguageBooleanExpr;
   }
 

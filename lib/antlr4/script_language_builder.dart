@@ -8,22 +8,20 @@ import 'package:basicchessendgamestrainer/antlr4/position_constraint_bail_error_
 import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BailScriptLanguageLexer extends ScriptLanguageLexer {
   final CharStream input;
-  final AppLocalizations localizations;
+  final TranslationsWrapper translations;
 
   BailScriptLanguageLexer({
-    required this.localizations,
+    required this.translations,
     required this.input,
   }) : super(input);
 
   @override
   void recover(RecognitionException<IntStream> re) {
     final offendingText = re.offendingToken.text!;
-    final message =
-        localizations.scriptParser_unrecognizedSymbol(offendingText);
+    final message = translations.unrecognizedSymbol(offendingText);
     throw ParseCancellationException(message);
   }
 }
@@ -36,10 +34,10 @@ class GenericExpressionVariable {
 }
 
 class BuiltVariablesHolder {
-  final AppLocalizations localizations;
+  final TranslationsWrapper translations;
   final _builtVariables = <GenericExpressionVariable>[];
 
-  BuiltVariablesHolder(this.localizations);
+  BuiltVariablesHolder(this.translations);
 
   void add(GenericExpressionVariable variable) => _builtVariables.add(variable);
 
@@ -52,8 +50,7 @@ class BuiltVariablesHolder {
         .firstOrNull
         ?.value;
     if (expression == null) {
-      throw ParseCancellationException(
-          localizations.scriptParser_variableNotAffected(name));
+      throw ParseCancellationException(translations.variableNotAffected(name));
     }
     return expression;
   }
@@ -67,12 +64,12 @@ class BuiltVariablesHolder {
 
 class ScriptLanguageBuilder
     extends ScriptLanguageBaseVisitor<ScriptLanguageGenericExpr> {
-  final AppLocalizations localizations;
+  final TranslationsWrapper translations;
   final BuiltVariablesHolder _builtVariables;
 
   ScriptLanguageBuilder({
-    required this.localizations,
-  }) : _builtVariables = BuiltVariablesHolder(localizations);
+    required this.translations,
+  }) : _builtVariables = BuiltVariablesHolder(translations);
 
   void _checkIfScriptStringIsValid(
     String scriptString,
@@ -90,11 +87,11 @@ class ScriptLanguageBuilder
   ScriptLanguageBooleanExpr _buildExpressionObjectFromScript(
       String scriptString) {
     final inputStream = InputStream.fromString(scriptString);
-    final lexer = BailScriptLanguageLexer(
-        localizations: localizations, input: inputStream);
+    final lexer =
+        BailScriptLanguageLexer(translations: translations, input: inputStream);
     final tokens = CommonTokenStream(lexer);
     final parser = ScriptLanguageParser(tokens);
-    parser.errorHandler = PositionConstraintBailErrorStrategy(localizations);
+    parser.errorHandler = PositionConstraintBailErrorStrategy(translations);
     final tree = parser.scriptLanguage();
     _builtVariables.clearVariables();
     return visit(tree)! as ScriptLanguageBooleanExpr;
@@ -115,9 +112,8 @@ class ScriptLanguageBuilder
         case ScriptLanguageNumericExpr():
           {
             if (sampleIntValues.containsKey(currentVariable.name)) {
-              throw ParseCancellationException(
-                  localizations.scriptParser_overridingPredefinedVariable(
-                      currentVariable.name));
+              throw ParseCancellationException(translations
+                  .overridingPredefinedVariable(currentVariable.name));
             } else {
               intValues[currentVariable.name] = evaluateIntExpression(
                 currentVariable.value as ScriptLanguageNumericExpr,
@@ -129,9 +125,8 @@ class ScriptLanguageBuilder
         case ScriptLanguageBooleanExpr():
           {
             if (sampleBooleanValues.containsKey(currentVariable.name)) {
-              throw ParseCancellationException(
-                  localizations.scriptParser_overridingPredefinedVariable(
-                      currentVariable.name));
+              throw ParseCancellationException(translations
+                  .overridingPredefinedVariable(currentVariable.name));
             } else {
               boolValues[currentVariable.name] = evaluateBoolExpression(
                 currentVariable.value as ScriptLanguageBooleanExpr,
@@ -382,24 +377,20 @@ class ScriptLanguageBuilder
         );
         return null;
       } on VariableIsNotAffectedException catch (ex) {
-        final message =
-            localizations.scriptParser_variableNotAffected(ex.varName);
-        final title = localizations
-            .scriptParser_parseErrorDialogTitle(scriptSectionTitle);
+        final message = translations.variableNotAffected(ex.varName);
+        final title = translations.parseErrorDialogTitle(scriptSectionTitle);
         // Add the error to the errors we must show once all scripts for
         // the position generation are built.
         return PositionGenerationError(title, message);
       } on ParseCancellationException catch (ex) {
         final message = ex.message;
-        final title = localizations
-            .scriptParser_parseErrorDialogTitle(scriptSectionTitle);
+        final title = translations.parseErrorDialogTitle(scriptSectionTitle);
         // Add the error to the errors we must show once all scripts for
         // the position generation are built.
         return PositionGenerationError(title, message);
       } on TypeError {
-        final message = localizations.scriptParser_typeError;
-        final title = localizations
-            .scriptParser_parseErrorDialogTitle(scriptSectionTitle);
+        final message = translations.typeError;
+        final title = translations.parseErrorDialogTitle(scriptSectionTitle);
         // Add the error to the errors we must show once all scripts for
         // the position generation are built.
         return PositionGenerationError(title, message);
