@@ -8,6 +8,7 @@ import 'package:basicchessendgamestrainer/data/asset_games.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:basicchessendgamestrainer/pages/game_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -79,7 +80,9 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   void dispose() {
-    _positionGenerationIsolate?.kill();
+    _positionGenerationIsolate?.kill(
+      priority: Isolate.immediate,
+    );
     super.dispose();
   }
 
@@ -144,7 +147,9 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     receivePort.listen((message) async {
       receivePort.close();
-      _positionGenerationIsolate?.kill();
+      _positionGenerationIsolate?.kill(
+        priority: Isolate.immediate,
+      );
 
       final (newPosition, errors) =
           message as (String?, List<PositionGenerationError>);
