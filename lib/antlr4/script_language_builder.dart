@@ -77,7 +77,7 @@ class ScriptLanguageBuilder
     Map<String, bool> sampleBooleanValues,
   ) {
     final resultExpression = _buildExpressionObjectFromScript(scriptString);
-    _testCanEvaluateExpressionWithDefaultVariablesSetAndShowEventualError(
+    _testCanEvaluateExpressionWithDefaultVariablesSetAndThrowEventualError(
       resultExpression,
       sampleIntValues,
       sampleBooleanValues,
@@ -97,7 +97,7 @@ class ScriptLanguageBuilder
     return visit(tree)! as ScriptLanguageBooleanExpr;
   }
 
-  _testCanEvaluateExpressionWithDefaultVariablesSetAndShowEventualError(
+  _testCanEvaluateExpressionWithDefaultVariablesSetAndThrowEventualError(
     ScriptLanguageBooleanExpr expr,
     Map<String, int> sampleIntValues,
     Map<String, bool> sampleBooleanValues,

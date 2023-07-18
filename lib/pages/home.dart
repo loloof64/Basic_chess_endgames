@@ -124,6 +124,18 @@ class _HomePageState extends ConsumerState<HomePage> {
               localizations.scriptParser_parseErrorDialogTitle,
           noViableAltException: localizations.scriptParser_noViableAltException,
           inputMismatch: localizations.scriptParser_inputMismatch,
+          playerKingConstraint: localizations.scriptType_playerKingConstraint,
+          computerKingConstraint:
+              localizations.scriptType_computerKingConstraint,
+          kingsMutualConstraint: localizations.scriptType_kingsMutualConstraint,
+          otherPiecesCountConstraint:
+              localizations.scriptType_pieceKindCountConstraint,
+          otherPiecesGlobalConstraint:
+              localizations.scriptType_otherPiecesGlobalConstraint,
+          otherPiecesIndexedConstraint:
+              localizations.scriptType_otherPiecesIndexedConstraint,
+          otherPiecesMutualConstraint:
+              localizations.scriptType_otherPiecesMutualConstraint,
         ),
         sendPort: receivePort.sendPort,
       ),

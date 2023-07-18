@@ -155,6 +155,34 @@
     "@scriptParser_miscErrorDialogTitle": {
         "description": "Title of dialog for global position generation error (not related to a particular script section)."
     },
+    "scriptType_playerKingConstraint": "Player king constraint",
+    "@scriptType_playerKingConstraint": {
+        "description": "Player king constraint"
+    },
+    "scriptType_computerKingConstraint": "Computer king constraint",
+    "@scriptType_computerKingConstraint": {
+        "description": "Computer king constraint"
+    },
+    "scriptType_kingsMutualConstraint": "Kings mutual constraint",
+    "@scriptType_kingsMutualConstraint": {
+        "description": "Kings mutual constraint"
+    },
+    "scriptType_otherPiecesGlobalConstraint": "Other pieces global constraint",
+    "@scriptType_otherPiecesGlobalConstraint": {
+        "description": "Other pieces global constraint"
+    },
+    "scriptType_otherPiecesIndexedConstraint": "Other pieces indexed constraint",
+    "@scriptType_otherPiecesIndexedConstraint": {
+        "description": "Other pieces indexed constraint"
+    },
+    "scriptType_otherPiecesMutualConstraint": "Other pieces mutual constraint",
+    "@scriptType_otherPiecesMutualConstraint": {
+        "description": "Other pieces mutual constraint"
+    },
+    "scriptType_pieceKindCountConstraint": "Piece kinds counts constraint",
+    "@scriptType_pieceKindCountConstraint": {
+        "description": "Piece kinds counts constraint"
+    },
     "sampleScript_kqK": "King + Queen Vs King",
     "@sampleScript_kqK": {
         "description": "Label for the sample script kq_k"

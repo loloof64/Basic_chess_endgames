@@ -30,6 +30,13 @@ class TranslationsWrapper {
   final String noAntlr4Token;
   final String eof;
   final String failedGeneratingPosition;
+  final String playerKingConstraint;
+  final String computerKingConstraint;
+  final String kingsMutualConstraint;
+  final String otherPiecesGlobalConstraint;
+  final String otherPiecesIndexedConstraint;
+  final String otherPiecesMutualConstraint;
+  final String otherPiecesCountConstraint;
   final String Function(String offendingToken) unrecognizedSymbol;
   final String Function(String name) variableNotAffected;
   final String Function(String name) overridingPredefinedVariable;
@@ -52,12 +59,32 @@ class TranslationsWrapper {
     required this.noAntlr4Token,
     required this.eof,
     required this.failedGeneratingPosition,
+    required this.playerKingConstraint,
+    required this.computerKingConstraint,
+    required this.kingsMutualConstraint,
+    required this.otherPiecesGlobalConstraint,
+    required this.otherPiecesIndexedConstraint,
+    required this.otherPiecesMutualConstraint,
+    required this.otherPiecesCountConstraint,
     required this.variableNotAffected,
     required this.overridingPredefinedVariable,
     required this.parseErrorDialogTitle,
     required this.noViableAltException,
     required this.inputMismatch,
   });
+
+  String fromScriptType(ScriptType scriptType) {
+    return switch (scriptType) {
+      ScriptType.playerKingConstraint => playerKingConstraint,
+      ScriptType.computerKingConstraint => computerKingConstraint,
+      ScriptType.mutualKingConstraint => kingsMutualConstraint,
+      ScriptType.otherPiecesGlobalConstraint => otherPiecesGlobalConstraint,
+      ScriptType.otherPiecesIndexedConstraint => otherPiecesIndexedConstraint,
+      ScriptType.otherPiecesMutualConstraint => otherPiecesMutualConstraint,
+      ScriptType.otherPiecesCount => otherPiecesCountConstraint,
+      ScriptType.goal => "", // should not be met
+    };
+  }
 }
 
 bool overallScriptGoalIsToWin(String overallScriptContent) {
@@ -127,15 +154,15 @@ class ScriptTextTransformer {
     final errors = <PositionGenerationError>[];
     final scripts = allConstraintsScriptText.split(scriptsSeparator);
     for (final singleScript in scripts) {
-      final currentError = _transformScriptIntoConstraint(singleScript);
-      if (currentError != null) {
-        errors.add(currentError);
+      final currentErrors = _transformScriptIntoConstraint(singleScript);
+      if (currentErrors.isNotEmpty) {
+        errors.addAll(currentErrors);
       }
     }
     return (constraints, errors);
   }
 
-  PositionGenerationError? _transformScriptIntoConstraint(String script) {
+  List<PositionGenerationError> _transformScriptIntoConstraint(String script) {
     try {
       final lines = script.split(RegExp(r'\r?\n')).where(
             (line) => line.trim().isNotEmpty,
@@ -149,83 +176,163 @@ class ScriptTextTransformer {
 
       switch (scriptType) {
         case ScriptType.playerKingConstraint:
-          constraints.playerKingConstraint =
-              _parseBooleanExprScript(scriptContent);
-          break;
+          final (constraint, error) =
+              _parseBooleanExprScript(scriptContent, scriptType);
+          if (error != null) {
+            return <PositionGenerationError>[error];
+          } else {
+            constraints.playerKingConstraint = constraint;
+            return <PositionGenerationError>[];
+          }
         case ScriptType.computerKingConstraint:
-          constraints.computerKingConstraint =
-              _parseBooleanExprScript(scriptContent);
-          break;
+          final (constraint, error) =
+              _parseBooleanExprScript(scriptContent, scriptType);
+          if (error != null) {
+            return <PositionGenerationError>[error];
+          } else {
+            constraints.computerKingConstraint = constraint;
+            return <PositionGenerationError>[];
+          }
         case ScriptType.mutualKingConstraint:
-          constraints.kingsMutualConstraint =
-              _parseBooleanExprScript(scriptContent);
-          break;
+          final (constraint, error) =
+              _parseBooleanExprScript(scriptContent, scriptType);
+          if (error != null) {
+            return <PositionGenerationError>[error];
+          } else {
+            constraints.kingsMutualConstraint = constraint;
+            return <PositionGenerationError>[];
+          }
         case ScriptType.otherPiecesCount:
-          constraints.otherPiecesCountConstraint =
-              _parsePieceKindCountList(scriptContent);
-          break;
+          final (constraint, error) = _parsePieceKindCountList(scriptContent);
+          if (error != null) {
+            return <PositionGenerationError>[error];
+          } else {
+            constraints.otherPiecesCountConstraint = constraint;
+            return <PositionGenerationError>[];
+          }
         case ScriptType.otherPiecesGlobalConstraint:
-          constraints.otherPiecesGlobalConstraints =
-              _parseMapOfBooleanExprScript(scriptContent);
-          break;
+          final (constraint, errors) = _parseMapOfBooleanExprScript(
+            scriptContent,
+            scriptType,
+          );
+          if (errors.isNotEmpty) {
+            return errors;
+          } else {
+            constraints.otherPiecesGlobalConstraints = constraint;
+            return <PositionGenerationError>[];
+          }
+
         case ScriptType.otherPiecesIndexedConstraint:
-          constraints.otherPiecesIndexedConstraints =
-              _parseMapOfBooleanExprScript(scriptContent);
-          break;
+          final (constraint, errors) = _parseMapOfBooleanExprScript(
+            scriptContent,
+            scriptType,
+          );
+          if (errors.isNotEmpty) {
+            return errors;
+          } else {
+            constraints.otherPiecesIndexedConstraints = constraint;
+            return <PositionGenerationError>[];
+          }
         case ScriptType.otherPiecesMutualConstraint:
-          constraints.otherPiecesMutualConstraints =
-              _parseMapOfBooleanExprScript(scriptContent);
-          break;
+          final (constraint, errors) = _parseMapOfBooleanExprScript(
+            scriptContent,
+            scriptType,
+          );
+          if (errors.isNotEmpty) {
+            return errors;
+          } else {
+            constraints.otherPiecesMutualConstraints = constraint;
+            return <PositionGenerationError>[];
+          }
         case ScriptType.goal:
           constraints.mustWin = _parseGoalScript(scriptContent);
           break;
       }
-      return null;
+      return <PositionGenerationError>[];
     } on MissingScriptTypeException {
       final title = translations.miscErrorDialogTitle;
       final message = translations.missingScriptType;
-      return PositionGenerationError(title, message);
+      return <PositionGenerationError>[PositionGenerationError(title, message)];
     } on UnRecognizedScriptTypeException {
       final title = translations.miscErrorDialogTitle;
       final message = translations.missingScriptType;
-      return PositionGenerationError(title, message);
+      return <PositionGenerationError>[PositionGenerationError(title, message)];
     }
   }
 
-  ScriptLanguageBooleanExpr? _parseBooleanExprScript(String scriptContent) {
-    final inputStream = InputStream.fromString(scriptContent);
-    final lexer = BailScriptLanguageLexer(
-      translations: translations,
-      input: inputStream,
-    );
-    final tokens = CommonTokenStream(lexer);
-    final parser = ScriptLanguageParser(tokens);
-    parser.errorHandler = PositionConstraintBailErrorStrategy(translations);
-    final tree = parser.scriptLanguage();
-    final scriptBuilder = ScriptLanguageBuilder(translations: translations);
-    return scriptBuilder.visit(tree) as ScriptLanguageBooleanExpr?;
+  (ScriptLanguageBooleanExpr?, PositionGenerationError?)
+      _parseBooleanExprScript(
+    String scriptContent,
+    ScriptType scriptType,
+  ) {
+    try {
+      final inputStream = InputStream.fromString(scriptContent);
+      final lexer = BailScriptLanguageLexer(
+        translations: translations,
+        input: inputStream,
+      );
+      final tokens = CommonTokenStream(lexer);
+      final parser = ScriptLanguageParser(tokens);
+      parser.errorHandler = PositionConstraintBailErrorStrategy(translations);
+      final tree = parser.scriptLanguage();
+      final scriptBuilder = ScriptLanguageBuilder(translations: translations);
+      return (scriptBuilder.visit(tree) as ScriptLanguageBooleanExpr?, null);
+    } on VariableIsNotAffectedException catch (ex) {
+      final scriptTypeLabel = translations.fromScriptType(scriptType);
+      final title = translations.parseErrorDialogTitle(scriptTypeLabel);
+      final message = translations.variableNotAffected(ex.varName);
+      // Add the error to the errors we must show once all scripts for
+      // the position generation are built.
+      return (null, PositionGenerationError(title, message));
+    } on ParseCancellationException catch (ex) {
+      final scriptTypeLabel = translations.fromScriptType(scriptType);
+      final title = translations.parseErrorDialogTitle(scriptTypeLabel);
+      final message = ex.message;
+      // Add the error to the errors we must show once all scripts for
+      // the position generation are built.
+      return (null, PositionGenerationError(title, message));
+    } on TypeError {
+      final scriptTypeLabel = translations.fromScriptType(scriptType);
+      final title = translations.parseErrorDialogTitle(scriptTypeLabel);
+      final message = translations.typeError;
+      // Add the error to the errors we must show once all scripts for
+      // the position generation are built.
+      return (null, PositionGenerationError(title, message));
+    }
   }
 
-  List<PieceKindCount> _parsePieceKindCountList(String scriptContent) {
+  (List<PieceKindCount>, PositionGenerationError?) _parsePieceKindCountList(
+      String scriptContent) {
     final result = <PieceKindCount>[];
     final lines = scriptContent.split('\n');
+    PositionGenerationError? error;
     for (String singleLine in lines) {
-      final parts = singleLine.split(':');
-      final kindString = parts[0].trim();
-      final count = int.parse(parts[1].trim());
-      final kind = PieceKind.from(kindString);
+      try {
+        final parts = singleLine.split(':');
+        final kindString = parts[0].trim();
+        final count = int.parse(parts[1].trim());
+        final kind = PieceKind.from(kindString);
 
-      result.add(PieceKindCount(kind, count));
+        result.add(PieceKindCount(kind, count));
+      } on Exception {
+        error = PositionGenerationError(
+          translations.fromScriptType(ScriptType.otherPiecesCount),
+          translations.miscParseError,
+        );
+      }
     }
-    return result;
+    return (result, error);
   }
 
   // can throw exceptions
   // MissingOtherPieceScriptTypeException
-  Map<PieceKind, ScriptLanguageBooleanExpr?> _parseMapOfBooleanExprScript(
-      String scriptContent) {
+  (
+    Map<PieceKind, ScriptLanguageBooleanExpr?>,
+    List<PositionGenerationError>
+  ) _parseMapOfBooleanExprScript(String scriptContent, ScriptType scriptType) {
     final results = <PieceKind, ScriptLanguageBooleanExpr?>{};
     final parts = scriptContent.split(otherPiecesSingleScriptSeparator);
+    final errorsList = <PositionGenerationError>[];
 
     for (var scriptDivision in parts) {
       final divisionParts = scriptDivision.split('\n');
@@ -235,10 +342,16 @@ class ScriptTextTransformer {
       final kind = PieceKind.from(strippedFirstLine);
       final scriptContent = divisionParts.skip(1).join('\n');
 
-      results[kind] = _parseBooleanExprScript(scriptContent);
+      final (constraints, error) =
+          _parseBooleanExprScript(scriptContent, scriptType);
+      if (error != null) {
+        errorsList.add(error);
+      } else {
+        results[kind] = constraints;
+      }
     }
 
-    return results;
+    return (results, errorsList);
   }
 
   bool _parseGoalScript(String scriptContent) {
