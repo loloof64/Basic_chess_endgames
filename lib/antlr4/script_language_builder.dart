@@ -20,7 +20,9 @@ class BailScriptLanguageLexer extends ScriptLanguageLexer {
 
   @override
   void recover(RecognitionException<IntStream> re) {
-    final offendingText = re.ctx!.text;
+    final inputStream = re.inputStream as CharStream;
+    final offendingText = inputStream
+        .getText(Interval.of(tokenStartCharIndex, inputStream.index));
     final message = translations.unrecognizedSymbol(offendingText);
     throw ParseCancellationException(message);
   }
