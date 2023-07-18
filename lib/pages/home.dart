@@ -161,37 +161,40 @@ class _HomePageState extends ConsumerState<HomePage> {
           context: context,
           builder: (ctx2) {
             return Dialog(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(singleError.title),
-                  const SizedBox(
-                    height: positionGenerationErrorDialogSpacer,
-                  ),
-                  Text(singleError.message),
-                  const SizedBox(
-                    height: positionGenerationErrorDialogSpacer,
-                  ),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        Theme.of(
-                          context,
-                        ).colorScheme.primary,
-                      ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(singleError.title),
+                    const SizedBox(
+                      height: positionGenerationErrorDialogSpacer,
                     ),
-                    child: Text(
-                      AppLocalizations.of(context)!.buttonOk,
-                      style: TextStyle(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary,
-                      ),
+                    Text(singleError.message),
+                    const SizedBox(
+                      height: positionGenerationErrorDialogSpacer,
                     ),
-                  )
-                ],
+                    ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary,
+                        ),
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.buttonOk,
+                        style: TextStyle(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onPrimary,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             );
           });

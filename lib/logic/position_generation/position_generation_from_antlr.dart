@@ -32,6 +32,7 @@ class PositionGeneratorConstraintsExpr {
   Map<PieceKind, ScriptLanguageBooleanExpr?> otherPiecesGlobalConstraints;
   Map<PieceKind, ScriptLanguageBooleanExpr?> otherPiecesMutualConstraints;
   Map<PieceKind, ScriptLanguageBooleanExpr?> otherPiecesIndexedConstraints;
+  bool mustWin;
 
   PositionGeneratorConstraintsExpr({
     this.playerKingConstraint,
@@ -44,18 +45,20 @@ class PositionGeneratorConstraintsExpr {
         const <PieceKind, ScriptLanguageBooleanExpr?>{},
     this.otherPiecesIndexedConstraints =
         const <PieceKind, ScriptLanguageBooleanExpr?>{},
+    this.mustWin = true,
   });
 }
 
 class PositionGeneratorConstraintsScripts {
-  final bool resultShouldBeDraw;
-  final String playerKingConstraint;
-  final String computerKingConstraint;
-  final String kingsMutualConstraint;
-  final String otherPiecesCountConstraint;
-  final String otherPiecesGlobalContraints;
-  final String otherPiecesMutualContraints;
-  final String otherPiecesIndexedContraints;
+  bool resultShouldBeDraw;
+  String playerKingConstraint;
+  String computerKingConstraint;
+  String kingsMutualConstraint;
+  String otherPiecesCountConstraint;
+  String otherPiecesGlobalContraints;
+  String otherPiecesMutualContraints;
+  String otherPiecesIndexedContraints;
+  String goal;
 
   PositionGeneratorConstraintsScripts({
     required this.resultShouldBeDraw,
@@ -66,6 +69,7 @@ class PositionGeneratorConstraintsScripts {
     required this.otherPiecesGlobalContraints,
     required this.otherPiecesMutualContraints,
     required this.otherPiecesIndexedContraints,
+    required this.goal,
   });
 }
 
@@ -79,6 +83,7 @@ final noConstraint = PositionGeneratorConstraintsExpr(
   otherPiecesGlobalConstraints: <PieceKind, ScriptLanguageBooleanExpr?>{},
   otherPiecesMutualConstraints: <PieceKind, ScriptLanguageBooleanExpr?>{},
   otherPiecesIndexedConstraints: <PieceKind, ScriptLanguageBooleanExpr?>{},
+  mustWin: true,
 );
 
 final defaultBoardCoordinate = _BoardCoordinate(0, 0);

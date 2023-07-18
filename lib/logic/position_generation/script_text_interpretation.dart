@@ -84,7 +84,8 @@ enum ScriptType {
   otherPiecesCount,
   otherPiecesGlobalConstraint,
   otherPiecesIndexedConstraint,
-  otherPiecesMutualConstraint;
+  otherPiecesMutualConstraint,
+  goal;
 
   // can throw UnRecognizedScriptTypeException
   static ScriptType from(String line) {
@@ -99,6 +100,7 @@ enum ScriptType {
         ScriptType.otherPiecesIndexedConstraint,
       'other pieces mutual constraint' =>
         ScriptType.otherPiecesMutualConstraint,
+      'goal' => ScriptType.goal,
       _ => throw UnRecognizedScriptTypeException()
     };
   }
@@ -123,7 +125,6 @@ class ScriptTextTransformer {
   (PositionGeneratorConstraintsExpr, List<PositionGenerationError>)
       transformTextIntoConstraints() {
     final errors = <PositionGenerationError>[];
-    constraints = PositionGeneratorConstraintsExpr();
     final scripts = allConstraintsScriptText.split(scriptsSeparator);
     for (final singleScript in scripts) {
       final currentError = _transformScriptIntoConstraint(singleScript);
@@ -174,6 +175,9 @@ class ScriptTextTransformer {
         case ScriptType.otherPiecesMutualConstraint:
           constraints.otherPiecesMutualConstraints =
               _parseMapOfBooleanExprScript(scriptContent);
+          break;
+        case ScriptType.goal:
+          constraints.mustWin = _parseGoalScript(scriptContent);
           break;
       }
       return null;
@@ -235,5 +239,9 @@ class ScriptTextTransformer {
     }
 
     return results;
+  }
+
+  bool _parseGoalScript(String scriptContent) {
+    return scriptContent.split('\n').first.trim() == 'win';
   }
 }
