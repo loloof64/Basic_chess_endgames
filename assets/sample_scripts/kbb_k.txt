@@ -17,9 +17,9 @@ player bishop : 2
 
 [player bishop]
 
-firstSquareIsBlack := (firstPieceFile + firstPieceRank) % 2 > 0;
-secondSquareIsBlack := (secondPieceFile + secondPieceRank) % 2 > 0;
-return firstSquareIsBlack != secondSquareIsBlack;
+firstSquareIsBlack := ((firstPieceFile + firstPieceRank) % 2) <> 0;
+secondSquareIsBlack := ((secondPieceFile + secondPieceRank) % 2) <> 0;
+return firstSquareIsBlack <> secondSquareIsBlack;
 
 @@@@@@
 
