@@ -111,15 +111,15 @@
     "@scriptParser_variableNotAffected": {
         "description": "Script parsing error message for when a variable has not been set before its use."
     },
-    "scriptParser_unrecognizedSymbol": "Unrecognized symbol '{symbol}'.",
+    "scriptParser_unrecognizedSymbol": "Unrecognized symbol {symbol}.",
     "@scriptParser_unrecognizedSymbol": {
         "description": "Script parsing error message for when a symbol is not recognized."
     },
-    "scriptParser_inputMismatch": "Bad input at line '{line}': character number {index}. You should have set '{expected}' but I got '{received}'.",
+    "scriptParser_inputMismatch": "Bad input at line {line}: character number {index}. You should have set {expected} but I got {received}.",
     "@scriptParser_inputMismatch": {
         "description": "Script parsing error message for when a bad input is received."
     },
-    "scriptParser_noViableAltException": "The input '{input}' does not match any rule. (Line '{line}', character number {index})",
+    "scriptParser_noViableAltException": "The input {input} does not match any rule. (Line {line}, character number {index})",
     "@scriptParser_noViableAltException": {
         "description": "Script parsing error message for when an input does not match any rule."
     },
@@ -139,7 +139,7 @@
     "@scriptParser_overridingPredefinedVariable": {
         "description": "Script parsing error message for when user tries to change value of a predefined variable."
     },
-    "scriptParser_parseErrorDialogTitle": "Script error for '{name}'",
+    "scriptParser_parseErrorDialogTitle": "Script error for {name}",
     "@scriptParser_parseErrorDialogTitle": {
         "description": "Title for misc. script parsing error dialog."
     },

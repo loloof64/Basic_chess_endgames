@@ -34,12 +34,12 @@ class TranslationsWrapper {
   final String Function(String name) variableNotAffected;
   final String Function(String name) overridingPredefinedVariable;
   final String Function(String title) parseErrorDialogTitle;
-  final String Function(String token, int lineNumber, int positionInLine)
+  final String Function(int positionInLine, String token, int lineNumber)
       noViableAltException;
   final String Function(
-    int line,
-    int positionInLine,
     String expectedToken,
+    int positionInLine,
+    int line,
     String tokenErrorDisplay,
   ) inputMismatch;
 
