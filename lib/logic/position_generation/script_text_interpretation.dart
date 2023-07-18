@@ -29,6 +29,7 @@ class TranslationsWrapper {
   final String typeError;
   final String noAntlr4Token;
   final String eof;
+  final String failedGeneratingPosition;
   final String Function(String offendingToken) unrecognizedSymbol;
   final String Function(String name) variableNotAffected;
   final String Function(String name) overridingPredefinedVariable;
@@ -50,6 +51,7 @@ class TranslationsWrapper {
     required this.typeError,
     required this.noAntlr4Token,
     required this.eof,
+    required this.failedGeneratingPosition,
     required this.variableNotAffected,
     required this.overridingPredefinedVariable,
     required this.parseErrorDialogTitle,
@@ -186,7 +188,7 @@ class ScriptTextTransformer {
     }
   }
 
-  ScriptLanguageBooleanExpr _parseBooleanExprScript(String scriptContent) {
+  ScriptLanguageBooleanExpr? _parseBooleanExprScript(String scriptContent) {
     final inputStream = InputStream.fromString(scriptContent);
     final lexer = BailScriptLanguageLexer(
       translations: translations,
@@ -197,7 +199,7 @@ class ScriptTextTransformer {
     parser.errorHandler = PositionConstraintBailErrorStrategy(translations);
     final tree = parser.scriptLanguage();
     final scriptBuilder = ScriptLanguageBuilder(translations: translations);
-    return scriptBuilder.visit(tree) as ScriptLanguageBooleanExpr;
+    return scriptBuilder.visit(tree) as ScriptLanguageBooleanExpr?;
   }
 
   List<PieceKindCount> _parsePieceKindCountList(String scriptContent) {
@@ -216,9 +218,9 @@ class ScriptTextTransformer {
 
   // can throw exceptions
   // MissingOtherPieceScriptTypeException
-  Map<PieceKind, ScriptLanguageBooleanExpr> _parseMapOfBooleanExprScript(
+  Map<PieceKind, ScriptLanguageBooleanExpr?> _parseMapOfBooleanExprScript(
       String scriptContent) {
-    final results = <PieceKind, ScriptLanguageBooleanExpr>{};
+    final results = <PieceKind, ScriptLanguageBooleanExpr?>{};
     final parts = scriptContent.split(otherPiecesSingleScriptSeparator);
 
     for (var scriptDivision in parts) {

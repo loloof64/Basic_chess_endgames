@@ -20,16 +20,44 @@ const titlesFontSize = 26.0;
 const rgpdWarningHeight = 200.0;
 const positionGenerationErrorDialogSpacer = 20.0;
 
-class _SampleScriptGenerationParameters {
+class SampleScriptGenerationParameters {
   final SendPort sendPort;
   final String gameScript;
   final TranslationsWrapper translations;
 
-  _SampleScriptGenerationParameters({
+  SampleScriptGenerationParameters({
     required this.gameScript,
     required this.sendPort,
     required this.translations,
   });
+}
+
+void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
+  final (constraintsExpr, generationErrors) = ScriptTextTransformer(
+    allConstraintsScriptText: parameters.gameScript,
+    translations: parameters.translations,
+  ).transformTextIntoConstraints();
+  if (generationErrors.isNotEmpty) {
+    parameters.sendPort.send((null, generationErrors));
+  } else {
+    final positionGenerator = PositionGeneratorFromAntlr();
+    positionGenerator.setConstraints(constraintsExpr);
+    try {
+      final generatedPosition = positionGenerator.generatePosition();
+      parameters.sendPort
+          .send((generatedPosition, <PositionGenerationError>[]));
+    } on PositionGenerationLoopException {
+      parameters.sendPort.send(
+        (
+          null,
+          PositionGenerationError(
+            parameters.translations.miscErrorDialogTitle,
+            parameters.translations.failedGeneratingPosition,
+          ),
+        ),
+      );
+    }
+  }
 }
 
 class HomePage extends ConsumerStatefulWidget {
@@ -77,13 +105,14 @@ class _HomePageState extends ConsumerState<HomePage> {
     final localizations = AppLocalizations.of(context)!;
 
     _positionGenerationIsolate = await Isolate.spawn(
-      _generatePositionFromScript,
-      _SampleScriptGenerationParameters(
+      generatePositionFromScript,
+      SampleScriptGenerationParameters(
         gameScript: gameScript,
         translations: TranslationsWrapper(
           miscErrorDialogTitle: localizations.scriptParser_miscErrorDialogTitle,
           missingScriptType: localizations.scriptParser_missingScriptType,
           miscParseError: localizations.scriptParser_miscParseError,
+          failedGeneratingPosition: localizations.home_failedGeneratingPosition,
           unrecognizedSymbol: localizations.scriptParser_unrecognizedSymbol,
           typeError: localizations.scriptParser_typeError,
           noAntlr4Token: localizations.scriptParser_noAntlr4Token,
@@ -123,35 +152,6 @@ class _HomePageState extends ConsumerState<HomePage> {
         _tryPlayingGeneratedPosition(newPosition, game.goal);
       }
     });
-  }
-
-  void _generatePositionFromScript(
-      _SampleScriptGenerationParameters parameters) {
-    final (constraintsExpr, generationErrors) = ScriptTextTransformer(
-      allConstraintsScriptText: parameters.gameScript,
-      translations: parameters.translations,
-    ).transformTextIntoConstraints();
-    if (generationErrors.isNotEmpty) {
-      parameters.sendPort.send((null, generationErrors));
-    } else {
-      final positionGenerator = PositionGeneratorFromAntlr();
-      positionGenerator.setConstraints(constraintsExpr);
-      try {
-        final generatedPosition = positionGenerator.generatePosition();
-        parameters.sendPort
-            .send((generatedPosition, <PositionGenerationError>[]));
-      } on PositionGenerationLoopException {
-        parameters.sendPort.send(
-          (
-            null,
-            PositionGenerationError(
-              AppLocalizations.of(context)!.scriptParser_miscErrorDialogTitle,
-              AppLocalizations.of(context)!.home_failedGeneratingPosition,
-            ),
-          ),
-        );
-      }
-    }
   }
 
   Future<void> _showGenerationErrorsPopups(
