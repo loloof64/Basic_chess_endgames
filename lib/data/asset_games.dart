@@ -44,7 +44,7 @@ List<AssetGame> getAssetGames(BuildContext context) {
     AssetGame(
       assetPath: 'assets/sample_scripts/kp_k_2.txt',
       label: AppLocalizations.of(context)!.sampleScript_kpK2,
-      goal: Goal.win,
+      goal: Goal.draw,
     ),
     AssetGame(
       assetPath: 'assets/sample_scripts/kppp_k.txt',

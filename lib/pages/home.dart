@@ -8,7 +8,6 @@ import 'package:basicchessendgamestrainer/data/asset_games.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:basicchessendgamestrainer/pages/game_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

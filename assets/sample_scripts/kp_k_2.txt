@@ -37,6 +37,8 @@ isRightFile := file = playerKingFile;
 
 return isRightFile and isRightRank;
 
+@@@@@@
+
 # goal
 
 draw
