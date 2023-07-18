@@ -6,6 +6,7 @@ import 'package:basicchessendgamestrainer/antlr4/script_language_builder.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 const scriptsSeparator = '@@@@@@';
 const otherPiecesSingleScriptSeparator = '---';
@@ -298,6 +299,14 @@ class ScriptTextTransformer {
       // Add the error to the errors we must show once all scripts for
       // the position generation are built.
       return (null, PositionGenerationError(title, message));
+    } on Exception catch (ex) {
+      final scriptTypeLabel = translations.fromScriptType(scriptType);
+      final title = translations.parseErrorDialogTitle(scriptTypeLabel);
+      final message = translations.miscParseError;
+      Logger().e(ex);
+      // Add the error to the errors we must show once all scripts for
+      // the position generation are built.
+      return (null, PositionGenerationError(title, message));
     }
   }
 
@@ -335,7 +344,8 @@ class ScriptTextTransformer {
     final errorsList = <PositionGenerationError>[];
 
     for (var scriptDivision in parts) {
-      final divisionParts = scriptDivision.split('\n');
+      final divisionParts =
+          scriptDivision.split('\n').where((line) => line.trim().isNotEmpty);
       final firstLine = divisionParts.firstOrNull?.trim();
       if (firstLine == null) throw MissingOtherPieceScriptTypeException();
       final strippedFirstLine = firstLine.substring(1, firstLine.length - 1);
