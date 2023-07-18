@@ -31,11 +31,6 @@ class ScriptLanguageBaseVisitor<T> extends ParseTreeVisitor<T>
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitComment(CommentContext ctx) => visitChildren(ctx);
-
-  /// The default implementation returns the result of calling
-  /// [visitChildren] on [ctx].
-  @override
   T? visitTerminalExpr(TerminalExprContext ctx) => visitChildren(ctx);
 
   /// The default implementation returns the result of calling
