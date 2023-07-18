@@ -55,11 +55,11 @@
     "@gamePage_goalDraw": {
         "description": "The goal of the game is to make a draw."
     },
-    "gamePage_newGame_title": "Start a new game ?",
+    "gamePage_newGame_title": "Restart game ?",
     "@gamePage_newGame_title": {
         "description": "Title of start new game dialog."
     },
-    "gamePage_newGame_message": "Do you want to leave current game and start a new one ?",
+    "gamePage_newGame_message": "Do you want to restart game ?",
     "@gamePage_newGame_message": {
         "description": "Message of start new game dialog."
     },
