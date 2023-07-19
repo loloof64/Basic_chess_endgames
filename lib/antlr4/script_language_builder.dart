@@ -64,8 +64,7 @@ class BuiltVariablesHolder {
   List<GenericExpressionVariable> getVariables() => _builtVariables.toList();
 }
 
-class ScriptLanguageBuilder
-    extends ScriptLanguageBaseVisitor<ScriptLanguageGenericExpr> {
+class ScriptLanguageBuilder extends ScriptLanguageBaseVisitor {
   final TranslationsWrapper translations;
   final BuiltVariablesHolder _builtVariables;
 
@@ -96,7 +95,8 @@ class ScriptLanguageBuilder
     parser.errorHandler = PositionConstraintBailErrorStrategy(translations);
     final tree = parser.scriptLanguage();
     _builtVariables.clearVariables();
-    return visit(tree)! as ScriptLanguageBooleanExpr;
+    final result = visit(tree)! as ScriptLanguageBooleanExpr;
+    return result;
   }
 
   _testCanEvaluateExpressionWithDefaultVariablesSetAndThrowEventualError(
@@ -147,8 +147,15 @@ class ScriptLanguageBuilder
     );
 
     @override
+    ScriptLanguageGenericExpr visitScriptLanguage(ScriptLanguageContext? ctx) {
+      final result = visit(ctx!.terminalExpr()!)!;
+      return result;
+    }
+
+    @override
     ScriptLanguageGenericExpr visitTerminalExpr(TerminalExprContext? ctx) {
-      return visit(ctx!.booleanExpr()!)!;
+      final result = visit(ctx!.booleanExpr()!)!;
+      return result;
     }
 
     @override

@@ -47,8 +47,8 @@ List<AssetGame> getAssetGames(BuildContext context) {
       goal: Goal.draw,
     ),
     AssetGame(
-      assetPath: 'assets/sample_scripts/kppp_k.txt',
-      label: AppLocalizations.of(context)!.sampleScript_kpppK,
+      assetPath: 'assets/sample_scripts/kppp_kppp.txt',
+      label: AppLocalizations.of(context)!.sampleScript_kpppKppp,
       goal: Goal.win,
     ),
   ];

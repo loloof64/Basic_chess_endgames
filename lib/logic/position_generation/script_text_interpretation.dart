@@ -277,7 +277,9 @@ class ScriptTextTransformer {
       parser.errorHandler = PositionConstraintBailErrorStrategy(translations);
       final tree = parser.scriptLanguage();
       final scriptBuilder = ScriptLanguageBuilder(translations: translations);
-      return (scriptBuilder.visit(tree) as ScriptLanguageBooleanExpr?, null);
+      final constraint =
+          scriptBuilder.visit(tree) as ScriptLanguageBooleanExpr?;
+      return (constraint, null);
     } on VariableIsNotAffectedException catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
       final title = translations.parseErrorDialogTitle(scriptTypeLabel);
