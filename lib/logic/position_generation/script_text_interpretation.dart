@@ -1,6 +1,4 @@
 import 'package:antlr4/antlr4.dart';
-import 'package:basicchessendgamestrainer/antlr4/generated/ScriptLanguageParser.dart';
-import 'package:basicchessendgamestrainer/antlr4/position_constraint_bail_error_strategy.dart';
 import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.dart';
 import 'package:basicchessendgamestrainer/antlr4/script_language_builder.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
@@ -267,23 +265,14 @@ class ScriptTextTransformer {
     ScriptType scriptType,
   ) {
     try {
-      final inputStream = InputStream.fromString(scriptContent);
-      final lexer = BailScriptLanguageLexer(
-        translations: translations,
-        input: inputStream,
-      );
-      final tokens = CommonTokenStream(lexer);
-      final parser = ScriptLanguageParser(tokens);
-      parser.errorHandler = PositionConstraintBailErrorStrategy(translations);
-      final tree = parser.scriptLanguage();
-      final scriptBuilder = ScriptLanguageBuilder(translations: translations);
-      final constraint =
-          scriptBuilder.visit(tree) as ScriptLanguageBooleanExpr?;
+      final builder = ScriptLanguageBuilder(translations: translations);
+      final constraint = builder.buildExpressionObjectFromScript(scriptContent);
       return (constraint, null);
     } on VariableIsNotAffectedException catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
       final title = translations.parseErrorDialogTitle(scriptTypeLabel);
       final message = translations.variableNotAffected(ex.varName);
+      Logger().e(ex);
       // Add the error to the errors we must show once all scripts for
       // the position generation are built.
       return (null, PositionGenerationError(title, message));
@@ -291,13 +280,15 @@ class ScriptTextTransformer {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
       final title = translations.parseErrorDialogTitle(scriptTypeLabel);
       final message = ex.message;
+      Logger().e(ex);
       // Add the error to the errors we must show once all scripts for
       // the position generation are built.
       return (null, PositionGenerationError(title, message));
-    } on TypeError {
+    } on TypeError catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
       final title = translations.parseErrorDialogTitle(scriptTypeLabel);
       final message = translations.typeError;
+      Logger().e(ex);
       // Add the error to the errors we must show once all scripts for
       // the position generation are built.
       return (null, PositionGenerationError(title, message));
