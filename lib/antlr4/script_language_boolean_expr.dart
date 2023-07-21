@@ -1,3 +1,5 @@
+import 'package:basicchessendgamestrainer/antlr4/script_language_builder.dart';
+
 class VariableIsNotAffectedException implements Exception {
   String varName;
 
@@ -169,61 +171,63 @@ class MinusOperatorScriptLanguageNumericExpr extends ScriptLanguageNumericExpr {
       this.expressionLeft, this.expressionRight);
 }
 
-/*ScriptLanguageGenericExpr transformIntExpression(
+/*
+ScriptLanguageGenericExpr transformIntExpression(
   ScriptLanguageNumericExpr expression,
-) {}*/
+  BuiltVariablesHolder builtVariables,
+) {}
+
+ScriptLanguageGenericExpr transformBooleanExpression(
+  ScriptLanguageBooleanExpr expression,
+  BuiltVariablesHolder builtVariables,
+) {}
+*/
 
 int evaluateIntExpression(
   ScriptLanguageNumericExpr expression,
   Map<String, int> intVariablesValues,
   Map<String, bool> boolVariablesValues,
 ) {
-  switch (expression) {
-    case ParenthesisScriptLanguageNumericExpr(expression: var expression):
-      return evaluateIntExpression(
-          expression, intVariablesValues, boolVariablesValues);
-    case ConditionalScriptLanguageNumericExpr(
-        condition: var condition,
-        successExpression: var successExpression,
-        failureExpression: var failureExpression,
-      ):
-      {
-        final conditionEvaluated = evaluateBoolExpression(
-          condition,
-          intVariablesValues,
-          boolVariablesValues,
-        );
-        return conditionEvaluated
-            ? evaluateIntExpression(
-                successExpression,
-                intVariablesValues,
-                boolVariablesValues,
-              )
-            : evaluateIntExpression(
-                failureExpression,
-                intVariablesValues,
-                boolVariablesValues,
-              );
-      }
-    case AbsoluteScriptLanguageNumericExpr(expression: var expression):
-      return evaluateIntExpression(
+  return switch (expression) {
+    ParenthesisScriptLanguageNumericExpr(expression: var expression) =>
+      evaluateIntExpression(
+          expression, intVariablesValues, boolVariablesValues),
+    ConditionalScriptLanguageNumericExpr(
+      condition: var condition,
+      successExpression: var successExpression,
+      failureExpression: var failureExpression,
+    ) =>
+      evaluateBoolExpression(
+        condition,
+        intVariablesValues,
+        boolVariablesValues,
+      )
+          ? evaluateIntExpression(
+              successExpression,
+              intVariablesValues,
+              boolVariablesValues,
+            )
+          : evaluateIntExpression(
+              failureExpression,
+              intVariablesValues,
+              boolVariablesValues,
+            ),
+    AbsoluteScriptLanguageNumericExpr(expression: var expression) =>
+      evaluateIntExpression(
         expression,
         intVariablesValues,
         boolVariablesValues,
-      );
-    case LiteralScriptLanguageNumericExpr(value: var value):
-      return value;
-    case VariableScriptLanguageNumericExpr(name: var name):
-      if (intVariablesValues.containsKey(name)) {
-        return intVariablesValues[name]!;
-      } else {
-        throw VariableIsNotAffectedException(name);
-      }
-    case ModuloScriptLanguageNumericExpr(
-        expressionLeft: var left,
-        expressionRight: var right
-      ):
-      return evaluateIntExpression(
+      ),
+    LiteralScriptLanguageNumericExpr(value: var value) => value,
+    VariableScriptLanguageNumericExpr(name: var name) =>
+      intVariablesValues.containsKey(name)
+          ? intVariablesValues[name]!
+          : throw VariableIsNotAffectedException(name),
+    ModuloScriptLanguageNumericExpr(
+      expressionLeft: var left,
+      expressionRight: var right
+    ) =>
+      evaluateIntExpression(
             left,
             intVariablesValues,
             boolVariablesValues,
@@ -232,12 +236,12 @@ int evaluateIntExpression(
             right,
             intVariablesValues,
             boolVariablesValues,
-          );
-    case PlusOperatorScriptLanguageNumericExpr(
-        expressionLeft: var left,
-        expressionRight: var right
-      ):
-      return evaluateIntExpression(
+          ),
+    PlusOperatorScriptLanguageNumericExpr(
+      expressionLeft: var left,
+      expressionRight: var right
+    ) =>
+      evaluateIntExpression(
             left,
             intVariablesValues,
             boolVariablesValues,
@@ -246,12 +250,12 @@ int evaluateIntExpression(
             right,
             intVariablesValues,
             boolVariablesValues,
-          );
-    case MinusOperatorScriptLanguageNumericExpr(
-        expressionLeft: var left,
-        expressionRight: var right
-      ):
-      return evaluateIntExpression(
+          ),
+    MinusOperatorScriptLanguageNumericExpr(
+      expressionLeft: var left,
+      expressionRight: var right
+    ) =>
+      evaluateIntExpression(
             left,
             intVariablesValues,
             boolVariablesValues,
@@ -260,10 +264,9 @@ int evaluateIntExpression(
             right,
             intVariablesValues,
             boolVariablesValues,
-          );
-    default:
-      throw Exception("Int operation not recognized: $expression");
-  }
+          ),
+    _ => throw Exception("Int operation not recognized: $expression"),
+  };
 }
 
 bool evaluateBoolExpression(
@@ -271,19 +274,19 @@ bool evaluateBoolExpression(
   Map<String, int> intVariablesValues,
   Map<String, bool> boolVariablesValues,
 ) {
-  switch (expression) {
-    case ParenthesisScriptLanguageBooleanExpr(expression: var expression):
-      return evaluateBoolExpression(
+  return switch (expression) {
+    ParenthesisScriptLanguageBooleanExpr(expression: var expression) =>
+      evaluateBoolExpression(
         expression,
         intVariablesValues,
         boolVariablesValues,
-      );
-    case ConditionalScriptLanguageBooleanExpr(
+      ),
+    ConditionalScriptLanguageBooleanExpr(
         condition: var condition,
         successExpression: var successExpression,
         failureExpression: var failureExpression,
-      ):
-      return evaluateBoolExpression(
+      ) =>
+      evaluateBoolExpression(
         condition,
         intVariablesValues,
         boolVariablesValues,
@@ -297,18 +300,18 @@ bool evaluateBoolExpression(
               failureExpression,
               intVariablesValues,
               boolVariablesValues,
-            );
-    case VariableScriptLanguageBooleanExpr(name: var name):
+            ),
+    VariableScriptLanguageBooleanExpr(name: var name) =>
       if (boolVariablesValues.containsKey(name)) {
-        return boolVariablesValues[name]!;
+        boolVariablesValues[name]!;
       } else {
         throw VariableIsNotAffectedException(name);
-      }
-    case LowerThanScriptLanguageBooleanExpr(
+      },
+    LowerThanScriptLanguageBooleanExpr(
         expressionLeft: var left,
         expressionRight: var right
-      ):
-      return evaluateIntExpression(
+      ) =>
+      evaluateIntExpression(
             left,
             intVariablesValues,
             boolVariablesValues,
@@ -317,12 +320,11 @@ bool evaluateBoolExpression(
             right,
             intVariablesValues,
             boolVariablesValues,
-          );
-    case GreaterThanScriptLanguageBooleanExpr(
+          ),
+    GreaterThanScriptLanguageBooleanExpr(
         expressionLeft: var left,
         expressionRight: var right
-      ):
-      return evaluateIntExpression(
+      )=> evaluateIntExpression(
             left,
             intVariablesValues,
             boolVariablesValues,
@@ -331,12 +333,11 @@ bool evaluateBoolExpression(
             right,
             intVariablesValues,
             boolVariablesValues,
-          );
-    case LowerOrEqualToScriptLanguageBooleanExpr(
+          ),
+    LowerOrEqualToScriptLanguageBooleanExpr(
         expressionLeft: var left,
         expressionRight: var right
-      ):
-      return evaluateIntExpression(
+      ) => evaluateIntExpression(
             left,
             intVariablesValues,
             boolVariablesValues,
@@ -345,12 +346,11 @@ bool evaluateBoolExpression(
             right,
             intVariablesValues,
             boolVariablesValues,
-          );
-    case GreaterOrEqualToScriptLanguageBooleanExpr(
+          ),
+    GreaterOrEqualToScriptLanguageBooleanExpr(
         expressionLeft: var left,
         expressionRight: var right
-      ):
-      return evaluateIntExpression(
+      )=> evaluateIntExpression(
             left,
             intVariablesValues,
             boolVariablesValues,
@@ -359,12 +359,11 @@ bool evaluateBoolExpression(
             right,
             intVariablesValues,
             boolVariablesValues,
-          );
-    case EqualToScriptLanguageBooleanExpr(
+          ),
+    EqualToScriptLanguageBooleanExpr(
         expressionLeft: var left,
         expressionRight: var right
-      ):
-      return evaluateIntExpression(
+      )=> evaluateIntExpression(
             left,
             intVariablesValues,
             boolVariablesValues,
@@ -373,12 +372,11 @@ bool evaluateBoolExpression(
             right,
             intVariablesValues,
             boolVariablesValues,
-          );
-    case NotEqualToScriptLanguageBooleanExpr(
+          ),
+    NotEqualToScriptLanguageBooleanExpr(
         expressionLeft: var left,
         expressionRight: var right
-      ):
-      return evaluateIntExpression(
+      )=> evaluateIntExpression(
             left,
             intVariablesValues,
             boolVariablesValues,
@@ -387,12 +385,11 @@ bool evaluateBoolExpression(
             right,
             intVariablesValues,
             boolVariablesValues,
-          );
-    case AndComparisonScriptLanguageBooleanExpr(
+          ),
+    AndComparisonScriptLanguageBooleanExpr(
         expressionLeft: var left,
         expressionRight: var right
-      ):
-      return evaluateBoolExpression(
+      )=> evaluateBoolExpression(
             left,
             intVariablesValues,
             boolVariablesValues,
@@ -401,12 +398,11 @@ bool evaluateBoolExpression(
             right,
             intVariablesValues,
             boolVariablesValues,
-          );
-    case OrComparisonScriptLanguageBooleanExpr(
+          ),
+    OrComparisonScriptLanguageBooleanExpr(
         expressionLeft: var left,
         expressionRight: var right
-      ):
-      return evaluateBoolExpression(
+      )=> evaluateBoolExpression(
             left,
             intVariablesValues,
             boolVariablesValues,
@@ -415,10 +411,9 @@ bool evaluateBoolExpression(
             right,
             intVariablesValues,
             boolVariablesValues,
-          );
-    case LiteralScriptLanguageBooleanExpr(value: var value):
-      return value;
-    default:
+          ),
+    LiteralScriptLanguageBooleanExpr(value: var value)=> value,
+    _ =>
       throw Exception("Bool operation not recognized: $expression");
   }
 }
