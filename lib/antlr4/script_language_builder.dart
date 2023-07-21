@@ -1,5 +1,7 @@
 // ignore_for_file: unused_element
 
+import 'dart:collection';
+
 import 'package:antlr4/antlr4.dart';
 import 'package:basicchessendgamestrainer/antlr4/generated/ScriptLanguageBaseVisitor.dart';
 import 'package:basicchessendgamestrainer/antlr4/generated/ScriptLanguageLexer.dart';
@@ -30,7 +32,8 @@ class BailScriptLanguageLexer extends ScriptLanguageLexer {
 
 class BuiltVariablesHolder {
   final TranslationsWrapper translations;
-  final _builtVariables = <String, ScriptLanguageGenericExpr>{};
+  final LinkedHashMap<String, ScriptLanguageGenericExpr> _builtVariables =
+      LinkedHashMap<String, ScriptLanguageGenericExpr>();
 
   BuiltVariablesHolder(this.translations);
 
@@ -51,7 +54,8 @@ class BuiltVariablesHolder {
     _builtVariables.clear();
   }
 
-  Map<String, ScriptLanguageGenericExpr> getVariables() => _builtVariables;
+  LinkedHashMap<String, ScriptLanguageGenericExpr> getVariables() =>
+      _builtVariables;
 }
 
 class ScriptLanguageBuilder
@@ -63,24 +67,8 @@ class ScriptLanguageBuilder
     required this.translations,
   }) : _builtVariables = BuiltVariablesHolder(translations);
 
-  void _checkIfScriptStringIsValid(
-    String scriptString,
-    Map<String, int> sampleIntValues,
-    Map<String, bool> sampleBooleanValues,
-  ) {
-    final resultExpression = buildExpressionObjectFromScript(scriptString);
-    if (resultExpression == null) {
-      throw ParseCancellationException(translations.miscParseError);
-    }
-    _testCanEvaluateExpressionWithDefaultVariablesSetAndThrowEventualError(
-      resultExpression,
-      sampleIntValues,
-      sampleBooleanValues,
-    );
-  }
-
-  ScriptLanguageBooleanExpr? buildExpressionObjectFromScript(
-      String scriptString) {
+  LinkedHashMap<String, ScriptLanguageGenericExpr>
+      buildExpressionObjectsFromScript(String scriptString) {
     final inputStream = InputStream.fromString(scriptString);
     final lexer =
         BailScriptLanguageLexer(translations: translations, input: inputStream);
@@ -89,62 +77,15 @@ class ScriptLanguageBuilder
     parser.errorHandler = PositionConstraintBailErrorStrategy(translations);
     final tree = parser.scriptLanguage();
     _builtVariables.clearVariables();
-    final result = visit(tree);
-    return result as ScriptLanguageBooleanExpr?;
-  }
-
-  _testCanEvaluateExpressionWithDefaultVariablesSetAndThrowEventualError(
-    ScriptLanguageBooleanExpr expr,
-    Map<String, int> sampleIntValues,
-    Map<String, bool> sampleBooleanValues,
-  ) {
-    final intValues = sampleIntValues;
-    final boolValues = sampleBooleanValues;
-
-    final variables = _builtVariables.getVariables();
-    // We must evaluate all variables before evaluating the final script expression
-    for (var currentVariable in variables.entries) {
-      switch (currentVariable.value) {
-        case ScriptLanguageNumericExpr():
-          {
-            if (sampleIntValues.containsKey(currentVariable.key)) {
-              throw ParseCancellationException(translations
-                  .overridingPredefinedVariable(currentVariable.key));
-            } else {
-              intValues[currentVariable.key] = evaluateIntExpression(
-                currentVariable.value as ScriptLanguageNumericExpr,
-                intValues,
-                boolValues,
-              );
-            }
-          }
-        case ScriptLanguageBooleanExpr():
-          {
-            if (sampleBooleanValues.containsKey(currentVariable.key)) {
-              throw ParseCancellationException(translations
-                  .overridingPredefinedVariable(currentVariable.key));
-            } else {
-              boolValues[currentVariable.key] = evaluateBoolExpression(
-                currentVariable.value as ScriptLanguageBooleanExpr,
-                intValues,
-                boolValues,
-              );
-            }
-          }
-      }
-    }
-
-    evaluateBoolExpression(
-      expr,
-      intValues,
-      boolValues,
-    );
+    visit(tree);
+    return _builtVariables.getVariables();
   }
 
   @override
   ScriptLanguageGenericExpr? visitScriptLanguage(ScriptLanguageContext ctx) {
     final result = visit(ctx.terminalExpr()!)!;
-    return result;
+    _builtVariables.set("result", result);
+    return null;
   }
 
   @override
@@ -350,43 +291,5 @@ class ScriptLanguageBuilder
       "-" => MinusOperatorScriptLanguageNumericExpr(left, right),
       _ => throw Exception("Unknown operator $op"),
     };
-  }
-
-  PositionGenerationError? checkIfScriptIsValid({
-    required String scriptString,
-    required String scriptSectionTitle,
-    required Map<String, int> sampleIntValues,
-    required Map<String, bool> sampleBooleanValues,
-  }) {
-    if (scriptString.isEmpty) {
-      return null;
-    }
-
-    try {
-      _checkIfScriptStringIsValid(
-        scriptString,
-        sampleIntValues,
-        sampleBooleanValues,
-      );
-      return null;
-    } on VariableIsNotAffectedException catch (ex) {
-      final message = translations.variableNotAffected(ex.varName);
-      final title = translations.parseErrorDialogTitle(scriptSectionTitle);
-      // Add the error to the errors we must show once all scripts for
-      // the position generation are built.
-      return PositionGenerationError(title, message);
-    } on ParseCancellationException catch (ex) {
-      final message = ex.message;
-      final title = translations.parseErrorDialogTitle(scriptSectionTitle);
-      // Add the error to the errors we must show once all scripts for
-      // the position generation are built.
-      return PositionGenerationError(title, message);
-    } on TypeError {
-      final message = translations.typeError;
-      final title = translations.parseErrorDialogTitle(scriptSectionTitle);
-      // Add the error to the errors we must show once all scripts for
-      // the position generation are built.
-      return PositionGenerationError(title, message);
-    }
   }
 }

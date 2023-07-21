@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:antlr4/antlr4.dart';
 import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.dart';
 import 'package:basicchessendgamestrainer/antlr4/script_language_builder.dart';
@@ -259,14 +261,15 @@ class ScriptTextTransformer {
     }
   }
 
-  (ScriptLanguageBooleanExpr?, PositionGenerationError?)
+  (LinkedHashMap<String, ScriptLanguageGenericExpr>?, PositionGenerationError?)
       _parseBooleanExprScript(
     String scriptContent,
     ScriptType scriptType,
   ) {
     try {
       final builder = ScriptLanguageBuilder(translations: translations);
-      final constraint = builder.buildExpressionObjectFromScript(scriptContent);
+      final constraint =
+          builder.buildExpressionObjectsFromScript(scriptContent);
       return (constraint, null);
     } on VariableIsNotAffectedException catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
@@ -329,10 +332,11 @@ class ScriptTextTransformer {
   // can throw exceptions
   // MissingOtherPieceScriptTypeException
   (
-    Map<PieceKind, ScriptLanguageBooleanExpr?>,
+    Map<PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>,
     List<PositionGenerationError>
   ) _parseMapOfBooleanExprScript(String scriptContent, ScriptType scriptType) {
-    final results = <PieceKind, ScriptLanguageBooleanExpr?>{};
+    final results =
+        <PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>{};
     final parts = scriptContent.split(otherPiecesSingleScriptSeparator);
     final errorsList = <PositionGenerationError>[];
 

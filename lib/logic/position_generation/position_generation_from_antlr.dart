@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.dart';
@@ -25,13 +26,16 @@ class PositionGenerationLoopException implements Exception {
 }
 
 class PositionGeneratorConstraintsExpr {
-  ScriptLanguageBooleanExpr? playerKingConstraint;
-  ScriptLanguageBooleanExpr? computerKingConstraint;
-  ScriptLanguageBooleanExpr? kingsMutualConstraint;
+  LinkedHashMap<String, ScriptLanguageGenericExpr>? playerKingConstraint;
+  LinkedHashMap<String, ScriptLanguageGenericExpr>? computerKingConstraint;
+  LinkedHashMap<String, ScriptLanguageGenericExpr>? kingsMutualConstraint;
   List<PieceKindCount> otherPiecesCountConstraint;
-  Map<PieceKind, ScriptLanguageBooleanExpr?> otherPiecesGlobalConstraints;
-  Map<PieceKind, ScriptLanguageBooleanExpr?> otherPiecesMutualConstraints;
-  Map<PieceKind, ScriptLanguageBooleanExpr?> otherPiecesIndexedConstraints;
+  Map<PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>
+      otherPiecesGlobalConstraints;
+  Map<PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>
+      otherPiecesMutualConstraints;
+  Map<PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>
+      otherPiecesIndexedConstraints;
   bool mustWin;
 
   PositionGeneratorConstraintsExpr({
@@ -40,11 +44,11 @@ class PositionGeneratorConstraintsExpr {
     this.kingsMutualConstraint,
     this.otherPiecesCountConstraint = const <PieceKindCount>[],
     this.otherPiecesGlobalConstraints =
-        const <PieceKind, ScriptLanguageBooleanExpr?>{},
+        const <PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>{},
     this.otherPiecesMutualConstraints =
-        const <PieceKind, ScriptLanguageBooleanExpr?>{},
+        const <PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>{},
     this.otherPiecesIndexedConstraints =
-        const <PieceKind, ScriptLanguageBooleanExpr?>{},
+        const <PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>{},
     this.mustWin = true,
   });
 }
@@ -80,9 +84,12 @@ final noConstraint = PositionGeneratorConstraintsExpr(
   computerKingConstraint: null,
   kingsMutualConstraint: null,
   otherPiecesCountConstraint: <PieceKindCount>[],
-  otherPiecesGlobalConstraints: <PieceKind, ScriptLanguageBooleanExpr?>{},
-  otherPiecesMutualConstraints: <PieceKind, ScriptLanguageBooleanExpr?>{},
-  otherPiecesIndexedConstraints: <PieceKind, ScriptLanguageBooleanExpr?>{},
+  otherPiecesGlobalConstraints: <PieceKind,
+      LinkedHashMap<String, ScriptLanguageGenericExpr>?>{},
+  otherPiecesMutualConstraints: <PieceKind,
+      LinkedHashMap<String, ScriptLanguageGenericExpr>?>{},
+  otherPiecesIndexedConstraints: <PieceKind,
+      LinkedHashMap<String, ScriptLanguageGenericExpr>?>{},
   mustWin: true,
 );
 
@@ -182,7 +189,7 @@ class PositionGeneratorFromAntlr {
         final booleanValues = <String, bool>{
           "playerHasWhite": playerHasWhite,
         };
-        final playerKingConstraintRespected = evaluateBoolExpression(
+        final playerKingConstraintRespected = evaluateExpressionsSet(
           _allConstraints.playerKingConstraint!,
           intValues,
           booleanValues,
@@ -230,7 +237,7 @@ class PositionGeneratorFromAntlr {
         final computerKingConstraintBooleanValues = <String, bool>{
           "playerHasWhite": playerHasWhite,
         };
-        final computerKingConstraintRespected = evaluateBoolExpression(
+        final computerKingConstraintRespected = evaluateExpressionsSet(
           _allConstraints.computerKingConstraint!,
           computerKingConstraintIntValues,
           computerKingConstraintBooleanValues,
@@ -246,7 +253,7 @@ class PositionGeneratorFromAntlr {
           final kingsMutualConstraintBooleanValues = <String, bool>{
             "playerHasWhite": playerHasWhite,
           };
-          final kingsMutualConstraintRespected = evaluateBoolExpression(
+          final kingsMutualConstraintRespected = evaluateExpressionsSet(
             _allConstraints.kingsMutualConstraint!,
             kingsMutualConstraintIntValues,
             kingsMutualConstraintBooleanValues,
@@ -321,7 +328,7 @@ class PositionGeneratorFromAntlr {
           final positionRespectCurrentPieceGlobalConstraint =
               currentPieceGlobalConstraint == null
                   ? true
-                  : evaluateBoolExpression(
+                  : evaluateExpressionsSet(
                       currentPieceGlobalConstraint,
                       otherPiecesGlobalConstraintIntValues,
                       commonOtherPiecesConstraintBooleanValues,
@@ -338,7 +345,7 @@ class PositionGeneratorFromAntlr {
           final positionRespectCurrentPieceIndexedConstraint =
               currentPieceIndexedConstraint == null
                   ? true
-                  : evaluateBoolExpression(
+                  : evaluateExpressionsSet(
                       currentPieceIndexedConstraint,
                       otherPieceIndexedConstraintIntValues,
                       commonOtherPiecesConstraintBooleanValues,
@@ -358,7 +365,7 @@ class PositionGeneratorFromAntlr {
             final positionRespectCurrentPieceMutualConstraint =
                 currentPieceMutualConstraint == null
                     ? true
-                    : evaluateBoolExpression(
+                    : evaluateExpressionsSet(
                         currentPieceMutualConstraint,
                         otherPieceMutualConstraintIntValues,
                         commonOtherPiecesConstraintBooleanValues,

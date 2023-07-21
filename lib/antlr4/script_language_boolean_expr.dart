@@ -1,4 +1,4 @@
-import 'package:basicchessendgamestrainer/antlr4/script_language_builder.dart';
+import 'dart:collection';
 
 class VariableIsNotAffectedException implements Exception {
   String varName;
@@ -171,17 +171,39 @@ class MinusOperatorScriptLanguageNumericExpr extends ScriptLanguageNumericExpr {
       this.expressionLeft, this.expressionRight);
 }
 
-/*
-ScriptLanguageGenericExpr transformIntExpression(
-  ScriptLanguageNumericExpr expression,
-  BuiltVariablesHolder builtVariables,
-) {}
+bool evaluateExpressionsSet(
+  LinkedHashMap<String, ScriptLanguageGenericExpr> expressionsSet,
+  Map<String, int> intVariablesValues,
+  Map<String, bool> boolVariablesValues,
+) {
+  // first evaluate each expression in the set
+  for (final expressionEntry in expressionsSet.entries) {
+    switch (expressionEntry.value) {
+      case ScriptLanguageBooleanExpr():
+        final value = evaluateBoolExpression(
+          expressionEntry.value as ScriptLanguageBooleanExpr,
+          intVariablesValues,
+          boolVariablesValues,
+        );
+        boolVariablesValues[expressionEntry.key] = value;
+        break;
+      case ScriptLanguageNumericExpr():
+        final value = evaluateIntExpression(
+          expressionEntry.value as ScriptLanguageNumericExpr,
+          intVariablesValues,
+          boolVariablesValues,
+        );
+        intVariablesValues[expressionEntry.key] = value;
+        break;
+      default:
+        throw Exception(
+            "Unrecognized expression type ${expressionEntry.value}");
+    }
+  }
 
-ScriptLanguageGenericExpr transformBooleanExpression(
-  ScriptLanguageBooleanExpr expression,
-  BuiltVariablesHolder builtVariables,
-) {}
-*/
+  // then finally get the return value
+  return boolVariablesValues['result']!;
+}
 
 int evaluateIntExpression(
   ScriptLanguageNumericExpr expression,
