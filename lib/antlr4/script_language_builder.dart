@@ -83,6 +83,10 @@ class ScriptLanguageBuilder
 
   @override
   ScriptLanguageGenericExpr? visitScriptLanguage(ScriptLanguageContext ctx) {
+    final assignements = ctx.variableAssigns();
+    for (final currentAssignement in assignements) {
+      visit(currentAssignement);
+    }
     final result = visit(ctx.terminalExpr()!)!;
     _builtVariables.set("result", result);
     return null;
