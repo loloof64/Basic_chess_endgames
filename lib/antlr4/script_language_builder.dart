@@ -28,29 +28,19 @@ class BailScriptLanguageLexer extends ScriptLanguageLexer {
   }
 }
 
-class GenericExpressionVariable {
-  final String name;
-  final ScriptLanguageGenericExpr value;
-
-  GenericExpressionVariable(this.name, this.value);
-}
-
 class BuiltVariablesHolder {
   final TranslationsWrapper translations;
-  final _builtVariables = <GenericExpressionVariable>[];
+  final _builtVariables = <String, ScriptLanguageGenericExpr>{};
 
   BuiltVariablesHolder(this.translations);
 
-  void add(GenericExpressionVariable variable) => _builtVariables.add(variable);
+  void set(String name, ScriptLanguageGenericExpr value) =>
+      _builtVariables[name] = value;
 
-  bool containsVariableNamed(String name) =>
-      _builtVariables.any((element) => element.name == name);
+  bool contains(String name) => _builtVariables.containsKey(name);
 
-  ScriptLanguageGenericExpr getExpressionOfVariable(String name) {
-    final expression = _builtVariables
-        .where((element) => element.name == name)
-        .firstOrNull
-        ?.value;
+  ScriptLanguageGenericExpr operator [](String name) {
+    final expression = _builtVariables[name];
     if (expression == null) {
       throw ParseCancellationException(translations.variableNotAffected(name));
     }
@@ -61,7 +51,7 @@ class BuiltVariablesHolder {
     _builtVariables.clear();
   }
 
-  List<GenericExpressionVariable> getVariables() => _builtVariables.toList();
+  Map<String, ScriptLanguageGenericExpr> getVariables() => _builtVariables;
 }
 
 class ScriptLanguageBuilder
@@ -113,15 +103,15 @@ class ScriptLanguageBuilder
 
     final variables = _builtVariables.getVariables();
     // We must evaluate all variables before evaluating the final script expression
-    for (var currentVariable in variables) {
+    for (var currentVariable in variables.entries) {
       switch (currentVariable.value) {
         case ScriptLanguageNumericExpr():
           {
-            if (sampleIntValues.containsKey(currentVariable.name)) {
+            if (sampleIntValues.containsKey(currentVariable.key)) {
               throw ParseCancellationException(translations
-                  .overridingPredefinedVariable(currentVariable.name));
+                  .overridingPredefinedVariable(currentVariable.key));
             } else {
-              intValues[currentVariable.name] = evaluateIntExpression(
+              intValues[currentVariable.key] = evaluateIntExpression(
                 currentVariable.value as ScriptLanguageNumericExpr,
                 intValues,
                 boolValues,
@@ -130,11 +120,11 @@ class ScriptLanguageBuilder
           }
         case ScriptLanguageBooleanExpr():
           {
-            if (sampleBooleanValues.containsKey(currentVariable.name)) {
+            if (sampleBooleanValues.containsKey(currentVariable.key)) {
               throw ParseCancellationException(translations
-                  .overridingPredefinedVariable(currentVariable.name));
+                  .overridingPredefinedVariable(currentVariable.key));
             } else {
-              boolValues[currentVariable.name] = evaluateBoolExpression(
+              boolValues[currentVariable.key] = evaluateBoolExpression(
                 currentVariable.value as ScriptLanguageBooleanExpr,
                 intValues,
                 boolValues,
@@ -169,7 +159,7 @@ class ScriptLanguageBuilder
     final variableValue =
         visit(ctx.numericExpr()!)! as ScriptLanguageNumericExpr;
 
-    _builtVariables.add(GenericExpressionVariable(variableName, variableValue));
+    _builtVariables.set(variableName, variableValue);
     return UnitScriptLanguageGenericExpr();
   }
 
@@ -179,7 +169,7 @@ class ScriptLanguageBuilder
     final variableValue =
         visit(ctx.booleanExpr()!)! as ScriptLanguageBooleanExpr;
 
-    _builtVariables.add(GenericExpressionVariable(variableName, variableValue));
+    _builtVariables.set(variableName, variableValue);
     return UnitScriptLanguageGenericExpr();
   }
 
@@ -209,8 +199,8 @@ class ScriptLanguageBuilder
   @override
   ScriptLanguageGenericExpr? visitBooleanVariable(BooleanVariableContext ctx) {
     final variableName = ctx.ID()!.text.toString();
-    return _builtVariables.containsVariableNamed(variableName)
-        ? _builtVariables.getExpressionOfVariable(variableName)
+    return _builtVariables.contains(variableName)
+        ? _builtVariables[variableName]
         : VariableScriptLanguageBooleanExpr(variableName);
   }
 
@@ -298,8 +288,8 @@ class ScriptLanguageBuilder
   @override
   ScriptLanguageGenericExpr? visitNumericVariable(NumericVariableContext ctx) {
     final variableName = ctx.ID()!.text.toString();
-    return _builtVariables.containsVariableNamed(variableName)
-        ? _builtVariables.getExpressionOfVariable(variableName)
+    return _builtVariables.contains(variableName)
+        ? _builtVariables[variableName]
         : VariableScriptLanguageNumericExpr(variableName);
   }
 

@@ -169,6 +169,10 @@ class MinusOperatorScriptLanguageNumericExpr extends ScriptLanguageNumericExpr {
       this.expressionLeft, this.expressionRight);
 }
 
+/*ScriptLanguageGenericExpr transformIntExpression(
+  ScriptLanguageNumericExpr expression,
+) {}*/
+
 int evaluateIntExpression(
   ScriptLanguageNumericExpr expression,
   Map<String, int> intVariablesValues,
