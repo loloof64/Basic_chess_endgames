@@ -177,28 +177,28 @@ class ScriptTextTransformer {
 
       switch (scriptType) {
         case ScriptType.playerKingConstraint:
-          final (constraint, error) =
+          final (constraint, errors) =
               _parseBooleanExprScript(scriptContent, scriptType);
-          if (error != null) {
-            return <PositionGenerationError>[error];
+          if (errors.isNotEmpty) {
+            return errors;
           } else {
             constraints.playerKingConstraint = constraint;
             return <PositionGenerationError>[];
           }
         case ScriptType.computerKingConstraint:
-          final (constraint, error) =
+          final (constraint, errors) =
               _parseBooleanExprScript(scriptContent, scriptType);
-          if (error != null) {
-            return <PositionGenerationError>[error];
+          if (errors.isNotEmpty) {
+            return errors;
           } else {
             constraints.computerKingConstraint = constraint;
             return <PositionGenerationError>[];
           }
         case ScriptType.mutualKingConstraint:
-          final (constraint, error) =
+          final (constraint, errors) =
               _parseBooleanExprScript(scriptContent, scriptType);
-          if (error != null) {
-            return <PositionGenerationError>[error];
+          if (errors.isNotEmpty) {
+            return errors;
           } else {
             constraints.kingsMutualConstraint = constraint;
             return <PositionGenerationError>[];
@@ -261,8 +261,10 @@ class ScriptTextTransformer {
     }
   }
 
-  (LinkedHashMap<String, ScriptLanguageGenericExpr>?, PositionGenerationError?)
-      _parseBooleanExprScript(
+  (
+    LinkedHashMap<String, ScriptLanguageGenericExpr>?,
+    List<PositionGenerationError>
+  ) _parseBooleanExprScript(
     String scriptContent,
     ScriptType scriptType,
   ) {
@@ -270,7 +272,7 @@ class ScriptTextTransformer {
       final builder = ScriptLanguageBuilder(translations: translations);
       final constraint =
           builder.buildExpressionObjectsFromScript(scriptContent);
-      return (constraint, null);
+      return (constraint, <PositionGenerationError>[]);
     } on VariableIsNotAffectedException catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
       final title = translations.parseErrorDialogTitle(scriptTypeLabel);
@@ -278,7 +280,10 @@ class ScriptTextTransformer {
       Logger().e(ex);
       // Add the error to the errors we must show once all scripts for
       // the position generation are built.
-      return (null, PositionGenerationError(title, message));
+      return (
+        null,
+        <PositionGenerationError>[PositionGenerationError(title, message)]
+      );
     } on ParseCancellationException catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
       final title = translations.parseErrorDialogTitle(scriptTypeLabel);
@@ -286,7 +291,10 @@ class ScriptTextTransformer {
       Logger().e(ex);
       // Add the error to the errors we must show once all scripts for
       // the position generation are built.
-      return (null, PositionGenerationError(title, message));
+      return (
+        null,
+        <PositionGenerationError>[PositionGenerationError(title, message)]
+      );
     } on TypeError catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
       final title = translations.parseErrorDialogTitle(scriptTypeLabel);
@@ -294,7 +302,10 @@ class ScriptTextTransformer {
       Logger().e(ex);
       // Add the error to the errors we must show once all scripts for
       // the position generation are built.
-      return (null, PositionGenerationError(title, message));
+      return (
+        null,
+        <PositionGenerationError>[PositionGenerationError(title, message)]
+      );
     } on Exception catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
       final title = translations.parseErrorDialogTitle(scriptTypeLabel);
@@ -302,7 +313,10 @@ class ScriptTextTransformer {
       Logger().e(ex);
       // Add the error to the errors we must show once all scripts for
       // the position generation are built.
-      return (null, PositionGenerationError(title, message));
+      return (
+        null,
+        <PositionGenerationError>[PositionGenerationError(title, message)]
+      );
     }
   }
 
@@ -349,10 +363,10 @@ class ScriptTextTransformer {
       final kind = PieceKind.from(strippedFirstLine);
       final scriptContent = divisionParts.skip(1).join('\n');
 
-      final (constraints, error) =
+      final (constraints, errors) =
           _parseBooleanExprScript(scriptContent, scriptType);
-      if (error != null) {
-        errorsList.add(error);
+      if (errors.isNotEmpty) {
+        errorsList.addAll(errors);
       } else {
         results[kind] = constraints;
       }

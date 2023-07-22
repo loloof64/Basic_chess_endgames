@@ -50,10 +50,12 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
       parameters.sendPort.send(
         (
           null,
-          PositionGenerationError(
-            parameters.translations.miscErrorDialogTitle,
-            parameters.translations.failedGeneratingPosition,
-          ),
+          <PositionGenerationError>[
+            PositionGenerationError(
+              parameters.translations.miscErrorDialogTitle,
+              parameters.translations.failedGeneratingPosition,
+            )
+          ],
         ),
       );
     }
