@@ -1,7 +1,7 @@
 # player king
 
 // player's king must be on its first rank
-isRightRank := rank == if playerHasWhite then Rank1 else Rank8;
+isRightRank := rank == numIf playerHasWhite then Rank1 else Rank8;
 return isRightRank;
 
 @@@@@@
@@ -9,7 +9,7 @@ return isRightRank;
 # computer king
 
 // computer king must be on its fifth's rank
-isRightRank := rank == if playerHasWhite then Rank4 else Rank5;
+isRightRank := rank == numIf playerHasWhite then Rank4 else Rank5;
 return isRightRank;
 
 @@@@@@
@@ -35,7 +35,7 @@ player pawn : 1
 isRightRankInCasePlayerHasWhite := (rank >= Rank3) and (rank <= Rank5);
 isRightRankInCasePlayerHasBlack := (rank >= Rank4) and (rank <= Rank6);
 
-isRightRank := if playerHasWhite then isRightRankInCasePlayerHasWhite else isRightRankInCasePlayerHasBlack;
+isRightRank := boolIf playerHasWhite then isRightRankInCasePlayerHasWhite else isRightRankInCasePlayerHasBlack;
 isRightFile := file == playerKingFile;
 
 return isRightFile and isRightRank;

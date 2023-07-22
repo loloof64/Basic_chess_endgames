@@ -9,7 +9,7 @@ variableAssign:   ID ':=' numericExpr ';' #numericAssign
 terminalExpr : 'return' booleanExpr ';';
 
 booleanExpr: '(' booleanExpr ')'                                                              #parenthesisBooleanExpr
-            | 'if' booleanExpr  'then'  booleanExpr  'else'  booleanExpr                      #conditionalBooleanExpr
+            | 'boolIf' booleanExpr  'then'  booleanExpr  'else'  booleanExpr                  #conditionalBooleanExpr
             | ID                                                                              #booleanVariable
             | numericExpr op=('<'|'>'|'<='|'>=') numericExpr                                  #numericRelational
             | numericExpr op=('=='|'!=') numericExpr                                          #numericEquality
@@ -24,7 +24,7 @@ rankConstant: 'Rank1' | 'Rank2' | 'Rank3' | 'Rank4' |
               'Rank5' | 'Rank6' | 'Rank7' | 'Rank8';
 
 numericExpr: '(' numericExpr ')'                                                                #parenthesisNumericExpr
-              | 'if'  booleanExpr 'then' numericExpr 'else' numericExpr                         #conditionalNumericExpr
+              | 'numIf'  booleanExpr 'then' numericExpr 'else' numericExpr                      #conditionalNumericExpr
               | 'abs(' numericExpr ')'                                                          #absoluteNumericExpr
               | numericExpr '%' numericExpr                                                     #moduloNumericExpr
               | numericExpr op=('+'|'-') numericExpr                                            #plusMinusNumericExpr

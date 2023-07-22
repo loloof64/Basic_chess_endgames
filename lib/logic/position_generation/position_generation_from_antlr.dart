@@ -349,11 +349,6 @@ class PositionGeneratorFromAntlr {
             continue;
           }
 
-          //////////////////////////
-          print(
-              "@${attemptIndex + 1} [${pieceCountConstraint.pieceKind.toEasyString()}] $tempPosition");
-          //////////////////////////
-
           final commonOtherPiecesConstraintBooleanValues = <String, bool>{
             "playerHasWhite": playerHasWhite,
           };

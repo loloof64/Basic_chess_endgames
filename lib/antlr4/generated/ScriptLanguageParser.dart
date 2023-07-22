@@ -1,5 +1,5 @@
 // Generated from ScriptLanguage.g4 by ANTLR 4.13.0
-// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes, constant_identifier_names, prefer_function_declarations_over_variables, non_constant_identifier_names, file_names, no_leading_underscores_for_local_identifiers, avoid_renaming_method_parameters
+// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes, constant_identifier_names, prefer_function_declarations_over_variables, file_names, non_constant_identifier_names, no_leading_underscores_for_local_identifiers, avoid_renaming_method_parameters
 import 'package:antlr4/antlr4.dart';
 
 import 'ScriptLanguageVisitor.dart';
@@ -60,11 +60,12 @@ class ScriptLanguageParser extends Parser {
       TOKEN_T__35 = 36,
       TOKEN_T__36 = 37,
       TOKEN_T__37 = 38,
-      TOKEN_NumericLitteral = 39,
-      TOKEN_ID = 40,
-      TOKEN_COMMENT = 41,
-      TOKEN_LINE_COMMENT = 42,
-      TOKEN_WS = 43;
+      TOKEN_T__38 = 39,
+      TOKEN_NumericLitteral = 40,
+      TOKEN_ID = 41,
+      TOKEN_COMMENT = 42,
+      TOKEN_LINE_COMMENT = 43,
+      TOKEN_WS = 44;
 
   @override
   final List<String> ruleNames = [
@@ -84,7 +85,7 @@ class ScriptLanguageParser extends Parser {
     "'return'",
     "'('",
     "')'",
-    "'if'",
+    "'boolIf'",
     "'then'",
     "'else'",
     "'<'",
@@ -113,12 +114,14 @@ class ScriptLanguageParser extends Parser {
     "'Rank6'",
     "'Rank7'",
     "'Rank8'",
+    "'numIf'",
     "'abs('",
     "'%'",
     "'+'",
     "'-'"
   ];
   static final List<String?> _SYMBOLIC_NAMES = [
+    null,
     null,
     null,
     null,
@@ -518,12 +521,12 @@ class ScriptLanguageParser extends Parser {
           state = 82;
           match(TOKEN_T__4);
           break;
-        case TOKEN_T__5:
+        case TOKEN_T__34:
           _localctx = ConditionalNumericExprContext(_localctx);
           context = _localctx;
           _prevctx = _localctx;
           state = 84;
-          match(TOKEN_T__5);
+          match(TOKEN_T__34);
           state = 85;
           booleanExpr(0);
           state = 86;
@@ -535,12 +538,12 @@ class ScriptLanguageParser extends Parser {
           state = 89;
           numericExpr(8);
           break;
-        case TOKEN_T__34:
+        case TOKEN_T__35:
           _localctx = AbsoluteNumericExprContext(_localctx);
           context = _localctx;
           _prevctx = _localctx;
           state = 91;
-          match(TOKEN_T__34);
+          match(TOKEN_T__35);
           state = 92;
           numericExpr(0);
           state = 93;
@@ -611,7 +614,7 @@ class ScriptLanguageParser extends Parser {
                 throw FailedPredicateException(this, "precpred(context, 6)");
               }
               state = 102;
-              match(TOKEN_T__35);
+              match(TOKEN_T__36);
               state = 103;
               numericExpr(7);
               break;
@@ -626,7 +629,7 @@ class ScriptLanguageParser extends Parser {
               state = 105;
               _localctx.op = tokenStream.LT(1);
               _la = tokenStream.LA(1)!;
-              if (!(_la == TOKEN_T__36 || _la == TOKEN_T__37)) {
+              if (!(_la == TOKEN_T__37 || _la == TOKEN_T__38)) {
                 _localctx.op = errorHandler.recoverInline(this);
               } else {
                 if (tokenStream.LA(1)! == IntStream.EOF) matchedEOF = true;
@@ -690,7 +693,7 @@ class ScriptLanguageParser extends Parser {
   static const List<int> _serializedATN = [
     4,
     1,
-    43,
+    44,
     113,
     2,
     0,
@@ -963,8 +966,8 @@ class ScriptLanguageParser extends Parser {
     34,
     1,
     0,
-    37,
     38,
+    39,
     122,
     0,
     17,
@@ -1065,7 +1068,7 @@ class ScriptLanguageParser extends Parser {
     22,
     23,
     5,
-    40,
+    41,
     0,
     0,
     23,
@@ -1095,7 +1098,7 @@ class ScriptLanguageParser extends Parser {
     27,
     28,
     5,
-    40,
+    41,
     0,
     0,
     28,
@@ -1239,7 +1242,7 @@ class ScriptLanguageParser extends Parser {
     50,
     60,
     5,
-    40,
+    41,
     0,
     0,
     51,
@@ -1485,7 +1488,7 @@ class ScriptLanguageParser extends Parser {
     84,
     85,
     5,
-    6,
+    35,
     0,
     0,
     85,
@@ -1527,7 +1530,7 @@ class ScriptLanguageParser extends Parser {
     91,
     92,
     5,
-    35,
+    36,
     0,
     0,
     92,
@@ -1551,13 +1554,13 @@ class ScriptLanguageParser extends Parser {
     95,
     100,
     5,
-    39,
+    40,
     0,
     0,
     96,
     100,
     5,
-    40,
+    41,
     0,
     0,
     97,
@@ -1629,7 +1632,7 @@ class ScriptLanguageParser extends Parser {
     102,
     103,
     5,
-    36,
+    37,
     0,
     0,
     103,
