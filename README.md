@@ -2,7 +2,7 @@
 
 Generate a chess position from your criterias and play it against your device.
 
-## Developpers
+## Developpers
 
 ### Antlr4
 
@@ -12,7 +12,7 @@ If you want to generate Antlr4 base from the ScriptLanguage.g4, simply go into t
 antlr4 -o generated -no-listener -visitor -Dlanguage=Dart ScriptLanguage.g4
 ```
 
-## Credits
+## Credits
 
 ### SvgRepo
 
