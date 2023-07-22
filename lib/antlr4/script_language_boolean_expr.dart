@@ -73,19 +73,48 @@ class GreaterOrEqualToScriptLanguageBooleanExpr
       this.expressionLeft, this.expressionRight);
 }
 
-class EqualToScriptLanguageBooleanExpr extends ScriptLanguageBooleanExpr {
+class NumericEqualToScriptLanguageBooleanExpr
+    extends ScriptLanguageBooleanExpr {
   final ScriptLanguageNumericExpr expressionLeft;
   final ScriptLanguageNumericExpr expressionRight;
 
-  EqualToScriptLanguageBooleanExpr(this.expressionLeft, this.expressionRight);
+  NumericEqualToScriptLanguageBooleanExpr(
+    this.expressionLeft,
+    this.expressionRight,
+  );
 }
 
-class NotEqualToScriptLanguageBooleanExpr extends ScriptLanguageBooleanExpr {
+class NumericNotEqualToScriptLanguageBooleanExpr
+    extends ScriptLanguageBooleanExpr {
   final ScriptLanguageNumericExpr expressionLeft;
   final ScriptLanguageNumericExpr expressionRight;
 
-  NotEqualToScriptLanguageBooleanExpr(
-      this.expressionLeft, this.expressionRight);
+  NumericNotEqualToScriptLanguageBooleanExpr(
+    this.expressionLeft,
+    this.expressionRight,
+  );
+}
+
+class BooleanEqualToScriptLanguageBooleanExpr
+    extends ScriptLanguageBooleanExpr {
+  final ScriptLanguageBooleanExpr expressionLeft;
+  final ScriptLanguageBooleanExpr expressionRight;
+
+  BooleanEqualToScriptLanguageBooleanExpr(
+    this.expressionLeft,
+    this.expressionRight,
+  );
+}
+
+class BooleanNotEqualToScriptLanguageBooleanExpr
+    extends ScriptLanguageBooleanExpr {
+  final ScriptLanguageBooleanExpr expressionLeft;
+  final ScriptLanguageBooleanExpr expressionRight;
+
+  BooleanNotEqualToScriptLanguageBooleanExpr(
+    this.expressionLeft,
+    this.expressionRight,
+  );
 }
 
 class AndComparisonScriptLanguageBooleanExpr extends ScriptLanguageBooleanExpr {
@@ -383,7 +412,7 @@ bool evaluateBoolExpression(
             intVariablesValues,
             boolVariablesValues,
           ),
-    EqualToScriptLanguageBooleanExpr(
+    NumericEqualToScriptLanguageBooleanExpr(
       expressionLeft: var left,
       expressionRight: var right
     ) =>
@@ -397,7 +426,7 @@ bool evaluateBoolExpression(
             intVariablesValues,
             boolVariablesValues,
           ),
-    NotEqualToScriptLanguageBooleanExpr(
+    NumericNotEqualToScriptLanguageBooleanExpr(
       expressionLeft: var left,
       expressionRight: var right
     ) =>
@@ -407,6 +436,34 @@ bool evaluateBoolExpression(
             boolVariablesValues,
           ) !=
           evaluateIntExpression(
+            right,
+            intVariablesValues,
+            boolVariablesValues,
+          ),
+    BooleanEqualToScriptLanguageBooleanExpr(
+      expressionLeft: var left,
+      expressionRight: var right
+    ) =>
+      evaluateBoolExpression(
+            left,
+            intVariablesValues,
+            boolVariablesValues,
+          ) ==
+          evaluateBoolExpression(
+            right,
+            intVariablesValues,
+            boolVariablesValues,
+          ),
+    BooleanNotEqualToScriptLanguageBooleanExpr(
+      expressionLeft: var left,
+      expressionRight: var right
+    ) =>
+      evaluateBoolExpression(
+            left,
+            intVariablesValues,
+            boolVariablesValues,
+          ) !=
+          evaluateBoolExpression(
             right,
             intVariablesValues,
             boolVariablesValues,

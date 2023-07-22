@@ -1,7 +1,7 @@
 # player king
 
 /* player king rank must be in the computer third's rank */
-isRightRank := rank = (if playerHasWhite then Rank6 else Rank3);
+isRightRank := rank == (if playerHasWhite then Rank6 else Rank3);
 
 /* file must not be in a rook column */
 fileInRightColumn := (file >= FileB) and (file <= FileG);
@@ -13,13 +13,13 @@ return isRightRank and fileInRightColumn;
 # computer king
 
 /* rank must be the player's eight rank */
-return rank = (if playerHasWhite then Rank8 else Rank1);
+return rank == (if playerHasWhite then Rank8 else Rank1);
 
 @@@@@@
 
 # kings mutual constraint
 
-return playerKingFile = computerKingFile;
+return playerKingFile == computerKingFile;
 
 @@@@@@
 
@@ -34,8 +34,8 @@ player pawn : 1
 [player pawn]
 
 /* pawn must be on the player's fifth rank */
-isRightRank := rank = if playerHasWhite then Rank5 else Rank4;
-isRightFile := file = playerKingFile;
+isRightRank := rank == if playerHasWhite then Rank5 else Rank4;
+isRightFile := file == playerKingFile;
 
 return isRightFile and isRightRank;
 

@@ -1,5 +1,5 @@
 // Generated from ScriptLanguage.g4 by ANTLR 4.13.0
-// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes, file_names, constant_identifier_names, prefer_function_declarations_over_variables, non_constant_identifier_names, no_leading_underscores_for_local_identifiers, avoid_renaming_method_parameters
+// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes, constant_identifier_names, prefer_function_declarations_over_variables, non_constant_identifier_names, file_names, no_leading_underscores_for_local_identifiers, avoid_renaming_method_parameters
 import 'package:antlr4/antlr4.dart';
 
 import 'ScriptLanguageVisitor.dart';
@@ -58,11 +58,13 @@ class ScriptLanguageParser extends Parser {
       TOKEN_T__33 = 34,
       TOKEN_T__34 = 35,
       TOKEN_T__35 = 36,
-      TOKEN_NumericLitteral = 37,
-      TOKEN_ID = 38,
-      TOKEN_COMMENT = 39,
-      TOKEN_LINE_COMMENT = 40,
-      TOKEN_WS = 41;
+      TOKEN_T__36 = 37,
+      TOKEN_T__37 = 38,
+      TOKEN_NumericLitteral = 39,
+      TOKEN_ID = 40,
+      TOKEN_COMMENT = 41,
+      TOKEN_LINE_COMMENT = 42,
+      TOKEN_WS = 43;
 
   @override
   final List<String> ruleNames = [
@@ -89,8 +91,10 @@ class ScriptLanguageParser extends Parser {
     "'>'",
     "'<='",
     "'>='",
-    "'='",
-    "'<>'",
+    "'=='",
+    "'!='",
+    "'<==>'",
+    "'<!=>'",
     "'and'",
     "'or'",
     "'FileA'",
@@ -115,6 +119,8 @@ class ScriptLanguageParser extends Parser {
     "'-'"
   ];
   static final List<String?> _SYMBOLIC_NAMES = [
+    null,
+    null,
     null,
     null,
     null,
@@ -314,7 +320,7 @@ class ScriptLanguageParser extends Parser {
           state = 47;
           match(TOKEN_T__7);
           state = 48;
-          booleanExpr(6);
+          booleanExpr(7);
           break;
         case 3:
           _localctx = BooleanVariableContext(_localctx);
@@ -363,45 +369,66 @@ class ScriptLanguageParser extends Parser {
           break;
       }
       context!.stop = tokenStream.LT(-1);
-      state = 69;
+      state = 72;
       errorHandler.sync(this);
       _alt = interpreter!.adaptivePredict(tokenStream, 4, context);
       while (_alt != 2 && _alt != ATN.INVALID_ALT_NUMBER) {
         if (_alt == 1) {
           if (parseListeners != null) triggerExitRuleEvent();
           _prevctx = _localctx;
-          state = 67;
+          state = 70;
           errorHandler.sync(this);
           switch (interpreter!.adaptivePredict(tokenStream, 3, context)) {
             case 1:
-              _localctx = AndComparisonContext(
+              _localctx = BooleanEqualityContext(
                   BooleanExprContext(_parentctx, _parentState));
               pushNewRecursionContext(_localctx, _startState, RULE_booleanExpr);
               state = 61;
-              if (!(precpred(context, 2))) {
-                throw FailedPredicateException(this, "precpred(context, 2)");
+              if (!(precpred(context, 3))) {
+                throw FailedPredicateException(this, "precpred(context, 3)");
               }
               state = 62;
-              match(TOKEN_T__14);
+              _localctx.op = tokenStream.LT(1);
+              _la = tokenStream.LA(1)!;
+              if (!(_la == TOKEN_T__14 || _la == TOKEN_T__15)) {
+                _localctx.op = errorHandler.recoverInline(this);
+              } else {
+                if (tokenStream.LA(1)! == IntStream.EOF) matchedEOF = true;
+                errorHandler.reportMatch(this);
+                consume();
+              }
               state = 63;
-              booleanExpr(3);
+              booleanExpr(4);
               break;
             case 2:
-              _localctx = OrComparisonContext(
+              _localctx = AndComparisonContext(
                   BooleanExprContext(_parentctx, _parentState));
               pushNewRecursionContext(_localctx, _startState, RULE_booleanExpr);
               state = 64;
+              if (!(precpred(context, 2))) {
+                throw FailedPredicateException(this, "precpred(context, 2)");
+              }
+              state = 65;
+              match(TOKEN_T__16);
+              state = 66;
+              booleanExpr(3);
+              break;
+            case 3:
+              _localctx = OrComparisonContext(
+                  BooleanExprContext(_parentctx, _parentState));
+              pushNewRecursionContext(_localctx, _startState, RULE_booleanExpr);
+              state = 67;
               if (!(precpred(context, 1))) {
                 throw FailedPredicateException(this, "precpred(context, 1)");
               }
-              state = 65;
-              match(TOKEN_T__15);
-              state = 66;
+              state = 68;
+              match(TOKEN_T__17);
+              state = 69;
               booleanExpr(2);
               break;
           }
         }
-        state = 71;
+        state = 74;
         errorHandler.sync(this);
         _alt = interpreter!.adaptivePredict(tokenStream, 4, context);
       }
@@ -421,9 +448,9 @@ class ScriptLanguageParser extends Parser {
     int _la;
     try {
       enterOuterAlt(_localctx, 1);
-      state = 72;
+      state = 75;
       _la = tokenStream.LA(1)!;
-      if (!((((_la) & ~0x3f) == 0 && ((1 << _la) & 33423360) != 0))) {
+      if (!((((_la) & ~0x3f) == 0 && ((1 << _la) & 133693440) != 0))) {
         errorHandler.recoverInline(this);
       } else {
         if (tokenStream.LA(1)! == IntStream.EOF) matchedEOF = true;
@@ -446,9 +473,9 @@ class ScriptLanguageParser extends Parser {
     int _la;
     try {
       enterOuterAlt(_localctx, 1);
-      state = 74;
+      state = 77;
       _la = tokenStream.LA(1)!;
-      if (!((((_la) & ~0x3f) == 0 && ((1 << _la) & 8556380160) != 0))) {
+      if (!((((_la) & ~0x3f) == 0 && ((1 << _la) & 34225520640) != 0))) {
         errorHandler.recoverInline(this);
       } else {
         if (tokenStream.LA(1)! == IntStream.EOF) matchedEOF = true;
@@ -476,7 +503,7 @@ class ScriptLanguageParser extends Parser {
     try {
       int _alt;
       enterOuterAlt(_localctx, 1);
-      state = 96;
+      state = 99;
       errorHandler.sync(this);
       switch (tokenStream.LA(1)!) {
         case TOKEN_T__3:
@@ -484,134 +511,134 @@ class ScriptLanguageParser extends Parser {
           context = _localctx;
           _prevctx = _localctx;
 
-          state = 77;
+          state = 80;
           match(TOKEN_T__3);
-          state = 78;
+          state = 81;
           numericExpr(0);
-          state = 79;
+          state = 82;
           match(TOKEN_T__4);
           break;
         case TOKEN_T__5:
           _localctx = ConditionalNumericExprContext(_localctx);
           context = _localctx;
           _prevctx = _localctx;
-          state = 81;
-          match(TOKEN_T__5);
-          state = 82;
-          booleanExpr(0);
-          state = 83;
-          match(TOKEN_T__6);
           state = 84;
-          numericExpr(0);
+          match(TOKEN_T__5);
           state = 85;
-          match(TOKEN_T__7);
+          booleanExpr(0);
           state = 86;
+          match(TOKEN_T__6);
+          state = 87;
+          numericExpr(0);
+          state = 88;
+          match(TOKEN_T__7);
+          state = 89;
           numericExpr(8);
           break;
-        case TOKEN_T__32:
+        case TOKEN_T__34:
           _localctx = AbsoluteNumericExprContext(_localctx);
           context = _localctx;
           _prevctx = _localctx;
-          state = 88;
-          match(TOKEN_T__32);
-          state = 89;
+          state = 91;
+          match(TOKEN_T__34);
+          state = 92;
           numericExpr(0);
-          state = 90;
+          state = 93;
           match(TOKEN_T__4);
           break;
         case TOKEN_NumericLitteral:
           _localctx = LitteralNumericExprContext(_localctx);
           context = _localctx;
           _prevctx = _localctx;
-          state = 92;
+          state = 95;
           match(TOKEN_NumericLitteral);
           break;
         case TOKEN_ID:
           _localctx = NumericVariableContext(_localctx);
           context = _localctx;
           _prevctx = _localctx;
-          state = 93;
+          state = 96;
           match(TOKEN_ID);
           break;
-        case TOKEN_T__16:
-        case TOKEN_T__17:
         case TOKEN_T__18:
         case TOKEN_T__19:
         case TOKEN_T__20:
         case TOKEN_T__21:
         case TOKEN_T__22:
         case TOKEN_T__23:
+        case TOKEN_T__24:
+        case TOKEN_T__25:
           _localctx = FileConstantNumericExprContext(_localctx);
           context = _localctx;
           _prevctx = _localctx;
-          state = 94;
+          state = 97;
           fileConstant();
           break;
-        case TOKEN_T__24:
-        case TOKEN_T__25:
         case TOKEN_T__26:
         case TOKEN_T__27:
         case TOKEN_T__28:
         case TOKEN_T__29:
         case TOKEN_T__30:
         case TOKEN_T__31:
+        case TOKEN_T__32:
+        case TOKEN_T__33:
           _localctx = RankConstantNumericExprContext(_localctx);
           context = _localctx;
           _prevctx = _localctx;
-          state = 95;
+          state = 98;
           rankConstant();
           break;
         default:
           throw NoViableAltException(this);
       }
       context!.stop = tokenStream.LT(-1);
-      state = 106;
+      state = 109;
       errorHandler.sync(this);
       _alt = interpreter!.adaptivePredict(tokenStream, 7, context);
       while (_alt != 2 && _alt != ATN.INVALID_ALT_NUMBER) {
         if (_alt == 1) {
           if (parseListeners != null) triggerExitRuleEvent();
           _prevctx = _localctx;
-          state = 104;
+          state = 107;
           errorHandler.sync(this);
           switch (interpreter!.adaptivePredict(tokenStream, 6, context)) {
             case 1:
               _localctx = ModuloNumericExprContext(
                   NumericExprContext(_parentctx, _parentState));
               pushNewRecursionContext(_localctx, _startState, RULE_numericExpr);
-              state = 98;
+              state = 101;
               if (!(precpred(context, 6))) {
                 throw FailedPredicateException(this, "precpred(context, 6)");
               }
-              state = 99;
-              match(TOKEN_T__33);
-              state = 100;
+              state = 102;
+              match(TOKEN_T__35);
+              state = 103;
               numericExpr(7);
               break;
             case 2:
               _localctx = PlusMinusNumericExprContext(
                   NumericExprContext(_parentctx, _parentState));
               pushNewRecursionContext(_localctx, _startState, RULE_numericExpr);
-              state = 101;
+              state = 104;
               if (!(precpred(context, 5))) {
                 throw FailedPredicateException(this, "precpred(context, 5)");
               }
-              state = 102;
+              state = 105;
               _localctx.op = tokenStream.LT(1);
               _la = tokenStream.LA(1)!;
-              if (!(_la == TOKEN_T__34 || _la == TOKEN_T__35)) {
+              if (!(_la == TOKEN_T__36 || _la == TOKEN_T__37)) {
                 _localctx.op = errorHandler.recoverInline(this);
               } else {
                 if (tokenStream.LA(1)! == IntStream.EOF) matchedEOF = true;
                 errorHandler.reportMatch(this);
                 consume();
               }
-              state = 103;
+              state = 106;
               numericExpr(6);
               break;
           }
         }
-        state = 108;
+        state = 111;
         errorHandler.sync(this);
         _alt = interpreter!.adaptivePredict(tokenStream, 7, context);
       }
@@ -641,8 +668,10 @@ class ScriptLanguageParser extends Parser {
   bool _booleanExpr_sempred(dynamic _localctx, int predIndex) {
     switch (predIndex) {
       case 0:
-        return precpred(context, 2);
+        return precpred(context, 3);
       case 1:
+        return precpred(context, 2);
+      case 2:
         return precpred(context, 1);
     }
     return true;
@@ -650,9 +679,9 @@ class ScriptLanguageParser extends Parser {
 
   bool _numericExpr_sempred(dynamic _localctx, int predIndex) {
     switch (predIndex) {
-      case 2:
-        return precpred(context, 6);
       case 3:
+        return precpred(context, 6);
+      case 4:
         return precpred(context, 5);
     }
     return true;
@@ -661,8 +690,8 @@ class ScriptLanguageParser extends Parser {
   static const List<int> _serializedATN = [
     4,
     1,
-    41,
-    110,
+    43,
+    113,
     2,
     0,
     7,
@@ -801,16 +830,22 @@ class ScriptLanguageParser extends Parser {
     3,
     1,
     3,
+    1,
+    3,
+    1,
+    3,
+    1,
+    3,
     5,
     3,
-    68,
+    71,
     8,
     3,
     10,
     3,
     12,
     3,
-    71,
+    74,
     9,
     3,
     1,
@@ -863,7 +898,7 @@ class ScriptLanguageParser extends Parser {
     6,
     3,
     6,
-    97,
+    100,
     8,
     6,
     1,
@@ -880,14 +915,14 @@ class ScriptLanguageParser extends Parser {
     6,
     5,
     6,
-    105,
+    108,
     8,
     6,
     10,
     6,
     12,
     6,
-    108,
+    111,
     9,
     6,
     1,
@@ -905,7 +940,7 @@ class ScriptLanguageParser extends Parser {
     10,
     12,
     0,
-    5,
+    6,
     1,
     0,
     9,
@@ -916,17 +951,21 @@ class ScriptLanguageParser extends Parser {
     14,
     1,
     0,
-    17,
-    24,
+    15,
+    16,
     1,
     0,
-    25,
-    32,
+    19,
+    26,
     1,
     0,
-    35,
-    36,
-    118,
+    27,
+    34,
+    1,
+    0,
+    37,
+    38,
+    122,
     0,
     17,
     1,
@@ -952,19 +991,19 @@ class ScriptLanguageParser extends Parser {
     0,
     0,
     8,
-    72,
+    75,
     1,
     0,
     0,
     0,
     10,
-    74,
+    77,
     1,
     0,
     0,
     0,
     12,
-    96,
+    99,
     1,
     0,
     0,
@@ -1026,7 +1065,7 @@ class ScriptLanguageParser extends Parser {
     22,
     23,
     5,
-    38,
+    40,
     0,
     0,
     23,
@@ -1056,7 +1095,7 @@ class ScriptLanguageParser extends Parser {
     27,
     28,
     5,
-    38,
+    40,
     0,
     0,
     28,
@@ -1190,7 +1229,7 @@ class ScriptLanguageParser extends Parser {
     3,
     6,
     3,
-    6,
+    7,
     49,
     60,
     1,
@@ -1200,7 +1239,7 @@ class ScriptLanguageParser extends Parser {
     50,
     60,
     5,
-    38,
+    40,
     0,
     0,
     51,
@@ -1282,7 +1321,7 @@ class ScriptLanguageParser extends Parser {
     0,
     0,
     60,
-    69,
+    72,
     1,
     0,
     0,
@@ -1290,181 +1329,187 @@ class ScriptLanguageParser extends Parser {
     61,
     62,
     10,
-    2,
+    3,
     0,
     0,
     62,
     63,
-    5,
-    15,
-    0,
-    0,
-    63,
-    68,
-    3,
-    6,
-    3,
-    3,
-    64,
-    65,
-    10,
-    1,
-    0,
-    0,
-    65,
-    66,
-    5,
-    16,
-    0,
-    0,
-    66,
-    68,
-    3,
-    6,
-    3,
-    2,
-    67,
-    61,
-    1,
-    0,
-    0,
-    0,
-    67,
-    64,
-    1,
-    0,
-    0,
-    0,
-    68,
-    71,
-    1,
-    0,
-    0,
-    0,
-    69,
-    67,
-    1,
-    0,
-    0,
-    0,
-    69,
-    70,
-    1,
-    0,
-    0,
-    0,
-    70,
     7,
+    2,
+    0,
+    0,
+    63,
+    71,
+    3,
+    6,
+    3,
+    4,
+    64,
+    65,
+    10,
+    2,
+    0,
+    0,
+    65,
+    66,
+    5,
+    17,
+    0,
+    0,
+    66,
+    71,
+    3,
+    6,
+    3,
+    3,
+    67,
+    68,
+    10,
+    1,
+    0,
+    0,
+    68,
+    69,
+    5,
+    18,
+    0,
+    0,
+    69,
+    71,
+    3,
+    6,
+    3,
+    2,
+    70,
+    61,
+    1,
+    0,
+    0,
+    0,
+    70,
+    64,
+    1,
+    0,
+    0,
+    0,
+    70,
+    67,
     1,
     0,
     0,
     0,
     71,
-    69,
+    74,
+    1,
+    0,
+    0,
+    0,
+    72,
+    70,
     1,
     0,
     0,
     0,
     72,
     73,
-    7,
-    2,
+    1,
+    0,
     0,
     0,
     73,
-    9,
+    7,
     1,
     0,
     0,
     0,
     74,
+    72,
+    1,
+    0,
+    0,
+    0,
     75,
+    76,
     7,
     3,
     0,
     0,
-    75,
+    76,
+    9,
+    1,
+    0,
+    0,
+    0,
+    77,
+    78,
+    7,
+    4,
+    0,
+    0,
+    78,
     11,
     1,
     0,
     0,
     0,
-    76,
-    77,
+    79,
+    80,
     6,
     6,
     -1,
     0,
-    77,
-    78,
+    80,
+    81,
     5,
     4,
     0,
     0,
-    78,
-    79,
+    81,
+    82,
     3,
     12,
     6,
     0,
-    79,
-    80,
+    82,
+    83,
     5,
     5,
     0,
     0,
-    80,
-    97,
+    83,
+    100,
     1,
     0,
     0,
     0,
-    81,
-    82,
+    84,
+    85,
     5,
     6,
     0,
     0,
-    82,
-    83,
+    85,
+    86,
     3,
     6,
     3,
     0,
-    83,
-    84,
+    86,
+    87,
     5,
     7,
     0,
     0,
-    84,
-    85,
+    87,
+    88,
     3,
     12,
     6,
-    0,
-    85,
-    86,
-    5,
-    8,
-    0,
-    0,
-    86,
-    87,
-    3,
-    12,
-    6,
-    8,
-    87,
-    97,
-    1,
-    0,
-    0,
     0,
     88,
     89,
     5,
-    33,
+    8,
     0,
     0,
     89,
@@ -1472,165 +1517,183 @@ class ScriptLanguageParser extends Parser {
     3,
     12,
     6,
-    0,
+    8,
     90,
-    91,
-    5,
-    5,
-    0,
-    0,
-    91,
-    97,
+    100,
     1,
     0,
     0,
     0,
+    91,
     92,
-    97,
     5,
-    37,
+    35,
     0,
+    0,
+    92,
+    93,
+    3,
+    12,
+    6,
     0,
     93,
-    97,
+    94,
     5,
-    38,
+    5,
     0,
     0,
     94,
+    100,
+    1,
+    0,
+    0,
+    0,
+    95,
+    100,
+    5,
+    39,
+    0,
+    0,
+    96,
+    100,
+    5,
+    40,
+    0,
+    0,
     97,
+    100,
     3,
     8,
     4,
     0,
-    95,
-    97,
+    98,
+    100,
     3,
     10,
     5,
     0,
-    96,
-    76,
+    99,
+    79,
     1,
     0,
     0,
     0,
-    96,
-    81,
+    99,
+    84,
     1,
     0,
     0,
     0,
-    96,
-    88,
+    99,
+    91,
     1,
     0,
     0,
     0,
-    96,
-    92,
-    1,
-    0,
-    0,
-    0,
-    96,
-    93,
-    1,
-    0,
-    0,
-    0,
-    96,
-    94,
-    1,
-    0,
-    0,
-    0,
-    96,
+    99,
     95,
     1,
     0,
     0,
     0,
+    99,
+    96,
+    1,
+    0,
+    0,
+    0,
+    99,
     97,
-    106,
     1,
     0,
     0,
     0,
-    98,
     99,
-    10,
-    6,
-    0,
-    0,
-    99,
-    100,
-    5,
-    34,
-    0,
-    0,
-    100,
-    105,
-    3,
-    12,
-    6,
-    7,
-    101,
-    102,
-    10,
-    5,
-    0,
-    0,
-    102,
-    103,
-    7,
-    4,
-    0,
-    0,
-    103,
-    105,
-    3,
-    12,
-    6,
-    6,
-    104,
     98,
     1,
     0,
     0,
     0,
-    104,
-    101,
+    100,
+    109,
     1,
     0,
     0,
     0,
-    105,
+    101,
+    102,
+    10,
+    6,
+    0,
+    0,
+    102,
+    103,
+    5,
+    36,
+    0,
+    0,
+    103,
     108,
+    3,
+    12,
+    6,
+    7,
+    104,
+    105,
+    10,
+    5,
+    0,
+    0,
+    105,
+    106,
+    7,
+    5,
+    0,
+    0,
+    106,
+    108,
+    3,
+    12,
+    6,
+    6,
+    107,
+    101,
     1,
     0,
     0,
     0,
-    106,
+    107,
     104,
     1,
     0,
     0,
     0,
-    106,
+    108,
+    111,
+    1,
+    0,
+    0,
+    0,
+    109,
     107,
     1,
     0,
     0,
     0,
-    107,
+    109,
+    110,
+    1,
+    0,
+    0,
+    0,
+    110,
     13,
     1,
     0,
     0,
     0,
-    108,
-    106,
+    111,
+    109,
     1,
     0,
     0,
@@ -1639,11 +1702,11 @@ class ScriptLanguageParser extends Parser {
     17,
     32,
     59,
-    67,
-    69,
-    96,
-    104,
-    106
+    70,
+    72,
+    99,
+    107,
+    109
   ];
 
   static final ATN _ATN = ATNDeserializer().deserialize(_serializedATN);
@@ -1762,6 +1825,25 @@ class BooleanAssignContext extends VariableAssignContext {
   T? accept<T>(ParseTreeVisitor<T> visitor) {
     if (visitor is ScriptLanguageVisitor<T>) {
       return visitor.visitBooleanAssign(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+
+class BooleanEqualityContext extends BooleanExprContext {
+  Token? op;
+  List<BooleanExprContext> booleanExprs() =>
+      getRuleContexts<BooleanExprContext>();
+  BooleanExprContext? booleanExpr(int i) =>
+      getRuleContext<BooleanExprContext>(i);
+  BooleanEqualityContext(BooleanExprContext ctx) {
+    copyFrom(ctx);
+  }
+  @override
+  T? accept<T>(ParseTreeVisitor<T> visitor) {
+    if (visitor is ScriptLanguageVisitor<T>) {
+      return visitor.visitBooleanEquality(this);
     } else {
       return visitor.visitChildren(this);
     }

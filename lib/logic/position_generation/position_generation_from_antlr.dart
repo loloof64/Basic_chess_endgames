@@ -355,7 +355,8 @@ class PositionGeneratorFromAntlr {
           // If for any previous piece of same kind, mutual constraint is not respected, will loop another time
           final currentPieceMutualConstraint = _allConstraints
               .otherPiecesMutualConstraints[pieceCountConstraint.pieceKind];
-          if (savedCoordinates.any((coordinate) {
+          final mutualConstraintsRespected =
+              savedCoordinates.every((coordinate) {
             final otherPieceMutualConstraintIntValues = <String, int>{
               "firstPieceFile": coordinate.file,
               "firstPieceRank": coordinate.rank,
@@ -370,8 +371,10 @@ class PositionGeneratorFromAntlr {
                         otherPieceMutualConstraintIntValues,
                         commonOtherPiecesConstraintBooleanValues,
                       );
-            return !positionRespectCurrentPieceMutualConstraint;
-          })) continue;
+            return positionRespectCurrentPieceMutualConstraint;
+          });
+
+          if (!mutualConstraintsRespected) continue;
 
           currentPosition =
               chess.Chess.fromFEN(tempPosition, check_validity: false);

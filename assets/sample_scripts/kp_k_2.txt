@@ -1,13 +1,13 @@
 # player king
 
-isRightRank := rank = if playerHasWhite then Rank1 else Rank8;
+isRightRank := rank == if playerHasWhite then Rank1 else Rank8;
 return isRightRank;
 
 @@@@@@
 
 # computer king
 
-isRightRank := rank = if playerHasWhite then Rank4 else Rank5;
+isRightRank := rank == if playerHasWhite then Rank4 else Rank5;
 return isRightRank;
 
 @@@@@@
@@ -33,7 +33,7 @@ isRightRankInCasePlayerHasWhite := (rank >= Rank3) and (rank <= Rank5);
 isRightRankInCasePlayerHasBlack := (rank >= Rank4) and (rank <= Rank6);
 
 isRightRank := if playerHasWhite then isRightRankInCasePlayerHasWhite else isRightRankInCasePlayerHasBlack;
-isRightFile := file = playerKingFile;
+isRightFile := file == playerKingFile;
 
 return isRightFile and isRightRank;
 

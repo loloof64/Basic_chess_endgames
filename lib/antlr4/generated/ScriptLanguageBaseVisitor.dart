@@ -36,6 +36,11 @@ class ScriptLanguageBaseVisitor<T> extends ParseTreeVisitor<T>
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
+  T? visitBooleanEquality(BooleanEqualityContext ctx) => visitChildren(ctx);
+
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
   T? visitNumericEquality(NumericEqualityContext ctx) => visitChildren(ctx);
 
   /// The default implementation returns the result of calling

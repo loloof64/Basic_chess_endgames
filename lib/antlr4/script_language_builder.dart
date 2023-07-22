@@ -172,8 +172,21 @@ class ScriptLanguageBuilder
     final op = ctx.op!.text!.toString();
 
     return switch (op) {
-      "=" => EqualToScriptLanguageBooleanExpr(left, right),
-      "<>" => NotEqualToScriptLanguageBooleanExpr(left, right),
+      "==" => NumericEqualToScriptLanguageBooleanExpr(left, right),
+      "!=" => NumericNotEqualToScriptLanguageBooleanExpr(left, right),
+      _ => throw Exception("Unknown operator $op"),
+    };
+  }
+
+  @override
+  ScriptLanguageGenericExpr? visitBooleanEquality(BooleanEqualityContext ctx) {
+    final left = visit(ctx.booleanExpr(0)!) as ScriptLanguageBooleanExpr;
+    final right = visit(ctx.booleanExpr(1)!) as ScriptLanguageBooleanExpr;
+    final op = ctx.op!.text!.toString();
+
+    return switch (op) {
+      "<==>" => BooleanEqualToScriptLanguageBooleanExpr(left, right),
+      "<!=>" => BooleanNotEqualToScriptLanguageBooleanExpr(left, right),
       _ => throw Exception("Unknown operator $op"),
     };
   }

@@ -12,7 +12,8 @@ booleanExpr: '(' booleanExpr ')'                                                
             | 'if' booleanExpr  'then'  booleanExpr  'else'  booleanExpr                      #conditionalBooleanExpr
             | ID                                                                              #booleanVariable
             | numericExpr op=('<'|'>'|'<='|'>=') numericExpr                                  #numericRelational
-            | numericExpr op=('='|'<>') numericExpr                                           #numericEquality
+            | numericExpr op=('=='|'!=') numericExpr                                          #numericEquality
+            | booleanExpr op=('<==>'|'<!=>') booleanExpr                                      #booleanEquality
             | booleanExpr 'and' booleanExpr                                                   #andComparison
             | booleanExpr 'or' booleanExpr                                                    #orComparison
             ;

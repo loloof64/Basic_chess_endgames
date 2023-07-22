@@ -32,6 +32,12 @@ abstract class ScriptLanguageVisitor<T> extends ParseTreeVisitor<T> {
   /// Return the visitor result.
   T? visitTerminalExpr(TerminalExprContext ctx);
 
+  /// Visit a parse tree produced by the {@code booleanEquality}
+  /// labeled alternative in {@link ScriptLanguageParser#booleanExpr}.
+  /// [ctx] the parse tree.
+  /// Return the visitor result.
+  T? visitBooleanEquality(BooleanEqualityContext ctx);
+
   /// Visit a parse tree produced by the {@code numericEquality}
   /// labeled alternative in {@link ScriptLanguageParser#booleanExpr}.
   /// [ctx] the parse tree.
