@@ -268,7 +268,7 @@ int evaluateIntExpression(
         expression,
         intVariablesValues,
         boolVariablesValues,
-      ),
+      ).abs(),
     LiteralScriptLanguageNumericExpr(value: var value) => value,
     VariableScriptLanguageNumericExpr(name: var name) =>
       intVariablesValues.containsKey(name)

@@ -1,5 +1,6 @@
 # player king
 
+// player's king must be on its first rank
 isRightRank := rank == if playerHasWhite then Rank1 else Rank8;
 return isRightRank;
 
@@ -7,6 +8,7 @@ return isRightRank;
 
 # computer king
 
+// computer king must be on its fifth's rank
 isRightRank := rank == if playerHasWhite then Rank4 else Rank5;
 return isRightRank;
 
@@ -14,6 +16,7 @@ return isRightRank;
 
 # kings mutual constraint
 
+// kings must be close in terms of columns
 kingsAreOnNeighboursColumns := abs(playerKingFile - computerKingFile) <= 1;
 return kingsAreOnNeighboursColumns;
 

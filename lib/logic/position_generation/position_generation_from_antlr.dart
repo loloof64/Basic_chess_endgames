@@ -5,11 +5,18 @@ import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.da
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:chess/chess.dart' as chess;
 
+const int maxOtherPiecesPlacementTries = 50;
+const int maxOverallTries = 50;
+
+const int boardCellsCount = 64;
+
 class _BoardCoordinate {
   final int file;
   final int rank;
 
   _BoardCoordinate(this.file, this.rank);
+
+  int toCellCode() => file + 8 * rank;
 
   String toUciString() {
     final fileString = String.fromCharCode('a'.codeUnitAt(0) + file);
@@ -77,8 +84,6 @@ class PositionGeneratorConstraintsScripts {
   });
 }
 
-const int maxLoopsForSinglePiecePlacement = 50;
-const int maxOtherPiecesPlacementTries = 50;
 final noConstraint = PositionGeneratorConstraintsExpr(
   playerKingConstraint: null,
   computerKingConstraint: null,
@@ -138,22 +143,30 @@ class PositionGeneratorFromAntlr {
   // can throw
   // PositionGenerationLoopException
   String generatePosition() {
-    _playerKingCell = defaultBoardCoordinate;
-    _computerKingCell = defaultBoardCoordinate;
-
-    final playerHasWhite = _randomNumberGenerator.nextBool();
-    final startFen = "8/8/8/8/8/8/8/8 ${playerHasWhite ? 'w' : 'b'} - - 0 1";
-    final positionWithPlayerKing =
-        _placePlayerKingInPosition(startFen, playerHasWhite);
-    final positionWithComputerKing =
-        _placeComputerKingInPosition(positionWithPlayerKing, playerHasWhite);
     String? finalPosition;
-    for (var attemptIndex = 0;
-        attemptIndex < maxOtherPiecesPlacementTries;
-        attemptIndex++) {
-      finalPosition =
-          _placeOtherPiecesInPosition(positionWithComputerKing, playerHasWhite);
-      if (finalPosition != null) break;
+
+    for (int overallTries = 0; overallTries < maxOverallTries; overallTries++) {
+      try {
+        _playerKingCell = defaultBoardCoordinate;
+        _computerKingCell = defaultBoardCoordinate;
+
+        final playerHasWhite = _randomNumberGenerator.nextBool();
+        final startFen =
+            "8/8/8/8/8/8/8/8 ${playerHasWhite ? 'w' : 'b'} - - 0 1";
+        final positionWithPlayerKing =
+            _placePlayerKingInPosition(startFen, playerHasWhite);
+        final positionWithComputerKing = _placeComputerKingInPosition(
+            positionWithPlayerKing, playerHasWhite);
+        for (var attemptIndex = 0;
+            attemptIndex < maxOtherPiecesPlacementTries;
+            attemptIndex++) {
+          finalPosition = _placeOtherPiecesInPosition(
+              positionWithComputerKing, playerHasWhite);
+          if (finalPosition != null) break;
+        }
+      } on Exception {
+        // at least we let the algorithm retry from scratch
+      }
     }
 
     if (finalPosition == null) {
@@ -170,17 +183,22 @@ class PositionGeneratorFromAntlr {
       playerHasWhite ? chess.Color.WHITE : chess.Color.BLACK,
     );
 
-    for (var tryNumber = 0;
-        tryNumber < maxLoopsForSinglePiecePlacement;
-        tryNumber++) {
-      final kingCell = _generateCell();
+    Set<int> remainingCellsToTry = <int>{};
+    for (var i = 0; i < boardCellsCount; i++) {
+      remainingCellsToTry.add(i);
+    }
+    for (var tryNumber = 0; tryNumber < boardCellsCount; tryNumber++) {
+      final kingCell = _generateCell(remainingCellsToTry);
       final builtPosition =
           _addPieceToPositionOrReturnNullIfCellAlreadyOccupied(
         startFen,
         kingPiece,
         kingCell,
       );
-      if (builtPosition == null) continue;
+      if (builtPosition == null) {
+        remainingCellsToTry.remove(kingCell.toCellCode());
+        continue;
+      }
       if (_allConstraints.playerKingConstraint != null) {
         final intValues = <String, int>{
           "file": kingCell.file,
@@ -197,6 +215,8 @@ class PositionGeneratorFromAntlr {
         if (playerKingConstraintRespected) {
           _playerKingCell = kingCell;
           return builtPosition;
+        } else {
+          remainingCellsToTry.remove(kingCell.toCellCode());
         }
       } else {
         _playerKingCell = kingCell;
@@ -204,8 +224,7 @@ class PositionGeneratorFromAntlr {
       }
     }
 
-    throw PositionGenerationLoopException(
-        message: "Failed to place player king !");
+    throw Exception("Failed to place player king !");
   }
 
   String _placeComputerKingInPosition(String startFen, bool playerHasWhite) {
@@ -214,10 +233,12 @@ class PositionGeneratorFromAntlr {
       playerHasWhite ? chess.Color.BLACK : chess.Color.WHITE,
     );
 
-    for (var tryNumber = 0;
-        tryNumber < maxLoopsForSinglePiecePlacement;
-        tryNumber++) {
-      final kingCell = _generateCell();
+    Set<int> remainingCellsToTry = <int>{};
+    for (var i = 0; i < boardCellsCount; i++) {
+      remainingCellsToTry.add(i);
+    }
+    for (var tryNumber = 0; tryNumber < boardCellsCount; tryNumber++) {
+      final kingCell = _generateCell(remainingCellsToTry);
       final builtPosition =
           _addPieceToPositionOrReturnNullIfCellAlreadyOccupied(
         startFen,
@@ -225,9 +246,15 @@ class PositionGeneratorFromAntlr {
         kingCell,
       );
 
-      if (builtPosition == null) continue;
+      if (builtPosition == null) {
+        remainingCellsToTry.remove(kingCell.toCellCode());
+        continue;
+      }
       final validationResult = chess.Chess.validate_fen(builtPosition);
-      if (!validationResult['valid']) continue;
+      if (!validationResult['valid']) {
+        remainingCellsToTry.remove(kingCell.toCellCode());
+        continue;
+      }
 
       if (_allConstraints.computerKingConstraint != null) {
         final computerKingConstraintIntValues = <String, int>{
@@ -242,13 +269,16 @@ class PositionGeneratorFromAntlr {
           computerKingConstraintIntValues,
           computerKingConstraintBooleanValues,
         );
-        if (!computerKingConstraintRespected) continue;
+        if (!computerKingConstraintRespected) {
+          remainingCellsToTry.remove(kingCell.toCellCode());
+          continue;
+        }
         if (_allConstraints.kingsMutualConstraint != null) {
           final kingsMutualConstraintIntValues = <String, int>{
             "playerKingFile": _playerKingCell.file,
             "playerKingRank": _playerKingCell.rank,
-            "computerKingFile": _computerKingCell.file,
-            "computerKingRank": _computerKingCell.rank,
+            "computerKingFile": kingCell.file,
+            "computerKingRank": kingCell.rank,
           };
           final kingsMutualConstraintBooleanValues = <String, bool>{
             "playerHasWhite": playerHasWhite,
@@ -258,7 +288,10 @@ class PositionGeneratorFromAntlr {
             kingsMutualConstraintIntValues,
             kingsMutualConstraintBooleanValues,
           );
-          if (!kingsMutualConstraintRespected) continue;
+          if (!kingsMutualConstraintRespected) {
+            remainingCellsToTry.remove(kingCell.toCellCode());
+            continue;
+          }
           _computerKingCell = kingCell;
           return builtPosition;
         } else {
@@ -271,8 +304,7 @@ class PositionGeneratorFromAntlr {
       }
     }
 
-    throw PositionGenerationLoopException(
-        message: "Failed to place computer king !");
+    throw Exception("Failed to place computer king !");
   }
 
   String? _placeOtherPiecesInPosition(
@@ -290,8 +322,12 @@ class PositionGeneratorFromAntlr {
           constraintIndex < pieceCountConstraint.count;
           constraintIndex++) {
         var loopSuccess = false;
+        Set<int> remainingCellsToTry = <int>{};
+        for (var i = 0; i < boardCellsCount; i++) {
+          remainingCellsToTry.add(i);
+        }
         for (var attemptIndex = 0;
-            attemptIndex < maxLoopsForSinglePiecePlacement;
+            attemptIndex < boardCellsCount;
             attemptIndex++) {
           final isAPieceOfPlayer =
               pieceCountConstraint.pieceKind.side == Side.player;
@@ -299,7 +335,7 @@ class PositionGeneratorFromAntlr {
           final computerHasWhite = !playerHasWhite;
           final mustBeWhitePiece = (isAPieceOfPlayer && playerHasWhite) ||
               (isAPieceOfComputer && computerHasWhite);
-          final pieceCoordinates = _generateCell();
+          final pieceCoordinates = _generateCell(remainingCellsToTry);
           final tempPosition =
               _addPieceToPositionOrReturnNullIfCellAlreadyOccupied(
             currentPosition.fen,
@@ -308,7 +344,15 @@ class PositionGeneratorFromAntlr {
             pieceCoordinates,
           );
 
-          if (tempPosition == null) continue;
+          if (tempPosition == null) {
+            remainingCellsToTry.remove(pieceCoordinates.toCellCode());
+            continue;
+          }
+
+          //////////////////////////
+          print(
+              "@${attemptIndex + 1} [${pieceCountConstraint.pieceKind.toEasyString()}] $tempPosition");
+          //////////////////////////
 
           final commonOtherPiecesConstraintBooleanValues = <String, bool>{
             "playerHasWhite": playerHasWhite,
@@ -333,7 +377,10 @@ class PositionGeneratorFromAntlr {
                       otherPiecesGlobalConstraintIntValues,
                       commonOtherPiecesConstraintBooleanValues,
                     );
-          if (!positionRespectCurrentPieceGlobalConstraint) continue;
+          if (!positionRespectCurrentPieceGlobalConstraint) {
+            remainingCellsToTry.remove(pieceCoordinates.toCellCode());
+            continue;
+          }
 
           final otherPieceIndexedConstraintIntValues = <String, int>{
             "file": pieceCoordinates.file,
@@ -350,7 +397,10 @@ class PositionGeneratorFromAntlr {
                       otherPieceIndexedConstraintIntValues,
                       commonOtherPiecesConstraintBooleanValues,
                     );
-          if (!positionRespectCurrentPieceIndexedConstraint) continue;
+          if (!positionRespectCurrentPieceIndexedConstraint) {
+            remainingCellsToTry.remove(pieceCoordinates.toCellCode());
+            continue;
+          }
 
           // If for any previous piece of same kind, mutual constraint is not respected, will loop another time
           final currentPieceMutualConstraint = _allConstraints
@@ -374,7 +424,10 @@ class PositionGeneratorFromAntlr {
             return positionRespectCurrentPieceMutualConstraint;
           });
 
-          if (!mutualConstraintsRespected) continue;
+          if (!mutualConstraintsRespected) {
+            remainingCellsToTry.remove(pieceCoordinates.toCellCode());
+            continue;
+          }
 
           currentPosition =
               chess.Chess.fromFEN(tempPosition, check_validity: false);
@@ -406,9 +459,16 @@ class PositionGeneratorFromAntlr {
     return builtPosition.fen;
   }
 
-  _BoardCoordinate _generateCell() {
-    final file = _randomNumberGenerator.nextInt(8);
-    final rank = _randomNumberGenerator.nextInt(8);
+  _BoardCoordinate _generateCell(Set<int> remainingCellsToTry) {
+    int cellCode;
+    int file;
+    int rank;
+    do {
+      file = _randomNumberGenerator.nextInt(8);
+      rank = _randomNumberGenerator.nextInt(8);
+
+      cellCode = file + 8 * rank;
+    } while (!remainingCellsToTry.contains(cellCode));
 
     return _BoardCoordinate(file, rank);
   }

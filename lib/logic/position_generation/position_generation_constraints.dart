@@ -39,6 +39,10 @@ class PieceKind extends Equatable {
       _ => throw Exception('not a recognized piece kind variant : $line')
     };
   }
+
+  String toEasyString() {
+    return "${side.runtimeType.toString()} ${pieceType.runtimeType.toString()}";
+  }
 }
 
 class PieceKindCount extends Equatable {

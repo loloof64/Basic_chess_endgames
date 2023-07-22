@@ -12,7 +12,7 @@ return isRightRank and fileInRightColumn;
 
 # computer king
 
-/* rank must be the player's eight rank */
+/* computer king must be the player's eight rank */
 return rank == (if playerHasWhite then Rank8 else Rank1);
 
 @@@@@@
