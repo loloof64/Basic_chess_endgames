@@ -210,5 +210,9 @@
     "sampleScript_kpppKppp": "King + 3 Pawns Vs King + 3 Pawns",
     "@sampleScript_kpppKppp": {
         "description": "Label for the sample script kppp_kppp"
+    },
+    "sampleScript_rookEndingLucena": "Lucena rook ending",
+    "@sampleScript_rookEndingLucena": {
+        "description": "Label for the sample Lucenal rook ending"
     }
 }

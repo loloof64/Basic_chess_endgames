@@ -1,0 +1,57 @@
+# player king
+
+isOnRightFile := (file >= FileB) and (file <= FileG);
+isOnRightRank := rank == (numIf playerHasWhite then Rank8 else Rank1);
+return isOnRightFile and isOnRightRank;
+
+@@@@@@
+
+# computer king
+
+kingOnComputerSecondRank := boolIf playerHasWhite then (rank == Rank7) else (rank == Rank2);
+return kingOnComputerSecondRank;
+
+@@@@@@
+
+# kings mutual constraint
+
+kingOnLongSide := boolIf (playerKingFile <= FileD) then (computerKingFile == (playerKingFile + 2)) else (computerKingFile == (playerKingFile - 2));
+return kingOnLongSide;
+
+@@@@@@
+
+# other pieces count
+
+player pawn : 1
+player rook : 1
+computer rook : 1
+
+@@@@@@
+
+# other pieces global constraint
+
+[player pawn]
+
+return (file == playerKingFile) and (rank == (numIf playerHasWhite then Rank7 else Rank2));
+
+---
+
+[player rook]
+
+isRightFile := file == (numIf (playerKingFile <= FileD) then (playerKingFile + 1) else (playerKingFile - 1));
+isRightRank := rank == (numIf playerHasWhite then Rank1 else Rank8);
+return isRightFile and isRightRank;
+
+---
+
+[computer rook]
+
+isOnShortSide := boolIf (playerKingFile <= FileD) then (file < playerKingFile) else (file > playerKingFile);
+isOnComputerSeventhRank := boolIf playerHasWhite then (rank == Rank2) else (rank == Rank7);
+return isOnShortSide and isOnComputerSeventhRank;
+
+@@@@@@
+
+# goal
+
+win
