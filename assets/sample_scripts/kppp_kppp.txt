@@ -1,13 +1,13 @@
 # player king
 
-isRightRank := numIf playerHasWhite then Rank1 else Rank8;
+isRightRank := rank == numIf playerHasWhite then Rank1 else Rank8;
 return isRightRank;
 
 @@@@@@
 
 # computer king
 
-isRightRank := numIf playerHasWhite then Rank1 else Rank8;
+isRightRank := rank == numIf playerHasWhite then Rank1 else Rank8;
 return isRightRank;
 
 @@@@@@
@@ -23,14 +23,14 @@ computer pawn : 3
 
 [player pawn]
 
-isRightRank := numIf playerHasWhite then Rank5 else Rank4;
+isRightRank := rank == numIf playerHasWhite then Rank5 else Rank4;
 return isRightRank;
 
 ---
 
 [computer pawn]
 
-isRightRank := numIf playerHasWhite then Rank7 else Rank2;
+isRightRank := rank == numIf playerHasWhite then Rank7 else Rank2;
 return isRightRank;
 
 @@@@@@
