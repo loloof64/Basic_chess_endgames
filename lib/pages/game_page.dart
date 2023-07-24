@@ -1,5 +1,6 @@
 import 'package:basicchessendgamestrainer/components/history.dart';
 import 'package:basicchessendgamestrainer/logic/utils.dart';
+import 'package:basicchessendgamestrainer/pages/common.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/game_page_landscape.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/game_page_portrait.dart';
 import 'package:chess_vectors_flutter/chess_vectors_flutter.dart';
@@ -635,6 +636,12 @@ class _GamePageState extends ConsumerState<GamePage> {
               onPressed: _onStopRequested,
               icon: const FaIcon(
                 FontAwesomeIcons.hand,
+              ),
+            ),
+            const IconButton(
+              onPressed: loadWebsiteHomePage,
+              icon: Icon(
+                Icons.question_mark_rounded,
               ),
             ),
           ],

@@ -1,9 +1,6 @@
+import 'package:basicchessendgamestrainer/pages/common.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-const privacyPolicyUrl = "https://basic-chess-endgames.netlify.app/privacy";
-const useConditionsUrl = "https://basic-chess-endgames.netlify.app/conditions";
 
 class RgpdModalBottomSheetContent extends StatelessWidget {
   final spacerHeight = 10.0;
@@ -37,6 +34,7 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
               height: spacerHeight,
             ),
             InkWell(
+              onTap: loadPrivacy,
               child: Text(
                 AppLocalizations.of(context)!.rgpdPrivacy,
                 style: TextStyle(
@@ -44,15 +42,12 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
                   decoration: TextDecoration.underline,
                 ),
               ),
-              onTap: () async {
-                final uri = Uri.parse(privacyPolicyUrl);
-                if (await canLaunchUrl(uri)) await launchUrl(uri);
-              },
             ),
             SizedBox(
               height: spacerHeight,
             ),
             InkWell(
+              onTap: loadUseConditions,
               child: Text(
                 AppLocalizations.of(context)!.rgpdUseConditions,
                 style: TextStyle(
@@ -60,10 +55,6 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
                   decoration: TextDecoration.underline,
                 ),
               ),
-              onTap: () async {
-                final uri = Uri.parse(useConditionsUrl);
-                if (await canLaunchUrl(uri)) await launchUrl(uri);
-              },
             ),
             ElevatedButton(
               onPressed: () {

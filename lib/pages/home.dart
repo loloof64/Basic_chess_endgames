@@ -2,6 +2,7 @@ import 'dart:isolate';
 
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
+import 'package:basicchessendgamestrainer/pages/common.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_content.dart';
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
@@ -263,6 +264,14 @@ class _HomePageState extends ConsumerState<HomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(AppLocalizations.of(context)!.homeTitle),
+        actions: const [
+          IconButton(
+            onPressed: loadWebsiteHomePage,
+            icon: Icon(
+              Icons.question_mark_rounded,
+            ),
+          ),
+        ],
       ),
       body: Stack(
         children: <Widget>[
