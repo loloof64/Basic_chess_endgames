@@ -62,6 +62,8 @@ class PortraitWidget extends StatelessWidget {
     final goalText = gameGoal == Goal.win
         ? AppLocalizations.of(context)!.gamePage_goalWin
         : AppLocalizations.of(context)!.gamePage_goalDraw;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final goalTextFontSize = screenWidth * 0.05;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -85,8 +87,9 @@ class PortraitWidget extends StatelessWidget {
         const Divider(height: gapSize),
         Text(
           goalText,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: goalTextFontSize,
           ),
         ),
         const Divider(height: gapSize),
