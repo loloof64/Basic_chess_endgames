@@ -5,8 +5,8 @@ import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.da
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:chess/chess.dart' as chess;
 
-const int maxOtherPiecesPlacementTries = 50;
-const int maxOverallTries = 50;
+const int maxOtherPiecesPlacementTries = 30;
+const int maxOverallTries = 10;
 
 const int boardCellsCount = 64;
 

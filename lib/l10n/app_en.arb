@@ -213,6 +213,10 @@
     },
     "sampleScript_rookEndingLucena": "Lucena rook ending",
     "@sampleScript_rookEndingLucena": {
-        "description": "Label for the sample Lucenal rook ending"
+        "description": "Label for the sample Lucena rook ending"
+    },
+    "sampleScript_rookEndingPhilidor": "Philidor rook ending",
+    "@sampleScript_rookEndingPhilidor": {
+        "description": "Label for the sample Philidor rook ending"
     }
 }

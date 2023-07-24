@@ -52,5 +52,6 @@
     "sampleScript_kpK1": "Rey + Peón Vs Rey (1)",
     "sampleScript_kpK2": "Rey + Peón Vs Rey (2)",
     "sampleScript_kpppKppp": "Rey + 3 Peones Vs Rey + 3 Peones",
-    "sampleScript_rookEndingLucena": "Finale de torre de Lucena"
+    "sampleScript_rookEndingLucena": "Finale de torre de Lucena",
+    "sampleScript_rookEndingPhilidor": "Finale de torre de Philidor"
 }

@@ -52,5 +52,6 @@
     "sampleScript_kpK1": "Roi + Pion Contre Roi (1)",
     "sampleScript_kpK2": "Roi + Pion Contre Roi (2)",
     "sampleScript_kpppKppp": "Roi + 3 Pions Contre Roi + 3 Pions",
-    "sampleScript_rookEndingLucena": "Finale de tour de Lucena"
+    "sampleScript_rookEndingLucena": "Finale de tour de Lucena",
+    "sampleScript_rookEndingPhilidor": "Finale de tour de Philidor"
 }

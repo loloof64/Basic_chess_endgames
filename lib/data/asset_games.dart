@@ -55,6 +55,11 @@ List<AssetGame> getAssetGames(BuildContext context) {
       assetPath: 'assets/sample_scripts/lucena_rook_ending.txt',
       label: AppLocalizations.of(context)!.sampleScript_rookEndingLucena,
       goal: Goal.win,
+    ),
+    AssetGame(
+      assetPath: 'assets/sample_scripts/philidor_rook_ending.txt',
+      label: AppLocalizations.of(context)!.sampleScript_rookEndingPhilidor,
+      goal: Goal.draw,
     )
   ];
 }
