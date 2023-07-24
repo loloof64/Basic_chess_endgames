@@ -92,11 +92,18 @@ class _HomePageState extends ConsumerState<HomePage> {
   void _showRgpdWarning() {
     showModalBottomSheet(
         isDismissible: false,
+        enableDrag: false,
         context: context,
         builder: (ctx2) {
-          return RgpdModalBottomSheetContent(
-            context: ctx2,
-            height: rgpdWarningHeight,
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.25,
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: RgpdModalBottomSheetContent(
+                context: ctx2,
+                height: rgpdWarningHeight,
+              ),
+            ),
           );
         });
   }
