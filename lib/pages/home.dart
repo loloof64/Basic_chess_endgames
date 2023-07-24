@@ -255,6 +255,22 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
+  void _loadPageWithUserAccessCheck(
+      Future<bool> Function() pageLoaderFunction) async {
+    final success = await pageLoaderFunction();
+    if (!success) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            AppLocalizations.of(context)!.no_internet_connection,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final sampleGames = getAssetGames(context);
@@ -264,10 +280,10 @@ class _HomePageState extends ConsumerState<HomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(AppLocalizations.of(context)!.homeTitle),
-        actions: const [
+        actions: [
           IconButton(
-            onPressed: loadWebsiteHomePage,
-            icon: Icon(
+            onPressed: () => _loadPageWithUserAccessCheck(loadWebsiteHomePage),
+            icon: const Icon(
               Icons.question_mark_rounded,
             ),
           ),

@@ -3,6 +3,10 @@
     "@appTitle": {
         "description": "The title of the application."
     },
+    "no_internet_connection": "Unavailable feature : you don't have an internet access !",
+    "@no_internet_connection": {
+        "description" : "Error message if user has no internet connection."
+    },
     "buttonOk": "Ok",
     "@buttonOk": {
         "description": "Label for Ok buttons"

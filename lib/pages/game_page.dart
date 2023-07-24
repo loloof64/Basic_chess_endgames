@@ -604,6 +604,21 @@ class _GamePageState extends ConsumerState<GamePage> {
         });
   }
 
+  void _loadPageWithUserAccessCheck(
+      Future<bool> Function() pageLoaderFunction) async {
+    final success = await pageLoaderFunction();
+    if (!success) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.no_internet_connection,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isPortrait =
@@ -638,9 +653,10 @@ class _GamePageState extends ConsumerState<GamePage> {
                 FontAwesomeIcons.hand,
               ),
             ),
-            const IconButton(
-              onPressed: loadWebsiteHomePage,
-              icon: Icon(
+            IconButton(
+              onPressed: () =>
+                  _loadPageWithUserAccessCheck(loadWebsiteHomePage),
+              icon: const Icon(
                 Icons.question_mark_rounded,
               ),
             ),

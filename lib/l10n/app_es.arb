@@ -1,5 +1,6 @@
 {
     "appTitle" : "Finales básicos de ajedrez",
+    "no_internet_connection": "Característica no disponible. ¡No tiene acceso a internet!",
     "buttonOk": "De acuerdo",
     "buttonCancel": "Anular",
     "buttonAccept": "Aceptar",

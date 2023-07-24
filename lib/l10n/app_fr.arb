@@ -1,5 +1,6 @@
 {
     "appTitle": "Finales d'échecs basiques",
+    "no_internet_connection": "Fonctionnalité indisponible : vous n'avez pas accès à internet !",
     "buttonOk": "D'accord",
     "buttonCancel": "Annuler",
     "buttonAccept": "Accepter",

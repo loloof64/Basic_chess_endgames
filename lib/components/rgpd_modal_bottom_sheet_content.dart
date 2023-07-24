@@ -14,6 +14,22 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
   final double height;
   final BuildContext context;
 
+  void _loadPageWithUserAccessCheck(
+      Future<bool> Function() pageLoaderFunction) async {
+    final success = await pageLoaderFunction();
+    if (!success) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            AppLocalizations.of(context)!.no_internet_connection,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,7 +50,7 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
               height: spacerHeight,
             ),
             InkWell(
-              onTap: loadPrivacy,
+              onTap: () => _loadPageWithUserAccessCheck(loadPrivacy),
               child: Text(
                 AppLocalizations.of(context)!.rgpdPrivacy,
                 style: TextStyle(
@@ -47,7 +63,7 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
               height: spacerHeight,
             ),
             InkWell(
-              onTap: loadUseConditions,
+              onTap: () => _loadPageWithUserAccessCheck(loadUseConditions),
               child: Text(
                 AppLocalizations.of(context)!.rgpdUseConditions,
                 style: TextStyle(
