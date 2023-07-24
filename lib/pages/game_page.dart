@@ -643,6 +643,7 @@ class _GamePageState extends ConsumerState<GamePage> {
               ? PortraitWidget(
                   gameInProgress: _gameInProgress,
                   positionFen: _gameLogic?.fen ?? emptyPosition,
+                  isWhiteTurn: _gameLogic?.turn == chess.Color.WHITE,
                   boardOrientation: _orientation,
                   whitePlayerType: _whitePlayerType ?? PlayerType.computer,
                   blackPlayerType: _blackPlayerType ?? PlayerType.computer,
@@ -663,6 +664,7 @@ class _GamePageState extends ConsumerState<GamePage> {
               : LandscapeWidget(
                   gameInProgress: _gameInProgress,
                   positionFen: _gameLogic?.fen ?? emptyPosition,
+                  isWhiteTurn: _gameLogic?.turn == chess.Color.WHITE,
                   boardOrientation: _orientation,
                   whitePlayerType: _whitePlayerType ?? PlayerType.computer,
                   blackPlayerType: _blackPlayerType ?? PlayerType.computer,

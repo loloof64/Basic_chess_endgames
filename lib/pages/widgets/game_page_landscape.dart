@@ -1,5 +1,6 @@
 import 'package:basicchessendgamestrainer/components/history.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/player_turn_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_chess_board/models/board_arrow.dart';
 import 'package:simple_chess_board/models/board_color.dart';
@@ -14,6 +15,7 @@ const historyFontSizeFraction = 0.09;
 class LandscapeWidget extends StatelessWidget {
   final bool gameInProgress;
   final bool engineThinking;
+  final bool isWhiteTurn;
   final String positionFen;
   final BoardColor boardOrientation;
   final PlayerType whitePlayerType;
@@ -39,6 +41,7 @@ class LandscapeWidget extends StatelessWidget {
     super.key,
     required this.gameInProgress,
     required this.engineThinking,
+    required this.isWhiteTurn,
     required this.positionFen,
     required this.boardOrientation,
     required this.whitePlayerType,
@@ -64,6 +67,7 @@ class LandscapeWidget extends StatelessWidget {
         : AppLocalizations.of(context)!.gamePage_goalDraw;
     final screenWidth = MediaQuery.of(context).size.width;
     final goalTextFontSize = screenWidth * 0.035;
+    final playerTurnSize = screenWidth * 0.035;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -89,12 +93,25 @@ class LandscapeWidget extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              Text(
-                goalText,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: goalTextFontSize,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    goalText,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: goalTextFontSize,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  PlayerTurnWidget(
+                    isWhiteTurn: isWhiteTurn,
+                    size: playerTurnSize,
+                  )
+                ],
               ),
               const Divider(
                 height: gapSize,
