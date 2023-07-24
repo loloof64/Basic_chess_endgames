@@ -71,6 +71,7 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   Isolate? _positionGenerationIsolate;
+  bool _isGeneratingPosition = false;
 
   @override
   void initState() {
@@ -107,6 +108,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     if (!mounted) return;
 
     final localizations = AppLocalizations.of(context)!;
+
+    setState(() {
+      _isGeneratingPosition = true;
+    });
 
     _positionGenerationIsolate = await Isolate.spawn(
       generatePositionFromScript,
@@ -151,6 +156,10 @@ class _HomePageState extends ConsumerState<HomePage> {
       _positionGenerationIsolate?.kill(
         priority: Isolate.immediate,
       );
+
+      setState(() {
+        _isGeneratingPosition = false;
+      });
 
       final (newPosition, errors) =
           message as (String?, List<PositionGenerationError>);
@@ -248,57 +257,68 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final sampleGames = getAssetGames(context);
+    final progressBarSize = MediaQuery.of(context).size.shortestSide * 0.80;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(AppLocalizations.of(context)!.homeTitle),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(
-              height: mainListItemsGap,
+      body: Stack(
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(
+                height: mainListItemsGap,
+              ),
+              Expanded(
+                child: ListView.builder(
+                    itemCount: sampleGames.length,
+                    itemBuilder: (ctx2, index) {
+                      final game = sampleGames[index];
+
+                      final leadingImage = game.goal == Goal.draw
+                          ? SvgPicture.asset(
+                              'assets/images/handshake.svg',
+                              fit: BoxFit.cover,
+                              width: leadingImagesSize,
+                              height: leadingImagesSize,
+                            )
+                          : SvgPicture.asset(
+                              'assets/images/trophy.svg',
+                              fit: BoxFit.cover,
+                              width: leadingImagesSize,
+                              height: leadingImagesSize,
+                            );
+
+                      final title = Text(
+                        game.label,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: titlesFontSize,
+                        ),
+                      );
+
+                      return ListTile(
+                        leading: leadingImage,
+                        title: title,
+                        onTap: () =>
+                            _tryGeneratingAndPlayingPositionFromSample(game),
+                      );
+                    }),
+              ),
+            ],
+          ),
+          if (_isGeneratingPosition)
+            Center(
+              child: SizedBox(
+                width: progressBarSize,
+                height: progressBarSize,
+                child: const CircularProgressIndicator(),
+              ),
             ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: sampleGames.length,
-                  itemBuilder: (ctx2, index) {
-                    final game = sampleGames[index];
-
-                    final leadingImage = game.goal == Goal.draw
-                        ? SvgPicture.asset(
-                            'assets/images/handshake.svg',
-                            fit: BoxFit.cover,
-                            width: leadingImagesSize,
-                            height: leadingImagesSize,
-                          )
-                        : SvgPicture.asset(
-                            'assets/images/trophy.svg',
-                            fit: BoxFit.cover,
-                            width: leadingImagesSize,
-                            height: leadingImagesSize,
-                          );
-
-                    final title = Text(
-                      game.label,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: titlesFontSize,
-                      ),
-                    );
-
-                    return ListTile(
-                      leading: leadingImage,
-                      title: title,
-                      onTap: () =>
-                          _tryGeneratingAndPlayingPositionFromSample(game),
-                    );
-                  }),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
