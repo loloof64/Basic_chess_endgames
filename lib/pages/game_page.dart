@@ -608,6 +608,7 @@ class _GamePageState extends ConsumerState<GamePage> {
     final isPortrait =
         MediaQuery.of(context).size.width < MediaQuery.of(context).size.height;
     final gameGoal = ref.read(gameProvider).goal;
+    final loadingSpinnerSize = MediaQuery.of(context).size.shortestSide * 0.80;
 
     return WillPopScope(
       onWillPop: _handleExitPage,
@@ -638,50 +639,64 @@ class _GamePageState extends ConsumerState<GamePage> {
             ),
           ],
         ),
-        body: Center(
-          child: isPortrait
-              ? PortraitWidget(
-                  gameInProgress: _gameInProgress,
-                  positionFen: _gameLogic?.fen ?? emptyPosition,
-                  isWhiteTurn: _gameLogic?.turn == chess.Color.WHITE,
-                  boardOrientation: _orientation,
-                  whitePlayerType: _whitePlayerType ?? PlayerType.computer,
-                  blackPlayerType: _blackPlayerType ?? PlayerType.computer,
-                  lastMoveToHighlight: _lastMoveToHighlight,
-                  onPromote: _onPromote,
-                  onMove: _onMove,
-                  gameGoal: gameGoal,
-                  historySelectedNodeIndex: _selectedHistoryItemIndex,
-                  historyNodesDescriptions: _historyhistoryNodesDescriptions,
-                  historyScrollController: _historyScrollController,
-                  requestGotoFirst: _selectFirstGamePosition,
-                  requestGotoPrevious: _selectPreviousHistoryNode,
-                  requestGotoNext: _selectNextHistoryNode,
-                  requestGotoLast: _selectLastHistoryNode,
-                  requestHistoryMove: _onHistoryMoveRequest,
-                  engineThinking: _engineThinking,
-                )
-              : LandscapeWidget(
-                  gameInProgress: _gameInProgress,
-                  positionFen: _gameLogic?.fen ?? emptyPosition,
-                  isWhiteTurn: _gameLogic?.turn == chess.Color.WHITE,
-                  boardOrientation: _orientation,
-                  whitePlayerType: _whitePlayerType ?? PlayerType.computer,
-                  blackPlayerType: _blackPlayerType ?? PlayerType.computer,
-                  lastMoveToHighlight: _lastMoveToHighlight,
-                  onPromote: _onPromote,
-                  onMove: _onMove,
-                  gameGoal: gameGoal,
-                  historySelectedNodeIndex: _selectedHistoryItemIndex,
-                  historyNodesDescriptions: _historyhistoryNodesDescriptions,
-                  historyScrollController: _historyScrollController,
-                  requestGotoFirst: _selectFirstGamePosition,
-                  requestGotoPrevious: _selectPreviousHistoryNode,
-                  requestGotoNext: _selectNextHistoryNode,
-                  requestGotoLast: _selectLastHistoryNode,
-                  requestHistoryMove: _onHistoryMoveRequest,
-                  engineThinking: _engineThinking,
+        body: Stack(
+          children: <Widget>[
+            Center(
+              child: isPortrait
+                  ? PortraitWidget(
+                      gameInProgress: _gameInProgress,
+                      positionFen: _gameLogic?.fen ?? emptyPosition,
+                      isWhiteTurn: _gameLogic?.turn == chess.Color.WHITE,
+                      boardOrientation: _orientation,
+                      whitePlayerType: _whitePlayerType ?? PlayerType.computer,
+                      blackPlayerType: _blackPlayerType ?? PlayerType.computer,
+                      lastMoveToHighlight: _lastMoveToHighlight,
+                      onPromote: _onPromote,
+                      onMove: _onMove,
+                      gameGoal: gameGoal,
+                      historySelectedNodeIndex: _selectedHistoryItemIndex,
+                      historyNodesDescriptions:
+                          _historyhistoryNodesDescriptions,
+                      historyScrollController: _historyScrollController,
+                      requestGotoFirst: _selectFirstGamePosition,
+                      requestGotoPrevious: _selectPreviousHistoryNode,
+                      requestGotoNext: _selectNextHistoryNode,
+                      requestGotoLast: _selectLastHistoryNode,
+                      requestHistoryMove: _onHistoryMoveRequest,
+                      engineThinking: _engineThinking,
+                    )
+                  : LandscapeWidget(
+                      gameInProgress: _gameInProgress,
+                      positionFen: _gameLogic?.fen ?? emptyPosition,
+                      isWhiteTurn: _gameLogic?.turn == chess.Color.WHITE,
+                      boardOrientation: _orientation,
+                      whitePlayerType: _whitePlayerType ?? PlayerType.computer,
+                      blackPlayerType: _blackPlayerType ?? PlayerType.computer,
+                      lastMoveToHighlight: _lastMoveToHighlight,
+                      onPromote: _onPromote,
+                      onMove: _onMove,
+                      gameGoal: gameGoal,
+                      historySelectedNodeIndex: _selectedHistoryItemIndex,
+                      historyNodesDescriptions:
+                          _historyhistoryNodesDescriptions,
+                      historyScrollController: _historyScrollController,
+                      requestGotoFirst: _selectFirstGamePosition,
+                      requestGotoPrevious: _selectPreviousHistoryNode,
+                      requestGotoNext: _selectNextHistoryNode,
+                      requestGotoLast: _selectLastHistoryNode,
+                      requestHistoryMove: _onHistoryMoveRequest,
+                      engineThinking: _engineThinking,
+                    ),
+            ),
+            if (!_stockfishReady)
+              Center(
+                child: SizedBox(
+                  width: loadingSpinnerSize,
+                  height: loadingSpinnerSize,
+                  child: const CircularProgressIndicator(),
                 ),
+              ),
+          ],
         ),
       ),
     );
