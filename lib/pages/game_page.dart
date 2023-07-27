@@ -152,6 +152,8 @@ class _GamePageState extends ConsumerState<GamePage> {
         _gameStart = false;
       });
 
+      _animateScrollViewToCurrentItem();
+
       _handleGameEndedIfNeeded();
       if (_gameInProgress) {
         _makeComputerPlay();
@@ -381,6 +383,8 @@ class _GamePageState extends ConsumerState<GamePage> {
         _gameStart = false;
       });
 
+      _animateScrollViewToCurrentItem();
+
       _handleGameEndedIfNeeded();
       if (_gameInProgress) {
         _makeComputerPlay();
@@ -427,6 +431,13 @@ class _GamePageState extends ConsumerState<GamePage> {
       _lastMoveToHighlight = null;
       _gameLogic = chess.Chess.fromFEN(startPosition);
     });
+    _historyScrollController.animateTo(
+      0,
+      duration: const Duration(
+        milliseconds: 100,
+      ),
+      curve: Curves.easeIn,
+    );
   }
 
   void _selectPreviousHistoryNode() {
@@ -466,6 +477,7 @@ class _GamePageState extends ConsumerState<GamePage> {
         to: moveData.to.getUciString(),
       );
     });
+    _animateScrollViewToCurrentItem();
   }
 
   void _selectNextHistoryNode() {
@@ -499,6 +511,7 @@ class _GamePageState extends ConsumerState<GamePage> {
         to: moveData.to.getUciString(),
       );
     });
+    _animateScrollViewToCurrentItem();
   }
 
   void _selectLastHistoryNode() {
@@ -520,6 +533,7 @@ class _GamePageState extends ConsumerState<GamePage> {
         to: moveData.to.getUciString(),
       );
     });
+    _animateScrollViewToCurrentItem();
   }
 
   void _onHistoryMoveRequest(
@@ -535,6 +549,25 @@ class _GamePageState extends ConsumerState<GamePage> {
         to: historyNode.move!.to.getUciString(),
       );
     });
+  }
+
+  void _animateScrollViewToCurrentItem() {
+    final itemsPerRowApproximation =
+        MediaQuery.of(context).orientation == Orientation.portrait ? 6 : 10;
+    final lineIndex = _selectedHistoryItemIndex! ~/ itemsPerRowApproximation;
+    final singleLineHeightRatio =
+        MediaQuery.of(context).orientation == Orientation.portrait
+            ? 0.06
+            : 0.12;
+    final newOffset =
+        lineIndex * singleLineHeightRatio * MediaQuery.of(context).size.height;
+    _historyScrollController.animateTo(
+      newOffset,
+      duration: const Duration(
+        milliseconds: 100,
+      ),
+      curve: Curves.easeIn,
+    );
   }
 
   void _makeComputerPlay() {
