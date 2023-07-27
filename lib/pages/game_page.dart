@@ -152,7 +152,7 @@ class _GamePageState extends ConsumerState<GamePage> {
         _gameStart = false;
       });
 
-      _animateScrollViewToCurrentItem();
+      _animateScrollViewToItemIndex(_historyhistoryNodesDescriptions.length);
 
       _handleGameEndedIfNeeded();
       if (_gameInProgress) {
@@ -383,7 +383,7 @@ class _GamePageState extends ConsumerState<GamePage> {
         _gameStart = false;
       });
 
-      _animateScrollViewToCurrentItem();
+      _animateScrollViewToItemIndex(_historyhistoryNodesDescriptions.length);
 
       _handleGameEndedIfNeeded();
       if (_gameInProgress) {
@@ -477,7 +477,7 @@ class _GamePageState extends ConsumerState<GamePage> {
         to: moveData.to.getUciString(),
       );
     });
-    _animateScrollViewToCurrentItem();
+    _animateScrollViewToItemIndex(_selectedHistoryItemIndex!);
   }
 
   void _selectNextHistoryNode() {
@@ -511,7 +511,7 @@ class _GamePageState extends ConsumerState<GamePage> {
         to: moveData.to.getUciString(),
       );
     });
-    _animateScrollViewToCurrentItem();
+    _animateScrollViewToItemIndex(_selectedHistoryItemIndex!);
   }
 
   void _selectLastHistoryNode() {
@@ -533,7 +533,7 @@ class _GamePageState extends ConsumerState<GamePage> {
         to: moveData.to.getUciString(),
       );
     });
-    _animateScrollViewToCurrentItem();
+    _animateScrollViewToItemIndex(_historyhistoryNodesDescriptions.length);
   }
 
   void _onHistoryMoveRequest(
@@ -551,10 +551,10 @@ class _GamePageState extends ConsumerState<GamePage> {
     });
   }
 
-  void _animateScrollViewToCurrentItem() {
+  void _animateScrollViewToItemIndex(int index) {
     final itemsPerRowApproximation =
         MediaQuery.of(context).orientation == Orientation.portrait ? 6 : 10;
-    final lineIndex = _selectedHistoryItemIndex! ~/ itemsPerRowApproximation;
+    final lineIndex = index ~/ itemsPerRowApproximation;
     final singleLineHeightRatio =
         MediaQuery.of(context).orientation == Orientation.portrait
             ? 0.06
