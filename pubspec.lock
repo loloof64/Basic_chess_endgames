@@ -237,14 +237,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.5.0"
-  fpdart:
-    dependency: transitive
-    description:
-      name: fpdart
-      sha256: "4a0d047c3359a4bdd19e4941603bbe394bd133b3772a38049e17f9534d47106e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.6.0"
   html:
     dependency: transitive
     description:
@@ -349,14 +341,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
-  nested:
-    dependency: transitive
-    description:
-      name: nested
-      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   path:
     dependency: transitive
     description:
@@ -397,14 +381,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.7.3"
-  provider:
-    dependency: transitive
-    description:
-      name: provider
-      sha256: cdbe7530b12ecd9eb455bdaa2fcb8d4dad22e80b8afb4798b41479d5ce26847f
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.0.5"
   riverpod:
     dependency: transitive
     description:
@@ -417,10 +393,10 @@ packages:
     dependency: "direct main"
     description:
       name: simple_chess_board
-      sha256: ab5b3a25d85004df5e7809c3fe1e4fbfd02e12aa64b674d35d4058414f82849f
+      sha256: "8a63d79c656c2006456f82c95d8416f29f3838f3732013cded2d81d45839e046"
       url: "https://pub.dev"
     source: hosted
-    version: "0.10.0"
+    version: "1.1.0"
   sky_engine:
     dependency: transitive
     description: flutter

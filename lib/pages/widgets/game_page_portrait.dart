@@ -3,7 +3,6 @@ import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/player_turn_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_chess_board/models/board_arrow.dart';
-import 'package:simple_chess_board/models/board_color.dart';
 import 'package:simple_chess_board/models/piece_type.dart';
 import 'package:simple_chess_board/models/short_move.dart';
 import 'package:simple_chess_board/widgets/chessboard.dart';
@@ -17,7 +16,7 @@ class PortraitWidget extends StatelessWidget {
   final bool engineThinking;
   final bool isWhiteTurn;
   final String positionFen;
-  final BoardColor boardOrientation;
+  final bool blackSideAtBottom;
   final PlayerType whitePlayerType;
   final PlayerType blackPlayerType;
   final BoardArrow? lastMoveToHighlight;
@@ -36,6 +35,10 @@ class PortraitWidget extends StatelessWidget {
   final void Function(
       {required Move historyMove,
       required int? selectedHistoryNodeIndex}) requestHistoryMove;
+  final void Function({
+    required ShortMove moveDone,
+    required PieceType pieceType,
+  }) onPromotionCommited;
 
   const PortraitWidget({
     super.key,
@@ -43,7 +46,7 @@ class PortraitWidget extends StatelessWidget {
     required this.engineThinking,
     required this.isWhiteTurn,
     required this.positionFen,
-    required this.boardOrientation,
+    required this.blackSideAtBottom,
     required this.whitePlayerType,
     required this.blackPlayerType,
     required this.lastMoveToHighlight,
@@ -58,6 +61,7 @@ class PortraitWidget extends StatelessWidget {
     required this.requestGotoNext,
     required this.requestGotoLast,
     required this.requestHistoryMove,
+    required this.onPromotionCommited,
   });
 
   @override
@@ -76,7 +80,7 @@ class PortraitWidget extends StatelessWidget {
         Expanded(
           child: SimpleChessBoard(
             fen: positionFen,
-            orientation: boardOrientation,
+            blackSideAtBottom: blackSideAtBottom,
             whitePlayerType:
                 gameInProgress ? whitePlayerType : PlayerType.computer,
             blackPlayerType:
@@ -85,7 +89,7 @@ class PortraitWidget extends StatelessWidget {
             onPromote: onPromote,
             lastMoveToHighlight: lastMoveToHighlight,
             engineThinking: engineThinking,
-            onPromotionCommited: ({required ShortMove moveDone}) {},
+            onPromotionCommited: onPromotionCommited,
             chessBoardColors: ChessBoardColors(),
           ),
         ),

@@ -3,7 +3,6 @@ import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/player_turn_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_chess_board/models/board_arrow.dart';
-import 'package:simple_chess_board/models/board_color.dart';
 import 'package:simple_chess_board/models/piece_type.dart';
 import 'package:simple_chess_board/models/short_move.dart';
 import 'package:simple_chess_board/widgets/chessboard.dart';
@@ -17,12 +16,16 @@ class LandscapeWidget extends StatelessWidget {
   final bool engineThinking;
   final bool isWhiteTurn;
   final String positionFen;
-  final BoardColor boardOrientation;
+  final bool blackSideAtBottom;
   final PlayerType whitePlayerType;
   final PlayerType blackPlayerType;
   final BoardArrow? lastMoveToHighlight;
   final void Function({required ShortMove move}) onMove;
   final Future<PieceType?> Function() onPromote;
+  final void Function({
+    required ShortMove moveDone,
+    required PieceType pieceType,
+  }) onPromotionCommited;
 
   final Goal gameGoal;
 
@@ -43,7 +46,7 @@ class LandscapeWidget extends StatelessWidget {
     required this.engineThinking,
     required this.isWhiteTurn,
     required this.positionFen,
-    required this.boardOrientation,
+    required this.blackSideAtBottom,
     required this.whitePlayerType,
     required this.blackPlayerType,
     required this.lastMoveToHighlight,
@@ -58,6 +61,7 @@ class LandscapeWidget extends StatelessWidget {
     required this.requestGotoNext,
     required this.requestGotoLast,
     required this.requestHistoryMove,
+    required this.onPromotionCommited,
   });
 
   @override
@@ -75,7 +79,7 @@ class LandscapeWidget extends StatelessWidget {
       children: <Widget>[
         SimpleChessBoard(
           fen: positionFen,
-          orientation: boardOrientation,
+          blackSideAtBottom: blackSideAtBottom,
           whitePlayerType:
               gameInProgress ? whitePlayerType : PlayerType.computer,
           blackPlayerType:
@@ -84,7 +88,7 @@ class LandscapeWidget extends StatelessWidget {
           onPromote: onPromote,
           lastMoveToHighlight: lastMoveToHighlight,
           engineThinking: engineThinking,
-          onPromotionCommited: ({required ShortMove moveDone}) {},
+          onPromotionCommited: onPromotionCommited,
           chessBoardColors: ChessBoardColors(),
         ),
         const SizedBox(

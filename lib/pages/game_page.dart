@@ -9,7 +9,6 @@ import 'package:chess/chess.dart' as chess;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_chess_board/models/board_arrow.dart';
-import 'package:simple_chess_board/models/board_color.dart';
 import 'package:simple_chess_board/models/piece_type.dart';
 import 'package:simple_chess_board/models/short_move.dart';
 import 'package:simple_chess_board/widgets/chessboard.dart';
@@ -17,7 +16,7 @@ import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:stockfish/stockfish.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-const stockfishLoadingDelayMs = 1100;
+const stockfishLoadingDelayMs = 1500;
 const piecesSize = 60.0;
 
 class GamePage extends ConsumerStatefulWidget {
@@ -29,7 +28,7 @@ class GamePage extends ConsumerStatefulWidget {
 
 class _GamePageState extends ConsumerState<GamePage> {
   chess.Chess? _gameLogic;
-  BoardColor _orientation = BoardColor.white;
+  bool _blackSideAtBottom = false;
   PlayerType? _whitePlayerType;
   PlayerType? _blackPlayerType;
   bool _gameStart = true;
@@ -206,9 +205,7 @@ class _GamePageState extends ConsumerState<GamePage> {
 
   void _toggleBoardOrientation() {
     setState(() {
-      _orientation = _orientation == BoardColor.white
-          ? BoardColor.black
-          : BoardColor.white;
+      _blackSideAtBottom = !_blackSideAtBottom;
     });
   }
 
@@ -339,7 +336,7 @@ class _GamePageState extends ConsumerState<GamePage> {
     final moveHasBeenMade = _gameLogic!.move({
       'from': move.from,
       'to': move.to,
-      'promotion': move.promotion.map((t) => t.name).toNullable(),
+      'promotion': move.promotion?.name,
     });
     if (moveHasBeenMade) {
       final whiteMove = _gameLogic!.turn == chess.Color.WHITE;
@@ -652,6 +649,14 @@ class _GamePageState extends ConsumerState<GamePage> {
     }
   }
 
+  void _onPromotionCommited({
+    required ShortMove moveDone,
+    required PieceType pieceType,
+  }) {
+    moveDone.promotion = pieceType;
+    _onMove(move: moveDone);
+  }
+
   @override
   Widget build(BuildContext context) {
     final isPortrait =
@@ -703,12 +708,13 @@ class _GamePageState extends ConsumerState<GamePage> {
                       gameInProgress: _gameInProgress,
                       positionFen: _gameLogic?.fen ?? emptyPosition,
                       isWhiteTurn: _gameLogic?.turn == chess.Color.WHITE,
-                      boardOrientation: _orientation,
+                      blackSideAtBottom: _blackSideAtBottom,
                       whitePlayerType: _whitePlayerType ?? PlayerType.computer,
                       blackPlayerType: _blackPlayerType ?? PlayerType.computer,
                       lastMoveToHighlight: _lastMoveToHighlight,
                       onPromote: _onPromote,
                       onMove: _onMove,
+                      onPromotionCommited: _onPromotionCommited,
                       gameGoal: gameGoal,
                       historySelectedNodeIndex: _selectedHistoryItemIndex,
                       historyNodesDescriptions:
@@ -725,12 +731,13 @@ class _GamePageState extends ConsumerState<GamePage> {
                       gameInProgress: _gameInProgress,
                       positionFen: _gameLogic?.fen ?? emptyPosition,
                       isWhiteTurn: _gameLogic?.turn == chess.Color.WHITE,
-                      boardOrientation: _orientation,
+                      blackSideAtBottom: _blackSideAtBottom,
                       whitePlayerType: _whitePlayerType ?? PlayerType.computer,
                       blackPlayerType: _blackPlayerType ?? PlayerType.computer,
                       lastMoveToHighlight: _lastMoveToHighlight,
                       onPromote: _onPromote,
                       onMove: _onMove,
+                      onPromotionCommited: _onPromotionCommited,
                       gameGoal: gameGoal,
                       historySelectedNodeIndex: _selectedHistoryItemIndex,
                       historyNodesDescriptions:
