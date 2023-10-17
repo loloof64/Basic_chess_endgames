@@ -78,24 +78,26 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
             SizedBox(
               height: spacerHeight,
             ),
-            ElevatedButton(
-              onPressed: _showPrivacyDialog,
+            InkWell(
+              onTap: _showPrivacyDialog,
               child: Text(
                 t.privacy.title,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSecondary,
+                  decoration: TextDecoration.underline,
                 ),
               ),
             ),
             SizedBox(
               height: spacerHeight,
             ),
-            ElevatedButton(
-              onPressed: _showUseConditionsDialog,
+            InkWell(
+              onTap: _showUseConditionsDialog,
               child: Text(
                 t.use_conditions.title,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSecondary,
+                  decoration: TextDecoration.underline,
                 ),
               ),
             ),
