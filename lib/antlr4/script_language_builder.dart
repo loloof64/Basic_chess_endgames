@@ -25,7 +25,7 @@ class BailScriptLanguageLexer extends ScriptLanguageLexer {
     final inputStream = re.inputStream as CharStream;
     final offendingText = inputStream
         .getText(Interval.of(tokenStartCharIndex, inputStream.index));
-    final message = translations.unrecognizedSymbol(offendingText);
+    final message = translations.unrecognizedSymbol(Symbol: offendingText);
     throw ParseCancellationException(message);
   }
 }
@@ -45,7 +45,7 @@ class BuiltVariablesHolder {
   ScriptLanguageGenericExpr operator [](String name) {
     final expression = _builtVariables[name];
     if (expression == null) {
-      throw ParseCancellationException(translations.variableNotAffected(name));
+      throw ParseCancellationException(translations.variableNotAffected(Name: name));
     }
     return expression;
   }

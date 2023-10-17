@@ -6,7 +6,7 @@ import 'package:simple_chess_board/models/board_arrow.dart';
 import 'package:simple_chess_board/models/piece_type.dart';
 import 'package:simple_chess_board/models/short_move.dart';
 import 'package:simple_chess_board/widgets/chessboard.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 
 const gapSize = 20.0;
 const historyFontSizeFraction = 0.07;
@@ -67,8 +67,8 @@ class PortraitWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final goalText = gameGoal == Goal.win
-        ? AppLocalizations.of(context)!.gamePage_goalWin
-        : AppLocalizations.of(context)!.gamePage_goalDraw;
+        ? t.game_page.goal_win
+        : t.game_page.goal_draw;
     final screenWidth = MediaQuery.of(context).size.width;
     final goalTextFontSize = screenWidth * 0.05;
     final playerTurnSize = screenWidth * 0.05;

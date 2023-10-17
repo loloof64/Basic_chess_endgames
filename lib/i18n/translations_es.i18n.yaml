@@ -1,0 +1,86 @@
+misc:
+  appTitle: "Finales básicos de ajedrez"
+  buttonOk: "De acuerdo"
+  buttonCancel: "Anular"
+  buttonAccept: "Aceptar"
+  buttonDeny: "Rechazar"
+home:
+  title: "Inicio"
+  failedLoadingExercise: "No se pudo cargar el ejercicio: la posición de ajedrez no es válida."
+  failedGeneratingPosition: "Falló al generar la posición."
+  helpMessage: "Aquí puedes seleccionar el tipo de posición con la que quieres jugar. \
+    Una línea cuyo icono principal es un trofeo generará una posición en la que deberías ganar. \
+    De lo contrario, con un icono principal de un apretón de manos, tu objetivo será salvar la partida y hacer empate."
+rgpd:
+  text: "Al utilizar esta aplicación, estás de acuerdo con:"
+  privacy: "la Política de Privacidad"
+  useConditions: "las Condiciones de Uso"
+gamePage:
+  title: "Página del juego"
+  goalWin: "Objetivo: ganar"
+  goalDraw: "Objetivo: empate"
+  newGame_title: "¿Reiniciar el juego?"
+  newGame_message: "¿Quieres reiniciar el juego?"
+  stopGame_title: "¿Detener el juego actual?"
+  stopGame_message: "¿Quiere detener el juego actual?"
+  gameStopped: "Juego detenido."
+  checkmate_white: "Los Blancos han ganado por jaque mate."
+  checkmate_black: "Los Negros han ganado por jaque mate."
+  stalemate: "Empate."
+  threeFoldRepetition: "Igualdad por repetición triple."
+  missingMaterial: "Igualdad por falta de material."
+  fiftyMovesRule: "Igualdad por la regla de los 50 movimientos."
+  beforeExitTitle: "¿Cancelar el juego actual?"
+  beforeExitMessage: "¿Quieres abandonar esta página y cancelar el juego actual?"
+  helpMessage: "Además de jugar la partida contra el motor, puedes voltear el tablero, reiniciar desde la posición generada, \
+    pero también detener el juego prematuramente.\n \
+    Una vez que la partida haya terminado, podrás revisar los movimientos desde el componente de historial."
+scriptParser:
+  variableNotAffected: "La variable $name se ha utilizado antes de haber sido definida."
+  unrecognizedSymbol: "Símbolo no reconocido $symbol."
+  inputMismatch: "Entrada incorrecta en la línea $line:\
+   carácter número $index.\
+   Deberías haber establecido $expected pero obtuve $received."
+  noViableAltException: "La entrada $token no coincide con ninguna regla. (Línea $lineNumber, número de carácter $positionInLine)"
+  miscParseError: "Error de análisis variado."
+  noAntlr4Token: "[Sin ocurrencia]"
+  eof: "[FinDeArchivo]"
+  overridingPredefinedVariable: "Intentas cambiar el valor de la variable predefinida $name."
+  parseErrorDialogTitle: "Error de script para $title"
+  typeError: "Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa."
+  missingScriptType: "No se pudo generar la posición: compruebe que todas las secciones del script declaran un tipo de script correcto."
+  miscErrorDialogTitle: "Equivocado global"
+scriptType:
+  playerKingConstraint: "Restricción del rey del jugador"
+  computerKingConstraint: "Restricción del rey de la computadora"
+  kingsMutualConstraint: "Restricción mutua de reyes"
+  otherPiecesGlobalConstraint: "Restricción global de otras piezas"
+  otherPiecesIndexedConstraint: "Restricción indexada de otras piezas"
+  otherPiecesMutualConstraint: "Restricción mutua de otras piezas"
+  pieceKindCountConstraint: "Restricción de recuento de tipos de piezas"
+sampleScript:
+  kqK: "Rey + Reina Vs Rey"
+  krK: "Rey + Torre Vs Rey"
+  krrK: "Rey + 2 Torres Vs Rey"
+  kbbK: "Rey + 2 Alfiles Vs Rey"
+  kpK1: "Rey + Peón Vs Rey (1)"
+  kpK2: "Rey + Peón Vs Rey (2)"
+  kpppKppp: "Rey + 3 Peones Vs Rey + 3 Peones"
+  rookEndingLucena: "Finale de torre de Lucena"
+  rookEndingPhilidor: "Finale de torre de Philidor"
+privacy:
+  title: "Politica de privacidad"
+  content1: "Esta página se utiliza para informarle sobre las políticas con el recopilación, uso y \
+    divulgación de información personal para la aplicación, Finales Básicos de Ajedrez. Laurent Bernabe respeta \
+    la privacidad de usuarios y se compromete a proteger la información del usuario, ya sea el tuyo o el de tus \
+    hijos. Creo que tienes derecho a conocer mi prácticas con respecto a la información que puedo recopilar y \
+    usar cuando usted usa mi aplicación."
+  content2: "La privacidad de los usuarios de mis productos es importante para mí. No colecciono \
+    ninguna información identificable sobre mis usuarios. No almaceno ni transmito cualquier \
+    información personal."
+  content3: "Si tiene alguna pregunta sobre esta Política de privacidad, comuníquese con yo en \
+    laurent.bernabe@gmail.com."
+useConditions:
+  title: "Condiciones de uso"
+  content: "No se requiere una condición de uso particular para Finales Básicos de Ajedrez. Esta aplicación solo está destinada a \
+    ayudar a los jugadores de ajedrez para mejorar su juego y no incluir ningún contenido que pueda ser dañino, violento o impactante."

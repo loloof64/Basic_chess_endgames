@@ -1,6 +1,6 @@
+import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AssetGame {
   final String assetPath;
@@ -18,47 +18,47 @@ List<AssetGame> getAssetGames(BuildContext context) {
   return <AssetGame>[
     AssetGame(
       assetPath: 'assets/sample_scripts/kq_k.txt',
-      label: AppLocalizations.of(context)!.sampleScript_kqK,
+      label: t.sample_script.kq_k,
       goal: Goal.win,
     ),
     AssetGame(
       assetPath: 'assets/sample_scripts/kr_k.txt',
-      label: AppLocalizations.of(context)!.sampleScript_krK,
+      label: t.sample_script.kr_k,
       goal: Goal.win,
     ),
     AssetGame(
       assetPath: 'assets/sample_scripts/krr_k.txt',
-      label: AppLocalizations.of(context)!.sampleScript_krrK,
+      label: t.sample_script.krr_k,
       goal: Goal.win,
     ),
     AssetGame(
       assetPath: 'assets/sample_scripts/kbb_k.txt',
-      label: AppLocalizations.of(context)!.sampleScript_kbbK,
+      label: t.sample_script.kbb_k,
       goal: Goal.win,
     ),
     AssetGame(
       assetPath: 'assets/sample_scripts/kp_k_1.txt',
-      label: AppLocalizations.of(context)!.sampleScript_kpK1,
+      label: t.sample_script.kp_k1,
       goal: Goal.win,
     ),
     AssetGame(
       assetPath: 'assets/sample_scripts/kp_k_2.txt',
-      label: AppLocalizations.of(context)!.sampleScript_kpK2,
+      label: t.sample_script.kp_k2,
       goal: Goal.draw,
     ),
     AssetGame(
       assetPath: 'assets/sample_scripts/kppp_kppp.txt',
-      label: AppLocalizations.of(context)!.sampleScript_kpppKppp,
+      label: t.sample_script.kppp_kppp,
       goal: Goal.win,
     ),
     AssetGame(
       assetPath: 'assets/sample_scripts/lucena_rook_ending.txt',
-      label: AppLocalizations.of(context)!.sampleScript_rookEndingLucena,
+      label: t.sample_script.rook_ending_lucena,
       goal: Goal.win,
     ),
     AssetGame(
       assetPath: 'assets/sample_scripts/philidor_rook_ending.txt',
-      label: AppLocalizations.of(context)!.sampleScript_rookEndingPhilidor,
+      label: t.sample_script.rook_ending_philidor,
       goal: Goal.draw,
     )
   ];

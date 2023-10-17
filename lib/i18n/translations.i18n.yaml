@@ -1,0 +1,83 @@
+misc:
+  appTitle: "Basic chess endgames"
+  buttonOk: "Ok"
+  buttonCancel: "Cancel"
+  buttonAccept: "Accept"
+  buttonDeny: "Deny"
+home:
+  title: "Home"
+  failedLoadingExercise: "Failed to load exercise : the chess position is not valid."
+  failedGeneratingPosition: "Failed to generate the position."
+  helpMessage: "Here you can select the type of position you want to play with. \
+    A line which leading icon is a trophy will generate a position in which you should win. \
+    Otherwise, with a handshake leading icon, your goal will be to save the game and make draw."
+rgpd:
+  text: "By using this app, you agree with :"
+  privacy: "the Privacy Policy"
+  useConditions: "the Use Conditions"
+gamePage:
+  title: "Game page"
+  goalWin: "Goal: win"
+  goalDraw: "Goal: draw"
+  newGame_title: "Restart game ?"
+  newGame_message: "Do you want to restart game ?"
+  stopGame_title: "Stop current game ?"
+  stopGame_message: "Do you want to stop current game ?"
+  gameStopped: "Game stopped."
+  checkmate_white: "White has won by checkmate."
+  checkmate_black: "Black has won by checkmate."
+  stalemate: "Stalemate."
+  threeFoldRepetition: "Draw by three-fold repetition."
+  missingMaterial: "Draw by missing material."
+  fiftyMovesRule: "Draw by the 50 moves rule."
+  beforeExitTitle: "Cancel current game ?"
+  beforeExitMessage: "Do you want to leave this page and cancel current game ?"
+  helpMessage: "Besides playing the game against the engine, you can flip the board, restart from the generated position, \
+    but also stop game prematurely.\n \
+    Once the game is over you will be able to review moves from the history component."
+scriptParser:
+  variableNotAffected: "The variable $name has been used before having been defined."
+  unrecognizedSymbol: "Unrecognized symbol $symbol."
+  inputMismatch: "Bad input at line $line: character number $index. You should have set $expected but I got $received."
+  noViableAltException: "The input $token does not match any rule. (Line $lineNumber, character number $positionInLine)"
+  miscParseError: "Miscellaneous parsing error."
+  noAntlr4Token: "[No occurence]"
+  eof: "[EndOfFile]"
+  overridingPredefinedVariable: "You try to change the value of predefined variable $name."
+  parseErrorDialogTitle: "Script error for $title"
+  typeError: "Please check that you don't use int value instead of boolean value and vice versa."
+  missingScriptType: "Failed to generate position : please check that all of the script sections declares a correct script type."
+  miscErrorDialogTitle: "Global error"
+scriptType:
+  playerKingConstraint: "Player king constraint"
+  computerKingConstraint: "Computer king constraint"
+  kingsMutualConstraint: "Kings mutual constraint"
+  otherPiecesGlobalConstraint: "Other pieces global constraint"
+  otherPiecesIndexedConstraint: "Other pieces indexed constraint"
+  otherPiecesMutualConstraint: "Other pieces mutual constraint"
+  pieceKindCountConstraint: "Piece kinds counts constraint"
+sampleScript:
+  kqK: "King + Queen Vs King"
+  krK: "King + Rook Vs King"
+  krrK: "King + 2 Rooks Vs King"
+  kbbK: "King + Rook Vs King"
+  kpK1: "King + Pawn Vs King (1)"
+  kpK2: "King + Pawn Vs King (2)"
+  kpppKppp: "King + 3 Pawns Vs King + 3 Pawns"
+  rookEndingLucena: "Lucena rook ending"
+  rookEndingPhilidor: "Philidor rook ending"
+privacy:
+  title: "Privacy policy"
+  content1: "This page is used to inform you regarding the policies with the collection, use and \
+    disclosure of personal information for the app, Basic Chess Endgames. Laurent Bernabe respect the \
+    privacy of users and is committed to protect the user's information, be it yours or your children's. I \
+    believe that you have a right to know my practices regarding the information I may collect and use when you \
+    use my app."
+  content2: "Privacy of my product users is important to me. I do not collect any identifiable \
+    information about my users. I do not store or transmit any personal information."
+  content3: "If you have any questions about this Privacy Policy please contact me at laurent.bernabe@gmail.com."
+useConditions:
+  title: "Use conditions"
+  content: "No particular use condition is required for Basic Chess Endgames \
+    This application is only targeted to help chess players to improve their play, and do not include any content that could be \
+    harmful, violent or shocking."

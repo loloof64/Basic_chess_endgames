@@ -1,0 +1,87 @@
+misc:
+  appTitle: "Finales d'échecs basiques"
+  buttonOk: "D'accord"
+  buttonCancel: "Annuler"
+  buttonAccept: "Accepter"
+  buttonDeny: "Refuser"
+home:
+  title: "Accueil"
+  failedLoadingExercise: "Echec de chargement de l'exerice : la position d'échecs est invalide."
+  failedGeneratingPosition: "Echec de génération de la position."
+  helpMessage: "Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer. \
+    Une ligne dont l'icône est un trophée générera une position où vous devrez gagner. \
+    Sinon si la ligne commence par une poignée de main, vous devrez sauver la partie et faire partie nulle."
+rgpd:
+  text: "En utilisant cette application, vous vous conformez à :"
+  privacy: "la Politique de Confidentialité"
+  useConditions: "les Conditions d'Utilisation"
+gamePage:
+  title: "Page de jeu"
+  goalWin: "Objectif: victoire"
+  goalDraw: "Objectif: nulle"
+  newGame_title: "Recommencer la partie ?"
+  newGame_message: "Souhaitez-vous recommencer la partie ?"
+  stopGame_title: "Arrêter la partie ?"
+  stopGame_message: "Souhaitez-vous arrêter la partie en cours ?"
+  gameStopped: "Partie interrompue."
+  checkmate_white: "Les Blancs ont gagné par échec et mat."
+  checkmate_black: "Les Noirs ont gagné par échec et mat."
+  stalemate: "Pat."
+  threeFoldRepetition: "Nulle par triple répétition."
+  missingMaterial: "Nulle par manque de matériel."
+  fiftyMovesRule: "Nulle par la règle des 50 coups."
+  beforeExitTitle: "Annuler la partie courante ?"
+  beforeExitMessage: "Souhaitez-vous abandonner cette partie et revenir à la page précédente ?"
+  helpMessage: "Au delà de la partie contre la machine, vous pouvez renverser l'échiquier, redémarrer depuis la position \
+    générée, mais aussi interrompre la partie de manière prématurée.\n \
+    Une fois la partie terminée, vous pourrez visualiser les coups joués grâce au composant historique."
+scriptParser:
+  variableNotAffected: "La variable $name a été utilisée avant même d'avoir été définie."
+  unrecognizedSymbol: "Symbol non reconnu $symbol."
+  inputMismatch: "Entrée incorrecte dans la ligne $line :\
+    caractère à l'index $index. Vous auriez dû mettre $expected mais j'ai reçu $received."
+  noViableAltException: "L'entrée $token ne correspond à aucune règle.\
+    (Ligne $lineNumber, numéro de caractère $positionInLine)"
+  miscParseError: "Erreur d'interprétation diverse."
+  noAntlr4Token: "[Aucune occurence]"
+  eof: "[FinDeFichier]"
+  overridingPredefinedVariable: "Vous essayez de modifier la valeur de la variable prédéfinie $name."
+  parseErrorDialogTitle: "Erreur de script pour $title"
+  typeError: "Veuillez vérifier que vous n'utilisez pas de valeur entière à la place de valeur booléenne, et vice versa."
+  missingScriptType: "Echec de génération de la position: veuillez vérifier que toutes les sections du script déclarent un type de script correct."
+  miscErrorDialogTitle: "Erreur globale"
+scriptType:
+  playerKingConstraint: "Contraintes du roi du joueur"
+  computerKingConstraint: "Contraintes du roi de l'ordinateur"
+  kingsMutualConstraint: "Contraintes entre les deux rois"
+  otherPiecesGlobalConstraint: "Contraintes globales pour les autres pièces"
+  otherPiecesIndexedConstraint: "Contraintes par index pour les autres pièces"
+  otherPiecesMutualConstraint: "Contraintes mutuelles pour les autres pièces"
+  pieceKindCountConstraint: "Contraintes sur le compte des autres pièces"
+sampleScript:
+  kqK: "Roi + Dame Contre Roi"
+  krK: "Roi + Tour Contre Roi"
+  krrK: "Roi + 2 Tours Contre Roi"
+  kbbK: "Roi + 2 Fous Contre Roi"
+  kpK1: "Roi + Pion Contre Roi (1)"
+  kpK2: "Roi + Pion Contre Roi (2)"
+  kpppKppp: "Roi + 3 Pions Contre Roi + 3 Pions"
+  rookEndingLucena: "Finale de tour de Lucena"
+  rookEndingPhilidor: "Finale de tour de Philidor"
+privacy:
+  title: "Politique de confidentialité"
+  content1: "Cette page est utilisée pour vous informer sur les politiques de collecte, d'utilisation et \
+    divulgation d'informations personnelles pour l'application, Finales d'Echecs Basiques. Laurent Bernabe \
+    respecte la vie privée de utilisateurs et s'engage à protéger les informations de l'utilisateur, que ce soit \
+    la vôtre ou celle de vos enfants. Je crois que vous avez le droit de connaître mes pratiques concernant les \
+    informations que je peux collecter et utiliser lorsque vous utilisez mon application."
+  content2: "La confidentialité des utilisateurs de mes applications est importante pour moi. Je ne \
+    collecte aucune information identifiable sur mes utilisateurs. Je ne stocke ni ne transmets aucune \
+    information personnelle."
+  content3: "Si vous avez quelque question que ce soit à propos de cette politique de confidentialité, veuillez \
+    me contacter à laurent.bernabe@gmail.com."
+useConditions:
+  title: "Conditions d'utilisation"
+  content: "Aucune condition d'utilisation particulière n'est requise pour Finales d'Echecs Basiques. Cette application est \
+    uniquement destinée à aider les joueurs d'échecs pour améliorer leur jeu, et n'inclut aucun contenu qui pourrait être nuisible, \
+    violent ou choquant."

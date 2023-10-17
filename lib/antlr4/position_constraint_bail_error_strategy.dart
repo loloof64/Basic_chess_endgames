@@ -53,7 +53,10 @@ class PositionConstraintBailErrorStrategy extends DefaultErrorStrategy {
     final positionInLine = error.offendingToken.charPositionInLine;
 
     return translations.noViableAltException(
-        positionInLine, inputToken, lineNumber);
+      PositionInLine: positionInLine,
+      Token: inputToken,
+      LineNumber: lineNumber,
+    );
   }
 
   String _buildInputMismatchExceptionMessage(
@@ -65,10 +68,10 @@ class PositionConstraintBailErrorStrategy extends DefaultErrorStrategy {
         error.expectedTokens!.toString(vocabulary: recognizer?.vocabulary);
 
     return translations.inputMismatch(
-      expectedToken,
-      positionInLine,
-      line,
-      tokenErrorDisplay,
+      Expected: expectedToken,
+      Index: positionInLine,
+      Line: line,
+      Received: tokenErrorDisplay,
     );
   }
 

@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:collection';
 
 import 'package:antlr4/antlr4.dart';
@@ -38,18 +40,21 @@ class TranslationsWrapper {
   final String otherPiecesIndexedConstraint;
   final String otherPiecesMutualConstraint;
   final String otherPiecesCountConstraint;
-  final String Function(String offendingToken) unrecognizedSymbol;
-  final String Function(String name) variableNotAffected;
-  final String Function(String name) overridingPredefinedVariable;
-  final String Function(String title) parseErrorDialogTitle;
-  final String Function(int positionInLine, String token, int lineNumber)
-      noViableAltException;
-  final String Function(
-    String expectedToken,
-    int positionInLine,
-    int line,
-    String tokenErrorDisplay,
-  ) inputMismatch;
+  final String Function({required Object Symbol}) unrecognizedSymbol;
+  final String Function({required Object Name}) variableNotAffected;
+  final String Function({required Object Name}) overridingPredefinedVariable;
+  final String Function({required Object Title}) parseErrorDialogTitle;
+  final String Function({
+    required Object LineNumber,
+    required Object PositionInLine,
+    required Object Token,
+  }) noViableAltException;
+  final String Function({
+    required Object Expected,
+    required Object Index,
+    required Object Line,
+    required Object Received,
+  }) inputMismatch;
 
   const TranslationsWrapper({
     required this.miscErrorDialogTitle,
@@ -275,8 +280,8 @@ class ScriptTextTransformer {
       return (constraint, <PositionGenerationError>[]);
     } on VariableIsNotAffectedException catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
-      final title = translations.parseErrorDialogTitle(scriptTypeLabel);
-      final message = translations.variableNotAffected(ex.varName);
+      final title = translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+      final message = translations.variableNotAffected(Name: ex.varName);
       Logger().e(ex);
       // Add the error to the errors we must show once all scripts for
       // the position generation are built.
@@ -286,7 +291,7 @@ class ScriptTextTransformer {
       );
     } on ParseCancellationException catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
-      final title = translations.parseErrorDialogTitle(scriptTypeLabel);
+      final title = translations.parseErrorDialogTitle(Title: scriptTypeLabel);
       final message = ex.message;
       Logger().e(ex);
       // Add the error to the errors we must show once all scripts for
@@ -297,7 +302,7 @@ class ScriptTextTransformer {
       );
     } on TypeError catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
-      final title = translations.parseErrorDialogTitle(scriptTypeLabel);
+      final title = translations.parseErrorDialogTitle(Title: scriptTypeLabel);
       final message = translations.typeError;
       Logger().e(ex);
       // Add the error to the errors we must show once all scripts for
@@ -308,7 +313,7 @@ class ScriptTextTransformer {
       );
     } on Exception catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
-      final title = translations.parseErrorDialogTitle(scriptTypeLabel);
+      final title = translations.parseErrorDialogTitle(Title: scriptTypeLabel);
       final message = translations.miscParseError;
       Logger().e(ex);
       // Add the error to the errors we must show once all scripts for

@@ -1,8 +1,8 @@
 import 'dart:isolate';
 
+import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
-import 'package:basicchessendgamestrainer/pages/common.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_content.dart';
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
@@ -10,7 +10,6 @@ import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:basicchessendgamestrainer/pages/game_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -89,6 +88,22 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.dispose();
   }
 
+  void _showHomePageHelpDialog() {
+    showDialog(
+        context: context,
+        builder: (ctx2) {
+          return AlertDialog(
+            content: Text(t.home.help_message),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx2).pop(),
+                child: Text(t.misc.button_ok),
+              ),
+            ],
+          );
+        });
+  }
+
   void _showRgpdWarning() {
     showModalBottomSheet(
         isDismissible: false,
@@ -115,8 +130,6 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     if (!mounted) return;
 
-    final localizations = AppLocalizations.of(context)!;
-
     setState(() {
       _isGeneratingPosition = true;
     });
@@ -126,33 +139,30 @@ class _HomePageState extends ConsumerState<HomePage> {
       SampleScriptGenerationParameters(
         gameScript: gameScript,
         translations: TranslationsWrapper(
-          miscErrorDialogTitle: localizations.scriptParser_miscErrorDialogTitle,
-          missingScriptType: localizations.scriptParser_missingScriptType,
-          miscParseError: localizations.scriptParser_miscParseError,
-          failedGeneratingPosition: localizations.home_failedGeneratingPosition,
-          unrecognizedSymbol: localizations.scriptParser_unrecognizedSymbol,
-          typeError: localizations.scriptParser_typeError,
-          noAntlr4Token: localizations.scriptParser_noAntlr4Token,
-          eof: localizations.scriptParser_eof,
-          variableNotAffected: localizations.scriptParser_variableNotAffected,
+          miscErrorDialogTitle: t.script_parser.misc_error_dialog_title,
+          missingScriptType: t.script_parser.missing_script_type,
+          miscParseError: t.script_parser.misc_parse_error,
+          failedGeneratingPosition: t.home.failed_generating_position,
+          unrecognizedSymbol: t.script_parser.unrecognized_symbol,
+          typeError: t.script_parser.type_error,
+          noAntlr4Token: t.script_parser.no_antlr4_token,
+          eof: t.script_parser.eof,
+          variableNotAffected: t.script_parser.variable_not_affected,
           overridingPredefinedVariable:
-              localizations.scriptParser_overridingPredefinedVariable,
-          parseErrorDialogTitle:
-              localizations.scriptParser_parseErrorDialogTitle,
-          noViableAltException: localizations.scriptParser_noViableAltException,
-          inputMismatch: localizations.scriptParser_inputMismatch,
-          playerKingConstraint: localizations.scriptType_playerKingConstraint,
-          computerKingConstraint:
-              localizations.scriptType_computerKingConstraint,
-          kingsMutualConstraint: localizations.scriptType_kingsMutualConstraint,
-          otherPiecesCountConstraint:
-              localizations.scriptType_pieceKindCountConstraint,
+              t.script_parser.overriding_predefined_variable,
+          parseErrorDialogTitle: t.script_parser.parse_error_dialog_title,
+          noViableAltException: t.script_parser.no_viable_alt_exception,
+          inputMismatch: t.script_parser.input_mismatch,
+          playerKingConstraint: t.script_type.player_king_constraint,
+          computerKingConstraint: t.script_type.computer_king_constraint,
+          kingsMutualConstraint: t.script_type.kings_mutual_constraint,
+          otherPiecesCountConstraint: t.script_type.piece_kind_count_constraint,
           otherPiecesGlobalConstraint:
-              localizations.scriptType_otherPiecesGlobalConstraint,
+              t.script_type.other_pieces_global_constraint,
           otherPiecesIndexedConstraint:
-              localizations.scriptType_otherPiecesIndexedConstraint,
+              t.script_type.other_pieces_indexed_constraint,
           otherPiecesMutualConstraint:
-              localizations.scriptType_otherPiecesMutualConstraint,
+              t.script_type.other_pieces_mutual_constraint,
         ),
         sendPort: receivePort.sendPort,
       ),
@@ -179,7 +189,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              AppLocalizations.of(context)!.home_failedGeneratingPosition,
+              t.home.failed_generating_position,
             ),
           ),
         );
@@ -220,7 +230,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ),
                       ),
                       child: Text(
-                        AppLocalizations.of(context)!.buttonOk,
+                        t.misc.button_ok,
                         style: TextStyle(
                           color: Theme.of(
                             context,
@@ -242,7 +252,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            AppLocalizations.of(context)!.home_failedLoadingExercise,
+            t.home.failed_loading_exercise,
           ),
         ),
       );
@@ -262,22 +272,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-  void _loadPageWithUserAccessCheck(
-      Future<bool> Function() pageLoaderFunction) async {
-    final success = await pageLoaderFunction();
-    if (!success) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            AppLocalizations.of(context)!.no_internet_connection,
-          ),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final sampleGames = getAssetGames(context);
@@ -286,10 +280,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(AppLocalizations.of(context)!.homeTitle),
+        title: Text(t.home.title),
         actions: [
           IconButton(
-            onPressed: () => _loadPageWithUserAccessCheck(loadWebsiteHomePage),
+            onPressed: _showHomePageHelpDialog,
             icon: const Icon(
               Icons.question_mark_rounded,
             ),

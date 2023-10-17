@@ -1,12 +1,11 @@
 import 'package:basicchessendgamestrainer/components/history.dart';
 import 'package:basicchessendgamestrainer/logic/utils.dart';
-import 'package:basicchessendgamestrainer/pages/common.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/game_page_landscape.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/game_page_portrait.dart';
 import 'package:chess_vectors_flutter/chess_vectors_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:chess/chess.dart' as chess;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_chess_board/models/board_arrow.dart';
 import 'package:simple_chess_board/models/piece_type.dart';
@@ -163,10 +162,10 @@ class _GamePageState extends ConsumerState<GamePage> {
   void _purposeStartNewGame() {
     final confirmationDialog = AlertDialog(
       title: Text(
-        AppLocalizations.of(context)!.gamePage_newGame_title,
+        t.game_page.new_game_title,
       ),
       content: Text(
-        AppLocalizations.of(context)!.gamePage_newGame_message,
+        t.game_page.new_game_message,
       ),
       actions: [
         TextButton(
@@ -174,7 +173,7 @@ class _GamePageState extends ConsumerState<GamePage> {
             Navigator.of(context).pop();
           },
           child: Text(
-            AppLocalizations.of(context)!.buttonCancel,
+            t.misc.button_cancel,
             style: TextStyle(
               color: Theme.of(context).colorScheme.error,
             ),
@@ -188,7 +187,7 @@ class _GamePageState extends ConsumerState<GamePage> {
             });
           },
           child: Text(
-            AppLocalizations.of(context)!.buttonOk,
+            t.misc.button_ok,
             style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
             ),
@@ -214,15 +213,15 @@ class _GamePageState extends ConsumerState<GamePage> {
     if (noGameRunning) return;
 
     final confirmDialog = AlertDialog(
-      title: Text(AppLocalizations.of(context)!.gamePage_stopGame_title),
-      content: Text(AppLocalizations.of(context)!.gamePage_stopGame_message),
+      title: Text(t.game_page.stop_game_title),
+      content: Text(t.game_page.stop_game_message),
       actions: [
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
           child: Text(
-            AppLocalizations.of(context)!.buttonCancel,
+            t.misc.button_cancel,
             style: TextStyle(
               color: Theme.of(context).colorScheme.error,
             ),
@@ -234,7 +233,7 @@ class _GamePageState extends ConsumerState<GamePage> {
             _doStopGame();
           },
           child: Text(
-            AppLocalizations.of(context)!.buttonOk,
+            t.misc.button_ok,
             style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
             ),
@@ -251,7 +250,7 @@ class _GamePageState extends ConsumerState<GamePage> {
 
   void _doStopGame() {
     final snackBar = SnackBar(
-      content: Text(AppLocalizations.of(context)!.gamePage_gameStopped),
+      content: Text(t.game_page.game_stopped),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
     setState(() {
@@ -395,16 +394,16 @@ class _GamePageState extends ConsumerState<GamePage> {
     if (_gameLogic!.in_checkmate) {
       final whiteTurnBeforeMove = _gameLogic!.turn == chess.Color.BLACK;
       snackMessage = whiteTurnBeforeMove
-          ? AppLocalizations.of(context)!.gamePage_checkmate_white
-          : AppLocalizations.of(context)!.gamePage_checkmate_black;
+          ? t.game_page.checkmate_white
+          : t.game_page.checkmate_black;
     } else if (_gameLogic!.in_stalemate) {
-      snackMessage = AppLocalizations.of(context)!.gamePage_stalemate;
+      snackMessage = t.game_page.stalemate;
     } else if (_gameLogic!.in_threefold_repetition) {
-      snackMessage = AppLocalizations.of(context)!.gamePage_threeFoldRepetition;
+      snackMessage = t.game_page.three_fold_repetition;
     } else if (_gameLogic!.insufficient_material) {
-      snackMessage = AppLocalizations.of(context)!.gamePage_missingMaterial;
+      snackMessage = t.game_page.missing_material;
     } else if (_gameLogic!.in_draw) {
-      snackMessage = AppLocalizations.of(context)!.gamePage_fiftyMovesRule;
+      snackMessage = t.game_page.fifty_moves_rule;
     }
 
     if (snackMessage != null) {
@@ -591,10 +590,10 @@ class _GamePageState extends ConsumerState<GamePage> {
         builder: (ctx2) {
           return AlertDialog(
             title: Text(
-              AppLocalizations.of(context)!.gamePage_beforeExitTitle,
+              t.game_page.before_exit_title,
             ),
             content: Text(
-              AppLocalizations.of(context)!.gamePage_beforeExitMessage,
+              t.game_page.before_exit_message,
             ),
             actions: [
               ElevatedButton(
@@ -607,7 +606,7 @@ class _GamePageState extends ConsumerState<GamePage> {
                   ),
                 ),
                 child: Text(
-                  AppLocalizations.of(context)!.buttonCancel,
+                  t.misc.button_cancel,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.tertiary,
                   ),
@@ -623,7 +622,7 @@ class _GamePageState extends ConsumerState<GamePage> {
                   ),
                 ),
                 child: Text(
-                  AppLocalizations.of(context)!.buttonOk,
+                  t.misc.button_ok,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
                   ),
@@ -634,27 +633,28 @@ class _GamePageState extends ConsumerState<GamePage> {
         });
   }
 
-  void _loadPageWithUserAccessCheck(
-      Future<bool> Function() pageLoaderFunction) async {
-    final success = await pageLoaderFunction();
-    if (!success) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)!.no_internet_connection,
-          ),
-        ),
-      );
-    }
-  }
-
   void _onPromotionCommited({
     required ShortMove moveDone,
     required PieceType pieceType,
   }) {
     moveDone.promotion = pieceType;
     _onMove(move: moveDone);
+  }
+
+  void _showGamePageHelpDialog() {
+     showDialog(
+        context: context,
+        builder: (ctx2) {
+          return AlertDialog(
+            content: Text(t.game_page.help_message),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx2).pop(),
+                child: Text(t.misc.button_ok),
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -670,7 +670,7 @@ class _GamePageState extends ConsumerState<GamePage> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(
-            AppLocalizations.of(context)!.gamePageTitle,
+            t.game_page.title,
           ),
           actions: [
             IconButton(
@@ -692,8 +692,7 @@ class _GamePageState extends ConsumerState<GamePage> {
               ),
             ),
             IconButton(
-              onPressed: () =>
-                  _loadPageWithUserAccessCheck(loadWebsiteHomePage),
+              onPressed: _showGamePageHelpDialog,
               icon: const Icon(
                 Icons.question_mark_rounded,
               ),

@@ -1,6 +1,5 @@
-import 'package:basicchessendgamestrainer/pages/common.dart';
+import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RgpdModalBottomSheetContent extends StatelessWidget {
   final spacerHeight = 10.0;
@@ -14,20 +13,50 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
   final double height;
   final BuildContext context;
 
-  void _loadPageWithUserAccessCheck(
-      Future<bool> Function() pageLoaderFunction) async {
-    final success = await pageLoaderFunction();
-    if (!success) {
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            AppLocalizations.of(context)!.no_internet_connection,
-          ),
-        ),
-      );
-    }
+  void _showPrivacyDialog() {
+    showDialog(
+        context: context,
+        builder: (ctx2) {
+          return AlertDialog(
+            title: Text(t.privacy.title),
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(t.privacy.content1),
+                Text(t.privacy.content2),
+                Text(t.privacy.content3),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx2).pop(),
+                child: Text(
+                  t.misc.button_ok,
+                ),
+              )
+            ],
+          );
+        });
+  }
+
+  void _showUseConditionsDialog() {
+    showDialog(
+        context: context,
+        builder: (ctx2) {
+          return AlertDialog(
+            title: Text(t.use_conditions.title),
+            content: Text(t.use_conditions.content),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx2).pop(),
+                child: Text(
+                  t.misc.button_ok,
+                ),
+              )
+            ],
+          );
+        });
   }
 
   @override
@@ -41,7 +70,7 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              AppLocalizations.of(context)!.rgpdText,
+              t.rgpd.text,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSecondary,
               ),
@@ -50,9 +79,9 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
               height: spacerHeight,
             ),
             InkWell(
-              onTap: () => _loadPageWithUserAccessCheck(loadPrivacy),
+              onTap: _showPrivacyDialog,
               child: Text(
-                AppLocalizations.of(context)!.rgpdPrivacy,
+                t.privacy.title,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSecondary,
                   decoration: TextDecoration.underline,
@@ -63,9 +92,9 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
               height: spacerHeight,
             ),
             InkWell(
-              onTap: () => _loadPageWithUserAccessCheck(loadUseConditions),
+              onTap: _showUseConditionsDialog,
               child: Text(
-                AppLocalizations.of(context)!.rgpdUseConditions,
+                t.use_conditions.title,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSecondary,
                   decoration: TextDecoration.underline,
@@ -82,7 +111,7 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
                 ),
               ),
               child: Text(
-                AppLocalizations.of(context)!.buttonAccept,
+                t.misc.button_ok,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onTertiary,
                 ),
