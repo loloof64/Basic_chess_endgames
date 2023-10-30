@@ -155,31 +155,27 @@ class ChessHistory extends StatelessWidget {
       final isLandscapeMode = constraints.maxWidth > constraints.maxHeight;
       final commonHistoryButtonsSize = isLandscapeMode
           ? constraints.maxWidth * 0.12
-          : constraints.maxWidth * 0.18;
+          : constraints.maxWidth * 0.04;
       return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: HistoryButtonsZone(
-              buttonsSize: commonHistoryButtonsSize,
-              requestGotoFirst: requestGotoFirst,
-              requestGotoPrevious: requestGotoPrevious,
-              requestGotoNext: requestGotoNext,
-              requestGotoLast: requestGotoLast,
-            ),
+          HistoryButtonsZone(
+            buttonsSize: commonHistoryButtonsSize,
+            requestGotoFirst: requestGotoFirst,
+            requestGotoPrevious: requestGotoPrevious,
+            requestGotoNext: requestGotoNext,
+            requestGotoLast: requestGotoLast,
           ),
-          Expanded(
-            flex: 4,
-            child: Container(
-              color: Theme.of(context).colorScheme.secondary,
-              child: SingleChildScrollView(
-                controller: scrollController,
-                child: Wrap(
-                  spacing: 10,
-                  runSpacing: 6,
-                  children: nodes,
-                ),
+          Container(
+            color: Theme.of(context).colorScheme.secondary,
+            child: SingleChildScrollView(
+              controller: scrollController,
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: nodes,
               ),
             ),
           ),
@@ -245,7 +241,7 @@ class HistoryButtonsZone extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _HistoryNavigationButton(
           size: buttonsSize,

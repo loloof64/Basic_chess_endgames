@@ -9,7 +9,7 @@ import 'package:simple_chess_board/widgets/chessboard.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 
 const gapSize = 20.0;
-const historyFontSizeFraction = 0.07;
+const historyFontSizeFraction = 0.14;
 
 class PortraitWidget extends StatelessWidget {
   final bool gameInProgress;
@@ -70,28 +70,26 @@ class PortraitWidget extends StatelessWidget {
         ? t.game_page.goal_win
         : t.game_page.goal_draw;
     final screenWidth = MediaQuery.of(context).size.width;
-    final goalTextFontSize = screenWidth * 0.05;
-    final playerTurnSize = screenWidth * 0.05;
+    final goalTextFontSize = screenWidth * 0.03;
+    final playerTurnSize = screenWidth * 0.03;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Expanded(
-          child: SimpleChessBoard(
-            fen: positionFen,
-            blackSideAtBottom: blackSideAtBottom,
-            whitePlayerType:
-                gameInProgress ? whitePlayerType : PlayerType.computer,
-            blackPlayerType:
-                gameInProgress ? blackPlayerType : PlayerType.computer,
-            onMove: onMove,
-            onPromote: onPromote,
-            lastMoveToHighlight: lastMoveToHighlight,
-            engineThinking: engineThinking,
-            onPromotionCommited: onPromotionCommited,
-            chessBoardColors: ChessBoardColors(),
-          ),
+        SimpleChessBoard(
+          fen: positionFen,
+          blackSideAtBottom: blackSideAtBottom,
+          whitePlayerType:
+              gameInProgress ? whitePlayerType : PlayerType.computer,
+          blackPlayerType:
+              gameInProgress ? blackPlayerType : PlayerType.computer,
+          onMove: onMove,
+          onPromote: onPromote,
+          lastMoveToHighlight: lastMoveToHighlight,
+          engineThinking: engineThinking,
+          onPromotionCommited: onPromotionCommited,
+          chessBoardColors: ChessBoardColors(),
         ),
         const Divider(height: gapSize),
         Row(
