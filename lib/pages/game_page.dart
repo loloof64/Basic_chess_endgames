@@ -33,9 +33,10 @@ class _GamePageState extends ConsumerState<GamePage> {
   bool _gameStart = true;
   bool _gameInProgress = true;
   BoardArrow? _lastMoveToHighlight;
-  List<HistoryNode> _historyhistoryNodesDescriptions = [];
-  final ScrollController _historyScrollController = ScrollController();
-  int? _selectedHistoryItemIndex = -1;
+  List<HistoryNode> _historyNodesDescriptions = [];
+  final ScrollController _historyScrollController =
+      ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
+  int? _historySelectedNodeIndex;
   bool _engineThinking = false;
   final _stockfish = Stockfish();
   bool _stockfishReady = false;
@@ -68,6 +69,47 @@ class _GamePageState extends ConsumerState<GamePage> {
     super.dispose();
   }
 
+  void _updateHistoryScrollPosition() {
+    setState(() {
+      if (_gameInProgress) {
+        _historyScrollController.animateTo(
+          _historyScrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 50),
+          curve: Curves.easeIn,
+        );
+      } else {
+        if (_historySelectedNodeIndex != null) {
+          final availableScrollExtent =
+              _historyScrollController.position.maxScrollExtent;
+          final windowWidth = MediaQuery.of(context).size.width;
+          final elementsCount = _historyNodesDescriptions.length;
+          final isPortrait =
+              MediaQuery.of(context).orientation == Orientation.portrait;
+          final averageNodeSize = isPortrait
+              ? MediaQuery.of(context).size.width * 0.07
+              : MediaQuery.of(context).size.height * 0.06;
+          final averageItemsPerScreen = windowWidth / averageNodeSize * 0.625;
+          var realIndex =
+              (_historySelectedNodeIndex! - averageItemsPerScreen).toInt();
+          realIndex = realIndex > 0 ? realIndex : 0;
+          final realElementsCount =
+              (elementsCount - averageItemsPerScreen).toInt();
+          final double averageScroll = realElementsCount > 0
+              ? availableScrollExtent / realElementsCount
+              : 0;
+          final scrollPosition = realIndex * averageScroll;
+
+          _historyScrollController.jumpTo(
+            scrollPosition,
+          );
+        } else {
+          _historyScrollController.animateTo(0.0,
+              duration: const Duration(milliseconds: 10), curve: Curves.easeIn);
+        }
+      }
+    });
+  }
+
   void _doStartNewGame() {
     final startPosition = ref.read(gameProvider).startPosition;
     final newGameLogic = chess.Chess.fromFEN(startPosition);
@@ -77,10 +119,9 @@ class _GamePageState extends ConsumerState<GamePage> {
     _gameLogic = newGameLogic;
     _gameStart = true;
     _lastMoveToHighlight = null;
-    _historyhistoryNodesDescriptions = [];
-    _historyhistoryNodesDescriptions
-        .add(HistoryNode(caption: moveNumberCaption));
-    _selectedHistoryItemIndex = -1;
+    _historyNodesDescriptions = [];
+    _historyNodesDescriptions.add(HistoryNode(caption: moveNumberCaption));
+    _historySelectedNodeIndex = null;
     _gameInProgress = true;
     _engineThinking = false;
   }
@@ -119,8 +160,9 @@ class _GamePageState extends ConsumerState<GamePage> {
       if (!whiteMove && !_gameStart) {
         final moveNumberCaption = "${_gameLogic!.fen.split(' ')[5]}.";
         setState(() {
-          _historyhistoryNodesDescriptions
+          _historyNodesDescriptions
               .add(HistoryNode(caption: moveNumberCaption));
+          _updateHistoryScrollPosition();
         });
       }
 
@@ -133,7 +175,7 @@ class _GamePageState extends ConsumerState<GamePage> {
       final fan = san.toFan(whiteMove: !whiteMove);
 
       setState(() {
-        _historyhistoryNodesDescriptions.add(
+        _historyNodesDescriptions.add(
           HistoryNode(
             caption: fan,
             fen: _gameLogic!.fen,
@@ -150,7 +192,7 @@ class _GamePageState extends ConsumerState<GamePage> {
         _gameStart = false;
       });
 
-      _animateScrollViewToItemIndex(_historyhistoryNodesDescriptions.length);
+      _updateHistoryScrollPosition();
 
       _handleGameEndedIfNeeded();
       if (_gameInProgress) {
@@ -348,8 +390,9 @@ class _GamePageState extends ConsumerState<GamePage> {
       if (!whiteMove && !_gameStart) {
         final moveNumberCaption = "${_gameLogic!.fen.split(' ')[5]}.";
         setState(() {
-          _historyhistoryNodesDescriptions
+          _historyNodesDescriptions
               .add(HistoryNode(caption: moveNumberCaption));
+          _updateHistoryScrollPosition();
         });
       }
 
@@ -362,7 +405,7 @@ class _GamePageState extends ConsumerState<GamePage> {
       final fan = san.toFan(whiteMove: !whiteMove);
 
       setState(() {
-        _historyhistoryNodesDescriptions.add(
+        _historyNodesDescriptions.add(
           HistoryNode(
             caption: fan,
             fen: _gameLogic!.fen,
@@ -379,7 +422,7 @@ class _GamePageState extends ConsumerState<GamePage> {
         _gameStart = false;
       });
 
-      _animateScrollViewToItemIndex(_historyhistoryNodesDescriptions.length);
+      _updateHistoryScrollPosition();
 
       _handleGameEndedIfNeeded();
       if (_gameInProgress) {
@@ -423,7 +466,7 @@ class _GamePageState extends ConsumerState<GamePage> {
     if (_gameInProgress) return;
     final startPosition = ref.read(gameProvider).startPosition;
     setState(() {
-      _selectedHistoryItemIndex = null;
+      _historySelectedNodeIndex = null;
       _lastMoveToHighlight = null;
       _gameLogic = chess.Chess.fromFEN(startPosition);
     });
@@ -438,81 +481,88 @@ class _GamePageState extends ConsumerState<GamePage> {
 
   void _selectPreviousHistoryNode() {
     if (_gameInProgress) return;
-    if (_selectedHistoryItemIndex == null) return;
+    if (_historySelectedNodeIndex == null) return;
     /*
     We test against value 2 because
     value 0 is for the first move number
     and value 1 is for the first move san
     */
-    if (_selectedHistoryItemIndex! < 2) {
+    if (_historySelectedNodeIndex! < 2) {
       // selecting first game position
       final startPosition = ref.read(gameProvider).startPosition;
       setState(() {
-        _selectedHistoryItemIndex = null;
+        _historySelectedNodeIndex = null;
         _lastMoveToHighlight = null;
         _gameLogic = chess.Chess.fromFEN(startPosition);
       });
+      _historyScrollController.animateTo(
+        0,
+        duration: const Duration(
+          milliseconds: 100,
+        ),
+        curve: Curves.easeIn,
+      );
       return;
     }
-    final previousNodeData = _historyhistoryNodesDescriptions
+    final previousNodeData = _historyNodesDescriptions
         .asMap()
         .entries
         .map((entry) => (entry.key, entry.value))
         .where((element) => element.$2.fen != null)
-        .takeWhile((element) => element.$1 != _selectedHistoryItemIndex)
+        .takeWhile((element) => element.$1 != _historySelectedNodeIndex)
         .lastOrNull;
     if (previousNodeData == null) return;
 
     final moveData = previousNodeData.$2.move!;
 
     setState(() {
-      _selectedHistoryItemIndex = previousNodeData.$1;
+      _historySelectedNodeIndex = previousNodeData.$1;
       _gameLogic = chess.Chess.fromFEN(previousNodeData.$2.fen!);
       _lastMoveToHighlight = BoardArrow(
         from: moveData.from.getUciString(),
         to: moveData.to.getUciString(),
       );
     });
-    _animateScrollViewToItemIndex(_selectedHistoryItemIndex!);
+    _updateHistoryScrollPosition();
   }
 
   void _selectNextHistoryNode() {
     if (_gameInProgress) return;
-    if (_selectedHistoryItemIndex == null) {
+    if (_historySelectedNodeIndex == null) {
       // Move number and first move san, at least
-      if (_historyhistoryNodesDescriptions.length >= 2) {
+      if (_historyNodesDescriptions.length >= 2) {
         setState(() {
           // First move san
-          _selectedHistoryItemIndex = 1;
+          _historySelectedNodeIndex = 1;
         });
       }
       return;
     }
-    final nextNodeData = _historyhistoryNodesDescriptions
+    final nextNodeData = _historyNodesDescriptions
         .asMap()
         .entries
         .map((entry) => (entry.key, entry.value))
         .where((element) => element.$2.fen != null)
-        .skipWhile((element) => element.$1 != _selectedHistoryItemIndex)
+        .skipWhile((element) => element.$1 != _historySelectedNodeIndex)
         .skip(1)
         .firstOrNull;
     if (nextNodeData == null) return;
 
     final moveData = nextNodeData.$2.move!;
     setState(() {
-      _selectedHistoryItemIndex = nextNodeData.$1;
+      _historySelectedNodeIndex = nextNodeData.$1;
       _gameLogic = chess.Chess.fromFEN(nextNodeData.$2.fen!);
       _lastMoveToHighlight = BoardArrow(
         from: moveData.from.getUciString(),
         to: moveData.to.getUciString(),
       );
     });
-    _animateScrollViewToItemIndex(_selectedHistoryItemIndex!);
+    _updateHistoryScrollPosition();
   }
 
   void _selectLastHistoryNode() {
     if (_gameInProgress) return;
-    final lastNodeData = _historyhistoryNodesDescriptions
+    final lastNodeData = _historyNodesDescriptions
         .asMap()
         .entries
         .map((entry) => (entry.key, entry.value))
@@ -522,48 +572,28 @@ class _GamePageState extends ConsumerState<GamePage> {
 
     final moveData = lastNodeData.$2.move!;
     setState(() {
-      _selectedHistoryItemIndex = lastNodeData.$1;
+      _historySelectedNodeIndex = lastNodeData.$1;
       _gameLogic = chess.Chess.fromFEN(lastNodeData.$2.fen!);
       _lastMoveToHighlight = BoardArrow(
         from: moveData.from.getUciString(),
         to: moveData.to.getUciString(),
       );
     });
-    _animateScrollViewToItemIndex(_historyhistoryNodesDescriptions.length);
+    _updateHistoryScrollPosition();
   }
 
   void _onHistoryMoveRequest(
       {required Move historyMove, required int? selectedHistoryNodeIndex}) {
     if (_gameInProgress || selectedHistoryNodeIndex == null) return;
-    final historyNode =
-        _historyhistoryNodesDescriptions[selectedHistoryNodeIndex];
+    final historyNode = _historyNodesDescriptions[selectedHistoryNodeIndex];
     setState(() {
-      _selectedHistoryItemIndex = selectedHistoryNodeIndex;
+      _historySelectedNodeIndex = selectedHistoryNodeIndex;
       _gameLogic = chess.Chess.fromFEN(historyNode.fen!);
       _lastMoveToHighlight = BoardArrow(
         from: historyNode.move!.from.getUciString(),
         to: historyNode.move!.to.getUciString(),
       );
     });
-  }
-
-  void _animateScrollViewToItemIndex(int index) {
-    final itemsPerRowApproximation =
-        MediaQuery.of(context).orientation == Orientation.portrait ? 6 : 10;
-    final lineIndex = index ~/ itemsPerRowApproximation;
-    final singleLineHeightRatio =
-        MediaQuery.of(context).orientation == Orientation.portrait
-            ? 0.06
-            : 0.12;
-    final newOffset =
-        lineIndex * singleLineHeightRatio * MediaQuery.of(context).size.height;
-    _historyScrollController.animateTo(
-      newOffset,
-      duration: const Duration(
-        milliseconds: 100,
-      ),
-      curve: Curves.easeIn,
-    );
   }
 
   void _makeComputerPlay() {
@@ -642,7 +672,7 @@ class _GamePageState extends ConsumerState<GamePage> {
   }
 
   void _showGamePageHelpDialog() {
-     showDialog(
+    showDialog(
         context: context,
         builder: (ctx2) {
           return AlertDialog(
@@ -715,9 +745,8 @@ class _GamePageState extends ConsumerState<GamePage> {
                       onMove: _onMove,
                       onPromotionCommited: _onPromotionCommited,
                       gameGoal: gameGoal,
-                      historySelectedNodeIndex: _selectedHistoryItemIndex,
-                      historyNodesDescriptions:
-                          _historyhistoryNodesDescriptions,
+                      historySelectedNodeIndex: _historySelectedNodeIndex,
+                      historyNodesDescriptions: _historyNodesDescriptions,
                       historyScrollController: _historyScrollController,
                       requestGotoFirst: _selectFirstGamePosition,
                       requestGotoPrevious: _selectPreviousHistoryNode,
@@ -738,9 +767,8 @@ class _GamePageState extends ConsumerState<GamePage> {
                       onMove: _onMove,
                       onPromotionCommited: _onPromotionCommited,
                       gameGoal: gameGoal,
-                      historySelectedNodeIndex: _selectedHistoryItemIndex,
-                      historyNodesDescriptions:
-                          _historyhistoryNodesDescriptions,
+                      historySelectedNodeIndex: _historySelectedNodeIndex,
+                      historyNodesDescriptions: _historyNodesDescriptions,
                       historyScrollController: _historyScrollController,
                       requestGotoFirst: _selectFirstGamePosition,
                       requestGotoPrevious: _selectPreviousHistoryNode,
