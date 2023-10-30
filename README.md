@@ -31,4 +31,4 @@ Some pictures have been downloaded from [Svg Repo](https://www.svgrepo.com/) :
 
 ### Fonts
 
-Font freeSerif was downloaded from [Fonts2U](https://fr.fonts2u.com/download/free-serif.police).
+Font freeSerif was downloaded from [FontSpace](https://www.fontspace.com/freeserif-font-f13277).

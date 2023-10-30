@@ -108,10 +108,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-fonts:
-    - family: Free Serif
-      fonts:
-        - asset: assets/fonts/free_serif.ttf
+  fonts:
+      - family: Free Serif
+        fonts:
+        - asset: assets/fonts/FreeSerif.ttf
 flutter_launcher_icons:
   android: true
   image_path: "assets/images/logo.png"
