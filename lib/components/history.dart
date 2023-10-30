@@ -143,10 +143,10 @@ class ChessHistory extends StatelessWidget {
         nodes.add(nodeButton);
       } else {
         nodes.add(
-          Text(
+          TextButton(onPressed: (){}, child: Text(
             currentNode.caption,
             style: textStyle,
-          ),
+          ),),
         );
       }
     });
