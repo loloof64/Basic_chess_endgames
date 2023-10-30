@@ -15,7 +15,7 @@ import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:stockfish/stockfish.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-const stockfishLoadingDelayMs = 1500;
+const stockfishLoadingDelayMs = 2000;
 const piecesSize = 60.0;
 
 class GamePage extends ConsumerStatefulWidget {
