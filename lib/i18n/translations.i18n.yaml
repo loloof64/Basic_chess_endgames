@@ -11,6 +11,9 @@ home:
   helpMessage: "Here you can select the type of position you want to play with. \
     A line which leading icon is a trophy will generate a position in which you should win. \
     Otherwise, with a handshake leading icon, your goal will be to save the game and make draw."
+  tab_integrated: "Integrated"
+  tab_added: "Added"
+  no_game_yet: "No exercise"
 rgpd:
   text: "By using this app, you agree with :"
   privacy: "the Privacy Policy"

@@ -13,6 +13,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 const mainListItemsGap = 8.0;
 const leadingImagesSize = 60.0;
@@ -277,75 +278,120 @@ class _HomePageState extends ConsumerState<HomePage> {
     final sampleGames = getAssetGames(context);
     final progressBarSize = MediaQuery.of(context).size.shortestSide * 0.80;
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(t.home.title),
-        actions: [
-          IconButton(
-            onPressed: _showHomePageHelpDialog,
-            icon: const Icon(
-              Icons.question_mark_rounded,
-            ),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(
-                height: mainListItemsGap,
-              ),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: sampleGames.length,
-                    itemBuilder: (ctx2, index) {
-                      final game = sampleGames[index];
-
-                      final leadingImage = game.goal == Goal.draw
-                          ? SvgPicture.asset(
-                              'assets/images/handshake.svg',
-                              fit: BoxFit.cover,
-                              width: leadingImagesSize,
-                              height: leadingImagesSize,
-                            )
-                          : SvgPicture.asset(
-                              'assets/images/trophy.svg',
-                              fit: BoxFit.cover,
-                              width: leadingImagesSize,
-                              height: leadingImagesSize,
-                            );
-
-                      final title = Text(
-                        game.label,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: titlesFontSize,
-                        ),
-                      );
-
-                      return ListTile(
-                        leading: leadingImage,
-                        title: title,
-                        onTap: () =>
-                            _tryGeneratingAndPlayingPositionFromSample(game),
-                      );
-                    }),
-              ),
-            ],
-          ),
-          if (_isGeneratingPosition)
-            Center(
-              child: SizedBox(
-                width: progressBarSize,
-                height: progressBarSize,
-                child: const CircularProgressIndicator(),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text(t.home.title),
+          actions: [
+            IconButton(
+              onPressed: _showHomePageHelpDialog,
+              icon: const Icon(
+                Icons.question_mark_rounded,
               ),
             ),
-        ],
+          ],
+          bottom: TabBar(tabs: [
+            Tab(
+              icon: const FaIcon(FontAwesomeIcons.gifts),
+              text: t.home.tab_integrated,
+            ),
+            Tab(
+              icon: const FaIcon(FontAwesomeIcons.compassDrafting),
+              text: t.home.tab_added,
+            ),
+          ]),
+        ),
+        body: Stack(
+          children: <Widget>[
+            TabBarView(
+              children: [
+                IntegratedExercisesWidget(
+                  games: sampleGames,
+                  onGameSelected: _tryGeneratingAndPlayingPositionFromSample,
+                ),
+                AddedExercisesWidget(),
+              ],
+            ),
+            if (_isGeneratingPosition)
+              Center(
+                child: SizedBox(
+                  width: progressBarSize,
+                  height: progressBarSize,
+                  child: const CircularProgressIndicator(),
+                ),
+              ),
+          ],
+        ),
       ),
     );
+  }
+}
+
+class IntegratedExercisesWidget extends StatelessWidget {
+  final List<AssetGame> games;
+  final void Function(AssetGame game) onGameSelected;
+
+  const IntegratedExercisesWidget({
+    super.key,
+    required this.games,
+    required this.onGameSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        const SizedBox(
+          height: mainListItemsGap,
+        ),
+        Expanded(
+          child: ListView.builder(
+              itemCount: games.length,
+              itemBuilder: (ctx2, index) {
+                final game = games[index];
+
+                final leadingImage = game.goal == Goal.draw
+                    ? SvgPicture.asset(
+                        'assets/images/handshake.svg',
+                        fit: BoxFit.cover,
+                        width: leadingImagesSize,
+                        height: leadingImagesSize,
+                      )
+                    : SvgPicture.asset(
+                        'assets/images/trophy.svg',
+                        fit: BoxFit.cover,
+                        width: leadingImagesSize,
+                        height: leadingImagesSize,
+                      );
+
+                final title = Text(
+                  game.label,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: titlesFontSize,
+                  ),
+                );
+
+                return ListTile(
+                  leading: leadingImage,
+                  title: title,
+                  onTap: () => onGameSelected(game),
+                );
+              }),
+        ),
+      ],
+    );
+  }
+}
+
+class AddedExercisesWidget extends StatelessWidget {
+  const AddedExercisesWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text(t.home.no_game_yet,),);
   }
 }

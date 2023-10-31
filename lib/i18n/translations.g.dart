@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 189 (63 per locale)
+/// Strings: 198 (66 per locale)
 ///
-/// Built on 2023-10-17 at 13:46 UTC
+/// Built on 2023-10-31 at 17:42 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -200,6 +200,9 @@ class _TranslationsHomeEn {
 	String get failed_loading_exercise => 'Failed to load exercise : the chess position is not valid.';
 	String get failed_generating_position => 'Failed to generate the position.';
 	String get help_message => 'Here you can select the type of position you want to play with. A line which leading icon is a trophy will generate a position in which you should win. Otherwise, with a handshake leading icon, your goal will be to save the game and make draw.';
+	String get tab_integrated => 'Integrated';
+	String get tab_added => 'Added';
+	String get no_game_yet => 'No exercise';
 }
 
 // Path: rgpd
@@ -376,6 +379,9 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get failed_loading_exercise => 'No se pudo cargar el ejercicio: la posición de ajedrez no es válida.';
 	@override String get failed_generating_position => 'Falló al generar la posición.';
 	@override String get help_message => 'Aquí puedes seleccionar el tipo de posición con la que quieres jugar. Una línea cuyo icono principal es un trofeo generará una posición en la que deberías ganar. De lo contrario, con un icono principal de un apretón de manos, tu objetivo será salvar la partida y hacer empate.';
+	@override String get tab_integrated => 'Integrados';
+	@override String get tab_added => 'Añadidos';
+	@override String get no_game_yet => 'No hay ejercicio';
 }
 
 // Path: rgpd
@@ -552,6 +558,9 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get failed_loading_exercise => 'Echec de chargement de l\'exerice : la position d\'échecs est invalide.';
 	@override String get failed_generating_position => 'Echec de génération de la position.';
 	@override String get help_message => 'Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer. Une ligne dont l\'icône est un trophée générera une position où vous devrez gagner. Sinon si la ligne commence par une poignée de main, vous devrez sauver la partie et faire partie nulle.';
+	@override String get tab_integrated => 'Intégrés';
+	@override String get tab_added => 'Ajoutés';
+	@override String get no_game_yet => 'Aucun exerice';
 }
 
 // Path: rgpd

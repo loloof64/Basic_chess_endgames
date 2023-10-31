@@ -11,6 +11,9 @@ home:
   helpMessage: "Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer. \
     Une ligne dont l'icône est un trophée générera une position où vous devrez gagner. \
     Sinon si la ligne commence par une poignée de main, vous devrez sauver la partie et faire partie nulle."
+  tab_integrated: "Intégrés"
+  tab_added: "Ajoutés"
+  no_game_yet: "Aucun exerice"
 rgpd:
   text: "En utilisant cette application, vous vous conformez à :"
   privacy: "la Politique de Confidentialité"

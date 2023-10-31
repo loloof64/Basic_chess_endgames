@@ -11,6 +11,9 @@ home:
   helpMessage: "Aquí puedes seleccionar el tipo de posición con la que quieres jugar. \
     Una línea cuyo icono principal es un trofeo generará una posición en la que deberías ganar. \
     De lo contrario, con un icono principal de un apretón de manos, tu objetivo será salvar la partida y hacer empate."
+  tab_integrated: "Integrados"
+  tab_added: "Añadidos"
+  no_game_yet: "No hay ejercicio"
 rgpd:
   text: "Al utilizar esta aplicación, estás de acuerdo con:"
   privacy: "la Política de Privacidad"
