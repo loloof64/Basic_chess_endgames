@@ -14,6 +14,7 @@ import 'package:simple_chess_board/widgets/chessboard.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:stockfish/stockfish.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:developer' as developer;
 
 const stockfishLoadingDelayMs = 2000;
 const piecesSize = 60.0;
@@ -75,7 +76,7 @@ class _GamePageState extends ConsumerState<GamePage> {
         _historyScrollController.animateTo(
           _historyScrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 50),
-          curve: Curves.easeIn,
+          curve: Curves.linear,
         );
       } else {
         if (_historySelectedNodeIndex != null) {
@@ -86,16 +87,17 @@ class _GamePageState extends ConsumerState<GamePage> {
           final isPortrait =
               MediaQuery.of(context).orientation == Orientation.portrait;
           final averageNodeSize = isPortrait
-              ? MediaQuery.of(context).size.width * 0.07
-              : MediaQuery.of(context).size.height * 0.06;
+              ? MediaQuery.of(context).size.width * 0.11
+              : MediaQuery.of(context).size.height * 0.30;
           final averageItemsPerScreen = windowWidth / averageNodeSize * 0.625;
-          var realIndex =
-              (_historySelectedNodeIndex! - averageItemsPerScreen).toInt();
+          var realIndex = (_historySelectedNodeIndex! - averageItemsPerScreen)
+              .ceil()
+              .toInt();
           realIndex = realIndex > 0 ? realIndex : 0;
           final realElementsCount =
               (elementsCount - averageItemsPerScreen).toInt();
           final double averageScroll = realElementsCount > 0
-              ? availableScrollExtent / realElementsCount
+              ? 1.05 * availableScrollExtent / realElementsCount
               : 0;
           final scrollPosition = realIndex * averageScroll;
 
@@ -104,7 +106,7 @@ class _GamePageState extends ConsumerState<GamePage> {
           );
         } else {
           _historyScrollController.animateTo(0.0,
-              duration: const Duration(milliseconds: 10), curve: Curves.easeIn);
+              duration: const Duration(milliseconds: 50), curve: Curves.linear);
         }
       }
     });
@@ -192,7 +194,9 @@ class _GamePageState extends ConsumerState<GamePage> {
         _gameStart = false;
       });
 
-      _updateHistoryScrollPosition();
+      Future.delayed(const Duration(milliseconds: 50), () {
+        _updateHistoryScrollPosition();
+      });
 
       _handleGameEndedIfNeeded();
       if (_gameInProgress) {
@@ -473,9 +477,9 @@ class _GamePageState extends ConsumerState<GamePage> {
     _historyScrollController.animateTo(
       0,
       duration: const Duration(
-        milliseconds: 100,
+        milliseconds: 50,
       ),
-      curve: Curves.easeIn,
+      curve: Curves.linear,
     );
   }
 
@@ -498,9 +502,9 @@ class _GamePageState extends ConsumerState<GamePage> {
       _historyScrollController.animateTo(
         0,
         duration: const Duration(
-          milliseconds: 100,
+          milliseconds: 50,
         ),
-        curve: Curves.easeIn,
+        curve: Curves.linear,
       );
       return;
     }
