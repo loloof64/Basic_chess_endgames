@@ -152,10 +152,10 @@ class ChessHistory extends StatelessWidget {
     });
 
     return LayoutBuilder(builder: (ctx2, constraints) {
-      final isLandscapeMode = constraints.maxWidth > constraints.maxHeight;
+      final isLandscapeMode = MediaQuery.of(context).orientation == Orientation.landscape;
       final commonHistoryButtonsSize = isLandscapeMode
           ? constraints.maxWidth * 0.12
-          : constraints.maxWidth * 0.04;
+          : constraints.maxWidth * 0.08;
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
