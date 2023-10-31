@@ -14,7 +14,6 @@ import 'package:simple_chess_board/widgets/chessboard.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:stockfish/stockfish.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'dart:developer' as developer;
 
 const stockfishLoadingDelayMs = 2000;
 const piecesSize = 60.0;
@@ -88,7 +87,7 @@ class _GamePageState extends ConsumerState<GamePage> {
               MediaQuery.of(context).orientation == Orientation.portrait;
           final averageNodeSize = isPortrait
               ? MediaQuery.of(context).size.width * 0.11
-              : MediaQuery.of(context).size.height * 0.30;
+              : MediaQuery.of(context).size.height * 0.20;
           final averageItemsPerScreen = windowWidth / averageNodeSize * 0.625;
           var realIndex = (_historySelectedNodeIndex! - averageItemsPerScreen)
               .ceil()
