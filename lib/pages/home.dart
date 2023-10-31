@@ -73,6 +73,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   Isolate? _positionGenerationIsolate;
   bool _isGeneratingPosition = false;
+  int _selectedTabIndex = 0;
 
   @override
   void initState() {
@@ -292,16 +293,21 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ),
           ],
-          bottom: TabBar(tabs: [
-            Tab(
-              icon: const FaIcon(FontAwesomeIcons.gifts),
-              text: t.home.tab_integrated,
-            ),
-            Tab(
-              icon: const FaIcon(FontAwesomeIcons.compassDrafting),
-              text: t.home.tab_added,
-            ),
-          ]),
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                icon: const FaIcon(FontAwesomeIcons.gifts),
+                text: t.home.tab_integrated,
+              ),
+              Tab(
+                icon: const FaIcon(FontAwesomeIcons.compassDrafting),
+                text: t.home.tab_added,
+              ),
+            ],
+            onTap: (index) => setState(() {
+              _selectedTabIndex = index;
+            }),
+          ),
         ),
         body: Stack(
           children: <Widget>[
@@ -324,6 +330,12 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
           ],
         ),
+        floatingActionButton: _selectedTabIndex == 1
+            ? FloatingActionButton(
+                onPressed: () {},
+                child: const FaIcon(FontAwesomeIcons.plus),
+              )
+            : null,
       ),
     );
   }
@@ -392,6 +404,10 @@ class AddedExercisesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text(t.home.no_game_yet,),);
+    return Center(
+      child: Text(
+        t.home.no_game_yet,
+      ),
+    );
   }
 }
