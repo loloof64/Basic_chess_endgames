@@ -88,3 +88,13 @@ useConditions:
   title: "Condiciones de uso"
   content: "No se requiere una condición de uso particular para Finales Básicos de Ajedrez. Esta aplicación solo está destinada a \
     ayudar a los jugadores de ajedrez para mejorar su juego y no incluir ningún contenido que pueda ser dañino, violento o impactante."
+script_editor_page:
+  title: "Página del editor de guiones"
+  player_king_constraint: "Restricciones rey del jugador"
+  computer_king_constraint: "Restricciones rey de la computadora"
+  kings_mutual_constraint: "Restricciones mutuas de los reyes"
+  other_pieces_count_constraint: "Restricciones número otras piezas"
+  other_pieces_global_constraint: "Restricciones globales otras piezas"
+  other_pieces_mutual_constraint: "Restricciones mutuas de otras piezas"
+  other_pieces_indexed_constraint: "Restricciones de otras piezas por orden"
+  game_goal: "Objetivo del juego"

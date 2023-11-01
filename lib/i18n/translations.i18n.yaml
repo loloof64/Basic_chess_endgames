@@ -85,3 +85,13 @@ useConditions:
   content: "No particular use condition is required for Basic Chess Endgames \
     This application is only targeted to help chess players to improve their play, and do not include any content that could be \
     harmful, violent or shocking."
+script_editor_page:
+  title: "Script editor page"
+  player_king_constraint: "Player's king's constraints"
+  computer_king_constraint: "Computer's king's constraints"
+  kings_mutual_constraint: "Kings's mutual constraints"
+  other_pieces_count_constraint: "Other pieces' count's constraints"
+  other_pieces_global_constraint: "Other pieces' global constraints"
+  other_pieces_mutual_constraint: "Other pieces' mutual constraints"
+  other_pieces_indexed_constraint: "Other pieces constraints by order"
+  game_goal: "Game's goal"

@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 201 (67 per locale)
+/// Strings: 228 (76 per locale)
 ///
-/// Built on 2023-10-31 at 19:39 UTC
+/// Built on 2023-11-01 at 17:08 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -173,6 +173,7 @@ class _TranslationsEn implements BaseTranslations<AppLocale, _TranslationsEn> {
 	late final _TranslationsSampleScriptEn sample_script = _TranslationsSampleScriptEn._(_root);
 	late final _TranslationsPrivacyEn privacy = _TranslationsPrivacyEn._(_root);
 	late final _TranslationsUseConditionsEn use_conditions = _TranslationsUseConditionsEn._(_root);
+	late final _TranslationsScriptEditorPageEn script_editor_page = _TranslationsScriptEditorPageEn._(_root);
 }
 
 // Path: misc
@@ -323,6 +324,24 @@ class _TranslationsUseConditionsEn {
 	String get content => 'No particular use condition is required for Basic Chess Endgames This application is only targeted to help chess players to improve their play, and do not include any content that could be harmful, violent or shocking.';
 }
 
+// Path: script_editor_page
+class _TranslationsScriptEditorPageEn {
+	_TranslationsScriptEditorPageEn._(this._root);
+
+	final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Script editor page';
+	String get player_king_constraint => 'Player\'s king\'s constraints';
+	String get computer_king_constraint => 'Computer\'s king\'s constraints';
+	String get kings_mutual_constraint => 'Kings\'s mutual constraints';
+	String get other_pieces_count_constraint => 'Other pieces\' count\'s constraints';
+	String get other_pieces_global_constraint => 'Other pieces\' global constraints';
+	String get other_pieces_mutual_constraint => 'Other pieces\' mutual constraints';
+	String get other_pieces_indexed_constraint => 'Other pieces constraints by order';
+	String get game_goal => 'Game\'s goal';
+}
+
 // Path: <root>
 class _TranslationsEs extends _TranslationsEn {
 
@@ -353,6 +372,7 @@ class _TranslationsEs extends _TranslationsEn {
 	@override late final _TranslationsSampleScriptEs sample_script = _TranslationsSampleScriptEs._(_root);
 	@override late final _TranslationsPrivacyEs privacy = _TranslationsPrivacyEs._(_root);
 	@override late final _TranslationsUseConditionsEs use_conditions = _TranslationsUseConditionsEs._(_root);
+	@override late final _TranslationsScriptEditorPageEs script_editor_page = _TranslationsScriptEditorPageEs._(_root);
 }
 
 // Path: misc
@@ -503,6 +523,24 @@ class _TranslationsUseConditionsEs extends _TranslationsUseConditionsEn {
 	@override String get content => 'No se requiere una condición de uso particular para Finales Básicos de Ajedrez. Esta aplicación solo está destinada a ayudar a los jugadores de ajedrez para mejorar su juego y no incluir ningún contenido que pueda ser dañino, violento o impactante.';
 }
 
+// Path: script_editor_page
+class _TranslationsScriptEditorPageEs extends _TranslationsScriptEditorPageEn {
+	_TranslationsScriptEditorPageEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Página del editor de guiones';
+	@override String get player_king_constraint => 'Restricciones rey del jugador';
+	@override String get computer_king_constraint => 'Restricciones rey de la computadora';
+	@override String get kings_mutual_constraint => 'Restricciones mutuas de los reyes';
+	@override String get other_pieces_count_constraint => 'Restricciones número otras piezas';
+	@override String get other_pieces_global_constraint => 'Restricciones globales otras piezas';
+	@override String get other_pieces_mutual_constraint => 'Restricciones mutuas de otras piezas';
+	@override String get other_pieces_indexed_constraint => 'Restricciones de otras piezas por orden';
+	@override String get game_goal => 'Objetivo del juego';
+}
+
 // Path: <root>
 class _TranslationsFr extends _TranslationsEn {
 
@@ -533,6 +571,7 @@ class _TranslationsFr extends _TranslationsEn {
 	@override late final _TranslationsSampleScriptFr sample_script = _TranslationsSampleScriptFr._(_root);
 	@override late final _TranslationsPrivacyFr privacy = _TranslationsPrivacyFr._(_root);
 	@override late final _TranslationsUseConditionsFr use_conditions = _TranslationsUseConditionsFr._(_root);
+	@override late final _TranslationsScriptEditorPageFr script_editor_page = _TranslationsScriptEditorPageFr._(_root);
 }
 
 // Path: misc
@@ -681,4 +720,22 @@ class _TranslationsUseConditionsFr extends _TranslationsUseConditionsEn {
 	// Translations
 	@override String get title => 'Conditions d\'utilisation';
 	@override String get content => 'Aucune condition d\'utilisation particulière n\'est requise pour Finales d\'Echecs Basiques. Cette application est uniquement destinée à aider les joueurs d\'échecs pour améliorer leur jeu, et n\'inclut aucun contenu qui pourrait être nuisible, violent ou choquant.';
+}
+
+// Path: script_editor_page
+class _TranslationsScriptEditorPageFr extends _TranslationsScriptEditorPageEn {
+	_TranslationsScriptEditorPageFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Page d\'édition de script';
+	@override String get player_king_constraint => 'Contraintes roi du joueur';
+	@override String get computer_king_constraint => 'Contraintes roi de l\'ordinateur';
+	@override String get kings_mutual_constraint => 'Contraintes mutuelles entre rois';
+	@override String get other_pieces_count_constraint => 'Contraintes compte des autres pièces';
+	@override String get other_pieces_global_constraint => 'Contraintes globales des autres pièces';
+	@override String get other_pieces_mutual_constraint => 'Contraintes mutuelles des autres pièces';
+	@override String get other_pieces_indexed_constraint => 'Contraintes des autres pièces par ordre';
+	@override String get game_goal => 'Objectif';
 }

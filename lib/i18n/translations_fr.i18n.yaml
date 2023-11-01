@@ -89,3 +89,13 @@ useConditions:
   content: "Aucune condition d'utilisation particulière n'est requise pour Finales d'Echecs Basiques. Cette application est \
     uniquement destinée à aider les joueurs d'échecs pour améliorer leur jeu, et n'inclut aucun contenu qui pourrait être nuisible, \
     violent ou choquant."
+script_editor_page:
+  title: "Page d'édition de script"
+  player_king_constraint: "Contraintes roi du joueur"
+  computer_king_constraint: "Contraintes roi de l'ordinateur"
+  kings_mutual_constraint: "Contraintes mutuelles entre rois"
+  other_pieces_count_constraint: "Contraintes compte des autres pièces"
+  other_pieces_global_constraint: "Contraintes globales des autres pièces"
+  other_pieces_mutual_constraint: "Contraintes mutuelles des autres pièces"
+  other_pieces_indexed_constraint: "Contraintes des autres pièces par ordre"
+  game_goal: "Objectif"

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
+import 'package:basicchessendgamestrainer/pages/script_editor_page.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_content.dart';
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
@@ -338,7 +339,15 @@ class _HomePageState extends ConsumerState<HomePage> {
         ),
         floatingActionButton: _selectedTabIndex == 1
             ? FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const ScriptEditorPage();
+                      },
+                    ),
+                  );
+                },
                 child: const FaIcon(FontAwesomeIcons.plus),
               )
             : null,
