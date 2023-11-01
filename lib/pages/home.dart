@@ -1,4 +1,5 @@
 import 'dart:isolate';
+import 'dart:io';
 
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
@@ -14,12 +15,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+
+import 'dart:developer' as developer;
 
 const mainListItemsGap = 8.0;
 const leadingImagesSize = 60.0;
 const titlesFontSize = 26.0;
 const rgpdWarningHeight = 200.0;
 const positionGenerationErrorDialogSpacer = 20.0;
+const folderItemIconSize = 45.0;
+const folderItemTextSize = 20.0;
 
 class SampleScriptGenerationParameters {
   final SendPort sendPort;
@@ -317,7 +323,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   games: sampleGames,
                   onGameSelected: _tryGeneratingAndPlayingPositionFromSample,
                 ),
-                AddedExercisesWidget(),
+                const AddedExercisesWidget(),
               ],
             ),
             if (_isGeneratingPosition)
@@ -399,15 +405,203 @@ class IntegratedExercisesWidget extends StatelessWidget {
   }
 }
 
-class AddedExercisesWidget extends StatelessWidget {
+class AddedExercisesWidget extends StatefulWidget {
   const AddedExercisesWidget({super.key});
 
   @override
+  State<AddedExercisesWidget> createState() => _AddedExercisesWidgetState();
+}
+
+class _AddedExercisesWidgetState extends State<AddedExercisesWidget> {
+  final Future<Directory?> _currentDirectoryFuture =
+      getApplicationDocumentsDirectory();
+
+  Future<List<FileSystemEntity>?> _getDirectoryElementsList(
+      Directory? directory) async {
+    final elements = directory?.list(recursive: false);
+    return await elements?.toList();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Center(
+    final failedLoadingExerciseWidget = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const FaIcon(
+          FontAwesomeIcons.xmark,
+          color: Colors.red,
+          size: 100.0,
+        ),
+        Text(t.home.failed_loading_added_exercises),
+      ],
+    );
+
+    const waitingWidget = Center(
+      child: SizedBox(
+        width: 100,
+        height: 100,
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    final emptyFolderWidget = Center(
       child: Text(
         t.home.no_game_yet,
       ),
+    );
+
+    return FutureBuilder<Directory?>(
+        future: _currentDirectoryFuture,
+        builder: (BuildContext context, AsyncSnapshot<Directory?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              developer.log(snapshot.error!.toString(), name: 'loloof64');
+              return failedLoadingExerciseWidget;
+            } else if (snapshot.hasData) {
+              final directory = snapshot.data;
+              return FutureBuilder(
+                  future: _getDirectoryElementsList(directory),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<FileSystemEntity>?> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        developer.log(snapshot.error!.toString(),
+                            name: 'loloof64');
+                        return failedLoadingExerciseWidget;
+                      } else if (snapshot.hasData) {
+                        final elements = snapshot.data;
+                        if (elements == null) {
+                          return failedLoadingExerciseWidget;
+                        } else {
+                          if (elements.isEmpty) {
+                            return emptyFolderWidget;
+                          } else {
+                            return FolderContentWidget(elements: elements);
+                          }
+                        }
+                      } else {
+                        return failedLoadingExerciseWidget;
+                      }
+                    } else {
+                      return waitingWidget;
+                    }
+                  });
+            } else {
+              return failedLoadingExerciseWidget;
+            }
+          } else {
+            return waitingWidget;
+          }
+        });
+  }
+}
+
+class FolderContentWidget extends StatelessWidget {
+  const FolderContentWidget({
+    super.key,
+    required this.elements,
+  });
+
+  final List<FileSystemEntity> elements;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        final item = elements[index];
+        final isDirectory = FileSystemEntity.isDirectorySync(item.path);
+        final name = File(item.absolute.path).uri.pathSegments.last;
+
+        return isDirectory
+            ? FolderItemWidget(name: name)
+            : FileItemWidget(name: name);
+      },
+      itemCount: elements.length,
+    );
+  }
+}
+
+class FileItemWidget extends StatelessWidget {
+  const FileItemWidget({
+    super.key,
+    required this.name,
+  });
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: SizedBox(
+            width: folderItemIconSize,
+            height: folderItemIconSize,
+            child: FaIcon(
+              FontAwesomeIcons.fileLines,
+              color: Colors.black,
+              size: folderItemIconSize,
+            ),
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              name,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: folderItemTextSize,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class FolderItemWidget extends StatelessWidget {
+  const FolderItemWidget({
+    super.key,
+    required this.name,
+  });
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: SizedBox(
+            width: folderItemIconSize,
+            child: FaIcon(
+              FontAwesomeIcons.solidFolder,
+              color: Colors.yellow,
+              size: folderItemIconSize,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            name,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: folderItemTextSize,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

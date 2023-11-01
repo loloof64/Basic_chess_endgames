@@ -13,7 +13,8 @@ home:
     De lo contrario, con un icono principal de un apretón de manos, tu objetivo será salvar la partida y hacer empate."
   tab_integrated: "Integrados"
   tab_added: "Añadidos"
-  no_game_yet: "No hay ejercicio"
+  no_game_yet: "No hay elemento"
+  failed_loading_added_exercises: "Error al cargar la lista de ejercicios personalizados"
 rgpd:
   text: "Al utilizar esta aplicación, estás de acuerdo con:"
   privacy: "la Política de Privacidad"

@@ -13,7 +13,8 @@ home:
     Otherwise, with a handshake leading icon, your goal will be to save the game and make draw."
   tab_integrated: "Integrated"
   tab_added: "Added"
-  no_game_yet: "No exercise"
+  no_game_yet: "No element"
+  failed_loading_added_exercises: "Failed to load custom exercises list"
 rgpd:
   text: "By using this app, you agree with :"
   privacy: "the Privacy Policy"

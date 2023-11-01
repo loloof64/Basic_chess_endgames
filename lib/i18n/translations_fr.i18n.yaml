@@ -6,14 +6,15 @@ misc:
   buttonDeny: "Refuser"
 home:
   title: "Accueil"
-  failedLoadingExercise: "Echec de chargement de l'exerice : la position d'échecs est invalide."
-  failedGeneratingPosition: "Echec de génération de la position."
+  failedLoadingExercise: "Échec de chargement de l'exerice : la position d'échecs est invalide."
+  failedGeneratingPosition: "Échec de génération de la position."
   helpMessage: "Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer. \
     Une ligne dont l'icône est un trophée générera une position où vous devrez gagner. \
     Sinon si la ligne commence par une poignée de main, vous devrez sauver la partie et faire partie nulle."
   tab_integrated: "Intégrés"
   tab_added: "Ajoutés"
-  no_game_yet: "Aucun exerice"
+  no_game_yet: "Aucun élément"
+  failed_loading_added_exercises: "Échec de chargement des exercises personnalisés"
 rgpd:
   text: "En utilisant cette application, vous vous conformez à :"
   privacy: "la Politique de Confidentialité"
@@ -51,7 +52,7 @@ scriptParser:
   overridingPredefinedVariable: "Vous essayez de modifier la valeur de la variable prédéfinie $name."
   parseErrorDialogTitle: "Erreur de script pour $title"
   typeError: "Veuillez vérifier que vous n'utilisez pas de valeur entière à la place de valeur booléenne, et vice versa."
-  missingScriptType: "Echec de génération de la position: veuillez vérifier que toutes les sections du script déclarent un type de script correct."
+  missingScriptType: "Échec de génération de la position: veuillez vérifier que toutes les sections du script déclarent un type de script correct."
   miscErrorDialogTitle: "Erreur globale"
 scriptType:
   playerKingConstraint: "Contraintes du roi du joueur"

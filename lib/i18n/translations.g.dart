@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 198 (66 per locale)
+/// Strings: 201 (67 per locale)
 ///
-/// Built on 2023-10-31 at 17:42 UTC
+/// Built on 2023-10-31 at 19:39 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -202,7 +202,8 @@ class _TranslationsHomeEn {
 	String get help_message => 'Here you can select the type of position you want to play with. A line which leading icon is a trophy will generate a position in which you should win. Otherwise, with a handshake leading icon, your goal will be to save the game and make draw.';
 	String get tab_integrated => 'Integrated';
 	String get tab_added => 'Added';
-	String get no_game_yet => 'No exercise';
+	String get no_game_yet => 'No element';
+	String get failed_loading_added_exercises => 'Failed to load custom exercises list';
 }
 
 // Path: rgpd
@@ -381,7 +382,8 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get help_message => 'Aquí puedes seleccionar el tipo de posición con la que quieres jugar. Una línea cuyo icono principal es un trofeo generará una posición en la que deberías ganar. De lo contrario, con un icono principal de un apretón de manos, tu objetivo será salvar la partida y hacer empate.';
 	@override String get tab_integrated => 'Integrados';
 	@override String get tab_added => 'Añadidos';
-	@override String get no_game_yet => 'No hay ejercicio';
+	@override String get no_game_yet => 'No hay elemento';
+	@override String get failed_loading_added_exercises => 'Error al cargar la lista de ejercicios personalizados';
 }
 
 // Path: rgpd
@@ -555,12 +557,13 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 
 	// Translations
 	@override String get title => 'Accueil';
-	@override String get failed_loading_exercise => 'Echec de chargement de l\'exerice : la position d\'échecs est invalide.';
-	@override String get failed_generating_position => 'Echec de génération de la position.';
+	@override String get failed_loading_exercise => 'Échec de chargement de l\'exerice : la position d\'échecs est invalide.';
+	@override String get failed_generating_position => 'Échec de génération de la position.';
 	@override String get help_message => 'Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer. Une ligne dont l\'icône est un trophée générera une position où vous devrez gagner. Sinon si la ligne commence par une poignée de main, vous devrez sauver la partie et faire partie nulle.';
 	@override String get tab_integrated => 'Intégrés';
 	@override String get tab_added => 'Ajoutés';
-	@override String get no_game_yet => 'Aucun exerice';
+	@override String get no_game_yet => 'Aucun élément';
+	@override String get failed_loading_added_exercises => 'Échec de chargement des exercises personnalisés';
 }
 
 // Path: rgpd
@@ -618,7 +621,7 @@ class _TranslationsScriptParserFr extends _TranslationsScriptParserEn {
 	@override String overriding_predefined_variable({required Object Name}) => 'Vous essayez de modifier la valeur de la variable prédéfinie ${Name}.';
 	@override String parse_error_dialog_title({required Object Title}) => 'Erreur de script pour ${Title}';
 	@override String get type_error => 'Veuillez vérifier que vous n\'utilisez pas de valeur entière à la place de valeur booléenne, et vice versa.';
-	@override String get missing_script_type => 'Echec de génération de la position: veuillez vérifier que toutes les sections du script déclarent un type de script correct.';
+	@override String get missing_script_type => 'Échec de génération de la position: veuillez vérifier que toutes les sections du script déclarent un type de script correct.';
 	@override String get misc_error_dialog_title => 'Erreur globale';
 }
 
