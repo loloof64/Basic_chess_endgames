@@ -3,9 +3,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+enum PieceKind {
+  playerPawn,
+  playerKnight,
+  playerBishop,
+  playerRook,
+  playerQueen,
+  playerKing,
+  computerPawn,
+  computerKnight,
+  computerBishop,
+  computerRook,
+  computerQueen,
+  computerKing,
+}
+
 const chessImagesSize = 30.0;
 const countTextSize = 16.0;
-const allSelectableTypes = ['Q', 'R', 'N', 'B', 'P', 'q', 'r', 'n', 'b', 'p'];
+const allSelectableTypes = [
+  PieceKind.playerPawn,
+  PieceKind.playerKnight,
+  PieceKind.playerBishop,
+  PieceKind.playerRook,
+  PieceKind.playerQueen,
+  PieceKind.computerPawn,
+  PieceKind.computerKnight,
+  PieceKind.computerBishop,
+  PieceKind.computerRook,
+  PieceKind.computerQueen,
+];
 
 class ScriptEditorPage extends StatefulWidget {
   const ScriptEditorPage({super.key});
@@ -179,11 +205,11 @@ class KingsMutualConstraintEditorWidget extends StatelessWidget {
 }
 
 class OtherPiecesCountConstraintsEditorWidget extends StatefulWidget {
-  final Map<String, int> initialContent;
+  final Map<PieceKind, int> initialContent;
 
   const OtherPiecesCountConstraintsEditorWidget({
     super.key,
-    this.initialContent = const <String, int>{},
+    this.initialContent = const <PieceKind, int>{},
   });
 
   @override
@@ -193,14 +219,15 @@ class OtherPiecesCountConstraintsEditorWidget extends StatefulWidget {
 
 class _OtherPiecesCountConstraintsEditorWidgetState
     extends State<OtherPiecesCountConstraintsEditorWidget> {
-  late Map<String, int> _content;
-  String? _selectedType;
-  List<String> _remainingTypes = [];
+  late Map<PieceKind, int> _content;
+  PieceKind? _selectedType;
+  List<PieceKind> _remainingTypes = [];
 
   @override
   void initState() {
     _content = widget.initialContent.map((key, value) => MapEntry(key, value));
-    _content.removeWhere((key, value) => key.toLowerCase() == 'k');
+    _content.removeWhere((key, value) =>
+        key == PieceKind.playerKing || key == PieceKind.computerKing);
     _updateAvailableTypes();
     super.initState();
   }
@@ -426,10 +453,10 @@ class _EditorWidgetState extends State<EditorWidget> {
 }
 
 class PieceCountWidget extends StatefulWidget {
-  final String type;
+  final PieceKind type;
   final int initialCount;
   final void Function(int newValue) onChanged;
-  final void Function(String type) onRemove;
+  final void Function(PieceKind type) onRemove;
 
   const PieceCountWidget({
     super.key,
@@ -452,32 +479,42 @@ class _PieceCountWidgetState extends State<PieceCountWidget> {
     super.initState();
   }
 
-  int _maxCountForPieceType(String type) {
-    return type.toLowerCase() == 'q'
+  int _maxCountForPieceKind(PieceKind type) {
+    return (type == PieceKind.playerQueen || type == PieceKind.computerQueen)
         ? 9
-        : type.toLowerCase() == 'p'
+        : (type == PieceKind.playerPawn || type == PieceKind.computerPawn)
             ? 8
             : 10;
   }
 
   @override
   Widget build(BuildContext context) {
-    final maxCount = _maxCountForPieceType(widget.type);
+    final maxCount = _maxCountForPieceKind(widget.type);
+    final assets = pieceKindToAssetPathPair(widget.type);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.only(left: 4.0, right: 2.0),
           child: SvgPicture.asset(
-            pieceTypeToAssetPath(widget.type),
+            assets.first,
             fit: BoxFit.cover,
             width: chessImagesSize,
             height: chessImagesSize,
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.only(left: 2.0),
+          child: SvgPicture.asset(
+            assets.second,
+            fit: BoxFit.cover,
+            width: chessImagesSize,
+            height: chessImagesSize,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 2.0),
           child: Slider(
             value: _count.toDouble(),
             divisions: maxCount,
@@ -516,8 +553,8 @@ class _PieceCountWidgetState extends State<PieceCountWidget> {
 }
 
 class PieceCountAdderWidget extends StatelessWidget {
-  final String? selectedType;
-  final void Function(String?) onSelectionChanged;
+  final PieceKind? selectedType;
+  final void Function(PieceKind?) onSelectionChanged;
   final void Function() onValidate;
 
   const PieceCountAdderWidget({
@@ -534,18 +571,37 @@ class PieceCountAdderWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          DropdownButton<String>(
+          DropdownButton<PieceKind>(
               value: selectedType,
               items: allSelectableTypes.map((elt) {
-                final picture = SvgPicture.asset(
-                  pieceTypeToAssetPath(elt),
-                  fit: BoxFit.cover,
-                  width: chessImagesSize,
-                  height: chessImagesSize,
+                final assets = pieceKindToAssetPathPair(elt);
+                final pictures = Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 2.0),
+                      child: SvgPicture.asset(
+                        assets.first,
+                        fit: BoxFit.cover,
+                        width: chessImagesSize,
+                        height: chessImagesSize,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 2.0),
+                      child: SvgPicture.asset(
+                        assets.second,
+                        fit: BoxFit.cover,
+                        width: chessImagesSize,
+                        height: chessImagesSize,
+                      ),
+                    )
+                  ],
                 );
                 return DropdownMenuItem(
                   value: elt,
-                  child: picture,
+                  child: pictures,
                 );
               }).toList(),
               onChanged: onSelectionChanged),
@@ -561,30 +617,69 @@ class PieceCountAdderWidget extends StatelessWidget {
   }
 }
 
-String pieceTypeToAssetPath(String pieceType) {
-  switch (pieceType) {
-    case 'Q':
-      return 'assets/images/chess/Chess_qlt45.svg';
-    case 'R':
-      return 'assets/images/chess/Chess_rlt45.svg';
-    case 'B':
-      return 'assets/images/chess/Chess_blt45.svg';
-    case 'N':
-      return 'assets/images/chess/Chess_nlt45.svg';
-    case 'P':
-      return 'assets/images/chess/Chess_plt45.svg';
+class StringPair {
+  final String first;
+  final String second;
 
-    case 'q':
-      return 'assets/images/chess/Chess_qdt45.svg';
-    case 'r':
-      return 'assets/images/chess/Chess_rdt45.svg';
-    case 'b':
-      return 'assets/images/chess/Chess_bdt45.svg';
-    case 'n':
-      return 'assets/images/chess/Chess_ndt45.svg';
-    case 'p':
-      return 'assets/images/chess/Chess_pdt45.svg';
+  const StringPair({
+    required this.first,
+    required this.second,
+  });
+}
+
+StringPair pieceKindToAssetPathPair(PieceKind kind) {
+  switch (kind) {
+    case PieceKind.playerPawn:
+      return const StringPair(
+        first: 'assets/images/user.svg',
+        second: 'assets/images/chess/Chess_plt45.svg',
+      );
+    case PieceKind.playerKnight:
+      return const StringPair(
+        first: 'assets/images/user.svg',
+        second: 'assets/images/chess/Chess_nlt45.svg',
+      );
+    case PieceKind.playerBishop:
+      return const StringPair(
+        first: 'assets/images/user.svg',
+        second: 'assets/images/chess/Chess_blt45.svg',
+      );
+    case PieceKind.playerRook:
+      return const StringPair(
+        first: 'assets/images/user.svg',
+        second: 'assets/images/chess/Chess_rlt45.svg',
+      );
+    case PieceKind.playerQueen:
+      return const StringPair(
+        first: 'assets/images/user.svg',
+        second: 'assets/images/chess/Chess_qlt45.svg',
+      );
+    case PieceKind.computerPawn:
+      return const StringPair(
+        first: 'assets/images/computer.svg',
+        second: 'assets/images/chess/Chess_plt45.svg',
+      );
+    case PieceKind.computerKnight:
+      return const StringPair(
+        first: 'assets/images/computer.svg',
+        second: 'assets/images/chess/Chess_nlt45.svg',
+      );
+    case PieceKind.computerBishop:
+      return const StringPair(
+        first: 'assets/images/computer.svg',
+        second: 'assets/images/chess/Chess_blt45.svg',
+      );
+    case PieceKind.computerRook:
+      return const StringPair(
+        first: 'assets/images/computer.svg',
+        second: 'assets/images/chess/Chess_rlt45.svg',
+      );
+    case PieceKind.computerQueen:
+      return const StringPair(
+        first: 'assets/images/computer.svg',
+        second: 'assets/images/chess/Chess_qlt45.svg',
+      );
     default:
-      throw "Invalid piece type $pieceType";
+      throw "Invalid piece type $PieceKind";
   }
 }

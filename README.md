@@ -28,6 +28,8 @@ dart run slang
 Some pictures have been downloaded from [Svg Repo](https://www.svgrepo.com/) :
 * https://www.svgrepo.com/svg/398519/trophy
 * https://www.svgrepo.com/svg/300894/handshake
+* https://www.svgrepo.com/svg/477108/computer
+* https://www.svgrepo.com/svg/467434/user-8
 
 Chess vectors have been downloaded from [WikiMedia Commons](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces).
 
