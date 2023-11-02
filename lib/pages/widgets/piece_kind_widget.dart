@@ -4,18 +4,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 const chessImagesSize = 30.0;
 
 enum PieceKind {
-  playerPawn,
-  playerKnight,
-  playerBishop,
-  playerRook,
-  playerQueen,
-  playerKing,
-  computerPawn,
-  computerKnight,
-  computerBishop,
-  computerRook,
-  computerQueen,
-  computerKing,
+  playerPawn("player pawn"),
+  playerKnight("player knight"),
+  playerBishop("player bishop"),
+  playerRook("player rook"),
+  playerQueen("player queen"),
+  playerKing("player king"),
+  computerPawn("computer pawn"),
+  computerKnight("computer knight"),
+  computerBishop("computer bishop"),
+  computerRook("computer rook"),
+  computerQueen("computer queen"),
+  computerKing("computer king");
+
+  final String stringRepr;
+  const PieceKind(this.stringRepr);
 }
 
 class PieceKingWidget extends StatelessWidget {

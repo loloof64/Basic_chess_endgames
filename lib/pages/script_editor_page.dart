@@ -19,6 +19,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
   String _otherPiecesGlobalConstraintsScript = "";
   String _otherPiecesMutualConstraintsScript = "";
   String _otherPiecesIndexedConstraintsScript = "";
+  String _otherPiecesCountConstraintsScript = "";
 
   void _updatePlayerKingConstraintsScript(String newContent) {
     setState(() {
@@ -56,6 +57,16 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     });
   }
 
+  void _updateOtherPiecesCountConstraintsScript(Map<PieceKind, int> counts) {
+    final script = [
+      for (var entry in counts.entries)
+        "${entry.key.stringRepr} : ${entry.value}"
+    ].join("\n");
+    setState(() {
+      _otherPiecesCountConstraintsScript = script;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -86,7 +97,12 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           KingsMutualConstraintEditorWidget(
             onChanged: _updateKingsMutualConstraintsScript,
           ),
-          const OtherPiecesCountConstraintsEditorWidget(),
+          OtherPiecesCountConstraintsEditorWidget(
+            onScriptUpdate: (counts) {
+              _updateOtherPiecesCountConstraintsScript(counts);
+            },
+            currentScript: _otherPiecesCountConstraintsScript,
+          ),
           OtherPiecesGlobalConstraintEditorWidget(
             onChanged: _updateOtherPiecesGlobalConstraintsScript,
           ),
@@ -177,11 +193,13 @@ class KingsMutualConstraintEditorWidget extends StatelessWidget {
 }
 
 class OtherPiecesCountConstraintsEditorWidget extends StatefulWidget {
-  final Map<PieceKind, int> initialContent;
+  final String currentScript;
+  final void Function(Map<PieceKind, int> counts) onScriptUpdate;
 
   const OtherPiecesCountConstraintsEditorWidget({
     super.key,
-    this.initialContent = const <PieceKind, int>{},
+    required this.onScriptUpdate,
+    this.currentScript = "",
   });
 
   @override
@@ -197,11 +215,27 @@ class _OtherPiecesCountConstraintsEditorWidgetState
 
   @override
   void initState() {
-    _content = widget.initialContent.map((key, value) => MapEntry(key, value));
+    _content = convertScriptToContent(widget.currentScript);
     _content.removeWhere((key, value) =>
         key == PieceKind.playerKing || key == PieceKind.computerKing);
     _updateAvailableTypes();
     super.initState();
+  }
+
+  Map<PieceKind, int> convertScriptToContent(String script) {
+    var result = <PieceKind, int>{};
+    final trimmedScript = script.trim();
+    final scriptLines = trimmedScript.isEmpty ? [] : trimmedScript.split("\n");
+
+    for (var line in scriptLines) {
+      final elementsStrings = line.split(" : ");
+      final kindString = elementsStrings.first.trim();
+      final count = int.parse(elementsStrings.last.trim());
+      final kind = PieceKind.values.firstWhere((element) => element.stringRepr == kindString);
+      result[kind] = count;
+    }
+
+    return result;
   }
 
   void _updateAvailableTypes() {
@@ -228,6 +262,7 @@ class _OtherPiecesCountConstraintsEditorWidgetState
       _content[_selectedType!] = 1;
     });
     _updateAvailableTypes();
+    widget.onScriptUpdate(_content);
   }
 
   @override
@@ -240,11 +275,13 @@ class _OtherPiecesCountConstraintsEditorWidgetState
           onChanged: (newValue) {
             setState(() {
               _content[entry.key] = newValue;
+              widget.onScriptUpdate(_content);
             });
           },
           onRemove: (valueToRemove) {
             setState(() {
               _content.removeWhere((type, count) => type == valueToRemove);
+              widget.onScriptUpdate(_content);
             });
             _updateAvailableTypes();
           },
