@@ -1,6 +1,11 @@
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+const chessImagesSize = 30.0;
+const countTextSize = 16.0;
+const allSelectableTypes = ['Q', 'R', 'N', 'B', 'P', 'q', 'r', 'n', 'b', 'p'];
 
 class ScriptEditorPage extends StatefulWidget {
   const ScriptEditorPage({super.key});
@@ -83,7 +88,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           KingsMutualConstraintEditorWidget(
             onChanged: _updateKingsMutualConstraintsScript,
           ),
-          OtherPiecesCountConstraintsEditorWidget(),
+          const OtherPiecesCountConstraintsEditorWidget(),
           OtherPiecesGlobalConstraintEditorWidget(
             onChanged: _updateOtherPiecesGlobalConstraintsScript,
           ),
@@ -93,7 +98,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           OtherPiecesIndexedConstraintEditorWidget(
             onChanged: _updateOtherPiecesIndexedConstraintsScript,
           ),
-          GameGoalEditorWidget(),
+          const GameGoalEditorWidget(),
         ]),
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
@@ -173,11 +178,80 @@ class KingsMutualConstraintEditorWidget extends StatelessWidget {
   }
 }
 
-class OtherPiecesCountConstraintsEditorWidget extends StatelessWidget {
-  const OtherPiecesCountConstraintsEditorWidget({super.key});
+class OtherPiecesCountConstraintsEditorWidget extends StatefulWidget {
+  final Map<String, int> initialContent;
+
+  const OtherPiecesCountConstraintsEditorWidget({
+    super.key,
+    this.initialContent = const <String, int>{},
+  });
+
+  @override
+  State<OtherPiecesCountConstraintsEditorWidget> createState() =>
+      _OtherPiecesCountConstraintsEditorWidgetState();
+}
+
+class _OtherPiecesCountConstraintsEditorWidgetState
+    extends State<OtherPiecesCountConstraintsEditorWidget> {
+  late Map<String, int> _content;
+  String? _selectedType;
+  List<String> _remainingTypes = [];
+
+  @override
+  void initState() {
+    _content = widget.initialContent.map((key, value) => MapEntry(key, value));
+    _content.removeWhere((key, value) => key.toLowerCase() == 'k');
+    _updateAvailableTypes();
+    super.initState();
+  }
+
+  void _updateAvailableTypes() {
+    final storedTypes = _content.keys;
+    final remainingTypes = allSelectableTypes
+        .where((element) => !storedTypes.contains(element))
+        .toList();
+    setState(() {
+      _remainingTypes = remainingTypes;
+    });
+  }
+
+  void _addCurrentCount() {
+    if (_selectedType == null) return;
+    if (!_remainingTypes.contains(_selectedType)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(t.script_editor_page.type_already_added),
+        ),
+      );
+      return;
+    }
+    setState(() {
+      _content[_selectedType!] = 1;
+    });
+    _updateAvailableTypes();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final countChildren = <Widget>[
+      for (var entry in _content.entries)
+        PieceCountWidget(
+          type: entry.key,
+          initialCount: entry.value,
+          onChanged: (newValue) {
+            setState(() {
+              _content[entry.key] = newValue;
+            });
+          },
+          onRemove: (valueToRemove) {
+            setState(() {
+              _content.removeWhere((type, count) => type == valueToRemove);
+            });
+            _updateAvailableTypes();
+          },
+        )
+    ];
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -185,7 +259,21 @@ class OtherPiecesCountConstraintsEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.other_pieces_count_constraint,
         ),
-        const Placeholder(),
+        PieceCountAdderWidget(
+          selectedType: _selectedType,
+          onSelectionChanged: (newValue) {
+            if (newValue == null) return;
+            setState(() {
+              _selectedType = newValue;
+            });
+          },
+          onValidate: _addCurrentCount,
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: countChildren,
+        ),
       ],
     );
   }
@@ -328,11 +416,175 @@ class _EditorWidgetState extends State<EditorWidget> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: TextField(
-        minLines: 30,
-        maxLines: 30,
+        minLines: 100,
+        maxLines: 100,
         controller: _controller,
         onChanged: widget.onChanged,
       ),
     );
+  }
+}
+
+class PieceCountWidget extends StatefulWidget {
+  final String type;
+  final int initialCount;
+  final void Function(int newValue) onChanged;
+  final void Function(String type) onRemove;
+
+  const PieceCountWidget({
+    super.key,
+    required this.type,
+    required this.onChanged,
+    required this.onRemove,
+    this.initialCount = 0,
+  });
+
+  @override
+  State<PieceCountWidget> createState() => _PieceCountWidgetState();
+}
+
+class _PieceCountWidgetState extends State<PieceCountWidget> {
+  late int _count;
+
+  @override
+  void initState() {
+    _count = widget.initialCount;
+    super.initState();
+  }
+
+  int _maxCountForPieceType(String type) {
+    return type.toLowerCase() == 'q'
+        ? 9
+        : type.toLowerCase() == 'p'
+            ? 8
+            : 10;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final maxCount = _maxCountForPieceType(widget.type);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: SvgPicture.asset(
+            pieceTypeToAssetPath(widget.type),
+            fit: BoxFit.cover,
+            width: chessImagesSize,
+            height: chessImagesSize,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: Slider(
+            value: _count.toDouble(),
+            divisions: maxCount,
+            min: 1,
+            max: maxCount.toDouble(),
+            label: "$_count",
+            onChanged: (newValue) => setState(() {
+              _count = newValue.round();
+            }),
+            onChangeEnd: (newValue) => widget.onChanged(newValue.round()),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: Text(
+            _count.toString(),
+            style: const TextStyle(
+              fontSize: countTextSize,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: IconButton(
+            icon: const FaIcon(
+              FontAwesomeIcons.xmark,
+              color: Colors.red,
+              size: chessImagesSize,
+            ),
+            onPressed: () => widget.onRemove(widget.type),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class PieceCountAdderWidget extends StatelessWidget {
+  final String? selectedType;
+  final void Function(String?) onSelectionChanged;
+  final void Function() onValidate;
+
+  const PieceCountAdderWidget({
+    super.key,
+    required this.selectedType,
+    required this.onValidate,
+    required this.onSelectionChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          DropdownButton<String>(
+              value: selectedType,
+              items: allSelectableTypes.map((elt) {
+                final picture = SvgPicture.asset(
+                  pieceTypeToAssetPath(elt),
+                  fit: BoxFit.cover,
+                  width: chessImagesSize,
+                  height: chessImagesSize,
+                );
+                return DropdownMenuItem(
+                  value: elt,
+                  child: picture,
+                );
+              }).toList(),
+              onChanged: onSelectionChanged),
+          ElevatedButton(
+            onPressed: onValidate,
+            child: Text(
+              t.script_editor_page.add_count,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+String pieceTypeToAssetPath(String pieceType) {
+  switch (pieceType) {
+    case 'Q':
+      return 'assets/images/chess/Chess_qlt45.svg';
+    case 'R':
+      return 'assets/images/chess/Chess_rlt45.svg';
+    case 'B':
+      return 'assets/images/chess/Chess_blt45.svg';
+    case 'N':
+      return 'assets/images/chess/Chess_nlt45.svg';
+    case 'P':
+      return 'assets/images/chess/Chess_plt45.svg';
+
+    case 'q':
+      return 'assets/images/chess/Chess_qdt45.svg';
+    case 'r':
+      return 'assets/images/chess/Chess_rdt45.svg';
+    case 'b':
+      return 'assets/images/chess/Chess_bdt45.svg';
+    case 'n':
+      return 'assets/images/chess/Chess_ndt45.svg';
+    case 'p':
+      return 'assets/images/chess/Chess_pdt45.svg';
+    default:
+      throw "Invalid piece type $pieceType";
   }
 }

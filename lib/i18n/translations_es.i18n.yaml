@@ -98,3 +98,5 @@ script_editor_page:
   other_pieces_mutual_constraint: "Restricciones mutuas de otras piezas"
   other_pieces_indexed_constraint: "Restricciones de otras piezas por orden"
   game_goal: "Objetivo del juego"
+  add_count: "Añadir"
+  type_already_added: "Ya se agregó este tipo."

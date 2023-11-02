@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 228 (76 per locale)
+/// Strings: 234 (78 per locale)
 ///
-/// Built on 2023-11-01 at 17:08 UTC
+/// Built on 2023-11-02 at 00:28 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -340,6 +340,8 @@ class _TranslationsScriptEditorPageEn {
 	String get other_pieces_mutual_constraint => 'Other pieces\' mutual constraints';
 	String get other_pieces_indexed_constraint => 'Other pieces constraints by order';
 	String get game_goal => 'Game\'s goal';
+	String get add_count => 'Add';
+	String get type_already_added => 'Already added this type.';
 }
 
 // Path: <root>
@@ -539,6 +541,8 @@ class _TranslationsScriptEditorPageEs extends _TranslationsScriptEditorPageEn {
 	@override String get other_pieces_mutual_constraint => 'Restricciones mutuas de otras piezas';
 	@override String get other_pieces_indexed_constraint => 'Restricciones de otras piezas por orden';
 	@override String get game_goal => 'Objetivo del juego';
+	@override String get add_count => 'Añadir';
+	@override String get type_already_added => 'Ya se agregó este tipo.';
 }
 
 // Path: <root>
@@ -738,4 +742,6 @@ class _TranslationsScriptEditorPageFr extends _TranslationsScriptEditorPageEn {
 	@override String get other_pieces_mutual_constraint => 'Contraintes mutuelles des autres pièces';
 	@override String get other_pieces_indexed_constraint => 'Contraintes des autres pièces par ordre';
 	@override String get game_goal => 'Objectif';
+	@override String get add_count => 'Ajouter';
+	@override String get type_already_added => 'Type déjà ajouté.';
 }

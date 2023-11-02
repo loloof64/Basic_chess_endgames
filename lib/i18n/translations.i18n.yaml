@@ -95,3 +95,5 @@ script_editor_page:
   other_pieces_mutual_constraint: "Other pieces' mutual constraints"
   other_pieces_indexed_constraint: "Other pieces constraints by order"
   game_goal: "Game's goal"
+  add_count: "Add"
+  type_already_added: "Already added this type."

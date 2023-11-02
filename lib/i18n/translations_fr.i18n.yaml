@@ -99,3 +99,5 @@ script_editor_page:
   other_pieces_mutual_constraint: "Contraintes mutuelles des autres pièces"
   other_pieces_indexed_constraint: "Contraintes des autres pièces par ordre"
   game_goal: "Objectif"
+  add_count: "Ajouter"
+  type_already_added: "Type déjà ajouté."
