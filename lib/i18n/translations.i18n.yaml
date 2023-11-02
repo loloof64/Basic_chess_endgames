@@ -97,3 +97,5 @@ script_editor_page:
   game_goal: "Game's goal"
   add_count: "Add"
   type_already_added: "Already added this type."
+  should_win: "Win"
+  should_draw: "Draw"

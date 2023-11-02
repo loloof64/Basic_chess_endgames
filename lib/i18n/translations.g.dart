@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 234 (78 per locale)
+/// Strings: 240 (80 per locale)
 ///
-/// Built on 2023-11-02 at 00:28 UTC
+/// Built on 2023-11-02 at 12:48 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -342,6 +342,8 @@ class _TranslationsScriptEditorPageEn {
 	String get game_goal => 'Game\'s goal';
 	String get add_count => 'Add';
 	String get type_already_added => 'Already added this type.';
+	String get should_win => 'Win';
+	String get should_draw => 'Draw';
 }
 
 // Path: <root>
@@ -543,6 +545,8 @@ class _TranslationsScriptEditorPageEs extends _TranslationsScriptEditorPageEn {
 	@override String get game_goal => 'Objetivo del juego';
 	@override String get add_count => 'Añadir';
 	@override String get type_already_added => 'Ya se agregó este tipo.';
+	@override String get should_win => 'Ganar';
+	@override String get should_draw => 'Empate';
 }
 
 // Path: <root>
@@ -744,4 +748,6 @@ class _TranslationsScriptEditorPageFr extends _TranslationsScriptEditorPageEn {
 	@override String get game_goal => 'Objectif';
 	@override String get add_count => 'Ajouter';
 	@override String get type_already_added => 'Type déjà ajouté.';
+	@override String get should_win => 'Gagner';
+	@override String get should_draw => 'Annuler';
 }

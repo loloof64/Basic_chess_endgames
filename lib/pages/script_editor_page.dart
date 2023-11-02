@@ -5,6 +5,9 @@ import 'package:basicchessendgamestrainer/pages/widgets/script_editor_common_wid
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+const winningString = "win";
+const drawingString = "draw";
+
 class ScriptEditorPage extends StatefulWidget {
   const ScriptEditorPage({super.key});
 
@@ -20,6 +23,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
   String _otherPiecesMutualConstraintsScript = "";
   String _otherPiecesIndexedConstraintsScript = "";
   String _otherPiecesCountConstraintsScript = "";
+  String _goalScript = winningString;
 
   void _updatePlayerKingConstraintsScript(String newContent) {
     setState(() {
@@ -64,6 +68,12 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     ].join("\n");
     setState(() {
       _otherPiecesCountConstraintsScript = script;
+    });
+  }
+
+  void _updateGoalScript(bool shouldWin) {
+    setState(() {
+      _goalScript = shouldWin ? winningString : drawingString;
     });
   }
 
@@ -112,7 +122,12 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           OtherPiecesIndexedConstraintEditorWidget(
             onChanged: _updateOtherPiecesIndexedConstraintsScript,
           ),
-          const GameGoalEditorWidget(),
+          GameGoalEditorWidget(
+            script: _goalScript,
+            onChanged: (newValue) {
+              _updateGoalScript(newValue);
+            }
+          ),
         ]),
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
@@ -231,7 +246,8 @@ class _OtherPiecesCountConstraintsEditorWidgetState
       final elementsStrings = line.split(" : ");
       final kindString = elementsStrings.first.trim();
       final count = int.parse(elementsStrings.last.trim());
-      final kind = PieceKind.values.firstWhere((element) => element.stringRepr == kindString);
+      final kind = PieceKind.values
+          .firstWhere((element) => element.stringRepr == kindString);
       result[kind] = count;
     }
 
@@ -384,8 +400,28 @@ class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
   }
 }
 
-class GameGoalEditorWidget extends StatelessWidget {
-  const GameGoalEditorWidget({super.key});
+class GameGoalEditorWidget extends StatefulWidget {
+  final String script;
+  final void Function(bool) onChanged;
+
+  const GameGoalEditorWidget({
+    super.key,
+    required this.script,
+    required this.onChanged,
+  });
+
+  @override
+  State<GameGoalEditorWidget> createState() => _GameGoalEditorWidgetState();
+}
+
+class _GameGoalEditorWidgetState extends State<GameGoalEditorWidget> {
+  bool _shouldWin = true;
+
+  @override
+  void initState() {
+    _shouldWin = widget.script.trim() == winningString;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -396,7 +432,40 @@ class GameGoalEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.game_goal,
         ),
-        const Placeholder(),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              title: Text(t.script_editor_page.should_win),
+              leading: Radio<bool>(
+                groupValue: _shouldWin,
+                value: true,
+                onChanged: (newValue) {
+                  if (newValue == null) return;
+                  setState(() {
+                    _shouldWin = newValue;
+                    widget.onChanged(newValue);
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title: Text(t.script_editor_page.should_draw),
+              leading: Radio<bool>(
+                groupValue: _shouldWin,
+                value: false,
+                onChanged: (newValue) {
+                  if (newValue == null) return;
+                  setState(() {
+                    _shouldWin = newValue;
+                    widget.onChanged(newValue);
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

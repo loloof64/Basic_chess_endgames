@@ -100,3 +100,5 @@ script_editor_page:
   game_goal: "Objetivo del juego"
   add_count: "Añadir"
   type_already_added: "Ya se agregó este tipo."
+  should_win: "Ganar"
+  should_draw: "Empate"

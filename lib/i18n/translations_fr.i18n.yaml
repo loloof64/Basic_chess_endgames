@@ -101,3 +101,5 @@ script_editor_page:
   game_goal: "Objectif"
   add_count: "Ajouter"
   type_already_added: "Type déjà ajouté."
+  should_win: "Gagner"
+  should_draw: "Annuler"
