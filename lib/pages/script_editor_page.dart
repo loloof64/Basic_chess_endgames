@@ -77,8 +77,14 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     });
   }
 
+  List<PieceKind> _getOtherPiecesKindsFromPiecesCountScript(String script) {
+    return convertScriptToPiecesCounts(script).keys.toList();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final otherPiecesKinds = _getOtherPiecesKindsFromPiecesCountScript(_otherPiecesCountConstraintsScript);
+
     return DefaultTabController(
       length: 8,
       child: Scaffold(
@@ -115,19 +121,24 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           ),
           OtherPiecesGlobalConstraintEditorWidget(
             onChanged: _updateOtherPiecesGlobalConstraintsScript,
+            currentScript: _otherPiecesGlobalConstraintsScript,
+            availablePiecesKinds: otherPiecesKinds,
           ),
           OtherPiecesMutualConstraintEditorWidget(
             onChanged: _updateOtherPiecesMutualConstraintsScript,
+            currentScript: _otherPiecesMutualConstraintsScript,
+            availablePiecesKinds: otherPiecesKinds,
           ),
           OtherPiecesIndexedConstraintEditorWidget(
             onChanged: _updateOtherPiecesIndexedConstraintsScript,
+            currentScript: _otherPiecesIndexedConstraintsScript,
+            availablePiecesKinds: otherPiecesKinds,
           ),
           GameGoalEditorWidget(
-            script: _goalScript,
-            onChanged: (newValue) {
-              _updateGoalScript(newValue);
-            }
-          ),
+              script: _goalScript,
+              onChanged: (newValue) {
+                _updateGoalScript(newValue);
+              }),
         ]),
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
@@ -230,28 +241,11 @@ class _OtherPiecesCountConstraintsEditorWidgetState
 
   @override
   void initState() {
-    _content = convertScriptToContent(widget.currentScript);
+    _content = convertScriptToPiecesCounts(widget.currentScript);
     _content.removeWhere((key, value) =>
         key == PieceKind.playerKing || key == PieceKind.computerKing);
     _updateAvailableTypes();
     super.initState();
-  }
-
-  Map<PieceKind, int> convertScriptToContent(String script) {
-    var result = <PieceKind, int>{};
-    final trimmedScript = script.trim();
-    final scriptLines = trimmedScript.isEmpty ? [] : trimmedScript.split("\n");
-
-    for (var line in scriptLines) {
-      final elementsStrings = line.split(" : ");
-      final kindString = elementsStrings.first.trim();
-      final count = int.parse(elementsStrings.last.trim());
-      final kind = PieceKind.values
-          .firstWhere((element) => element.stringRepr == kindString);
-      result[kind] = count;
-    }
-
-    return result;
   }
 
   void _updateAvailableTypes() {
@@ -285,28 +279,32 @@ class _OtherPiecesCountConstraintsEditorWidgetState
   Widget build(BuildContext context) {
     final countChildren = <Widget>[
       for (var entry in _content.entries)
-        PieceCountWidget(
-          type: entry.key,
-          initialCount: entry.value,
-          onChanged: (newValue) {
-            setState(() {
-              _content[entry.key] = newValue;
-              widget.onScriptUpdate(_content);
-            });
-          },
-          onRemove: (valueToRemove) {
-            setState(() {
-              _content.removeWhere((type, count) => type == valueToRemove);
-              widget.onScriptUpdate(_content);
-            });
-            _updateAvailableTypes();
-          },
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: PieceCountWidget(
+            type: entry.key,
+            initialCount: entry.value,
+            onChanged: (newValue) {
+              setState(() {
+                _content[entry.key] = newValue;
+                widget.onScriptUpdate(_content);
+              });
+            },
+            onRemove: (valueToRemove) {
+              setState(() {
+                _content.removeWhere((type, count) => type == valueToRemove);
+                widget.onScriptUpdate(_content);
+              });
+              _updateAvailableTypes();
+            },
+          ),
         )
     ];
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
       children: [
         SectionHeader(
           title: t.script_editor_page.other_pieces_count_constraint,
@@ -321,10 +319,16 @@ class _OtherPiecesCountConstraintsEditorWidgetState
           },
           onValidate: _addCurrentCount,
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: countChildren,
+        Expanded(
+          flex: 6,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: countChildren,
+            ),
+          ),
         ),
       ],
     );
@@ -332,10 +336,14 @@ class _OtherPiecesCountConstraintsEditorWidgetState
 }
 
 class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
+  final String currentScript;
+  final List<PieceKind> availablePiecesKinds;
   final void Function(String) onChanged;
 
   const OtherPiecesGlobalConstraintEditorWidget({
     super.key,
+    required this.currentScript,
+    required this.availablePiecesKinds,
     required this.onChanged,
   });
 
@@ -348,17 +356,26 @@ class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.other_pieces_global_constraint,
         ),
-        Flexible(child: EditorWidget(onChanged: onChanged)),
+        Flexible(
+          child: ComplexEditorWidget(
+            currentScript: currentScript,
+            availablePiecesKinds: availablePiecesKinds,
+          ),
+        ),
       ],
     );
   }
 }
 
 class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
+  final String currentScript;
+  final List<PieceKind> availablePiecesKinds;
   final void Function(String) onChanged;
 
   const OtherPiecesMutualConstraintEditorWidget({
     super.key,
+    required this.currentScript,
+    required this.availablePiecesKinds,
     required this.onChanged,
   });
 
@@ -371,17 +388,26 @@ class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.other_pieces_mutual_constraint,
         ),
-        Flexible(child: EditorWidget(onChanged: onChanged)),
+        Flexible(
+          child: ComplexEditorWidget(
+            currentScript: currentScript,
+            availablePiecesKinds: availablePiecesKinds,
+          ),
+        ),
       ],
     );
   }
 }
 
 class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
+  final String currentScript;
+  final List<PieceKind> availablePiecesKinds;
   final void Function(String) onChanged;
 
   const OtherPiecesIndexedConstraintEditorWidget({
     super.key,
+    required this.currentScript,
+    required this.availablePiecesKinds,
     required this.onChanged,
   });
 
@@ -394,7 +420,12 @@ class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.other_pieces_indexed_constraint,
         ),
-        Flexible(child: EditorWidget(onChanged: onChanged)),
+        Flexible(
+          child: ComplexEditorWidget(
+            currentScript: currentScript,
+            availablePiecesKinds: availablePiecesKinds,
+          ),
+        ),
       ],
     );
   }

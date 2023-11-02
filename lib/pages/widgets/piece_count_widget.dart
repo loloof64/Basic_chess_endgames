@@ -75,7 +75,7 @@ class _PieceCountWidgetState extends State<PieceCountWidget> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
             _count.toString(),
             style: const TextStyle(
@@ -84,7 +84,7 @@ class _PieceCountWidgetState extends State<PieceCountWidget> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.only(left: 4, right: 2),
           child: IconButton(
             icon: const FaIcon(
               FontAwesomeIcons.xmark,
@@ -113,30 +113,28 @@ class PieceCountAdderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          DropdownButton<PieceKind>(
-              value: selectedType,
-              items: allSelectableTypes.map((elt) {
-                return DropdownMenuItem(
-                  value: elt,
-                  child: PieceKingWidget(
-                    kind: elt,
-                  ),
-                );
-              }).toList(),
-              onChanged: onSelectionChanged),
-          ElevatedButton(
-            onPressed: onValidate,
-            child: Text(
-              t.script_editor_page.add_count,
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        DropdownButton<PieceKind>(
+            value: selectedType,
+            items: allSelectableTypes.map((elt) {
+              return DropdownMenuItem(
+                value: elt,
+                child: PieceKingWidget(
+                  kind: elt,
+                ),
+              );
+            }).toList(),
+            onChanged: onSelectionChanged),
+        ElevatedButton(
+          onPressed: onValidate,
+          child: Text(
+            t.script_editor_page.add_count,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
