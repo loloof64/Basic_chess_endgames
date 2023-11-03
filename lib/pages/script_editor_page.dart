@@ -16,31 +16,21 @@ class ScriptEditorPage extends StatefulWidget {
 }
 
 class _ScriptEditorPageState extends State<ScriptEditorPage> {
-  String _playerKingConstraintsScript = "";
-  String _computerKingConstraintsScript = "";
-  String _kingsMutualConstraintsScript = "";
+  final TextEditingController _playerKingConstraintsScriptController = TextEditingController(text: "");
+  final TextEditingController _computerKingConstraintsScriptController = TextEditingController(text: "");
+  final TextEditingController _kingsMutualConstraintsScriptController = TextEditingController(text: "");
   String _otherPiecesGlobalConstraintsScript = "";
   String _otherPiecesMutualConstraintsScript = "";
   String _otherPiecesIndexedConstraintsScript = "";
   String _otherPiecesCountConstraintsScript = "";
   String _goalScript = winningString;
 
-  void _updatePlayerKingConstraintsScript(String newContent) {
-    setState(() {
-      _playerKingConstraintsScript = newContent;
-    });
-  }
-
-  void _updateComputerKingConstraintsScript(String newContent) {
-    setState(() {
-      _computerKingConstraintsScript = newContent;
-    });
-  }
-
-  void _updateKingsMutualConstraintsScript(String newContent) {
-    setState(() {
-      _kingsMutualConstraintsScript = newContent;
-    });
+  @override
+  void dispose() {
+    _playerKingConstraintsScriptController.dispose();
+    _computerKingConstraintsScriptController.dispose();
+    _kingsMutualConstraintsScriptController.dispose();
+    super.dispose();
   }
 
   void _updateOtherPiecesGlobalConstraintsScript(String newContent) {
@@ -105,13 +95,13 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         ),
         body: TabBarView(children: [
           PlayerKingConstraintsEditorWidget(
-            onChanged: _updatePlayerKingConstraintsScript,
+            controller: _playerKingConstraintsScriptController,
           ),
           ComputerKingContraintsEditorWidget(
-            onChanged: _updateComputerKingConstraintsScript,
+            controller: _computerKingConstraintsScriptController,
           ),
           KingsMutualConstraintEditorWidget(
-            onChanged: _updateKingsMutualConstraintsScript,
+            controller: _kingsMutualConstraintsScriptController,
           ),
           OtherPiecesCountConstraintsEditorWidget(
             onScriptUpdate: (counts) {
@@ -150,11 +140,11 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
 }
 
 class PlayerKingConstraintsEditorWidget extends StatelessWidget {
-  final void Function(String) onChanged;
+  final TextEditingController controller;
 
   const PlayerKingConstraintsEditorWidget({
     super.key,
-    required this.onChanged,
+    required this.controller,
   });
 
   @override
@@ -166,18 +156,18 @@ class PlayerKingConstraintsEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.player_king_constraint,
         ),
-        Flexible(child: EditorWidget(onChanged: onChanged)),
+        Flexible(child: EditorWidget(controller: controller,),),
       ],
     );
   }
 }
 
 class ComputerKingContraintsEditorWidget extends StatelessWidget {
-  final void Function(String) onChanged;
+  final TextEditingController controller;
 
   const ComputerKingContraintsEditorWidget({
     super.key,
-    required this.onChanged,
+    required this.controller,
   });
 
   @override
@@ -189,18 +179,18 @@ class ComputerKingContraintsEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.computer_king_constraint,
         ),
-        Flexible(child: EditorWidget(onChanged: onChanged)),
+        Flexible(child: EditorWidget(controller: controller,),),
       ],
     );
   }
 }
 
 class KingsMutualConstraintEditorWidget extends StatelessWidget {
-  final void Function(String) onChanged;
+  final TextEditingController controller;
 
   const KingsMutualConstraintEditorWidget({
     super.key,
-    required this.onChanged,
+    required this.controller,
   });
 
   @override
@@ -212,7 +202,7 @@ class KingsMutualConstraintEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.kings_mutual_constraint,
         ),
-        Flexible(child: EditorWidget(onChanged: onChanged)),
+        Flexible(child: EditorWidget(controller: controller,),),
       ],
     );
   }

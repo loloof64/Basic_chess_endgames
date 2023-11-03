@@ -16,23 +16,26 @@ class ComplexEditorWidget extends StatefulWidget {
 }
 
 class _ComplexEditorWidgetState extends State<ComplexEditorWidget> {
-
   PieceKind? _selectedType;
-  final Map<PieceKind, String> _scriptsByKinds = <PieceKind, String>{};
+  final Map<PieceKind, TextEditingController> _scriptsControllersByKinds =
+      <PieceKind, TextEditingController>{};
 
   @override
   void initState() {
+    _setControllers();
     _loadScriptsWith(widget.currentScript);
     super.initState();
   }
 
-  void _loadScriptsWith(String currentScript) {
-
+  void _setControllers() {
+    for (var kind in _scriptsControllersByKinds.keys) {
+      _scriptsControllersByKinds[kind] = TextEditingController();
+    }
   }
 
-  void _replaceScriptWithScriptForKind(PieceKind kind) {
+  void _loadScriptsWith(String currentScript) {}
 
-  }
+  void _replaceScriptWithScriptForKind(PieceKind kind) {}
 
   @override
   Widget build(BuildContext context) {
@@ -60,55 +63,35 @@ class _ComplexEditorWidgetState extends State<ComplexEditorWidget> {
         ),
         EditorWidget(
           enabled: _selectedType != null,
-          onChanged: (newContent) {
-            if (_selectedType == null) return;
-          },
+          controller: _selectedType == null
+              ? TextEditingController()
+              : _scriptsControllersByKinds[_selectedType!]!,
         ),
       ],
     );
   }
 }
 
-class EditorWidget extends StatefulWidget {
+class EditorWidget extends StatelessWidget {
   final String initialContent;
-  final void Function(String) onChanged;
+  final TextEditingController controller;
   final bool enabled;
 
   const EditorWidget({
     super.key,
-    required this.onChanged,
+    required this.controller,
     this.initialContent = "",
     this.enabled = true,
   });
 
   @override
-  State<EditorWidget> createState() => _EditorWidgetState();
-}
-
-class _EditorWidgetState extends State<EditorWidget> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    _controller = TextEditingController(text: widget.initialContent);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: TextField(
-        enabled: widget.enabled,
+        enabled: enabled,
         minLines: 100,
         maxLines: 100,
-        controller: _controller,
-        onChanged: widget.onChanged,
+        controller: controller,
       ),
     );
   }
@@ -132,18 +115,18 @@ class SectionHeader extends StatelessWidget {
 }
 
 Map<PieceKind, int> convertScriptToPiecesCounts(String script) {
-    var result = <PieceKind, int>{};
-    final trimmedScript = script.trim();
-    final scriptLines = trimmedScript.isEmpty ? [] : trimmedScript.split("\n");
+  var result = <PieceKind, int>{};
+  final trimmedScript = script.trim();
+  final scriptLines = trimmedScript.isEmpty ? [] : trimmedScript.split("\n");
 
-    for (var line in scriptLines) {
-      final elementsStrings = line.split(" : ");
-      final kindString = elementsStrings.first.trim();
-      final count = int.parse(elementsStrings.last.trim());
-      final kind = PieceKind.values
-          .firstWhere((element) => element.stringRepr == kindString);
-      result[kind] = count;
-    }
-
-    return result;
+  for (var line in scriptLines) {
+    final elementsStrings = line.split(" : ");
+    final kindString = elementsStrings.first.trim();
+    final count = int.parse(elementsStrings.last.trim());
+    final kind = PieceKind.values
+        .firstWhere((element) => element.stringRepr == kindString);
+    result[kind] = count;
   }
+
+  return result;
+}
