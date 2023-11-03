@@ -32,7 +32,7 @@ class PieceKingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final assets = pieceKindToAssetPathPair(kind);
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SvgPicture.asset(

@@ -56,10 +56,10 @@ class _PieceCountWidgetState extends State<PieceCountWidget> {
   Widget build(BuildContext context) {
     final maxCount = _maxCountForPieceKind(widget.type);
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Flexible(child: PieceKingWidget(kind: widget.type)),
+        PieceKingWidget(kind: widget.type),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 2.0),
           child: Slider(
