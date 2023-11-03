@@ -16,12 +16,21 @@ class ScriptEditorPage extends StatefulWidget {
 }
 
 class _ScriptEditorPageState extends State<ScriptEditorPage> {
-  final TextEditingController _playerKingConstraintsScriptController = TextEditingController(text: "");
-  final TextEditingController _computerKingConstraintsScriptController = TextEditingController(text: "");
-  final TextEditingController _kingsMutualConstraintsScriptController = TextEditingController(text: "");
-  String _otherPiecesGlobalConstraintsScript = "";
-  String _otherPiecesMutualConstraintsScript = "";
-  String _otherPiecesIndexedConstraintsScript = "";
+  final TextEditingController _playerKingConstraintsScriptController =
+      TextEditingController(text: "");
+  final TextEditingController _computerKingConstraintsScriptController =
+      TextEditingController(text: "");
+  final TextEditingController _kingsMutualConstraintsScriptController =
+      TextEditingController(text: "");
+  final Map<PieceKind, TextEditingController>
+      _otherPiecesGlobalConstraintsScripts =
+      <PieceKind, TextEditingController>{};
+  final Map<PieceKind, TextEditingController>
+      _otherPiecesMutualConstraintsScripts =
+      <PieceKind, TextEditingController>{};
+  final Map<PieceKind, TextEditingController>
+      _otherPiecesIndexedConstraintsScripts =
+      <PieceKind, TextEditingController>{};
   String _otherPiecesCountConstraintsScript = "";
   String _goalScript = winningString;
 
@@ -30,25 +39,16 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     _playerKingConstraintsScriptController.dispose();
     _computerKingConstraintsScriptController.dispose();
     _kingsMutualConstraintsScriptController.dispose();
+    for (var controller in _otherPiecesGlobalConstraintsScripts.values) {
+      controller.dispose();
+    }
+    for (var controller in _otherPiecesMutualConstraintsScripts.values) {
+      controller.dispose();
+    }
+    for (var controller in _otherPiecesIndexedConstraintsScripts.values) {
+      controller.dispose();
+    }
     super.dispose();
-  }
-
-  void _updateOtherPiecesGlobalConstraintsScript(String newContent) {
-    setState(() {
-      _otherPiecesGlobalConstraintsScript = newContent;
-    });
-  }
-
-  void _updateOtherPiecesMutualConstraintsScript(String newContent) {
-    setState(() {
-      _otherPiecesMutualConstraintsScript = newContent;
-    });
-  }
-
-  void _updateOtherPiecesIndexedConstraintsScript(String newContent) {
-    setState(() {
-      _otherPiecesIndexedConstraintsScript = newContent;
-    });
   }
 
   void _updateOtherPiecesCountConstraintsScript(Map<PieceKind, int> counts) {
@@ -73,7 +73,8 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
 
   @override
   Widget build(BuildContext context) {
-    final otherPiecesKinds = _getOtherPiecesKindsFromPiecesCountScript(_otherPiecesCountConstraintsScript);
+    final otherPiecesKinds = _getOtherPiecesKindsFromPiecesCountScript(
+        _otherPiecesCountConstraintsScript);
 
     return DefaultTabController(
       length: 8,
@@ -107,22 +108,33 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
             onScriptUpdate: (counts) {
               _updateOtherPiecesCountConstraintsScript(counts);
             },
+            onKindAdded: (kind) {
+              setState(() {
+                _otherPiecesGlobalConstraintsScripts[kind] = TextEditingController();
+                _otherPiecesMutualConstraintsScripts[kind] = TextEditingController();
+                _otherPiecesIndexedConstraintsScripts[kind] = TextEditingController();
+              });
+            },
+            onKindRemoved: (kind) {
+              setState(() {  
+              _otherPiecesGlobalConstraintsScripts.remove(kind);
+              _otherPiecesMutualConstraintsScripts.remove(kind);
+              _otherPiecesIndexedConstraintsScripts.remove(kind);
+              });
+            },
             currentScript: _otherPiecesCountConstraintsScript,
           ),
           OtherPiecesGlobalConstraintEditorWidget(
-            onChanged: _updateOtherPiecesGlobalConstraintsScript,
-            currentScript: _otherPiecesGlobalConstraintsScript,
             availablePiecesKinds: otherPiecesKinds,
+            controllers: _otherPiecesGlobalConstraintsScripts,
           ),
           OtherPiecesMutualConstraintEditorWidget(
-            onChanged: _updateOtherPiecesMutualConstraintsScript,
-            currentScript: _otherPiecesMutualConstraintsScript,
             availablePiecesKinds: otherPiecesKinds,
+            controllers: _otherPiecesMutualConstraintsScripts,
           ),
           OtherPiecesIndexedConstraintEditorWidget(
-            onChanged: _updateOtherPiecesIndexedConstraintsScript,
-            currentScript: _otherPiecesIndexedConstraintsScript,
             availablePiecesKinds: otherPiecesKinds,
+            controllers: _otherPiecesIndexedConstraintsScripts,
           ),
           GameGoalEditorWidget(
               script: _goalScript,
@@ -156,7 +168,11 @@ class PlayerKingConstraintsEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.player_king_constraint,
         ),
-        Flexible(child: EditorWidget(controller: controller,),),
+        Flexible(
+          child: EditorWidget(
+            controller: controller,
+          ),
+        ),
       ],
     );
   }
@@ -179,7 +195,11 @@ class ComputerKingContraintsEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.computer_king_constraint,
         ),
-        Flexible(child: EditorWidget(controller: controller,),),
+        Flexible(
+          child: EditorWidget(
+            controller: controller,
+          ),
+        ),
       ],
     );
   }
@@ -202,7 +222,11 @@ class KingsMutualConstraintEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.kings_mutual_constraint,
         ),
-        Flexible(child: EditorWidget(controller: controller,),),
+        Flexible(
+          child: EditorWidget(
+            controller: controller,
+          ),
+        ),
       ],
     );
   }
@@ -211,10 +235,14 @@ class KingsMutualConstraintEditorWidget extends StatelessWidget {
 class OtherPiecesCountConstraintsEditorWidget extends StatefulWidget {
   final String currentScript;
   final void Function(Map<PieceKind, int> counts) onScriptUpdate;
+  final void Function(PieceKind kind) onKindAdded;
+  final void Function(PieceKind kind) onKindRemoved;
 
   const OtherPiecesCountConstraintsEditorWidget({
     super.key,
     required this.onScriptUpdate,
+    required this.onKindAdded,
+    required this.onKindRemoved,
     this.currentScript = "",
   });
 
@@ -262,6 +290,8 @@ class _OtherPiecesCountConstraintsEditorWidgetState
       _content[_selectedType!] = 1;
     });
     _updateAvailableTypes();
+    // Here the order of following lines is important !
+    widget.onKindAdded(_selectedType!);
     widget.onScriptUpdate(_content);
   }
 
@@ -283,9 +313,10 @@ class _OtherPiecesCountConstraintsEditorWidgetState
             onRemove: (valueToRemove) {
               setState(() {
                 _content.removeWhere((type, count) => type == valueToRemove);
-                widget.onScriptUpdate(_content);
               });
               _updateAvailableTypes();
+                widget.onScriptUpdate(_content);
+                widget.onKindRemoved(_selectedType!);
             },
           ),
         )
@@ -326,15 +357,13 @@ class _OtherPiecesCountConstraintsEditorWidgetState
 }
 
 class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
-  final String currentScript;
   final List<PieceKind> availablePiecesKinds;
-  final void Function(String) onChanged;
+  final Map<PieceKind, TextEditingController> controllers;
 
   const OtherPiecesGlobalConstraintEditorWidget({
     super.key,
-    required this.currentScript,
     required this.availablePiecesKinds,
-    required this.onChanged,
+    required this.controllers,
   });
 
   @override
@@ -348,8 +377,8 @@ class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
         ),
         Flexible(
           child: ComplexEditorWidget(
-            currentScript: currentScript,
             availablePiecesKinds: availablePiecesKinds,
+            scriptsControllersByKinds: controllers,
           ),
         ),
       ],
@@ -358,15 +387,13 @@ class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
 }
 
 class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
-  final String currentScript;
   final List<PieceKind> availablePiecesKinds;
-  final void Function(String) onChanged;
+  final Map<PieceKind, TextEditingController> controllers;
 
   const OtherPiecesMutualConstraintEditorWidget({
     super.key,
-    required this.currentScript,
     required this.availablePiecesKinds,
-    required this.onChanged,
+    required this.controllers,
   });
 
   @override
@@ -380,8 +407,8 @@ class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
         ),
         Flexible(
           child: ComplexEditorWidget(
-            currentScript: currentScript,
             availablePiecesKinds: availablePiecesKinds,
+            scriptsControllersByKinds: controllers,
           ),
         ),
       ],
@@ -390,15 +417,13 @@ class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
 }
 
 class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
-  final String currentScript;
   final List<PieceKind> availablePiecesKinds;
-  final void Function(String) onChanged;
+  final Map<PieceKind, TextEditingController> controllers;
 
   const OtherPiecesIndexedConstraintEditorWidget({
     super.key,
-    required this.currentScript,
     required this.availablePiecesKinds,
-    required this.onChanged,
+    required this.controllers,
   });
 
   @override
@@ -412,8 +437,8 @@ class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
         ),
         Flexible(
           child: ComplexEditorWidget(
-            currentScript: currentScript,
             availablePiecesKinds: availablePiecesKinds,
+            scriptsControllersByKinds: controllers,
           ),
         ),
       ],

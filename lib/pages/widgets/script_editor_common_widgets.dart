@@ -2,13 +2,13 @@ import 'package:basicchessendgamestrainer/pages/widgets/piece_kind_widget.dart';
 import 'package:flutter/material.dart';
 
 class ComplexEditorWidget extends StatefulWidget {
-  final String currentScript;
   final List<PieceKind> availablePiecesKinds;
+  final Map<PieceKind, TextEditingController> scriptsControllersByKinds;
 
   const ComplexEditorWidget({
     super.key,
-    required this.currentScript,
     required this.availablePiecesKinds,
+    required this.scriptsControllersByKinds,
   });
 
   @override
@@ -17,25 +17,6 @@ class ComplexEditorWidget extends StatefulWidget {
 
 class _ComplexEditorWidgetState extends State<ComplexEditorWidget> {
   PieceKind? _selectedType;
-  final Map<PieceKind, TextEditingController> _scriptsControllersByKinds =
-      <PieceKind, TextEditingController>{};
-
-  @override
-  void initState() {
-    _setControllers();
-    _loadScriptsWith(widget.currentScript);
-    super.initState();
-  }
-
-  void _setControllers() {
-    for (var kind in _scriptsControllersByKinds.keys) {
-      _scriptsControllersByKinds[kind] = TextEditingController();
-    }
-  }
-
-  void _loadScriptsWith(String currentScript) {}
-
-  void _replaceScriptWithScriptForKind(PieceKind kind) {}
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +39,16 @@ class _ComplexEditorWidgetState extends State<ComplexEditorWidget> {
             setState(() {
               _selectedType = newValue;
             });
-            _replaceScriptWithScriptForKind(newValue);
           },
         ),
-        EditorWidget(
-          enabled: _selectedType != null,
-          controller: _selectedType == null
-              ? TextEditingController()
-              : _scriptsControllersByKinds[_selectedType!]!,
+        Expanded(
+          flex: 6,
+          child: EditorWidget(
+            enabled: _selectedType != null,
+            controller: _selectedType == null
+                ? TextEditingController()
+                : widget.scriptsControllersByKinds[_selectedType!]!,
+          ),
         ),
       ],
     );
@@ -129,4 +112,35 @@ Map<PieceKind, int> convertScriptToPiecesCounts(String script) {
   }
 
   return result;
+}
+
+PieceKind kindFromString(String kindString) {
+  switch (kindString) {
+    case "player pawn":
+      return PieceKind.playerPawn;
+    case "player knight":
+      return PieceKind.playerKnight;
+    case "player bishop":
+      return PieceKind.playerBishop;
+    case "player rook":
+      return PieceKind.playerRook;
+    case "player queen":
+      return PieceKind.playerQueen;
+    case "player king":
+      return PieceKind.playerKing;
+    case "computer pawn":
+      return PieceKind.computerPawn;
+    case "computer knight":
+      return PieceKind.computerKnight;
+    case "computer bishop":
+      return PieceKind.computerBishop;
+    case "computer rook":
+      return PieceKind.computerRook;
+    case "computer queen":
+      return PieceKind.computerQueen;
+    case "computer king":
+      return PieceKind.computerKing;
+    default:
+      throw "Invalid kind string '$kindString'";
+  }
 }
