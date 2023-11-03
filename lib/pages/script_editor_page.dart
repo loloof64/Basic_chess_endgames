@@ -219,6 +219,8 @@ class PlayerKingConstraintsEditorWidget extends StatelessWidget {
       children: [
         SectionHeader(
           title: t.script_editor_page.player_king_constraint,
+          onSyntaxButtonPressed: () {},
+          onVariablesButtonPressed: () {},
         ),
         Flexible(
           child: EditorWidget(
@@ -246,6 +248,8 @@ class ComputerKingContraintsEditorWidget extends StatelessWidget {
       children: [
         SectionHeader(
           title: t.script_editor_page.computer_king_constraint,
+          onSyntaxButtonPressed: () {},
+          onVariablesButtonPressed: () {},
         ),
         Flexible(
           child: EditorWidget(
@@ -273,6 +277,8 @@ class KingsMutualConstraintEditorWidget extends StatelessWidget {
       children: [
         SectionHeader(
           title: t.script_editor_page.kings_mutual_constraint,
+          onSyntaxButtonPressed: () {},
+          onVariablesButtonPressed: () {},
         ),
         Flexible(
           child: EditorWidget(
@@ -426,6 +432,8 @@ class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
       children: [
         SectionHeader(
           title: t.script_editor_page.other_pieces_global_constraint,
+          onSyntaxButtonPressed: () {},
+          onVariablesButtonPressed: () {},
         ),
         Flexible(
           child: ComplexEditorWidget(
@@ -456,6 +464,8 @@ class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
       children: [
         SectionHeader(
           title: t.script_editor_page.other_pieces_mutual_constraint,
+          onSyntaxButtonPressed: () {},
+          onVariablesButtonPressed: () {},
         ),
         Flexible(
           child: ComplexEditorWidget(
@@ -486,6 +496,8 @@ class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
       children: [
         SectionHeader(
           title: t.script_editor_page.other_pieces_indexed_constraint,
+          onSyntaxButtonPressed: () {},
+          onVariablesButtonPressed: () {},
         ),
         Flexible(
           child: ComplexEditorWidget(

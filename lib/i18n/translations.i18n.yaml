@@ -101,3 +101,5 @@ script_editor_page:
   should_draw: "Draw"
   beforeExitTitle: "Cancel script edition ?"
   beforeExitMessage: "Do you want to leave this page and cancel script edition ?"
+  syntax_button_label: "Syntax rules"
+  variables_button_label: "Predefined variables"

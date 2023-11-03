@@ -104,3 +104,5 @@ script_editor_page:
   should_draw: "Empate"
   beforeExitTitle: "¿Cancelar la edición del script?"
   beforeExitMessage: "¿Desea salir de esta página y cancelar la edición del script?"
+  syntax_button_label: "Reglas de sintaxis"
+  variables_button_label: "Variables predefinidas"

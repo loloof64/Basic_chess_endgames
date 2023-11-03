@@ -1,3 +1,4 @@
+import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/piece_kind_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -82,17 +83,46 @@ class EditorWidget extends StatelessWidget {
 
 class SectionHeader extends StatelessWidget {
   final String title;
+  final void Function()? onSyntaxButtonPressed;
+  final void Function()? onVariablesButtonPressed;
 
   const SectionHeader({
     super.key,
     required this.title,
+    this.onSyntaxButtonPressed,
+    this.onVariablesButtonPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (onSyntaxButtonPressed != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ElevatedButton(
+                onPressed: onSyntaxButtonPressed,
+                child: Text(t.script_editor_page.syntax_button_label),
+              ),
+            ),
+          Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+          ),
+          if (onVariablesButtonPressed != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ElevatedButton(
+                onPressed: onVariablesButtonPressed,
+                child: Text(t.script_editor_page.variables_button_label),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

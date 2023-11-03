@@ -105,3 +105,5 @@ script_editor_page:
   should_draw: "Annuler"
   beforeExitTitle: "Annuler l'édition du script ?"
   beforeExitMessage: "Souhaitez-vous quitter la page et annuler l'édition du script ?"
+  syntax_button_label: "Règles de syntaxe"
+  variables_button_label: "Variables prédéfinies"
