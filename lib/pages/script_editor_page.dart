@@ -71,80 +71,132 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     return convertScriptToPiecesCounts(script).keys.toList();
   }
 
+  Future<bool> _handleExitPage() async {
+    return await showDialog(
+        context: context,
+        builder: (ctx2) {
+          return AlertDialog(
+            title: Text(
+              t.script_editor_page.before_exit_title,
+            ),
+            content: Text(
+              t.script_editor_page.before_exit_message,
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    Theme.of(context).colorScheme.onTertiary,
+                  ),
+                ),
+                child: Text(
+                  t.misc.button_cancel,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    Theme.of(context).colorScheme.onSecondary,
+                  ),
+                ),
+                child: Text(
+                  t.misc.button_ok,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final otherPiecesKinds = _getOtherPiecesKindsFromPiecesCountScript(
         _otherPiecesCountConstraintsScript);
 
-    return DefaultTabController(
-      length: 8,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            t.script_editor_page.title,
+    return WillPopScope(
+      onWillPop: _handleExitPage,
+      child: DefaultTabController(
+        length: 8,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              t.script_editor_page.title,
+            ),
+            bottom: const TabBar(tabs: [
+              Tab(icon: FaIcon(FontAwesomeIcons.chessKing),),
+              Tab(icon: FaIcon(FontAwesomeIcons.solidChessKing)),
+              Tab(icon: FaIcon(FontAwesomeIcons.arrowsUpDown)),
+              Tab(icon: FaIcon(FontAwesomeIcons.calculator)),
+              Tab(icon: FaIcon(FontAwesomeIcons.globe)),
+              Tab(icon: FaIcon(FontAwesomeIcons.arrowRightArrowLeft)),
+              Tab(icon: FaIcon(FontAwesomeIcons.arrowDown19)),
+              Tab(icon: FaIcon(FontAwesomeIcons.futbol)),
+            ]),
           ),
-          bottom: const TabBar(tabs: [
-            Tab(icon: FaIcon(FontAwesomeIcons.chessKing)),
-            Tab(icon: FaIcon(FontAwesomeIcons.solidChessKing)),
-            Tab(icon: FaIcon(FontAwesomeIcons.arrowsUpDown)),
-            Tab(icon: FaIcon(FontAwesomeIcons.calculator)),
-            Tab(icon: FaIcon(FontAwesomeIcons.globe)),
-            Tab(icon: FaIcon(FontAwesomeIcons.arrowRightArrowLeft)),
-            Tab(icon: FaIcon(FontAwesomeIcons.arrowDown19)),
-            Tab(icon: FaIcon(FontAwesomeIcons.futbol)),
+          body: TabBarView(children: [
+            PlayerKingConstraintsEditorWidget(
+              controller: _playerKingConstraintsScriptController,
+            ),
+            ComputerKingContraintsEditorWidget(
+              controller: _computerKingConstraintsScriptController,
+            ),
+            KingsMutualConstraintEditorWidget(
+              controller: _kingsMutualConstraintsScriptController,
+            ),
+            OtherPiecesCountConstraintsEditorWidget(
+              onScriptUpdate: (counts) {
+                _updateOtherPiecesCountConstraintsScript(counts);
+              },
+              onKindAdded: (kind) {
+                setState(() {
+                  _otherPiecesGlobalConstraintsScripts[kind] = TextEditingController();
+                  _otherPiecesMutualConstraintsScripts[kind] = TextEditingController();
+                  _otherPiecesIndexedConstraintsScripts[kind] = TextEditingController();
+                });
+              },
+              onKindRemoved: (kind) {
+                setState(() {  
+                _otherPiecesGlobalConstraintsScripts.remove(kind);
+                _otherPiecesMutualConstraintsScripts.remove(kind);
+                _otherPiecesIndexedConstraintsScripts.remove(kind);
+                });
+              },
+              currentScript: _otherPiecesCountConstraintsScript,
+            ),
+            OtherPiecesGlobalConstraintEditorWidget(
+              availablePiecesKinds: otherPiecesKinds,
+              controllers: _otherPiecesGlobalConstraintsScripts,
+            ),
+            OtherPiecesMutualConstraintEditorWidget(
+              availablePiecesKinds: otherPiecesKinds,
+              controllers: _otherPiecesMutualConstraintsScripts,
+            ),
+            OtherPiecesIndexedConstraintEditorWidget(
+              availablePiecesKinds: otherPiecesKinds,
+              controllers: _otherPiecesIndexedConstraintsScripts,
+            ),
+            GameGoalEditorWidget(
+                script: _goalScript,
+                onChanged: (newValue) {
+                  _updateGoalScript(newValue);
+                }),
           ]),
-        ),
-        body: TabBarView(children: [
-          PlayerKingConstraintsEditorWidget(
-            controller: _playerKingConstraintsScriptController,
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+            child: const FaIcon(FontAwesomeIcons.solidFloppyDisk),
           ),
-          ComputerKingContraintsEditorWidget(
-            controller: _computerKingConstraintsScriptController,
-          ),
-          KingsMutualConstraintEditorWidget(
-            controller: _kingsMutualConstraintsScriptController,
-          ),
-          OtherPiecesCountConstraintsEditorWidget(
-            onScriptUpdate: (counts) {
-              _updateOtherPiecesCountConstraintsScript(counts);
-            },
-            onKindAdded: (kind) {
-              setState(() {
-                _otherPiecesGlobalConstraintsScripts[kind] = TextEditingController();
-                _otherPiecesMutualConstraintsScripts[kind] = TextEditingController();
-                _otherPiecesIndexedConstraintsScripts[kind] = TextEditingController();
-              });
-            },
-            onKindRemoved: (kind) {
-              setState(() {  
-              _otherPiecesGlobalConstraintsScripts.remove(kind);
-              _otherPiecesMutualConstraintsScripts.remove(kind);
-              _otherPiecesIndexedConstraintsScripts.remove(kind);
-              });
-            },
-            currentScript: _otherPiecesCountConstraintsScript,
-          ),
-          OtherPiecesGlobalConstraintEditorWidget(
-            availablePiecesKinds: otherPiecesKinds,
-            controllers: _otherPiecesGlobalConstraintsScripts,
-          ),
-          OtherPiecesMutualConstraintEditorWidget(
-            availablePiecesKinds: otherPiecesKinds,
-            controllers: _otherPiecesMutualConstraintsScripts,
-          ),
-          OtherPiecesIndexedConstraintEditorWidget(
-            availablePiecesKinds: otherPiecesKinds,
-            controllers: _otherPiecesIndexedConstraintsScripts,
-          ),
-          GameGoalEditorWidget(
-              script: _goalScript,
-              onChanged: (newValue) {
-                _updateGoalScript(newValue);
-              }),
-        ]),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: const FaIcon(FontAwesomeIcons.solidFloppyDisk),
         ),
       ),
     );

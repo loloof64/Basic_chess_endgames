@@ -103,3 +103,5 @@ script_editor_page:
   type_already_added: "Type déjà ajouté."
   should_win: "Gagner"
   should_draw: "Annuler"
+  beforeExitTitle: "Annuler l'édition du script ?"
+  beforeExitMessage: "Souhaitez-vous quitter la page et annuler l'édition du script ?"

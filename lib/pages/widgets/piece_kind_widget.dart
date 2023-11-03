@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-const chessImagesSize = 30.0;
+const chessImagesSize = 20.0;
 
 enum PieceKind {
   playerPawn("player pawn"),

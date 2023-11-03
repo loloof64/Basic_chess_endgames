@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 240 (80 per locale)
+/// Strings: 246 (82 per locale)
 ///
-/// Built on 2023-11-02 at 12:48 UTC
+/// Built on 2023-11-03 at 12:38 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -344,6 +344,8 @@ class _TranslationsScriptEditorPageEn {
 	String get type_already_added => 'Already added this type.';
 	String get should_win => 'Win';
 	String get should_draw => 'Draw';
+	String get before_exit_title => 'Cancel script edition ?';
+	String get before_exit_message => 'Do you want to leave this page and cancel script edition ?';
 }
 
 // Path: <root>
@@ -547,6 +549,8 @@ class _TranslationsScriptEditorPageEs extends _TranslationsScriptEditorPageEn {
 	@override String get type_already_added => 'Ya se agregó este tipo.';
 	@override String get should_win => 'Ganar';
 	@override String get should_draw => 'Empate';
+	@override String get before_exit_title => '¿Cancelar la edición del script?';
+	@override String get before_exit_message => '¿Desea salir de esta página y cancelar la edición del script?';
 }
 
 // Path: <root>
@@ -750,4 +754,6 @@ class _TranslationsScriptEditorPageFr extends _TranslationsScriptEditorPageEn {
 	@override String get type_already_added => 'Type déjà ajouté.';
 	@override String get should_win => 'Gagner';
 	@override String get should_draw => 'Annuler';
+	@override String get before_exit_title => 'Annuler l\'édition du script ?';
+	@override String get before_exit_message => 'Souhaitez-vous quitter la page et annuler l\'édition du script ?';
 }

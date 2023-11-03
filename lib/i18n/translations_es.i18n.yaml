@@ -102,3 +102,5 @@ script_editor_page:
   type_already_added: "Ya se agregó este tipo."
   should_win: "Ganar"
   should_draw: "Empate"
+  beforeExitTitle: "¿Cancelar la edición del script?"
+  beforeExitMessage: "¿Desea salir de esta página y cancelar la edición del script?"

@@ -99,3 +99,5 @@ script_editor_page:
   type_already_added: "Already added this type."
   should_win: "Win"
   should_draw: "Draw"
+  beforeExitTitle: "Cancel script edition ?"
+  beforeExitMessage: "Do you want to leave this page and cancel script edition ?"
