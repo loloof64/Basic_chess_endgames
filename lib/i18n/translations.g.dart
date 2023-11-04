@@ -6,7 +6,7 @@
 /// Locales: 3
 /// Strings: 609 (203 per locale)
 ///
-/// Built on 2023-11-04 at 21:30 UTC
+/// Built on 2023-11-04 at 22:01 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -309,7 +309,7 @@ class _TranslationsPrivacyEn {
 
 	// Translations
 	String get title => 'Privacy policy';
-	String get content1 => 'This page is used to inform you regarding the policies with the collection, use and disclosure of personal information for the app, Basic Chess Endgames. Laurent Bernabe respect the privacy of users and is committed to protect the user\'s information, be it yours or your children\'s. I believe that you have a right to know my practices regarding the information I may collect and use when you use my app.';
+	String get content1 => 'This page is used to inform you regarding the policies with the collection, use and disclosure of personal information for the app, Basic Chess Endgames. I respect the privacy of users and I am committed to protect the user\'s information, be it yours or your children\'s. I believe that you have a right to know my practices regarding the information I may collect and use when you use my app.';
 	String get content2 => 'Privacy of my product users is important to me. I do not collect any identifiable information about my users. I do not store or transmit any personal information.';
 	String get content3 => 'If you have any questions about this Privacy Policy please contact me at laurent.bernabe@gmail.com.';
 }
@@ -645,7 +645,7 @@ class _TranslationsPrivacyEs extends _TranslationsPrivacyEn {
 
 	// Translations
 	@override String get title => 'Politica de privacidad';
-	@override String get content1 => 'Esta página se utiliza para informarle sobre las políticas con el recopilación, uso y divulgación de información personal para la aplicación, Finales Básicos de Ajedrez. Laurent Bernabe respeta la privacidad de usuarios y se compromete a proteger la información del usuario, ya sea el tuyo o el de tus hijos. Creo que tienes derecho a conocer mi prácticas con respecto a la información que puedo recopilar y usar cuando usted usa mi aplicación.';
+	@override String get content1 => 'Esta página se utiliza para informarle sobre las políticas con el recopilación, uso y divulgación de información personal para la aplicación, Finales Básicos de Ajedrez. Yo respeto la privacidad de usuarios y me comprometo a proteger la información del usuario, ya sea el tuyo o el de tus hijos. Creo que tienes derecho a conocer mi prácticas con respecto a la información que puedo recopilar y usar cuando usted usa mi aplicación.';
 	@override String get content2 => 'La privacidad de los usuarios de mis productos es importante para mí. No colecciono ninguna información identificable sobre mis usuarios. No almaceno ni transmito cualquier información personal.';
 	@override String get content3 => 'Si tiene alguna pregunta sobre esta Política de privacidad, comuníquese con yo en laurent.bernabe@gmail.com.';
 }
@@ -981,7 +981,7 @@ class _TranslationsPrivacyFr extends _TranslationsPrivacyEn {
 
 	// Translations
 	@override String get title => 'Politique de confidentialité';
-	@override String get content1 => 'Cette page est utilisée pour vous informer sur les politiques de collecte, d\'utilisation et divulgation d\'informations personnelles pour l\'application, Finales d\'Echecs Basiques. Laurent Bernabe respecte la vie privée de utilisateurs et s\'engage à protéger les informations de l\'utilisateur, que ce soit la vôtre ou celle de vos enfants. Je crois que vous avez le droit de connaître mes pratiques concernant les informations que je peux collecter et utiliser lorsque vous utilisez mon application.';
+	@override String get content1 => 'Cette page est utilisée pour vous informer sur les politiques de collecte, d\'utilisation et divulgation d\'informations personnelles pour l\'application, Finales d\'Echecs Basiques. Je respecte la vie privée de utilisateurs et je m\'engage à protéger les informations de l\'utilisateur, que ce soit la vôtre ou celle de vos enfants. Je crois que vous avez le droit de connaître mes pratiques concernant les informations que je peux collecter et utiliser lorsque vous utilisez mon application.';
 	@override String get content2 => 'La confidentialité des utilisateurs de mes applications est importante pour moi. Je ne collecte aucune information identifiable sur mes utilisateurs. Je ne stocke ni ne transmets aucune information personnelle.';
 	@override String get content3 => 'Si vous avez quelque question que ce soit à propos de cette politique de confidentialité, veuillez me contacter à laurent.bernabe@gmail.com.';
 }
