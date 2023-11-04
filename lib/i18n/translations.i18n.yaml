@@ -8,7 +8,8 @@ home:
   title: "Home"
   failedLoadingExercise: "Failed to load exercise : the chess position is not valid."
   failedGeneratingPosition: "Failed to generate the position."
-  helpMessage: "Here you can select the type of position you want to play with. \
+  helpMessage:
+    "Here you can select the type of position you want to play with. \
     A line which leading icon is a trophy will generate a position in which you should win. \
     Otherwise, with a handshake leading icon, your goal will be to save the game and make draw."
   tab_integrated: "Integrated"
@@ -36,7 +37,8 @@ gamePage:
   fiftyMovesRule: "Draw by the 50 moves rule."
   beforeExitTitle: "Cancel current game ?"
   beforeExitMessage: "Do you want to leave this page and cancel current game ?"
-  helpMessage: "Besides playing the game against the engine, you can flip the board, restart from the generated position, \
+  helpMessage:
+    "Besides playing the game against the engine, you can flip the board, restart from the generated position, \
     but also stop game prematurely.\n \
     Once the game is over you will be able to review moves from the history component."
 scriptParser:
@@ -72,12 +74,14 @@ sampleScript:
   rookEndingPhilidor: "Philidor rook ending"
 privacy:
   title: "Privacy policy"
-  content1: "This page is used to inform you regarding the policies with the collection, use and \
+  content1:
+    "This page is used to inform you regarding the policies with the collection, use and \
     disclosure of personal information for the app, Basic Chess Endgames. Laurent Bernabe respect the \
     privacy of users and is committed to protect the user's information, be it yours or your children's. I \
     believe that you have a right to know my practices regarding the information I may collect and use when you \
     use my app."
-  content2: "Privacy of my product users is important to me. I do not collect any identifiable \
+  content2:
+    "Privacy of my product users is important to me. I do not collect any identifiable \
     information about my users. I do not store or transmit any personal information."
   content3: "If you have any questions about this Privacy Policy please contact me at laurent.bernabe@gmail.com."
 useConditions:
@@ -102,81 +106,174 @@ script_editor_page:
   beforeExitTitle: "Cancel script edition ?"
   beforeExitMessage: "Do you want to leave this page and cancel script edition ?"
   syntax_button_label: "Syntax rules"
-  variables_button_label: "Predefined variables"
 syntax_manual_page:
   title: "Scripts' syntax"
+  table_header_variable_name: "Name"
+  table_header_variable_type: "Type"
+  table_header_variable_use: "Use"
   scripts_goal: "Scripts' goal"
   scripts_kinds: "Scripts kinds"
   scripts_format: "Scripts' format"
   comments: "Comments"
   variables: "Variables"
-  scripts_goal_description: "A position generation script is split into several subscripts, \
-    each of its own kind. \n\nA subscript's goal is to check that the generated position follow all of \
+  predefined_values: "Predefined values"
+  predefined_variables: "Predefined variables"
+  scripts_goal_description:
+    "A position generation script is split into several sub-scripts, \
+    each of its own kind. \n\nA sub-script's goal is to check that the generated position follow all of \
     its constraints. \n\nIf at least one condition is not met, then the algorithm will try to 'fix' the \
     position so that all conditions are met."
-  scripts_kinds_head_description: "There are several types of sub-scripts, and all rules of all \
+  scripts_kinds_head_description:
+    "There are several types of sub-scripts, and all rules of all \
     defined sub-scripts must be respected by the generated position. \n\nOf course, it must also respect \
     standard chess rules (for example : king of side not in turn musn't be in chess).\n\n"
   scripts_kinds_player_king_constraint_title: "Player's king's constraints\n\n"
-  scripts_kinds_player_king_constraint_description: "Tells about the positioning constraints on \
+  scripts_kinds_player_king_constraint_description:
+    "Tells about the positioning constraints on \
     the players's king (given that the player's color will be randomly choosen).\n\n"
   scripts_kinds_computer_king_constraint_title: "Computer's king's constraints\n\n"
-  scripts_kinds_computer_king_constraint_description: "Tells about the positioning constraints on \
+  scripts_kinds_computer_king_constraint_description:
+    "Tells about the positioning constraints on \
     the computer's king (given that the player's color will be randomly choosen).\n\n"
   scripts_kinds_kings_mutual_constraints_title: "Kings's mutual constraints\n\n"
-  scripts_kinds_kings_mutual_constraints_description: "Tells about the positioning constraints that \
+  scripts_kinds_kings_mutual_constraints_description:
+    "Tells about the positioning constraints that \
     both kings must respect between them.\n\n"
   scripts_kinds_other_pieces_count_constraints_title: "Other pieces counts' constraints\n\n"
-  scripts_kinds_other_pieces_count_constraints_description: "Tells about the counts' constraints \
+  scripts_kinds_other_pieces_count_constraints_description:
+    "Tells about the counts' constraints \
     on pieces other than kings.\n\n"
   scripts_kinds_other_pieces_global_constraints_title: "Other pieces' global constraints\n\n"
-  scripts_kinds_other_pieces_global_constraints_description: "Tells about the positioning \
+  scripts_kinds_other_pieces_global_constraints_description:
+    "Tells about the positioning \
     constraints for pieces other by kings, for each couple [type of piece / is it a player piece ?].\n\n"
   scripts_kinds_other_pieces_mutual_constraints_title: "Other pieces' mutual constraints\n\n"
-  scripts_kinds_other_pieces_mutual_constraints_description: "Tells about the positioning constraints \
+  scripts_kinds_other_pieces_mutual_constraints_description:
+    "Tells about the positioning constraints \
     for pieces other by kings, that they must respect between each other, two by two, \
     for each couple [type of piece / is it a player piece ?].\n\n"
   scripts_kinds_other_pieces_indexed_constraints_title: "Other pieces constraints by order\n\n"
-  scripts_kinds_other_pieces_indexed_constraints_description: "Tells about the positioning \
+  scripts_kinds_other_pieces_indexed_constraints_description:
+    "Tells about the positioning \
     constraints for pieces other than kings, that they must respect given their apparition order \
     on the chess board, for each couple [type of piece / is it a player piece ?].\n\n"
-  scripts_format_head_description: "Each script may start with one or several variables creation \
+  scripts_format_head_description:
+    "Each script may start with one or several variables creation \
     statements. \n\nBut the final expression must be a statement that returns a boolean expression. \n\n\
     This return expression will be used by the algorithm in order to check that the generated \
     position is correct.\n\n"
   scripts_format_main_description_1: "This is the syntax for the return expression :\n\n"
   scripts_format_code_section_1: "return [your boolean expression];\n\n"
   scripts_format_main_description_2: "This is a simple script sample :\n\n"
-  scripts_comments_head_description: "You can use two forms of comments, which are inspired \
+  scripts_comments_head_description:
+    "You can use two forms of comments, which are inspired \
     by comments from the C language.\n\n"
-  scripts_kinds_multiline_comments_title: "Multilines comments\n\n"
-  scripts_kinds_multiline_comments_description: "A multiline comment starts with '/*' and ends \
+  scripts_comments_multiline_comments_title: "Multilines comments\n\n"
+  scripts_comments_multiline_comments_description:
+    "A multiline comment starts with '/*' and ends \
     with '*/', and can expand on several lines.\n\n"
-  scripts_kinds_multiline_comments_sample: "/* This is a\n \
+  scripts_comments_multiline_comments_sample: "/* This is a\n \
     multilines comment.\n\
     \n\
     And can expand on several lines.*/\n\n"
-  scripts_kinds_single_line_comments_title: "Single line comments\n\n"
-  scripts_kinds_single_line_comments_description_1: "A single line comment can only be on a single \
+  scripts_comments_single_line_comments_title: "Single line comments\n\n"
+  scripts_comments_single_line_comments_description_1:
+    "A single line comment can only be on a single \
     line, and just starts by '//'. \n\nSo all following characters of the given line are parts of \
     the comment.\n\n"
-  scripts_kinds_single_line_comments_sample_1: "// This is a single line comment\n\n"
-  scripts_kinds_single_line_comments_description_2: "A single line comment can also follow a \
+  scripts_comments_single_line_comments_sample_1: "// This is a single line comment\n\n"
+  scripts_comments_single_line_comments_description_2:
+    "A single line comment can also follow a \
     statement on the same line.\n\n"
-  scripts_kinds_single_line_comments_sample_2: "myIntVariable := FileF; // Sets to the value of \
+  scripts_comments_single_line_comments_sample_2:
+    "myIntVariable := FileF; // Sets to the value of \
     the F file\n\n"
   scripts_variables_head_description: "These are things to consider about variables :\n\n"
-  scripts_kinds_variables_name_rules_title: "Naming rules\n\n"
-  scripts_kinds_variables_name_rules_description: "A variable name must start with a letter \
+  scripts_variables_name_rules_title: "Naming rules\n\n"
+  scripts_variables_name_rules_description:
+    "A variable name must start with a letter \
     (either uppercase or lowercase). \n\nThen the following characters can be letters \
     (uppercase and/or lowercase), digits or underscore ('_'). \n\nAlso keep in mind that you \
     can't use name of predifined value or of a predefined variable (given that each script \
     type, as you'll see later, has its own set of predefined variables).\n\n"
-  scripts_kinds_variables_creation_title: "Variable creation statement\n\n"
-  scripts_kinds_variables_creation_description: "This is the syntax for creating either an \
+  scripts_variables_creation_title: "Variable creation statement\n\n"
+  scripts_variables_creation_description:
+    "This is the syntax for creating either an \
     int variable or a boolean variable :\n\n"
-  scripts_kinds_variables_creation_format: "[identifier] := [int expression | boolean \
+  scripts_variables_creation_format:
+    "[identifier] := [int expression | boolean \
     expression];\n\n"
-  scripts_kinds_variables_creation_sample_head_text: "This is an example :\n\n"
-  scripts_kinds_variables_creation_sample_code: "myRank := boolIf(kingsInOpposition) \
+  scripts_variables_creation_sample_head_text: "This is an example :\n\n"
+  scripts_variables_creation_sample_code: "myRank := boolIf(kingsInOpposition) \
     then Rank4 else Rank1;\n\n"
+  scripts_predefined_values_head_description:
+    "All sub-scripts have the same predefined \
+    integer values (you can't name a variable with one of those names).\n\nAll of these \
+    values takes the chess board's orientation into account.\n\n"
+  scripts_predefined_files_title: "Files\n\n"
+  scripts_predefined_files_description:
+    "These are predefined integer values for the chess \
+    board files : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n"
+  scripts_predefined_ranks_title: "Ranks\n\n"
+  scripts_predefined_ranks_description:
+    "These are predefined integer values for the chess \
+    board ranks : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n"
+  scripts_predefined_variables_head_description:
+    "The predefined variables relies on the kind of \
+    sub-script we're editing.\n\nThese variables will be fed by the algorithm when checking for \
+    the generated position's correctness.\n\nOf course, you can't name a custom variable with one of \
+    those names.\n\nAlso, keep in mind that chess board's coordinates values take \
+    board's orientation into account.\n\n"
+  scripts_predefined_variables_single_king_constraints_title:
+    "Player's king's constraint / Computer \
+    king's constraint\n\n"
+  scripts_predefined_variables_single_king_constraints_variable_file:
+    "the file which has been set \
+    for the king"
+  scripts_predefined_variables_single_king_constraints_variable_rank:
+    "the rank which has been set \
+    for the king"
+  ? scripts_predefined_variables_single_king_constraints_variable_player_has_white
+  : "does the player \
+    have white pieces ?"
+  scripts_predefined_variables_mutual_kings_constraints_title: "\n\nMutual kings' constraints\n\n"
+  scripts_predefined_variables_single_king_constraints_variable_file_player:
+    "the file which has been set \
+    for the player's king"
+  scripts_predefined_variables_single_king_constraints_variable_rank_player:
+    "the rank which has been set \
+    for the player's king"
+  scripts_predefined_variables_single_king_constraints_variable_file_computer:
+    "the file which has been set \
+    for the computer's king"
+  scripts_predefined_variables_single_king_constraints_variable_rank_computer:
+    "the rank which has been set \
+    for the computer's king"
+  scripts_predefined_variables_other_pieces_global_constraints_title:
+    "\n\nOthers pieces globals \
+    contraints\n\n"
+  scripts_predefined_variables_other_pieces_global_constraints_file:
+    "the file which has been set \
+    for the piece"
+  scripts_predefined_variables_other_pieces_global_constraints_rank:
+    "the rank which has been set \
+    for the piece"
+  scripts_predefined_variables_other_pieces_mutual_constraints_title:
+    "\n\nOther pieces mutual \
+    constraints\n\n"
+  scripts_predefined_variables_other_pieces_mutual_constraints_file_first:
+    "the file which has been set \
+    for the first piece"
+  scripts_predefined_variables_other_pieces_mutual_constraints_rank_first:
+    "the file which has been set \
+    for the first piece"
+  scripts_predefined_variables_other_pieces_mutual_constraints_file_second:
+    "the file which has been set \
+    for the second piece"
+  scripts_predefined_variables_other_pieces_mutual_constraints_rank_second:
+    "the file which has been set \
+    for the second piece"
+  scripts_predefined_variables_other_pieces_indexed_constraints_title: "\n\nOthers pieces' constraints by order\n\n"
+  scripts_predefined_variables_other_pieces_indexed_constraints_apparition:
+    "the index (starting at \
+    0) of apparition on the board"

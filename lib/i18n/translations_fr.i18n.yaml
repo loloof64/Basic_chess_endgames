@@ -8,7 +8,8 @@ home:
   title: "Accueil"
   failedLoadingExercise: "Échec de chargement de l'exerice : la position d'échecs est invalide."
   failedGeneratingPosition: "Échec de génération de la position."
-  helpMessage: "Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer. \
+  helpMessage:
+    "Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer. \
     Une ligne dont l'icône est un trophée générera une position où vous devrez gagner. \
     Sinon si la ligne commence par une poignée de main, vous devrez sauver la partie et faire partie nulle."
   tab_integrated: "Intégrés"
@@ -36,7 +37,8 @@ gamePage:
   fiftyMovesRule: "Nulle par la règle des 50 coups."
   beforeExitTitle: "Annuler la partie courante ?"
   beforeExitMessage: "Souhaitez-vous abandonner cette partie et revenir à la page précédente ?"
-  helpMessage: "Au delà de la partie contre la machine, vous pouvez renverser l'échiquier, redémarrer depuis la position \
+  helpMessage:
+    "Au delà de la partie contre la machine, vous pouvez renverser l'échiquier, redémarrer depuis la position \
     générée, mais aussi interrompre la partie de manière prématurée.\n \
     Une fois la partie terminée, vous pourrez visualiser les coups joués grâce au composant historique."
 scriptParser:
@@ -74,19 +76,23 @@ sampleScript:
   rookEndingPhilidor: "Finale de tour de Philidor"
 privacy:
   title: "Politique de confidentialité"
-  content1: "Cette page est utilisée pour vous informer sur les politiques de collecte, d'utilisation et \
+  content1:
+    "Cette page est utilisée pour vous informer sur les politiques de collecte, d'utilisation et \
     divulgation d'informations personnelles pour l'application, Finales d'Echecs Basiques. Laurent Bernabe \
     respecte la vie privée de utilisateurs et s'engage à protéger les informations de l'utilisateur, que ce soit \
     la vôtre ou celle de vos enfants. Je crois que vous avez le droit de connaître mes pratiques concernant les \
     informations que je peux collecter et utiliser lorsque vous utilisez mon application."
-  content2: "La confidentialité des utilisateurs de mes applications est importante pour moi. Je ne \
+  content2:
+    "La confidentialité des utilisateurs de mes applications est importante pour moi. Je ne \
     collecte aucune information identifiable sur mes utilisateurs. Je ne stocke ni ne transmets aucune \
     information personnelle."
-  content3: "Si vous avez quelque question que ce soit à propos de cette politique de confidentialité, veuillez \
+  content3:
+    "Si vous avez quelque question que ce soit à propos de cette politique de confidentialité, veuillez \
     me contacter à laurent.bernabe@gmail.com."
 useConditions:
   title: "Conditions d'utilisation"
-  content: "Aucune condition d'utilisation particulière n'est requise pour Finales d'Echecs Basiques. Cette application est \
+  content:
+    "Aucune condition d'utilisation particulière n'est requise pour Finales d'Echecs Basiques. Cette application est \
     uniquement destinée à aider les joueurs d'échecs pour améliorer leur jeu, et n'inclut aucun contenu qui pourrait être nuisible, \
     violent ou choquant."
 script_editor_page:
@@ -106,85 +112,181 @@ script_editor_page:
   beforeExitTitle: "Annuler l'édition du script ?"
   beforeExitMessage: "Souhaitez-vous quitter la page et annuler l'édition du script ?"
   syntax_button_label: "Règles de syntaxe"
-  variables_button_label: "Variables prédéfinies"
 syntax_manual_page:
   title: "Syntaxe des scripts"
+  table_header_variable_name: "Nom"
+  table_header_variable_type: "Type"
+  table_header_variable_use: "Utilisation"
   scripts_goal: "Objectif des scripts"
   scripts_kinds: "Types de scripts"
   scripts_format: "Format des scripts"
   comments: "Commentaires"
   variables: "Variables"
-  scripts_goal_description: "Un script de génération de position est composé de plusieurs \
+  predefined_values: "Valeurs prédéfinies"
+  predefined_variables: "Variables prédéfinies"
+  scripts_goal_description:
+    "Un script de génération de position est composé de plusieurs \
     sous-scripts, chacun étant de son propre type. \n\nLe but d'un sous-script est de vérifier que \
     la position générée respecte toutes ses contraintes. \n\nSi au moins une des conditions n'est \
     pas respectée, alors l'algorithme tentera de 'fixer' la position de telle manière que toutes \
     les contraintes soient respectéees."
-  scripts_kinds_head_description: "Il y a plusieurs types de sous-scripts, et toutes les règles \
+  scripts_kinds_head_description:
+    "Il y a plusieurs types de sous-scripts, et toutes les règles \
     définies dans l'ensemble des sous-scripts doivent être respectées par la position générée. \
     \n\nBien sûr, elle doit aussi respecter les règles standards (par exemple : le roi qui n'est \
     pas au trait ne doit pas être en échec).\n\n"
   scripts_kinds_player_king_constraint_title: "Contraintes sur le roi du joueur\n\n"
-  scripts_kinds_player_king_constraint_description: "Renseigne sur les contraintes d'emplacement du \
+  scripts_kinds_player_king_constraint_description:
+    "Renseigne sur les contraintes d'emplacement du \
     roi du joueur (sachant que la couleur du joueur est tirée aléatoirement).\n\n"
   scripts_kinds_computer_king_constraint_title: "Contraintes sur le roi de l'ordinateur\n\n"
-  scripts_kinds_computer_king_constraint_description: "Renseigne sur les contraintes d'emplacement du \
+  scripts_kinds_computer_king_constraint_description:
+    "Renseigne sur les contraintes d'emplacement du \
     roi de l'ordinateur (sachant que la couleur du joueur est tirée aléatoirement).\n\n"
   scripts_kinds_kings_mutual_constraints_title: "Contraintes mutuelles entre rois\n\n"
-  scripts_kinds_kings_mutual_constraints_description: "Renseigne sur les contraintes de positionnement que \
+  scripts_kinds_kings_mutual_constraints_description:
+    "Renseigne sur les contraintes de positionnement que \
     les deux rois doivent respecter entre eux.\n\n"
   scripts_kinds_other_pieces_count_constraints_title: "Contraintes sur le compte des autres pièces\n\n"
-  scripts_kinds_other_pieces_count_constraints_description: "Renseigne sur les contraintes sur le compte \
+  scripts_kinds_other_pieces_count_constraints_description:
+    "Renseigne sur les contraintes sur le compte \
     des pièces autres que les rois.\n\n"
   scripts_kinds_other_pieces_global_constraints_title: "Contraintes globales sur les autres pièces\n\n"
-  scripts_kinds_other_pieces_global_constraints_description: "Renseigne sur les contraintes de \
+  scripts_kinds_other_pieces_global_constraints_description:
+    "Renseigne sur les contraintes de \
     positionnement des pièces autres que les rois, pour chaque couple [type de pièce / \
     est-ce une pièce du joueur ?].\n\n"
   scripts_kinds_other_pieces_mutual_constraints_title: "Contraintes mutuelles sur les autres pièces\n\n"
-  scripts_kinds_other_pieces_mutual_constraints_description: "Renseigne sur les contraintes de \
+  scripts_kinds_other_pieces_mutual_constraints_description:
+    "Renseigne sur les contraintes de \
     positionnement des pièces autres que les rois, qu'elles doivent respecter entre elles, \
     deux par deux, pour chaque couple [type de pièce / est-ce une pièce d'un joueur ?].\n\n"
   scripts_kinds_other_pieces_indexed_constraints_title: "Contraintes des autres pièces par ordre\n\n"
-  scripts_kinds_other_pieces_indexed_constraints_description: "Renseigne sur les contraintes de \
+  scripts_kinds_other_pieces_indexed_constraints_description:
+    "Renseigne sur les contraintes de \
     positionnement des pièces autres que les rois, qu'elles doivent respecter en fonction de \
     l'ordre d'apparition sur l'échiquier, pour chaque couple [type de pièce / est-ce une pièce du joueur ?].\n\n"
-  scripts_format_head_description: "Chaque script peut commencer par une ou plusieures instructions \
+  scripts_format_head_description:
+    "Chaque script peut commencer par une ou plusieures instructions \
     de création de variables. \n\nMais au final la dernière instruction doit retourner une \
     expression booléenne. \n\nCette expression de retour sera utilisée par l'algorithme afin de \
     vérifier que la position générée est correcte.\n\n"
   scripts_format_main_description_1: "Voici la syntaxe pour l'expression de retour :\n\n"
   scripts_format_code_section_1: "return [votre expression booléenne];\n\n"
   scripts_format_main_description_2: "Voici un exemple simple de script :\n\n"
-  scripts_comments_head_description: "Vous pouvez utiliser deux types de commentaires, qui sont \
+  scripts_comments_head_description:
+    "Vous pouvez utiliser deux types de commentaires, qui sont \
     directement inspirés du langage C.\n\n"
-  scripts_kinds_multiline_comments_title: "Commentaires multi-lignes\n\n"
-  scripts_kinds_multiline_comments_description: "Un commentaire multi-lignes commence par '/*' \
+  scripts_comments_multiline_comments_title: "Commentaires multi-lignes\n\n"
+  scripts_comments_multiline_comments_description:
+    "Un commentaire multi-lignes commence par '/*' \
     et finit par '*/', et peut s'étendre sur plusieurs lignes.\n\n"
-  scripts_kinds_multiline_comments_sample: "/* Ceci est un\n\
+  scripts_comments_multiline_comments_sample: "/* Ceci est un\n\
     commentaire multi-lignes.\n\
     \n\
     Et peut s'étendre sur plusieurs lignes.*/\n\n"
-  scripts_kinds_single_line_comments_title: "Commentaires mono-lignes\n\n"
-  scripts_kinds_single_line_comments_description_1: "Un commentaire mono-ligne peut seulement se \
+  scripts_comments_single_line_comments_title: "Commentaires mono-lignes\n\n"
+  scripts_comments_single_line_comments_description_1:
+    "Un commentaire mono-ligne peut seulement se \
     situer sur une seule ligne, et commence par '//'. \n\nPar conséquent, tous les caractères \
     suivants de cette ligne font partie du commentaire.\n\n"
-  scripts_kinds_single_line_comments_sample_1: "// Ceci est un commentaire mono-ligne\n\n"
-  scripts_kinds_single_line_comments_description_2: "Un commentaire mono-ligne peut aussi suivre \
+  scripts_comments_single_line_comments_sample_1: "// Ceci est un commentaire mono-ligne\n\n"
+  scripts_comments_single_line_comments_description_2:
+    "Un commentaire mono-ligne peut aussi suivre \
     une déclaration sur la même ligne.\n\n"
-  scripts_kinds_single_line_comments_sample_2: "maVariableEntiere := FileF; // Fixe à la valeur de \
+  scripts_comments_single_line_comments_sample_2:
+    "maVariableEntiere := FileF; // Fixe à la valeur de \
     la colonne F\n\n"
   scripts_variables_head_description: "Voici certaines choses à considérer à propos des variables :\n\n"
-  scripts_kinds_variables_name_rules_title: "Règles de nommage\n\n"
-  scripts_kinds_variables_name_rules_description: "Un nom de variable doit commencer par une lettre \
+  scripts_variables_name_rules_title: "Règles de nommage\n\n"
+  scripts_variables_name_rules_description:
+    "Un nom de variable doit commencer par une lettre \
     (soit majuscule, soit minuscule). \n\nEnsuite les caractères suivant peuvent être des lettres (\
     en majuscule et/ou en minuscules), des chiffres ou des underscores ('_'). \n\nAussi gardez à l'esprit \
     que vous ne pouvez pas définir au nom d'une valeur prédéfinie ou d'une variable prédéfinie \
     (sachant que chaque type de script, comme vous le verrez plus tard, dispose de son propre \
     ensemble de variables prédéfinies).\n\n"
-  scripts_kinds_variables_creation_title: "Instruction de création de variables\n\n"
-  scripts_kinds_variables_creation_description: "Voici la syntaxe pour créér une variable entière \
+  scripts_variables_creation_title: "Instruction de création de variables\n\n"
+  scripts_variables_creation_description:
+    "Voici la syntaxe pour créér une variable entière \
     ou booléenne :\n\n"
-  scripts_kinds_variables_creation_format: "[identifiant] := [expression entière | expression \
+  scripts_variables_creation_format:
+    "[identifiant] := [expression entière | expression \
     booléenne];\n\n"
-  scripts_kinds_variables_creation_sample_head_text: "À titre d'exemple :\n\n"
-  scripts_kinds_variables_creation_sample_code: "maRangee :=  boolIf(roisEnOpposition) \
+  scripts_variables_creation_sample_head_text: "À titre d'exemple :\n\n"
+  scripts_variables_creation_sample_code:
+    "maRangee :=  boolIf(roisEnOpposition) \
     then Rank4 else Rank1;\n\n"
+  scripts_predefined_values_head_description:
+    "Tous les sous-scripts ont les même valeurs \
+    prédéfinies (vous ne pouvez pas nommer une variable avec un de leurs noms).\n\nToutes ces \
+    valeurs prennent en compte l'orientation de l'échiquier.\n\n"
+  scripts_predefined_files_title: "Colonnes\n\n"
+  scripts_predefined_files_description:
+    "Voici les valeurs entières prédéfines pour les colonnes \
+    de l'échiquier : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n"
+  scripts_predefined_ranks_title: "Rangées\n\n"
+  scripts_predefined_ranks_description:
+    "Voici les valeurs entières prédéfines pour les rangées \
+    de l'échiquier : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n"
+  scripts_predefined_variables_head_description:
+    "L'ensemble des variables prédéfinies dépendent \
+    du type de script en cours d'édition.\n\nCes variables seront alimentées par l'algorithme lors \
+    de la vérification de la validité de la position.\n\nBien sûr, vous ne pouvez pas nommer une \
+    variable personnelle avec un de ces noms.\n\nEnfin, ne perdez pas de vue que les variables de \
+    coordonnées prenent en compte l'orientation de l'échiquier.\n\n"
+  scripts_predefined_variables_single_king_constraints_title:
+    "Contraintes sur le roi du joueur / \
+    Contraintes sur le roi de l'ordinateur\n\n"
+  scripts_predefined_variables_single_king_constraints_variable_file:
+    "la colonne qui a été choisie \
+    pour le roi"
+  scripts_predefined_variables_single_king_constraints_variable_rank:
+    "la rangée qui a été choisie \
+    pour le roi"
+  ? scripts_predefined_variables_single_king_constraints_variable_player_has_white
+  : "le joueur \
+    dispose-t-il des pièces blanches ?"
+  scripts_predefined_variables_mutual_kings_constraints_title: "\n\nContraintes mutuelles entre les rois\n\n"
+  scripts_predefined_variables_single_king_constraints_variable_file_player:
+    "la colonne qui a été choisie \
+    pour le roi du joueur"
+  scripts_predefined_variables_single_king_constraints_variable_rank_player:
+    "la rangée qui a été choisie \
+    pour le roi du joueur"
+  scripts_predefined_variables_single_king_constraints_variable_file_computer:
+    "la colonne qui a été choisie \
+    pour le roi de l'ordinateur"
+  scripts_predefined_variables_single_king_constraints_variable_rank_computer:
+    "la rangée qui a été choisie \
+    pour le roi de l'ordinateur"
+  scripts_predefined_variables_other_pieces_global_constraints_title:
+    "\n\nContraintes globales des \
+    autres pièces\n\n"
+  scripts_predefined_variables_other_pieces_global_constraints_file:
+    "la colonne qui a été choisie \
+    pour la pièce"
+  scripts_predefined_variables_other_pieces_global_constraints_rank:
+    "la rangée qui a été choisie \
+    pour la pièce"
+  scripts_predefined_variables_other_pieces_mutual_constraints_title:
+    "\n\nContraintes mutuelles \
+    des autres pièces\n\n"
+  scripts_predefined_variables_other_pieces_mutual_constraints_file_first:
+    "la colonne qui a été choisie \
+    pour la première pièce"
+  scripts_predefined_variables_other_pieces_mutual_constraints_rank_first:
+    "la rangée qui a été choisie \
+    pour la première pièce"
+  scripts_predefined_variables_other_pieces_mutual_constraints_file_second:
+    "la colonne qui a été choisie \
+    pour la deuxième pièce"
+  scripts_predefined_variables_other_pieces_mutual_constraints_rank_second:
+    "la rangée qui a été choisie \
+    pour la deuxième pièce"
+  scripts_predefined_variables_other_pieces_indexed_constraints_title:
+    "\n\nContraintes des autres \
+    pièces par ordre\n\n"
+  scripts_predefined_variables_other_pieces_indexed_constraints_apparition:
+    "l'index (démarrant \
+    à 0) d'apparition sur l'échiquier"

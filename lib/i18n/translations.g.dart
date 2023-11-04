@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 381 (127 per locale)
+/// Strings: 468 (156 per locale)
 ///
-/// Built on 2023-11-04 at 13:54 UTC
+/// Built on 2023-11-04 at 16:53 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -348,7 +348,6 @@ class _TranslationsScriptEditorPageEn {
 	String get before_exit_title => 'Cancel script edition ?';
 	String get before_exit_message => 'Do you want to leave this page and cancel script edition ?';
 	String get syntax_button_label => 'Syntax rules';
-	String get variables_button_label => 'Predefined variables';
 }
 
 // Path: syntax_manual_page
@@ -359,12 +358,17 @@ class _TranslationsSyntaxManualPageEn {
 
 	// Translations
 	String get title => 'Scripts\' syntax';
+	String get table_header_variable_name => 'Name';
+	String get table_header_variable_type => 'Type';
+	String get table_header_variable_use => 'Use';
 	String get scripts_goal => 'Scripts\' goal';
 	String get scripts_kinds => 'Scripts kinds';
 	String get scripts_format => 'Scripts\' format';
 	String get comments => 'Comments';
 	String get variables => 'Variables';
-	String get scripts_goal_description => 'A position generation script is split into several subscripts, each of its own kind. \n\nA subscript\'s goal is to check that the generated position follow all of its constraints. \n\nIf at least one condition is not met, then the algorithm will try to \'fix\' the position so that all conditions are met.';
+	String get predefined_values => 'Predefined values';
+	String get predefined_variables => 'Predefined variables';
+	String get scripts_goal_description => 'A position generation script is split into several sub-scripts, each of its own kind. \n\nA sub-script\'s goal is to check that the generated position follow all of its constraints. \n\nIf at least one condition is not met, then the algorithm will try to \'fix\' the position so that all conditions are met.';
 	String get scripts_kinds_head_description => 'There are several types of sub-scripts, and all rules of all defined sub-scripts must be respected by the generated position. \n\nOf course, it must also respect standard chess rules (for example : king of side not in turn musn\'t be in chess).\n\n';
 	String get scripts_kinds_player_king_constraint_title => 'Player\'s king\'s constraints\n\n';
 	String get scripts_kinds_player_king_constraint_description => 'Tells about the positioning constraints on the players\'s king (given that the player\'s color will be randomly choosen).\n\n';
@@ -385,22 +389,47 @@ class _TranslationsSyntaxManualPageEn {
 	String get scripts_format_code_section_1 => 'return [your boolean expression];\n\n';
 	String get scripts_format_main_description_2 => 'This is a simple script sample :\n\n';
 	String get scripts_comments_head_description => 'You can use two forms of comments, which are inspired by comments from the C language.\n\n';
-	String get scripts_kinds_multiline_comments_title => 'Multilines comments\n\n';
-	String get scripts_kinds_multiline_comments_description => 'A multiline comment starts with \'/*\' and ends with \'*/\', and can expand on several lines.\n\n';
-	String get scripts_kinds_multiline_comments_sample => '/* This is a\n multilines comment.\n\nAnd can expand on several lines.*/\n\n';
-	String get scripts_kinds_single_line_comments_title => 'Single line comments\n\n';
-	String get scripts_kinds_single_line_comments_description_1 => 'A single line comment can only be on a single line, and just starts by \'//\'. \n\nSo all following characters of the given line are parts of the comment.\n\n';
-	String get scripts_kinds_single_line_comments_sample_1 => '// This is a single line comment\n\n';
-	String get scripts_kinds_single_line_comments_description_2 => 'A single line comment can also follow a statement on the same line.\n\n';
-	String get scripts_kinds_single_line_comments_sample_2 => 'myIntVariable := FileF; // Sets to the value of the F file\n\n';
+	String get scripts_comments_multiline_comments_title => 'Multilines comments\n\n';
+	String get scripts_comments_multiline_comments_description => 'A multiline comment starts with \'/*\' and ends with \'*/\', and can expand on several lines.\n\n';
+	String get scripts_comments_multiline_comments_sample => '/* This is a\n multilines comment.\n\nAnd can expand on several lines.*/\n\n';
+	String get scripts_comments_single_line_comments_title => 'Single line comments\n\n';
+	String get scripts_comments_single_line_comments_description_1 => 'A single line comment can only be on a single line, and just starts by \'//\'. \n\nSo all following characters of the given line are parts of the comment.\n\n';
+	String get scripts_comments_single_line_comments_sample_1 => '// This is a single line comment\n\n';
+	String get scripts_comments_single_line_comments_description_2 => 'A single line comment can also follow a statement on the same line.\n\n';
+	String get scripts_comments_single_line_comments_sample_2 => 'myIntVariable := FileF; // Sets to the value of the F file\n\n';
 	String get scripts_variables_head_description => 'These are things to consider about variables :\n\n';
-	String get scripts_kinds_variables_name_rules_title => 'Naming rules\n\n';
-	String get scripts_kinds_variables_name_rules_description => 'A variable name must start with a letter (either uppercase or lowercase). \n\nThen the following characters can be letters (uppercase and/or lowercase), digits or underscore (\'_\'). \n\nAlso keep in mind that you can\'t use name of predifined value or of a predefined variable (given that each script type, as you\'ll see later, has its own set of predefined variables).\n\n';
-	String get scripts_kinds_variables_creation_title => 'Variable creation statement\n\n';
-	String get scripts_kinds_variables_creation_description => 'This is the syntax for creating either an int variable or a boolean variable :\n\n';
-	String get scripts_kinds_variables_creation_format => '[identifier] := [int expression | boolean expression];\n\n';
-	String get scripts_kinds_variables_creation_sample_head_text => 'This is an example :\n\n';
-	String get scripts_kinds_variables_creation_sample_code => 'myRank := boolIf(kingsInOpposition) then Rank4 else Rank1;\n\n';
+	String get scripts_variables_name_rules_title => 'Naming rules\n\n';
+	String get scripts_variables_name_rules_description => 'A variable name must start with a letter (either uppercase or lowercase). \n\nThen the following characters can be letters (uppercase and/or lowercase), digits or underscore (\'_\'). \n\nAlso keep in mind that you can\'t use name of predifined value or of a predefined variable (given that each script type, as you\'ll see later, has its own set of predefined variables).\n\n';
+	String get scripts_variables_creation_title => 'Variable creation statement\n\n';
+	String get scripts_variables_creation_description => 'This is the syntax for creating either an int variable or a boolean variable :\n\n';
+	String get scripts_variables_creation_format => '[identifier] := [int expression | boolean expression];\n\n';
+	String get scripts_variables_creation_sample_head_text => 'This is an example :\n\n';
+	String get scripts_variables_creation_sample_code => 'myRank := boolIf(kingsInOpposition) then Rank4 else Rank1;\n\n';
+	String get scripts_predefined_values_head_description => 'All sub-scripts have the same predefined integer values (you can\'t name a variable with one of those names).\n\nAll of these values takes the chess board\'s orientation into account.\n\n';
+	String get scripts_predefined_files_title => 'Files\n\n';
+	String get scripts_predefined_files_description => 'These are predefined integer values for the chess board files : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n';
+	String get scripts_predefined_ranks_title => 'Ranks\n\n';
+	String get scripts_predefined_ranks_description => 'These are predefined integer values for the chess board ranks : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n';
+	String get scripts_predefined_variables_head_description => 'The predefined variables relies on the kind of sub-script we\'re editing.\n\nThese variables will be fed by the algorithm when checking for the generated position\'s correctness.\n\nOf course, you can\'t name a custom variable with one of those names.\n\nAlso, keep in mind that chess board\'s coordinates values take board\'s orientation into account.\n\n';
+	String get scripts_predefined_variables_single_king_constraints_title => 'Player\'s king\'s constraint / Computer king\'s constraint\n\n';
+	String get scripts_predefined_variables_single_king_constraints_variable_file => 'the file which has been set for the king';
+	String get scripts_predefined_variables_single_king_constraints_variable_rank => 'the rank which has been set for the king';
+	String get scripts_predefined_variables_single_king_constraints_variable_player_has_white => 'does the player have white pieces ?';
+	String get scripts_predefined_variables_mutual_kings_constraints_title => '\n\nMutual kings\' constraints\n\n';
+	String get scripts_predefined_variables_single_king_constraints_variable_file_player => 'the file which has been set for the player\'s king';
+	String get scripts_predefined_variables_single_king_constraints_variable_rank_player => 'the rank which has been set for the player\'s king';
+	String get scripts_predefined_variables_single_king_constraints_variable_file_computer => 'the file which has been set for the computer\'s king';
+	String get scripts_predefined_variables_single_king_constraints_variable_rank_computer => 'the rank which has been set for the computer\'s king';
+	String get scripts_predefined_variables_other_pieces_global_constraints_title => '\n\nOthers pieces globals contraints\n\n';
+	String get scripts_predefined_variables_other_pieces_global_constraints_file => 'the file which has been set for the piece';
+	String get scripts_predefined_variables_other_pieces_global_constraints_rank => 'the rank which has been set for the piece';
+	String get scripts_predefined_variables_other_pieces_mutual_constraints_title => '\n\nOther pieces mutual constraints\n\n';
+	String get scripts_predefined_variables_other_pieces_mutual_constraints_file_first => 'the file which has been set for the first piece';
+	String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_first => 'the file which has been set for the first piece';
+	String get scripts_predefined_variables_other_pieces_mutual_constraints_file_second => 'the file which has been set for the second piece';
+	String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_second => 'the file which has been set for the second piece';
+	String get scripts_predefined_variables_other_pieces_indexed_constraints_title => '\n\nOthers pieces\' constraints by order\n\n';
+	String get scripts_predefined_variables_other_pieces_indexed_constraints_apparition => 'the index (starting at 0) of apparition on the board';
 }
 
 // Path: <root>
@@ -608,7 +637,6 @@ class _TranslationsScriptEditorPageEs extends _TranslationsScriptEditorPageEn {
 	@override String get before_exit_title => '¿Cancelar la edición del script?';
 	@override String get before_exit_message => '¿Desea salir de esta página y cancelar la edición del script?';
 	@override String get syntax_button_label => 'Reglas de sintaxis';
-	@override String get variables_button_label => 'Variables predefinidas';
 }
 
 // Path: syntax_manual_page
@@ -619,11 +647,16 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 
 	// Translations
 	@override String get title => 'Sintaxis de scripts';
+	@override String get table_header_variable_name => 'Nombre';
+	@override String get table_header_variable_type => 'Tipo';
+	@override String get table_header_variable_use => 'Uso';
 	@override String get scripts_goal => 'Objetivo de los scripts';
 	@override String get scripts_kinds => 'Tipos de scripts';
 	@override String get scripts_format => 'Formato de los scripts';
 	@override String get comments => 'Comentarios';
 	@override String get variables => 'Variables';
+	@override String get predefined_values => 'Valores predefinidos';
+	@override String get predefined_variables => 'Variables predefinidas';
 	@override String get scripts_goal_description => 'Un script de generación de posiciones se divide en varios subprogramas, cada uno de su propio tipo. \n\nEl objetivo de un subprograma es comprobar que la posición generada cumple con todas sus restricciones. \n\nSi al menos una condición no se cumple, el algoritmo intentará \'arreglar\' la posición para que se cumplan todas las condiciones.';
 	@override String get scripts_kinds_head_description => 'Existen varios tipos de subprogramas, y la posición generada debe respetar todas las reglas de todos los subprogramas definidos. \n\nPor supuesto, también debe respetar las reglas estándar del ajedrez (por ejemplo, el rey del lado que no está en turno no puede estar en jaque).\n\n';
 	@override String get scripts_kinds_player_king_constraint_title => 'Restricción sobre rey del jugador\n\n';
@@ -645,22 +678,47 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_format_code_section_1 => 'return [su expresión booleana];\n\n';
 	@override String get scripts_format_main_description_2 => 'Este es un ejemplo de script simple :\n\n';
 	@override String get scripts_comments_head_description => 'Puedes usar dos formas de comentarios, que están inspirados en los comentarios del lenguaje C.\n\n';
-	@override String get scripts_kinds_multiline_comments_title => 'Comentarios multilínea\n\n';
-	@override String get scripts_kinds_multiline_comments_description => 'Un comentario multilínea comienza con \'/*\' y termina con \'*/\', y puede expandirse en varias líneas.';
-	@override String get scripts_kinds_multiline_comments_sample => '/* Este es un \ncomentario multilínea. \n\nY puede expandirse en varias líneas.*/\n\n';
-	@override String get scripts_kinds_single_line_comments_title => 'Comentarios de una sola línea\n\n';
-	@override String get scripts_kinds_single_line_comments_description_1 => 'Un comentario de una sola línea solo puede estar en una sola línea y comienza con \'//\'. \n\nPor lo tanto, todos los caracteres siguientes de la línea dada son parte del comentario.\n\n';
-	@override String get scripts_kinds_single_line_comments_sample_1 => '// Este es un comentario de una sola línea\n\n';
-	@override String get scripts_kinds_single_line_comments_description_2 => 'Un comentario de una sola línea también puede seguir a una declaración en la misma línea.\n\n';
-	@override String get scripts_kinds_single_line_comments_sample_2 => 'miVariableEntera := FileF; // Establece el valor de la columna F\n\n';
+	@override String get scripts_comments_multiline_comments_title => 'Comentarios multilínea\n\n';
+	@override String get scripts_comments_multiline_comments_description => 'Un comentario multilínea comienza con \'/*\' y termina con \'*/\', y puede expandirse en varias líneas.';
+	@override String get scripts_comments_multiline_comments_sample => '/* Este es un \ncomentario multilínea. \n\nY puede expandirse en varias líneas.*/\n\n';
+	@override String get scripts_comments_single_line_comments_title => 'Comentarios de una sola línea\n\n';
+	@override String get scripts_comments_single_line_comments_description_1 => 'Un comentario de una sola línea solo puede estar en una sola línea y comienza con \'//\'. \n\nPor lo tanto, todos los caracteres siguientes de la línea dada son parte del comentario.\n\n';
+	@override String get scripts_comments_single_line_comments_sample_1 => '// Este es un comentario de una sola línea\n\n';
+	@override String get scripts_comments_single_line_comments_description_2 => 'Un comentario de una sola línea también puede seguir a una declaración en la misma línea.\n\n';
+	@override String get scripts_comments_single_line_comments_sample_2 => 'miVariableEntera := FileF; // Establece el valor de la columna F\n\n';
 	@override String get scripts_variables_head_description => 'Estos son aspectos a considerar sobre las variables:\n\n';
-	@override String get scripts_kinds_variables_name_rules_title => 'Reglas de nomenclatura\n\n';
-	@override String get scripts_kinds_variables_name_rules_description => 'Un nombre de variable debe comenzar con una letra (mayúscula o minúscula). \n\nLuego, los caracteres siguientes pueden ser letras (mayúsculas y/o minúsculas), dígitos o guiones bajos (\'_\'). \n\nTen en cuenta también que no puedes usar el nombre de un valor predefinido o de una variable predefinida (ya que cada tipo de script, como verás más adelante, tiene su propio conjunto de variables predefinidas).\n\n';
-	@override String get scripts_kinds_variables_creation_title => 'Instrucción de creación de variable\n\n';
-	@override String get scripts_kinds_variables_creation_description => 'Esta es la sintaxis para crear una variable entera o una variable booleana:\n\n';
-	@override String get scripts_kinds_variables_creation_format => '[identificador] := [expresión entera | expresión booleana];\n\n';
-	@override String get scripts_kinds_variables_creation_sample_head_text => 'Este es un ejemplo:\n\n';
-	@override String get scripts_kinds_variables_creation_sample_code => 'miFila :=  boolIf(reyesEnOposicion) then Rank4 else Rank1;\n\n';
+	@override String get scripts_variables_name_rules_title => 'Reglas de nomenclatura\n\n';
+	@override String get scripts_variables_name_rules_description => 'Un nombre de variable debe comenzar con una letra (mayúscula o minúscula). \n\nLuego, los caracteres siguientes pueden ser letras (mayúsculas y/o minúsculas), dígitos o guiones bajos (\'_\'). \n\nTen en cuenta también que no puedes usar el nombre de un valor predefinido o de una variable predefinida (ya que cada tipo de script, como verás más adelante, tiene su propio conjunto de variables predefinidas).\n\n';
+	@override String get scripts_variables_creation_title => 'Instrucción de creación de variable\n\n';
+	@override String get scripts_variables_creation_description => 'Esta es la sintaxis para crear una variable entera o una variable booleana:\n\n';
+	@override String get scripts_variables_creation_format => '[identificador] := [expresión entera | expresión booleana];\n\n';
+	@override String get scripts_variables_creation_sample_head_text => 'Este es un ejemplo:\n\n';
+	@override String get scripts_variables_creation_sample_code => 'miFila :=  boolIf(reyesEnOposicion) then Rank4 else Rank1;\n\n';
+	@override String get scripts_predefined_values_head_description => 'Todos las subrutinas tienen los mismos valores enteros predefinidos (no puedes nombrar una variable con uno de esos nombres).\n\nTodos estos valores tienen en cuenta la orientación del tablero de ajedrez.\n\n';
+	@override String get scripts_predefined_files_title => 'Columnas\n\n';
+	@override String get scripts_predefined_files_description => 'Estos son los valores enteros predefinidos para las columnas del tablero de ajedrez: FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n';
+	@override String get scripts_predefined_ranks_title => 'Rangos\n\n';
+	@override String get scripts_predefined_ranks_description => 'Estos son los valores enteros predefinidos para los rangos del tablero de ajedrez: Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n';
+	@override String get scripts_predefined_variables_head_description => 'Las variables predefinidas dependen del tipo de la subrutina que estemos editando.\n\nEstas variables serán alimentadas por el algoritmo al comprobar la corrección de la posición generada.\n\nPor supuesto, no se puede nombrar una variable personal con uno de esos nombres.\n\nAdemás, ten en cuenta que los valores de las coordenadas del tablero de ajedrez tienen en cuenta la orientación del tablero.\n\n';
+	@override String get scripts_predefined_variables_single_king_constraints_title => 'Restricciones rey del jugador / Restricciones rey de la computadora\n\n';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_file => 'la columna que ha sido preparado para el rey';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_rank => 'el rango que ha sido preparado para el rey';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_player_has_white => '¿tiene el jugador las piezas blancas?';
+	@override String get scripts_predefined_variables_mutual_kings_constraints_title => '\n\nRestricciones mutuas de los reyes\n\n';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_file_player => 'la columna que ha sido preparado para el rey del jugador';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_rank_player => 'el rango que ha sido preparado para el rey del jugador';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_file_computer => 'la columna que ha sido preparado para el rey de la computadora';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_rank_computer => 'el rango que ha sido preparado para el rey de la computadora';
+	@override String get scripts_predefined_variables_other_pieces_global_constraints_title => '\n\nRestricciones globales sobre otras piezas\n\n';
+	@override String get scripts_predefined_variables_other_pieces_global_constraints_file => 'la columna que ha sido preparado para la pieza';
+	@override String get scripts_predefined_variables_other_pieces_global_constraints_rank => 'el rango que ha sido preparado para la pieza';
+	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_title => '\n\nRestricciones mutuas sobre otras piezas\n\n';
+	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_file_first => 'la columna que ha sido preparado para la primera pieza';
+	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_first => 'el rango que ha sido preparado para la primera pieza';
+	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_file_second => 'la columna que ha sido preparado para la segunda pieza';
+	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_second => 'la columna que ha sido preparado para la segunda pieza';
+	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_title => '\n\nRestricciones sobre otras piezas por orden\n\n';
+	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_apparition => 'el índice (empezando en 0) de aparición en el tablero';
 }
 
 // Path: <root>
@@ -868,7 +926,6 @@ class _TranslationsScriptEditorPageFr extends _TranslationsScriptEditorPageEn {
 	@override String get before_exit_title => 'Annuler l\'édition du script ?';
 	@override String get before_exit_message => 'Souhaitez-vous quitter la page et annuler l\'édition du script ?';
 	@override String get syntax_button_label => 'Règles de syntaxe';
-	@override String get variables_button_label => 'Variables prédéfinies';
 }
 
 // Path: syntax_manual_page
@@ -879,11 +936,16 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 
 	// Translations
 	@override String get title => 'Syntaxe des scripts';
+	@override String get table_header_variable_name => 'Nom';
+	@override String get table_header_variable_type => 'Type';
+	@override String get table_header_variable_use => 'Utilisation';
 	@override String get scripts_goal => 'Objectif des scripts';
 	@override String get scripts_kinds => 'Types de scripts';
 	@override String get scripts_format => 'Format des scripts';
 	@override String get comments => 'Commentaires';
 	@override String get variables => 'Variables';
+	@override String get predefined_values => 'Valeurs prédéfinies';
+	@override String get predefined_variables => 'Variables prédéfinies';
 	@override String get scripts_goal_description => 'Un script de génération de position est composé de plusieurs sous-scripts, chacun étant de son propre type. \n\nLe but d\'un sous-script est de vérifier que la position générée respecte toutes ses contraintes. \n\nSi au moins une des conditions n\'est pas respectée, alors l\'algorithme tentera de \'fixer\' la position de telle manière que toutes les contraintes soient respectéees.';
 	@override String get scripts_kinds_head_description => 'Il y a plusieurs types de sous-scripts, et toutes les règles définies dans l\'ensemble des sous-scripts doivent être respectées par la position générée. \n\nBien sûr, elle doit aussi respecter les règles standards (par exemple : le roi qui n\'est pas au trait ne doit pas être en échec).\n\n';
 	@override String get scripts_kinds_player_king_constraint_title => 'Contraintes sur le roi du joueur\n\n';
@@ -905,20 +967,45 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_format_code_section_1 => 'return [votre expression booléenne];\n\n';
 	@override String get scripts_format_main_description_2 => 'Voici un exemple simple de script :\n\n';
 	@override String get scripts_comments_head_description => 'Vous pouvez utiliser deux types de commentaires, qui sont directement inspirés du langage C.\n\n';
-	@override String get scripts_kinds_multiline_comments_title => 'Commentaires multi-lignes\n\n';
-	@override String get scripts_kinds_multiline_comments_description => 'Un commentaire multi-lignes commence par \'/*\' et finit par \'*/\', et peut s\'étendre sur plusieurs lignes.\n\n';
-	@override String get scripts_kinds_multiline_comments_sample => '/* Ceci est un\ncommentaire multi-lignes.\n\nEt peut s\'étendre sur plusieurs lignes.*/\n\n';
-	@override String get scripts_kinds_single_line_comments_title => 'Commentaires mono-lignes\n\n';
-	@override String get scripts_kinds_single_line_comments_description_1 => 'Un commentaire mono-ligne peut seulement se situer sur une seule ligne, et commence par \'//\'. \n\nPar conséquent, tous les caractères suivants de cette ligne font partie du commentaire.\n\n';
-	@override String get scripts_kinds_single_line_comments_sample_1 => '// Ceci est un commentaire mono-ligne\n\n';
-	@override String get scripts_kinds_single_line_comments_description_2 => 'Un commentaire mono-ligne peut aussi suivre une déclaration sur la même ligne.\n\n';
-	@override String get scripts_kinds_single_line_comments_sample_2 => 'maVariableEntiere := FileF; // Fixe à la valeur de la colonne F\n\n';
+	@override String get scripts_comments_multiline_comments_title => 'Commentaires multi-lignes\n\n';
+	@override String get scripts_comments_multiline_comments_description => 'Un commentaire multi-lignes commence par \'/*\' et finit par \'*/\', et peut s\'étendre sur plusieurs lignes.\n\n';
+	@override String get scripts_comments_multiline_comments_sample => '/* Ceci est un\ncommentaire multi-lignes.\n\nEt peut s\'étendre sur plusieurs lignes.*/\n\n';
+	@override String get scripts_comments_single_line_comments_title => 'Commentaires mono-lignes\n\n';
+	@override String get scripts_comments_single_line_comments_description_1 => 'Un commentaire mono-ligne peut seulement se situer sur une seule ligne, et commence par \'//\'. \n\nPar conséquent, tous les caractères suivants de cette ligne font partie du commentaire.\n\n';
+	@override String get scripts_comments_single_line_comments_sample_1 => '// Ceci est un commentaire mono-ligne\n\n';
+	@override String get scripts_comments_single_line_comments_description_2 => 'Un commentaire mono-ligne peut aussi suivre une déclaration sur la même ligne.\n\n';
+	@override String get scripts_comments_single_line_comments_sample_2 => 'maVariableEntiere := FileF; // Fixe à la valeur de la colonne F\n\n';
 	@override String get scripts_variables_head_description => 'Voici certaines choses à considérer à propos des variables :\n\n';
-	@override String get scripts_kinds_variables_name_rules_title => 'Règles de nommage\n\n';
-	@override String get scripts_kinds_variables_name_rules_description => 'Un nom de variable doit commencer par une lettre (soit majuscule, soit minuscule). \n\nEnsuite les caractères suivant peuvent être des lettres (en majuscule et/ou en minuscules), des chiffres ou des underscores (\'_\'). \n\nAussi gardez à l\'esprit que vous ne pouvez pas définir au nom d\'une valeur prédéfinie ou d\'une variable prédéfinie (sachant que chaque type de script, comme vous le verrez plus tard, dispose de son propre ensemble de variables prédéfinies).\n\n';
-	@override String get scripts_kinds_variables_creation_title => 'Instruction de création de variables\n\n';
-	@override String get scripts_kinds_variables_creation_description => 'Voici la syntaxe pour créér une variable entière ou booléenne :\n\n';
-	@override String get scripts_kinds_variables_creation_format => '[identifiant] := [expression entière | expression booléenne];\n\n';
-	@override String get scripts_kinds_variables_creation_sample_head_text => 'À titre d\'exemple :\n\n';
-	@override String get scripts_kinds_variables_creation_sample_code => 'maRangee :=  boolIf(roisEnOpposition) then Rank4 else Rank1;\n\n';
+	@override String get scripts_variables_name_rules_title => 'Règles de nommage\n\n';
+	@override String get scripts_variables_name_rules_description => 'Un nom de variable doit commencer par une lettre (soit majuscule, soit minuscule). \n\nEnsuite les caractères suivant peuvent être des lettres (en majuscule et/ou en minuscules), des chiffres ou des underscores (\'_\'). \n\nAussi gardez à l\'esprit que vous ne pouvez pas définir au nom d\'une valeur prédéfinie ou d\'une variable prédéfinie (sachant que chaque type de script, comme vous le verrez plus tard, dispose de son propre ensemble de variables prédéfinies).\n\n';
+	@override String get scripts_variables_creation_title => 'Instruction de création de variables\n\n';
+	@override String get scripts_variables_creation_description => 'Voici la syntaxe pour créér une variable entière ou booléenne :\n\n';
+	@override String get scripts_variables_creation_format => '[identifiant] := [expression entière | expression booléenne];\n\n';
+	@override String get scripts_variables_creation_sample_head_text => 'À titre d\'exemple :\n\n';
+	@override String get scripts_variables_creation_sample_code => 'maRangee :=  boolIf(roisEnOpposition) then Rank4 else Rank1;\n\n';
+	@override String get scripts_predefined_values_head_description => 'Tous les sous-scripts ont les même valeurs prédéfinies (vous ne pouvez pas nommer une variable avec un de leurs noms).\n\nToutes ces valeurs prennent en compte l\'orientation de l\'échiquier.\n\n';
+	@override String get scripts_predefined_files_title => 'Colonnes\n\n';
+	@override String get scripts_predefined_files_description => 'Voici les valeurs entières prédéfines pour les colonnes de l\'échiquier : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n';
+	@override String get scripts_predefined_ranks_title => 'Rangées\n\n';
+	@override String get scripts_predefined_ranks_description => 'Voici les valeurs entières prédéfines pour les rangées de l\'échiquier : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n';
+	@override String get scripts_predefined_variables_head_description => 'L\'ensemble des variables prédéfinies dépendent du type de script en cours d\'édition.\n\nCes variables seront alimentées par l\'algorithme lors de la vérification de la validité de la position.\n\nBien sûr, vous ne pouvez pas nommer une variable personnelle avec un de ces noms.\n\nEnfin, ne perdez pas de vue que les variables de coordonnées prenent en compte l\'orientation de l\'échiquier.\n\n';
+	@override String get scripts_predefined_variables_single_king_constraints_title => 'Contraintes sur le roi du joueur / Contraintes sur le roi de l\'ordinateur\n\n';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_file => 'la colonne qui a été choisie pour le roi';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_rank => 'la rangée qui a été choisie pour le roi';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_player_has_white => 'le joueur dispose-t-il des pièces blanches ?';
+	@override String get scripts_predefined_variables_mutual_kings_constraints_title => '\n\nContraintes mutuelles entre les rois\n\n';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_file_player => 'la colonne qui a été choisie pour le roi du joueur';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_rank_player => 'la rangée qui a été choisie pour le roi du joueur';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_file_computer => 'la colonne qui a été choisie pour le roi de l\'ordinateur';
+	@override String get scripts_predefined_variables_single_king_constraints_variable_rank_computer => 'la rangée qui a été choisie pour le roi de l\'ordinateur';
+	@override String get scripts_predefined_variables_other_pieces_global_constraints_title => '\n\nContraintes globales des autres pièces\n\n';
+	@override String get scripts_predefined_variables_other_pieces_global_constraints_file => 'la colonne qui a été choisie pour la pièce';
+	@override String get scripts_predefined_variables_other_pieces_global_constraints_rank => 'la rangée qui a été choisie pour la pièce';
+	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_title => '\n\nContraintes mutuelles des autres pièces\n\n';
+	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_file_first => 'la colonne qui a été choisie pour la première pièce';
+	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_first => 'la rangée qui a été choisie pour la première pièce';
+	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_file_second => 'la colonne qui a été choisie pour la deuxième pièce';
+	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_second => 'la rangée qui a été choisie pour la deuxième pièce';
+	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_title => '\n\nContraintes des autres pièces par ordre\n\n';
+	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_apparition => 'l\'index (démarrant à 0) d\'apparition sur l\'échiquier';
 }

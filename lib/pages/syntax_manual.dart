@@ -36,6 +36,14 @@ List<DropdownMenuItem<SyntaxManualSection>> dropDownItems = [
     value: SyntaxManualSection.variables,
     child: Text(t.syntax_manual_page.variables),
   ),
+  DropdownMenuItem(
+    value: SyntaxManualSection.predefinedValues,
+    child: Text(t.syntax_manual_page.predefined_values),
+  ),
+  DropdownMenuItem(
+    value: SyntaxManualSection.predefinedVariables,
+    child: Text(t.syntax_manual_page.predefined_variables),
+  ),
 ];
 
 const Map<SyntaxManualSection, Widget> dropDownWidgets = {
@@ -44,6 +52,8 @@ const Map<SyntaxManualSection, Widget> dropDownWidgets = {
   SyntaxManualSection.scriptsFormat: ScriptsFormatWidget(),
   SyntaxManualSection.comments: ScriptsCommentsWidget(),
   SyntaxManualSection.variables: ScriptsVariablesWidget(),
+  SyntaxManualSection.predefinedValues: ScriptPredefinedValuesWidget(),
+  SyntaxManualSection.predefinedVariables: ScriptPredefinedVariablesWidget(),
 };
 
 const typeTitleStyle = TextStyle(
@@ -56,6 +66,10 @@ final codeSampleStyle = TextStyle(
   fontFeatures: const [
     FontFeature.tabularFigures(),
   ],
+);
+
+const tableHeaderStyle = TextStyle(
+  fontWeight: FontWeight.bold,
 );
 
 String trimLeadingWhitespace(String text) {
@@ -248,39 +262,40 @@ class ScriptsCommentsWidget extends StatelessWidget {
           style: DefaultTextStyle.of(context).style,
           children: [
             TextSpan(
-              text: t.syntax_manual_page.scripts_kinds_multiline_comments_title,
+              text: t
+                  .syntax_manual_page.scripts_comments_multiline_comments_title,
               style: typeTitleStyle,
             ),
             TextSpan(
               text: t.syntax_manual_page
-                  .scripts_kinds_multiline_comments_description,
+                  .scripts_comments_multiline_comments_description,
             ),
             TextSpan(
-              text:
-                  t.syntax_manual_page.scripts_kinds_multiline_comments_sample,
+              text: t.syntax_manual_page
+                  .scripts_comments_multiline_comments_sample,
               style: codeSampleStyle,
             ),
             TextSpan(
-              text:
-                  t.syntax_manual_page.scripts_kinds_single_line_comments_title,
+              text: t.syntax_manual_page
+                  .scripts_comments_single_line_comments_title,
               style: typeTitleStyle,
             ),
             TextSpan(
               text: t.syntax_manual_page
-                  .scripts_kinds_single_line_comments_description_1,
+                  .scripts_comments_single_line_comments_description_1,
             ),
             TextSpan(
               text: t.syntax_manual_page
-                  .scripts_kinds_single_line_comments_sample_1,
+                  .scripts_comments_single_line_comments_sample_1,
               style: codeSampleStyle,
             ),
             TextSpan(
               text: t.syntax_manual_page
-                  .scripts_kinds_single_line_comments_description_2,
+                  .scripts_comments_single_line_comments_description_2,
             ),
             TextSpan(
               text: t.syntax_manual_page
-                  .scripts_kinds_single_line_comments_sample_2,
+                  .scripts_comments_single_line_comments_sample_2,
               style: codeSampleStyle,
             ),
           ],
@@ -303,39 +318,355 @@ class ScriptsVariablesWidget extends StatelessWidget {
           style: DefaultTextStyle.of(context).style,
           children: [
             TextSpan(
-              text:
-                  t.syntax_manual_page.scripts_kinds_variables_name_rules_title,
+              text: t.syntax_manual_page.scripts_variables_name_rules_title,
               style: typeTitleStyle,
             ),
             TextSpan(
-              text: t.syntax_manual_page
-                  .scripts_kinds_variables_name_rules_description,
+              text:
+                  t.syntax_manual_page.scripts_variables_name_rules_description,
             ),
             TextSpan(
-              text: t.syntax_manual_page.scripts_kinds_variables_creation_title,
+              text: t.syntax_manual_page.scripts_variables_creation_title,
               style: typeTitleStyle,
             ),
             TextSpan(
-              text: t.syntax_manual_page
-                  .scripts_kinds_variables_creation_description,
+              text: t.syntax_manual_page.scripts_variables_creation_description,
             ),
             TextSpan(
-              text:
-                  t.syntax_manual_page.scripts_kinds_variables_creation_format,
+              text: t.syntax_manual_page.scripts_variables_creation_format,
               style: codeSampleStyle,
             ),
             TextSpan(
               text: t.syntax_manual_page
-                  .scripts_kinds_variables_creation_sample_head_text,
+                  .scripts_variables_creation_sample_head_text,
             ),
             TextSpan(
-              text: t.syntax_manual_page
-                  .scripts_kinds_variables_creation_sample_code,
-                  style: codeSampleStyle,
+              text: t.syntax_manual_page.scripts_variables_creation_sample_code,
+              style: codeSampleStyle,
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class ScriptPredefinedValuesWidget extends StatelessWidget {
+  const ScriptPredefinedValuesWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: RichText(
+        text: TextSpan(
+          text: t.syntax_manual_page.scripts_predefined_values_head_description,
+          style: DefaultTextStyle.of(context).style,
+          children: [
+            TextSpan(
+              text: t.syntax_manual_page.scripts_predefined_files_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.scripts_predefined_files_description,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.scripts_predefined_ranks_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.scripts_predefined_ranks_description,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ScriptPredefinedVariablesWidget extends StatelessWidget {
+  const ScriptPredefinedVariablesWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+              style: DefaultTextStyle.of(context).style,
+              text: t.syntax_manual_page
+                  .scripts_predefined_variables_head_description,
+            ),
+          ),
+          RichText(
+            text: TextSpan(
+              text: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_title,
+              style: typeTitleStyle,
+            ),
+          ),
+          VariablesTableWidget(entities: [
+            VariablesTableEntity(
+              isInteger: true,
+              name: "file",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_file,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "rank",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_rank,
+            ),
+            VariablesTableEntity(
+              isInteger: false,
+              name: "playerHasWhite",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_player_has_white,
+            ),
+          ]),
+          RichText(
+            text: TextSpan(
+              text: t.syntax_manual_page
+                  .scripts_predefined_variables_mutual_kings_constraints_title,
+              style: typeTitleStyle,
+            ),
+          ),
+          VariablesTableWidget(entities: [
+            VariablesTableEntity(
+              isInteger: true,
+              name: "playerKingFile",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_file_player,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "playerKingRank",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_rank_player,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "computerKingFile",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_file_computer,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "computerKingRank",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_rank_computer,
+            ),
+            VariablesTableEntity(
+              isInteger: false,
+              name: "playerHasWhite",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_player_has_white,
+            ),
+          ]),
+          RichText(
+            text: TextSpan(
+              text: t.syntax_manual_page
+                  .scripts_predefined_variables_other_pieces_global_constraints_title,
+              style: typeTitleStyle,
+            ),
+          ),
+          VariablesTableWidget(entities: [
+            VariablesTableEntity(
+              isInteger: true,
+              name: "file",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_other_pieces_global_constraints_file,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "rank",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_other_pieces_global_constraints_rank,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "playerKingFile",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_file_player,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "playerKingRank",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_rank_player,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "computerKingFile",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_file_computer,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "computerKingRank",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_rank_computer,
+            ),
+            VariablesTableEntity(
+              isInteger: false,
+              name: "playerHasWhite",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_player_has_white,
+            ),
+          ]),
+          RichText(
+            text: TextSpan(
+              text: t.syntax_manual_page
+                  .scripts_predefined_variables_other_pieces_mutual_constraints_title,
+              style: typeTitleStyle,
+            ),
+          ),
+          VariablesTableWidget(entities: [
+            VariablesTableEntity(
+              isInteger: true,
+              name: "firstPieceFile",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_other_pieces_mutual_constraints_file_first,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "firstPieceRank",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_other_pieces_mutual_constraints_rank_first,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "secondPieceFile",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_other_pieces_mutual_constraints_file_second,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "secondPieceRank",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_other_pieces_mutual_constraints_rank_second,
+            ),
+            VariablesTableEntity(
+              isInteger: false,
+              name: "playerHasWhite",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_player_has_white,
+            ),
+          ]),
+          RichText(
+            text: TextSpan(
+              text: t.syntax_manual_page
+                  .scripts_predefined_variables_other_pieces_indexed_constraints_title,
+              style: typeTitleStyle,
+            ),
+          ),
+        VariablesTableWidget(entities: [
+            VariablesTableEntity(
+              isInteger: true,
+              name: "apparitionIndex",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_other_pieces_indexed_constraints_apparition,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "file",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_other_pieces_global_constraints_file,
+            ),
+            VariablesTableEntity(
+              isInteger: true,
+              name: "rank",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_other_pieces_global_constraints_rank,
+            ),
+            VariablesTableEntity(
+              isInteger: false,
+              name: "playerHasWhite",
+              use: t.syntax_manual_page
+                  .scripts_predefined_variables_single_king_constraints_variable_player_has_white,
+            ),
+          ]),
+        ],
+      ),
+    );
+  }
+}
+
+class VariablesTableEntity {
+  final bool isInteger;
+  final String name;
+  final String use;
+
+  const VariablesTableEntity({
+    required this.isInteger,
+    required this.name,
+    required this.use,
+  });
+}
+
+class VariablesTableWidget extends StatelessWidget {
+  final List<VariablesTableEntity> entities;
+
+  const VariablesTableWidget({
+    super.key,
+    required this.entities,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Table(
+      border: TableBorder.all(),
+      columnWidths: const {
+        0: FractionColumnWidth(0.40),
+        1: FractionColumnWidth(0.20),
+        2: FractionColumnWidth(0.40)
+      },
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      children: [
+        TableRow(children: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Text(
+              t.syntax_manual_page.table_header_variable_name,
+              style: tableHeaderStyle,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Text(
+              t.syntax_manual_page.table_header_variable_type,
+              style: tableHeaderStyle,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Text(
+              t.syntax_manual_page.table_header_variable_use,
+              style: tableHeaderStyle,
+            ),
+          )
+        ]),
+        for (var entity in entities)
+          TableRow(children: [
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(entity.name),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(entity.isInteger ? "int" : "boolean"),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(entity.use),
+            ),
+          ]),
+      ],
     );
   }
 }

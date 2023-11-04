@@ -232,7 +232,6 @@ class PlayerKingConstraintsEditorWidget extends StatelessWidget {
               }),
             );
           },
-          onVariablesButtonPressed: () {},
         ),
         Flexible(
           child: EditorWidget(
@@ -261,7 +260,6 @@ class ComputerKingContraintsEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.computer_king_constraint,
           onSyntaxButtonPressed: () {},
-          onVariablesButtonPressed: () {},
         ),
         Flexible(
           child: EditorWidget(
@@ -290,7 +288,6 @@ class KingsMutualConstraintEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.kings_mutual_constraint,
           onSyntaxButtonPressed: () {},
-          onVariablesButtonPressed: () {},
         ),
         Flexible(
           child: EditorWidget(
@@ -445,7 +442,6 @@ class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.other_pieces_global_constraint,
           onSyntaxButtonPressed: () {},
-          onVariablesButtonPressed: () {},
         ),
         Flexible(
           child: ComplexEditorWidget(
@@ -477,7 +473,6 @@ class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.other_pieces_mutual_constraint,
           onSyntaxButtonPressed: () {},
-          onVariablesButtonPressed: () {},
         ),
         Flexible(
           child: ComplexEditorWidget(
@@ -509,7 +504,6 @@ class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
         SectionHeader(
           title: t.script_editor_page.other_pieces_indexed_constraint,
           onSyntaxButtonPressed: () {},
-          onVariablesButtonPressed: () {},
         ),
         Flexible(
           child: ComplexEditorWidget(

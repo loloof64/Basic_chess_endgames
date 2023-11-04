@@ -84,13 +84,11 @@ class EditorWidget extends StatelessWidget {
 class SectionHeader extends StatelessWidget {
   final String title;
   final void Function()? onSyntaxButtonPressed;
-  final void Function()? onVariablesButtonPressed;
 
   const SectionHeader({
     super.key,
     required this.title,
     this.onSyntaxButtonPressed,
-    this.onVariablesButtonPressed,
   });
 
   @override
@@ -113,14 +111,6 @@ class SectionHeader extends StatelessWidget {
             title,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
           ),
-          if (onVariablesButtonPressed != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: ElevatedButton(
-                onPressed: onVariablesButtonPressed,
-                child: Text(t.script_editor_page.variables_button_label),
-              ),
-            ),
         ],
       ),
     );
