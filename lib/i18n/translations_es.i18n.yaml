@@ -121,8 +121,8 @@ syntax_manual_page:
   scripts_format: "Formato de los scripts"
   comments: "Comentarios"
   variables: "Variables"
-  predefined_values: "Valores predefinidos"
   predefined_variables: "Variables predefinidas"
+  int_expressions: "Expresiones enteras"
   scripts_goal_description:
     "Un script de generación de posiciones se divide en varios subprogramas, \
     cada uno de su propio tipo. \n\nEl objetivo de un subprograma es comprobar que la posición generada \
@@ -213,18 +213,6 @@ syntax_manual_page:
   scripts_variables_creation_sample_head_text: "Este es un ejemplo:\n\n"
   scripts_variables_creation_sample_code: "miFila :=  boolIf(reyesEnOposicion) \
     then Rank4 else Rank1;\n\n"
-  scripts_predefined_values_head_description:
-    "Todos las subrutinas tienen los mismos valores \
-    enteros predefinidos (no puedes nombrar una variable con uno de esos nombres).\n\nTodos estos \
-    valores tienen en cuenta la orientación del tablero de ajedrez.\n\n"
-  scripts_predefined_files_title: "Columnas\n\n"
-  scripts_predefined_files_description:
-    "Estos son los valores enteros predefinidos para las \
-    columnas del tablero de ajedrez: FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n"
-  scripts_predefined_ranks_title: "Rangos\n\n"
-  scripts_predefined_ranks_description:
-    "Estos son los valores enteros predefinidos para los \
-    rangos del tablero de ajedrez: Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n"
   scripts_predefined_variables_head_description:
     "Las variables predefinidas dependen del tipo \
     de la subrutina que estemos editando.\n\nEstas variables serán alimentadas por el algoritmo \
@@ -286,3 +274,45 @@ syntax_manual_page:
   scripts_predefined_variables_other_pieces_indexed_constraints_apparition:
     "el índice (empezando en \
     0) de aparición en el tablero"
+  scripts_int_expressions_head_description:
+    "Una expresión entera es simplemente una expresión \
+    cuyo valor final producido es un entero.\n\n"
+  int_expression_parenthesis_title: "Paréntesis\n\n"
+  int_expression_parenthesis_description:
+    "Útil para aislar una expresión entera, de \
+    modo que se calcule con prioridad.\n\n"
+  int_expression_parenthesis_syntax: "([expresión entera])\n\n"
+  int_expression_parenthesis_sample_text: "Este es un ejemplo:\n\n"
+  int_expression_conditional_title: "Expresión condicional\n\n"
+  int_expression_conditional_description:
+    "Para producir expresiones condicionalmente. \
+    Cuidado con la palabra clave 'numIf'.\n\n"
+  int_expression_conditional_syntax: "numIf([expresión booleana]) then \
+    [expresión entera] else [expresión entera]\n\n"
+  int_expression_absolute_title: "Valor absoluto\n\n"
+  int_expression_absolute_description: "Produce el valor absoluto de la expresión dada.\n\n"
+  int_expression_absolute_syntax: "abs([expresión entera])\n\n"
+  int_expression_modulo_title: "Expresión modulo\n\n"
+  int_expression_modulo_description: "Produce el valor modular de la expresión dada.\n\nEs el \
+    resto de la división del primer operando por el segundo.\n\n"
+  int_expression_modulo_syntax: "[expresión entera] % [expresión entera]\n\n"
+  int_expression_modulo_sample_code: "miVariableEntera % 2\n\n"
+  int_expression_arithmetic_title: "Operadores aritméticos\n\n"
+  int_expression_arithmetic_description: "Hay dos operadores aritméticos disponibles: '+' y '-'.\n\n"
+  int_expression_arithmetic_syntax_1: "[expresión entera] + [expresión entera]\n"
+  int_expression_arithmetic_syntax_or: "o\n"
+  int_expression_arithmetic_syntax_2: "[expresión entera] - [expresión entera]\n\n"
+  int_expression_literal_title: "Literales\n\n"
+  int_expression_literal_description: "Puedes usar valores literales (1, 25, 150 por ejemplo).\n\n"
+  int_expression_variable_title: "Variables\n\n"
+  int_expression_variable_description: "Las variables enteras también son expresiones.\n\n"
+  int_expression_predefined_values_title: "Valores predefinidos\n\n"
+  int_expression_predefined_values_description: "\
+    Todos las subrutinas tienen los mismos valores \
+    enteros predefinidos (no puedes nombrar una variable con uno de esos nombres).\n\nTodos estos \
+    valores tienen en cuenta la orientación del tablero de ajedrez.\n\n\
+    Estos son los valores enteros predefinidos para las \
+    columnas del tablero de ajedrez: FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n\
+    Estos son los valores enteros predefinidos para los \
+    rangos del tablero de ajedrez: Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n
+    "

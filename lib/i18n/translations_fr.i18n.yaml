@@ -122,8 +122,8 @@ syntax_manual_page:
   scripts_format: "Format des scripts"
   comments: "Commentaires"
   variables: "Variables"
-  predefined_values: "Valeurs prédéfinies"
   predefined_variables: "Variables prédéfinies"
+  int_expressions: "Expressions entières"
   scripts_goal_description:
     "Un script de génération de position est composé de plusieurs \
     sous-scripts, chacun étant de son propre type. \n\nLe but d'un sous-script est de vérifier que \
@@ -217,18 +217,6 @@ syntax_manual_page:
   scripts_variables_creation_sample_code:
     "maRangee :=  boolIf(roisEnOpposition) \
     then Rank4 else Rank1;\n\n"
-  scripts_predefined_values_head_description:
-    "Tous les sous-scripts ont les même valeurs \
-    prédéfinies (vous ne pouvez pas nommer une variable avec un de leurs noms).\n\nToutes ces \
-    valeurs prennent en compte l'orientation de l'échiquier.\n\n"
-  scripts_predefined_files_title: "Colonnes\n\n"
-  scripts_predefined_files_description:
-    "Voici les valeurs entières prédéfines pour les colonnes \
-    de l'échiquier : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n"
-  scripts_predefined_ranks_title: "Rangées\n\n"
-  scripts_predefined_ranks_description:
-    "Voici les valeurs entières prédéfines pour les rangées \
-    de l'échiquier : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n"
   scripts_predefined_variables_head_description:
     "L'ensemble des variables prédéfinies dépendent \
     du type de script en cours d'édition.\n\nCes variables seront alimentées par l'algorithme lors \
@@ -290,3 +278,46 @@ syntax_manual_page:
   scripts_predefined_variables_other_pieces_indexed_constraints_apparition:
     "l'index (démarrant \
     à 0) d'apparition sur l'échiquier"
+  scripts_int_expressions_head_description:
+    "Une expression entière est simplement une \
+    expression dont la valeur finalement produite est un entier.\n\n"
+  int_expression_parenthesis_title: "Parenthèses\n\n"
+  int_expression_parenthesis_description:
+    "Utile pour isoler une expression entière, \
+    de sorte qu'elle soit calculée en priorité.\n\n"
+  int_expression_parenthesis_syntax: "([expression entière])\n\n"
+  int_expression_parenthesis_sample_text: "À titre d'exemple :\n\n"
+  int_expression_conditional_title: "Expression conditionnelle\n\n"
+  int_expression_conditional_description:
+    "Pour produire une expression de manière conditionnelle. \
+    Attention au mot-clé 'numIf'.\n\n"
+  int_expression_conditional_syntax: "numIf([expression booléenne]) then \
+    [expression entière] else [expression entière]\n\n"
+  int_expression_absolute_title: "Valeur absolue\n\n"
+  int_expression_absolute_description: "Produit la valeur absolue de l'expression donnée.\n\n"
+  int_expression_absolute_syntax: "abs([expression entière])\n\n"
+  int_expression_modulo_title: "Expression modulo\n\n"
+  int_expression_modulo_description: "Produit la valeur modulo de l'expression donnée.\n\nC'est \
+    le reste de la division de la première opérande par la seconde.\n\n"
+  int_expression_modulo_syntax: "[expression entière] % [expression entière]\n\n"
+  int_expression_modulo_sample_code: "maVariableEntiere % 2\n\n"
+  int_expression_arithmetic_title: "Opérateurs arithmétiques\n\n"
+  int_expression_arithmetic_description: "Il y a deux opérateurs arithmétiques disponibles: '+' et '-'.\n\n"
+  int_expression_arithmetic_syntax_1: "[expression entière] + [expression entière]\n"
+  int_expression_arithmetic_syntax_or: "ou\n"
+  int_expression_arithmetic_syntax_2: "[expression entière] - [expression entière]\n\n"
+  int_expression_literal_title: "Litéraux\n\n"
+  int_expression_literal_description: "Vous pouvez utiliser des valeurs litérales (1, 25, \
+    150 par exemple).\n\n"
+  int_expression_variable_title: "Variables\n\n"
+  int_expression_variable_description: "Les variables entières sont également des expressions.\n\n"
+  int_expression_predefined_values_title: "Valeurs prédéfinies\n\n"
+  int_expression_predefined_values_description: "\
+    Tous les sous-scripts ont les même valeurs \
+    prédéfinies (vous ne pouvez pas nommer une variable avec un de leurs noms).\n\nToutes ces \
+    valeurs prennent en compte l'orientation de l'échiquier.\n\n\
+    Voici les valeurs entières prédéfines pour les colonnes \
+    de l'échiquier : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n\
+    Voici les valeurs entières prédéfines pour les rangées \
+    de l'échiquier : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n
+    "

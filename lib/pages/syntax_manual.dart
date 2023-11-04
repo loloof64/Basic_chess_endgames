@@ -9,7 +9,6 @@ enum SyntaxManualSection {
   scriptsFormat,
   comments,
   variables,
-  predefinedValues,
   predefinedVariables,
   intExpressions,
   booleanExpressions,
@@ -37,12 +36,12 @@ List<DropdownMenuItem<SyntaxManualSection>> dropDownItems = [
     child: Text(t.syntax_manual_page.variables),
   ),
   DropdownMenuItem(
-    value: SyntaxManualSection.predefinedValues,
-    child: Text(t.syntax_manual_page.predefined_values),
-  ),
-  DropdownMenuItem(
     value: SyntaxManualSection.predefinedVariables,
     child: Text(t.syntax_manual_page.predefined_variables),
+  ),
+  DropdownMenuItem(
+    value: SyntaxManualSection.intExpressions,
+    child: Text(t.syntax_manual_page.int_expressions),
   ),
 ];
 
@@ -52,8 +51,8 @@ const Map<SyntaxManualSection, Widget> dropDownWidgets = {
   SyntaxManualSection.scriptsFormat: ScriptsFormatWidget(),
   SyntaxManualSection.comments: ScriptsCommentsWidget(),
   SyntaxManualSection.variables: ScriptsVariablesWidget(),
-  SyntaxManualSection.predefinedValues: ScriptPredefinedValuesWidget(),
   SyntaxManualSection.predefinedVariables: ScriptPredefinedVariablesWidget(),
+  SyntaxManualSection.intExpressions: ScriptIntExpressionsWidget(),
 };
 
 const typeTitleStyle = TextStyle(
@@ -351,39 +350,6 @@ class ScriptsVariablesWidget extends StatelessWidget {
   }
 }
 
-class ScriptPredefinedValuesWidget extends StatelessWidget {
-  const ScriptPredefinedValuesWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: RichText(
-        text: TextSpan(
-          text: t.syntax_manual_page.scripts_predefined_values_head_description,
-          style: DefaultTextStyle.of(context).style,
-          children: [
-            TextSpan(
-              text: t.syntax_manual_page.scripts_predefined_files_title,
-              style: typeTitleStyle,
-            ),
-            TextSpan(
-              text: t.syntax_manual_page.scripts_predefined_files_description,
-            ),
-            TextSpan(
-              text: t.syntax_manual_page.scripts_predefined_ranks_title,
-              style: typeTitleStyle,
-            ),
-            TextSpan(
-              text: t.syntax_manual_page.scripts_predefined_ranks_description,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class ScriptPredefinedVariablesWidget extends StatelessWidget {
   const ScriptPredefinedVariablesWidget({super.key});
 
@@ -565,7 +531,7 @@ class ScriptPredefinedVariablesWidget extends StatelessWidget {
               style: typeTitleStyle,
             ),
           ),
-        VariablesTableWidget(entities: [
+          VariablesTableWidget(entities: [
             VariablesTableEntity(
               isInteger: true,
               name: "apparitionIndex",
@@ -592,6 +558,144 @@ class ScriptPredefinedVariablesWidget extends StatelessWidget {
             ),
           ]),
         ],
+      ),
+    );
+  }
+}
+
+class ScriptIntExpressionsWidget extends StatelessWidget {
+  const ScriptIntExpressionsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: RichText(
+        text: TextSpan(
+          text: t.syntax_manual_page.scripts_int_expressions_head_description,
+          style: DefaultTextStyle.of(context).style,
+          children: [
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_parenthesis_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_parenthesis_description,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_parenthesis_syntax,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_parenthesis_sample_text,
+            ),
+            TextSpan(
+              text: "(playerKingFile % 2)\n\n",
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_conditional_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_conditional_description,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_conditional_syntax,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_parenthesis_sample_text,
+            ),
+            TextSpan(
+              text: "numIf(playerKingFile > FileD) then 0 else 7\n\n",
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_absolute_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_absolute_description,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_absolute_syntax,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_parenthesis_sample_text,
+            ),
+            TextSpan(
+              text: "abs(playerKingRank - Rank5)\n\n",
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_modulo_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_modulo_description,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_modulo_syntax,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_parenthesis_sample_text,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_modulo_sample_code,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_arithmetic_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_arithmetic_description,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_arithmetic_syntax_1,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_arithmetic_syntax_or,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_arithmetic_syntax_2,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_parenthesis_sample_text,
+            ),
+            TextSpan(
+              text: "playerKingFile + computerKingFile\n\n",
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_literal_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_literal_description,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_variable_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_variable_description,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_predefined_values_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page
+                  .int_expression_predefined_values_description,
+            ),
+          ],
+        ),
       ),
     );
   }

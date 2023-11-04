@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 468 (156 per locale)
+/// Strings: 531 (177 per locale)
 ///
-/// Built on 2023-11-04 at 16:53 UTC
+/// Built on 2023-11-04 at 19:02 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -366,8 +366,8 @@ class _TranslationsSyntaxManualPageEn {
 	String get scripts_format => 'Scripts\' format';
 	String get comments => 'Comments';
 	String get variables => 'Variables';
-	String get predefined_values => 'Predefined values';
 	String get predefined_variables => 'Predefined variables';
+	String get int_expressions => 'Integer expressions';
 	String get scripts_goal_description => 'A position generation script is split into several sub-scripts, each of its own kind. \n\nA sub-script\'s goal is to check that the generated position follow all of its constraints. \n\nIf at least one condition is not met, then the algorithm will try to \'fix\' the position so that all conditions are met.';
 	String get scripts_kinds_head_description => 'There are several types of sub-scripts, and all rules of all defined sub-scripts must be respected by the generated position. \n\nOf course, it must also respect standard chess rules (for example : king of side not in turn musn\'t be in chess).\n\n';
 	String get scripts_kinds_player_king_constraint_title => 'Player\'s king\'s constraints\n\n';
@@ -405,11 +405,6 @@ class _TranslationsSyntaxManualPageEn {
 	String get scripts_variables_creation_format => '[identifier] := [int expression | boolean expression];\n\n';
 	String get scripts_variables_creation_sample_head_text => 'This is an example :\n\n';
 	String get scripts_variables_creation_sample_code => 'myRank := boolIf(kingsInOpposition) then Rank4 else Rank1;\n\n';
-	String get scripts_predefined_values_head_description => 'All sub-scripts have the same predefined integer values (you can\'t name a variable with one of those names).\n\nAll of these values takes the chess board\'s orientation into account.\n\n';
-	String get scripts_predefined_files_title => 'Files\n\n';
-	String get scripts_predefined_files_description => 'These are predefined integer values for the chess board files : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n';
-	String get scripts_predefined_ranks_title => 'Ranks\n\n';
-	String get scripts_predefined_ranks_description => 'These are predefined integer values for the chess board ranks : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n';
 	String get scripts_predefined_variables_head_description => 'The predefined variables relies on the kind of sub-script we\'re editing.\n\nThese variables will be fed by the algorithm when checking for the generated position\'s correctness.\n\nOf course, you can\'t name a custom variable with one of those names.\n\nAlso, keep in mind that chess board\'s coordinates values take board\'s orientation into account.\n\n';
 	String get scripts_predefined_variables_single_king_constraints_title => 'Player\'s king\'s constraint / Computer king\'s constraint\n\n';
 	String get scripts_predefined_variables_single_king_constraints_variable_file => 'the file which has been set for the king';
@@ -430,6 +425,32 @@ class _TranslationsSyntaxManualPageEn {
 	String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_second => 'the file which has been set for the second piece';
 	String get scripts_predefined_variables_other_pieces_indexed_constraints_title => '\n\nOthers pieces\' constraints by order\n\n';
 	String get scripts_predefined_variables_other_pieces_indexed_constraints_apparition => 'the index (starting at 0) of apparition on the board';
+	String get scripts_int_expressions_head_description => 'An integer expression is simply an expression whose final produced value is an integer.\n\n';
+	String get int_expression_parenthesis_title => 'Parenthesis\n\n';
+	String get int_expression_parenthesis_description => 'Useful for isolating an integer expression, so that it will be computed in priority.\n\n';
+	String get int_expression_parenthesis_syntax => '([integer expression])\n\n';
+	String get int_expression_parenthesis_sample_text => 'An example :\n\n';
+	String get int_expression_conditional_title => 'Conditional expression\n\n';
+	String get int_expression_conditional_description => 'For producing expressions conditionnaly. Beware of the \'numIf\' keyword.\n\n';
+	String get int_expression_conditional_syntax => 'numIf([boolean expression]) then [integer expression] else [integer expression]\n\n';
+	String get int_expression_absolute_title => 'Absolute value\n\n';
+	String get int_expression_absolute_description => 'Produces the absolute value of the given expression.\n\n';
+	String get int_expression_absolute_syntax => 'abs([integer expression])\n\n';
+	String get int_expression_modulo_title => 'Modulo expression\n\n';
+	String get int_expression_modulo_description => 'Produces the modulo value of the given expression.\n\n It\'s the remainder of the division of the first operand by the second.\n\n';
+	String get int_expression_modulo_syntax => '[integer expression] % [integer expression]\n\n';
+	String get int_expression_modulo_sample_code => 'myIntVariable % 2\n\n';
+	String get int_expression_arithmetic_title => 'Arithmetic operators\n\n';
+	String get int_expression_arithmetic_description => 'There are two arithmetic operators available: \'+\' and \'-\'.\n\n';
+	String get int_expression_arithmetic_syntax_1 => '[integer expression] + [integer expression]\n';
+	String get int_expression_arithmetic_syntax_or => 'or\n';
+	String get int_expression_arithmetic_syntax_2 => '[integer expression] - [integer expression]\n\n';
+	String get int_expression_literal_title => 'Literals\n\n';
+	String get int_expression_literal_description => 'You can use literal values (1, 25, 150 for example).\n\n';
+	String get int_expression_variable_title => 'Variables\n\n';
+	String get int_expression_variable_description => 'Integer variables are also expressions.\n\n';
+	String get int_expression_predefined_values_title => 'Predefined values\n\n';
+	String get int_expression_predefined_values_description => 'All sub-scripts have the same predefined integer values (you can\'t name a variable with one of those names).\n\nAll of these values takes the chess board\'s orientation into account.\n\nThese are predefined integer values for the chess board files : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\nThese are predefined integer values for the chess board ranks : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n';
 }
 
 // Path: <root>
@@ -655,8 +676,8 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_format => 'Formato de los scripts';
 	@override String get comments => 'Comentarios';
 	@override String get variables => 'Variables';
-	@override String get predefined_values => 'Valores predefinidos';
 	@override String get predefined_variables => 'Variables predefinidas';
+	@override String get int_expressions => 'Expresiones enteras';
 	@override String get scripts_goal_description => 'Un script de generación de posiciones se divide en varios subprogramas, cada uno de su propio tipo. \n\nEl objetivo de un subprograma es comprobar que la posición generada cumple con todas sus restricciones. \n\nSi al menos una condición no se cumple, el algoritmo intentará \'arreglar\' la posición para que se cumplan todas las condiciones.';
 	@override String get scripts_kinds_head_description => 'Existen varios tipos de subprogramas, y la posición generada debe respetar todas las reglas de todos los subprogramas definidos. \n\nPor supuesto, también debe respetar las reglas estándar del ajedrez (por ejemplo, el rey del lado que no está en turno no puede estar en jaque).\n\n';
 	@override String get scripts_kinds_player_king_constraint_title => 'Restricción sobre rey del jugador\n\n';
@@ -694,11 +715,6 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_variables_creation_format => '[identificador] := [expresión entera | expresión booleana];\n\n';
 	@override String get scripts_variables_creation_sample_head_text => 'Este es un ejemplo:\n\n';
 	@override String get scripts_variables_creation_sample_code => 'miFila :=  boolIf(reyesEnOposicion) then Rank4 else Rank1;\n\n';
-	@override String get scripts_predefined_values_head_description => 'Todos las subrutinas tienen los mismos valores enteros predefinidos (no puedes nombrar una variable con uno de esos nombres).\n\nTodos estos valores tienen en cuenta la orientación del tablero de ajedrez.\n\n';
-	@override String get scripts_predefined_files_title => 'Columnas\n\n';
-	@override String get scripts_predefined_files_description => 'Estos son los valores enteros predefinidos para las columnas del tablero de ajedrez: FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n';
-	@override String get scripts_predefined_ranks_title => 'Rangos\n\n';
-	@override String get scripts_predefined_ranks_description => 'Estos son los valores enteros predefinidos para los rangos del tablero de ajedrez: Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n';
 	@override String get scripts_predefined_variables_head_description => 'Las variables predefinidas dependen del tipo de la subrutina que estemos editando.\n\nEstas variables serán alimentadas por el algoritmo al comprobar la corrección de la posición generada.\n\nPor supuesto, no se puede nombrar una variable personal con uno de esos nombres.\n\nAdemás, ten en cuenta que los valores de las coordenadas del tablero de ajedrez tienen en cuenta la orientación del tablero.\n\n';
 	@override String get scripts_predefined_variables_single_king_constraints_title => 'Restricciones rey del jugador / Restricciones rey de la computadora\n\n';
 	@override String get scripts_predefined_variables_single_king_constraints_variable_file => 'la columna que ha sido preparado para el rey';
@@ -719,6 +735,32 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_second => 'la columna que ha sido preparado para la segunda pieza';
 	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_title => '\n\nRestricciones sobre otras piezas por orden\n\n';
 	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_apparition => 'el índice (empezando en 0) de aparición en el tablero';
+	@override String get scripts_int_expressions_head_description => 'Una expresión entera es simplemente una expresión cuyo valor final producido es un entero.\n\n';
+	@override String get int_expression_parenthesis_title => 'Paréntesis\n\n';
+	@override String get int_expression_parenthesis_description => 'Útil para aislar una expresión entera, de modo que se calcule con prioridad.\n\n';
+	@override String get int_expression_parenthesis_syntax => '([expresión entera])\n\n';
+	@override String get int_expression_parenthesis_sample_text => 'Este es un ejemplo:\n\n';
+	@override String get int_expression_conditional_title => 'Expresión condicional\n\n';
+	@override String get int_expression_conditional_description => 'Para producir expresiones condicionalmente. Cuidado con la palabra clave \'numIf\'.\n\n';
+	@override String get int_expression_conditional_syntax => 'numIf([expresión booleana]) then [expresión entera] else [expresión entera]\n\n';
+	@override String get int_expression_absolute_title => 'Valor absoluto\n\n';
+	@override String get int_expression_absolute_description => 'Produce el valor absoluto de la expresión dada.\n\n';
+	@override String get int_expression_absolute_syntax => 'abs([expresión entera])\n\n';
+	@override String get int_expression_modulo_title => 'Expresión modulo\n\n';
+	@override String get int_expression_modulo_description => 'Produce el valor modular de la expresión dada.\n\nEs el resto de la división del primer operando por el segundo.\n\n';
+	@override String get int_expression_modulo_syntax => '[expresión entera] % [expresión entera]\n\n';
+	@override String get int_expression_modulo_sample_code => 'miVariableEntera % 2\n\n';
+	@override String get int_expression_arithmetic_title => 'Operadores aritméticos\n\n';
+	@override String get int_expression_arithmetic_description => 'Hay dos operadores aritméticos disponibles: \'+\' y \'-\'.\n\n';
+	@override String get int_expression_arithmetic_syntax_1 => '[expresión entera] + [expresión entera]\n';
+	@override String get int_expression_arithmetic_syntax_or => 'o\n';
+	@override String get int_expression_arithmetic_syntax_2 => '[expresión entera] - [expresión entera]\n\n';
+	@override String get int_expression_literal_title => 'Literales\n\n';
+	@override String get int_expression_literal_description => 'Puedes usar valores literales (1, 25, 150 por ejemplo).\n\n';
+	@override String get int_expression_variable_title => 'Variables\n\n';
+	@override String get int_expression_variable_description => 'Las variables enteras también son expresiones.\n\n';
+	@override String get int_expression_predefined_values_title => 'Valores predefinidos\n\n';
+	@override String get int_expression_predefined_values_description => 'Todos las subrutinas tienen los mismos valores enteros predefinidos (no puedes nombrar una variable con uno de esos nombres).\n\nTodos estos valores tienen en cuenta la orientación del tablero de ajedrez.\n\nEstos son los valores enteros predefinidos para las columnas del tablero de ajedrez: FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\nEstos son los valores enteros predefinidos para los rangos del tablero de ajedrez: Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n ';
 }
 
 // Path: <root>
@@ -944,8 +986,8 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_format => 'Format des scripts';
 	@override String get comments => 'Commentaires';
 	@override String get variables => 'Variables';
-	@override String get predefined_values => 'Valeurs prédéfinies';
 	@override String get predefined_variables => 'Variables prédéfinies';
+	@override String get int_expressions => 'Expressions entières';
 	@override String get scripts_goal_description => 'Un script de génération de position est composé de plusieurs sous-scripts, chacun étant de son propre type. \n\nLe but d\'un sous-script est de vérifier que la position générée respecte toutes ses contraintes. \n\nSi au moins une des conditions n\'est pas respectée, alors l\'algorithme tentera de \'fixer\' la position de telle manière que toutes les contraintes soient respectéees.';
 	@override String get scripts_kinds_head_description => 'Il y a plusieurs types de sous-scripts, et toutes les règles définies dans l\'ensemble des sous-scripts doivent être respectées par la position générée. \n\nBien sûr, elle doit aussi respecter les règles standards (par exemple : le roi qui n\'est pas au trait ne doit pas être en échec).\n\n';
 	@override String get scripts_kinds_player_king_constraint_title => 'Contraintes sur le roi du joueur\n\n';
@@ -983,11 +1025,6 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_variables_creation_format => '[identifiant] := [expression entière | expression booléenne];\n\n';
 	@override String get scripts_variables_creation_sample_head_text => 'À titre d\'exemple :\n\n';
 	@override String get scripts_variables_creation_sample_code => 'maRangee :=  boolIf(roisEnOpposition) then Rank4 else Rank1;\n\n';
-	@override String get scripts_predefined_values_head_description => 'Tous les sous-scripts ont les même valeurs prédéfinies (vous ne pouvez pas nommer une variable avec un de leurs noms).\n\nToutes ces valeurs prennent en compte l\'orientation de l\'échiquier.\n\n';
-	@override String get scripts_predefined_files_title => 'Colonnes\n\n';
-	@override String get scripts_predefined_files_description => 'Voici les valeurs entières prédéfines pour les colonnes de l\'échiquier : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n';
-	@override String get scripts_predefined_ranks_title => 'Rangées\n\n';
-	@override String get scripts_predefined_ranks_description => 'Voici les valeurs entières prédéfines pour les rangées de l\'échiquier : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n';
 	@override String get scripts_predefined_variables_head_description => 'L\'ensemble des variables prédéfinies dépendent du type de script en cours d\'édition.\n\nCes variables seront alimentées par l\'algorithme lors de la vérification de la validité de la position.\n\nBien sûr, vous ne pouvez pas nommer une variable personnelle avec un de ces noms.\n\nEnfin, ne perdez pas de vue que les variables de coordonnées prenent en compte l\'orientation de l\'échiquier.\n\n';
 	@override String get scripts_predefined_variables_single_king_constraints_title => 'Contraintes sur le roi du joueur / Contraintes sur le roi de l\'ordinateur\n\n';
 	@override String get scripts_predefined_variables_single_king_constraints_variable_file => 'la colonne qui a été choisie pour le roi';
@@ -1008,4 +1045,30 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_second => 'la rangée qui a été choisie pour la deuxième pièce';
 	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_title => '\n\nContraintes des autres pièces par ordre\n\n';
 	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_apparition => 'l\'index (démarrant à 0) d\'apparition sur l\'échiquier';
+	@override String get scripts_int_expressions_head_description => 'Une expression entière est simplement une expression dont la valeur finalement produite est un entier.\n\n';
+	@override String get int_expression_parenthesis_title => 'Parenthèses\n\n';
+	@override String get int_expression_parenthesis_description => 'Utile pour isoler une expression entière, de sorte qu\'elle soit calculée en priorité.\n\n';
+	@override String get int_expression_parenthesis_syntax => '([expression entière])\n\n';
+	@override String get int_expression_parenthesis_sample_text => 'À titre d\'exemple :\n\n';
+	@override String get int_expression_conditional_title => 'Expression conditionnelle\n\n';
+	@override String get int_expression_conditional_description => 'Pour produire une expression de manière conditionnelle. Attention au mot-clé \'numIf\'.\n\n';
+	@override String get int_expression_conditional_syntax => 'numIf([expression booléenne]) then [expression entière] else [expression entière]\n\n';
+	@override String get int_expression_absolute_title => 'Valeur absolue\n\n';
+	@override String get int_expression_absolute_description => 'Produit la valeur absolue de l\'expression donnée.\n\n';
+	@override String get int_expression_absolute_syntax => 'abs([expression entière])\n\n';
+	@override String get int_expression_modulo_title => 'Expression modulo\n\n';
+	@override String get int_expression_modulo_description => 'Produit la valeur modulo de l\'expression donnée.\n\nC\'est le reste de la division de la première opérande par la seconde.\n\n';
+	@override String get int_expression_modulo_syntax => '[expression entière] % [expression entière]\n\n';
+	@override String get int_expression_modulo_sample_code => 'maVariableEntiere % 2\n\n';
+	@override String get int_expression_arithmetic_title => 'Opérateurs arithmétiques\n\n';
+	@override String get int_expression_arithmetic_description => 'Il y a deux opérateurs arithmétiques disponibles: \'+\' et \'-\'.\n\n';
+	@override String get int_expression_arithmetic_syntax_1 => '[expression entière] + [expression entière]\n';
+	@override String get int_expression_arithmetic_syntax_or => 'ou\n';
+	@override String get int_expression_arithmetic_syntax_2 => '[expression entière] - [expression entière]\n\n';
+	@override String get int_expression_literal_title => 'Litéraux\n\n';
+	@override String get int_expression_literal_description => 'Vous pouvez utiliser des valeurs litérales (1, 25, 150 par exemple).\n\n';
+	@override String get int_expression_variable_title => 'Variables\n\n';
+	@override String get int_expression_variable_description => 'Les variables entières sont également des expressions.\n\n';
+	@override String get int_expression_predefined_values_title => 'Valeurs prédéfinies\n\n';
+	@override String get int_expression_predefined_values_description => 'Tous les sous-scripts ont les même valeurs prédéfinies (vous ne pouvez pas nommer une variable avec un de leurs noms).\n\nToutes ces valeurs prennent en compte l\'orientation de l\'échiquier.\n\nVoici les valeurs entières prédéfines pour les colonnes de l\'échiquier : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\nVoici les valeurs entières prédéfines pour les rangées de l\'échiquier : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n ';
 }
