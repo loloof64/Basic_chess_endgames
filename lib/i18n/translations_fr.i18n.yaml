@@ -129,4 +129,24 @@ syntax_manual_page:
   scripts_kinds_player_king_constraint_title: "Contraintes sur le roi du joueur\n\n"
   scripts_kinds_player_king_constraint_description: "Renseigne sur les contraintes d'emplacement du \
     roi du joueur (sachant que la couleur du joueur est tirée aléatoirement).\n\n"
-  
+  scripts_kinds_computer_king_constraint_title: "Contraintes sur le roi de l'ordinateur\n\n"
+  scripts_kinds_computer_king_constraint_description: "Renseigne sur les contraintes d'emplacement du \
+    roi de l'ordinateur (sachant que la couleur du joueur est tirée aléatoirement).\n\n"
+  scripts_kinds_kings_mutual_constraints_title: "Contraintes mutuelles entre rois\n\n"
+  scripts_kinds_kings_mutual_constraints_description: "Renseigne sur les contraintes de positionnement que \
+    les deux rois doivent respecter entre eux.\n\n"
+  scripts_kinds_other_pieces_count_constraints_title: "Contraintes sur le compte des autres pièces\n\n"
+  scripts_kinds_other_pieces_count_constraints_description: "Renseigne sur les contraintes sur le compte \
+    des pièces autres que les rois.\n\n"
+  scripts_kinds_other_pieces_global_constraints_title: "Contraintes globales sur les autres pièces\n\n"
+  scripts_kinds_other_pieces_global_constraints_description: "Renseigne sur les contraintes de \
+    positionnement des pièces autres que les rois, pour chaque couple [type de pièce / \
+    est-ce une pièce du joueur ?].\n\n"
+  scripts_kinds_other_pieces_mutual_constraints_title: "Contraintes mutuelles sur les autres pièces\n\n"
+  scripts_kinds_other_pieces_mutual_constraints_description: "Renseigne sur les contraintes de \
+    positionnement des pièces autres que les rois, qu'elles doivent respecter entre elles, \
+    deux par deux, pour chaque couple [type de pièce / est-ce une pièce d'un joueur ?].\n\n"
+  scripts_kinds_other_pieces_indexed_constraints_title: "Contraintes des autres pièces par ordre\n\n"
+  scripts_kinds_other_pieces_indexed_constraints_description: "Renseigne sur les contraintes de \
+    positionnement des pièces autres que les rois, qu'elles doivent respecter en fonction de \
+    l'ordre d'apparition sur l'échiquier, pour chaque couple [type de pièce / est-ce une pièce du joueur ?].\n\n"

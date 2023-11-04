@@ -84,8 +84,11 @@ class _SyntaxManualPageState extends State<SyntaxManualPage> {
               });
             },
           ),
-          SingleChildScrollView(
-            child: dropDownWidgets[_selectedSection],
+          Expanded(
+            flex: 6,
+            child: SingleChildScrollView(
+              child: dropDownWidgets[_selectedSection],
+            ),
           ),
         ],
       ),
@@ -117,9 +120,9 @@ class ScriptsKindsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: RichText(
           text: TextSpan(
             text: t.syntax_manual_page.scripts_kinds_head_description,
@@ -131,8 +134,63 @@ class ScriptsKindsWidget extends StatelessWidget {
                 style: typeTitleStyle,
               ),
               TextSpan(
-                  text: t.syntax_manual_page
-                      .scripts_kinds_player_king_constraint_description),
+                text: t.syntax_manual_page
+                    .scripts_kinds_player_king_constraint_description,
+              ),
+              TextSpan(
+                text: t.syntax_manual_page
+                    .scripts_kinds_computer_king_constraint_title,
+                style: typeTitleStyle,
+              ),
+              TextSpan(
+                text: t.syntax_manual_page
+                    .scripts_kinds_computer_king_constraint_description,
+              ),
+              TextSpan(
+                text: t.syntax_manual_page
+                    .scripts_kinds_kings_mutual_constraints_title,
+                style: typeTitleStyle,
+              ),
+              TextSpan(
+                text: t.syntax_manual_page
+                    .scripts_kinds_kings_mutual_constraints_description,
+              ),
+              TextSpan(
+                text: t.syntax_manual_page
+                    .scripts_kinds_other_pieces_count_constraints_title,
+                style: typeTitleStyle,
+              ),
+              TextSpan(
+                text: t.syntax_manual_page
+                    .scripts_kinds_other_pieces_count_constraints_description,
+              ),
+              TextSpan(
+                text: t.syntax_manual_page
+                    .scripts_kinds_other_pieces_global_constraints_title,
+                style: typeTitleStyle,
+              ),
+              TextSpan(
+                text: t.syntax_manual_page
+                    .scripts_kinds_other_pieces_global_constraints_description,
+              ),
+              TextSpan(
+                text: t.syntax_manual_page
+                    .scripts_kinds_other_pieces_mutual_constraints_title,
+                style: typeTitleStyle,
+              ),
+              TextSpan(
+                text: t.syntax_manual_page
+                    .scripts_kinds_other_pieces_mutual_constraints_description,
+              ),
+              TextSpan(
+                text: t.syntax_manual_page
+                    .scripts_kinds_other_pieces_indexed_constraints_title,
+                style: typeTitleStyle,
+              ),
+              TextSpan(
+                text: t.syntax_manual_page
+                    .scripts_kinds_other_pieces_indexed_constraints_description,
+              ),
             ],
           ),
         ),

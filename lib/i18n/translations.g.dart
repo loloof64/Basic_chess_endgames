@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 291 (97 per locale)
+/// Strings: 327 (109 per locale)
 ///
-/// Built on 2023-11-04 at 00:08 UTC
+/// Built on 2023-11-04 at 10:06 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -278,7 +278,7 @@ class _TranslationsScriptTypeEn {
 	String get computer_king_constraint => 'Computer king constraint';
 	String get kings_mutual_constraint => 'Kings mutual constraint';
 	String get other_pieces_global_constraint => 'Other pieces global constraint';
-	String get other_pieces_indexed_constraint => 'Other pieces indexed constraint';
+	String get other_pieces_indexed_constraint => 'Other pieces constraints by order';
 	String get other_pieces_mutual_constraint => 'Other pieces mutual constraint';
 	String get piece_kind_count_constraint => 'Piece kinds counts constraint';
 }
@@ -371,6 +371,18 @@ class _TranslationsSyntaxManualPageEn {
 	String get scripts_kinds_head_description => 'There are several types of sub-scripts, and all rules of all defined sub-scripts must be respected by the generated position. \n\nOf course, it must also respect standard chess rules (for example : king of side not in turn musn\'t be in chess).\n\n';
 	String get scripts_kinds_player_king_constraint_title => 'Player\'s king\'s constraints\n\n';
 	String get scripts_kinds_player_king_constraint_description => 'Tells about the positioning constraints on the players\'s king (given that the player\'s color will be randomly choosen).\n\n';
+	String get scripts_kinds_computer_king_constraint_title => 'Computer\'s king\'s constraints\n\n';
+	String get scripts_kinds_computer_king_constraint_description => 'Tells about the positioning constraints on the computer\'s king (given that the player\'s color will be randomly choosen).\n\n';
+	String get scripts_kinds_kings_mutual_constraints_title => 'Kings\'s mutual constraints\n\n';
+	String get scripts_kinds_kings_mutual_constraints_description => 'Tells about the positioning constraints that both kings must respect between them.\n\n';
+	String get scripts_kinds_other_pieces_count_constraints_title => 'Other pieces counts\' constraints\n\n';
+	String get scripts_kinds_other_pieces_count_constraints_description => 'Tells about the counts\' constraints on pieces other than kings.\n\n';
+	String get scripts_kinds_other_pieces_global_constraints_title => 'Other pieces\' global constraints\n\n';
+	String get scripts_kinds_other_pieces_global_constraints_description => 'Tells about the positioning constraints for pieces other by kings, for each couple [type of piece / is it a player piece ?].\n\n';
+	String get scripts_kinds_other_pieces_mutual_constraints_title => 'Other pieces\' mutual constraints\n\n';
+	String get scripts_kinds_other_pieces_mutual_constraints_description => 'Tells about the positioning constraints for pieces other by kings, that they must respect between each other, two by two, for each couple [type of piece / is it a player piece ?].\n\n';
+	String get scripts_kinds_other_pieces_indexed_constraints_title => 'Other pieces constraints by order\n\n';
+	String get scripts_kinds_other_pieces_indexed_constraints_description => 'Tells about the positioning constraints for pieces other than kings, that they must respect given their apparition order on the chess board, for each couple [type of piece / is it a player piece ?].\n\n';
 }
 
 // Path: <root>
@@ -504,8 +516,8 @@ class _TranslationsScriptTypeEs extends _TranslationsScriptTypeEn {
 	@override final _TranslationsEs _root; // ignore: unused_field
 
 	// Translations
-	@override String get player_king_constraint => 'Restricción del rey del jugador';
-	@override String get computer_king_constraint => 'Restricción del rey de la computadora';
+	@override String get player_king_constraint => 'Restricción sobre rey del jugador';
+	@override String get computer_king_constraint => 'Restricción sobre rey de la computadora';
 	@override String get kings_mutual_constraint => 'Restricción mutua de reyes';
 	@override String get other_pieces_global_constraint => 'Restricción global de otras piezas';
 	@override String get other_pieces_indexed_constraint => 'Restricción indexada de otras piezas';
@@ -567,9 +579,9 @@ class _TranslationsScriptEditorPageEs extends _TranslationsScriptEditorPageEn {
 	@override String get computer_king_constraint => 'Restricciones rey de la computadora';
 	@override String get kings_mutual_constraint => 'Restricciones mutuas de los reyes';
 	@override String get other_pieces_count_constraint => 'Restricciones número otras piezas';
-	@override String get other_pieces_global_constraint => 'Restricciones globales otras piezas';
-	@override String get other_pieces_mutual_constraint => 'Restricciones mutuas de otras piezas';
-	@override String get other_pieces_indexed_constraint => 'Restricciones de otras piezas por orden';
+	@override String get other_pieces_global_constraint => 'Restricciones globales sobre otras piezas';
+	@override String get other_pieces_mutual_constraint => 'Restricciones mutuas sobre otras piezas';
+	@override String get other_pieces_indexed_constraint => 'Restricciones sobre otras piezas por orden';
 	@override String get game_goal => 'Objetivo del juego';
 	@override String get add_count => 'Añadir';
 	@override String get type_already_added => 'Ya se agregó este tipo.';
@@ -599,8 +611,20 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get int_expressions => 'Expresiones enteras';
 	@override String get scripts_goal_description => 'Un script de generación de posiciones se divide en varios subprogramas, cada uno de su propio tipo. \n\nEl objetivo de un subprograma es comprobar que la posición generada cumple con todas sus restricciones. \n\nSi al menos una condición no se cumple, el algoritmo intentará \'arreglar\' la posición para que se cumplan todas las condiciones.';
 	@override String get scripts_kinds_head_description => 'Existen varios tipos de subprogramas, y la posición generada debe respetar todas las reglas de todos los subprogramas definidos. \n\nPor supuesto, también debe respetar las reglas estándar del ajedrez (por ejemplo, el rey del lado que no está en turno no puede estar en jaque).\n\n';
-	@override String get scripts_kinds_player_king_constraint_title => 'Restricción del rey del jugador\n\n';
+	@override String get scripts_kinds_player_king_constraint_title => 'Restricción sobre rey del jugador\n\n';
 	@override String get scripts_kinds_player_king_constraint_description => 'Indica las restricciones de posicionamiento del rey del jugador (dado que el color del jugador se elegirá al azar).\n\n';
+	@override String get scripts_kinds_computer_king_constraint_title => 'Restricciones sobre rey de la computadora\n\n';
+	@override String get scripts_kinds_computer_king_constraint_description => 'Indica las restricciones de posicionamiento del rey de la computadora (dado que el color del jugador se elegirá al azar).\n\n';
+	@override String get scripts_kinds_kings_mutual_constraints_title => 'Restricciones mutuas de los reyes\n\n';
+	@override String get scripts_kinds_kings_mutual_constraints_description => 'Indica las restricciones de posicionamiento que ambos reyes deben respetar entre sí.\n\n';
+	@override String get scripts_kinds_other_pieces_count_constraints_title => 'Restricciones sobre número de otras piezas\n\n';
+	@override String get scripts_kinds_other_pieces_count_constraints_description => 'Indica las restricciones de conteo en piezas que no son reyes.\n\n';
+	@override String get scripts_kinds_other_pieces_global_constraints_title => 'Restricciones globales sobre otras piezas\n\n';
+	@override String get scripts_kinds_other_pieces_global_constraints_description => 'Indica las restricciones de posicionamiento para las piezas que no son reyes, para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n';
+	@override String get scripts_kinds_other_pieces_mutual_constraints_title => 'Restricciones mutuas sobre otras piezas\n\n';
+	@override String get scripts_kinds_other_pieces_mutual_constraints_description => 'Indica las restricciones de posicionamiento para las piezas que no son reyes, que deben respetar entre sí, dos a dos,para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n';
+	@override String get scripts_kinds_other_pieces_indexed_constraints_title => 'Restricciones sobre otras piezas por orden\n\n';
+	@override String get scripts_kinds_other_pieces_indexed_constraints_description => 'Indica las restricciones de posicionamiento para las piezas que no son reyes, que deben respetar dado su orden de aparición en el tablero de ajedrez, para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n';
 }
 
 // Path: <root>
@@ -831,4 +855,16 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_kinds_head_description => 'Il y a plusieurs types de sous-scripts, et toutes les règles définies dans l\'ensemble des sous-scripts doivent être respectées par la position générée. \n\nBien sûr, elle doit aussi respecter les règles standards (par exemple : le roi qui n\'est pas au trait ne doit pas être en échec).\n\n';
 	@override String get scripts_kinds_player_king_constraint_title => 'Contraintes sur le roi du joueur\n\n';
 	@override String get scripts_kinds_player_king_constraint_description => 'Renseigne sur les contraintes d\'emplacement du roi du joueur (sachant que la couleur du joueur est tirée aléatoirement).\n\n';
+	@override String get scripts_kinds_computer_king_constraint_title => 'Contraintes sur le roi de l\'ordinateur\n\n';
+	@override String get scripts_kinds_computer_king_constraint_description => 'Renseigne sur les contraintes d\'emplacement du roi de l\'ordinateur (sachant que la couleur du joueur est tirée aléatoirement).\n\n';
+	@override String get scripts_kinds_kings_mutual_constraints_title => 'Contraintes mutuelles entre rois\n\n';
+	@override String get scripts_kinds_kings_mutual_constraints_description => 'Renseigne sur les contraintes de positionnement que les deux rois doivent respecter entre eux.\n\n';
+	@override String get scripts_kinds_other_pieces_count_constraints_title => 'Contraintes sur le compte des autres pièces\n\n';
+	@override String get scripts_kinds_other_pieces_count_constraints_description => 'Renseigne sur les contraintes sur le compte des pièces autres que les rois.\n\n';
+	@override String get scripts_kinds_other_pieces_global_constraints_title => 'Contraintes globales sur les autres pièces\n\n';
+	@override String get scripts_kinds_other_pieces_global_constraints_description => 'Renseigne sur les contraintes de positionnement des pièces autres que les rois, pour chaque couple [type de pièce / est-ce une pièce du joueur ?].\n\n';
+	@override String get scripts_kinds_other_pieces_mutual_constraints_title => 'Contraintes mutuelles sur les autres pièces\n\n';
+	@override String get scripts_kinds_other_pieces_mutual_constraints_description => 'Renseigne sur les contraintes de positionnement des pièces autres que les rois, qu\'elles doivent respecter entre elles, deux par deux, pour chaque couple [type de pièce / est-ce une pièce d\'un joueur ?].\n\n';
+	@override String get scripts_kinds_other_pieces_indexed_constraints_title => 'Contraintes des autres pièces par ordre\n\n';
+	@override String get scripts_kinds_other_pieces_indexed_constraints_description => 'Renseigne sur les contraintes de positionnement des pièces autres que les rois, qu\'elles doivent respecter en fonction de l\'ordre d\'apparition sur l\'échiquier, pour chaque couple [type de pièce / est-ce une pièce du joueur ?].\n\n';
 }

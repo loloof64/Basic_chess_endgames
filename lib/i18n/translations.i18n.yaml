@@ -57,7 +57,7 @@ scriptType:
   computerKingConstraint: "Computer king constraint"
   kingsMutualConstraint: "Kings mutual constraint"
   otherPiecesGlobalConstraint: "Other pieces global constraint"
-  otherPiecesIndexedConstraint: "Other pieces indexed constraint"
+  otherPiecesIndexedConstraint: "Other pieces constraints by order"
   otherPiecesMutualConstraint: "Other pieces mutual constraint"
   pieceKindCountConstraint: "Piece kinds counts constraint"
 sampleScript:
@@ -123,3 +123,23 @@ syntax_manual_page:
   scripts_kinds_player_king_constraint_title: "Player's king's constraints\n\n"
   scripts_kinds_player_king_constraint_description: "Tells about the positioning constraints on \
     the players's king (given that the player's color will be randomly choosen).\n\n"
+  scripts_kinds_computer_king_constraint_title: "Computer's king's constraints\n\n"
+  scripts_kinds_computer_king_constraint_description: "Tells about the positioning constraints on \
+    the computer's king (given that the player's color will be randomly choosen).\n\n"
+  scripts_kinds_kings_mutual_constraints_title: "Kings's mutual constraints\n\n"
+  scripts_kinds_kings_mutual_constraints_description: "Tells about the positioning constraints that \
+    both kings must respect between them.\n\n"
+  scripts_kinds_other_pieces_count_constraints_title: "Other pieces counts' constraints\n\n"
+  scripts_kinds_other_pieces_count_constraints_description: "Tells about the counts' constraints \
+    on pieces other than kings.\n\n"
+  scripts_kinds_other_pieces_global_constraints_title: "Other pieces' global constraints\n\n"
+  scripts_kinds_other_pieces_global_constraints_description: "Tells about the positioning \
+    constraints for pieces other by kings, for each couple [type of piece / is it a player piece ?].\n\n"
+  scripts_kinds_other_pieces_mutual_constraints_title: "Other pieces' mutual constraints\n\n"
+  scripts_kinds_other_pieces_mutual_constraints_description: "Tells about the positioning constraints \
+    for pieces other by kings, that they must respect between each other, two by two, \
+    for each couple [type of piece / is it a player piece ?].\n\n"
+  scripts_kinds_other_pieces_indexed_constraints_title: "Other pieces constraints by order\n\n"
+  scripts_kinds_other_pieces_indexed_constraints_description: "Tells about the positioning \
+    constraints for pieces other than kings, that they must respect given their apparition order \
+    on the chess board, for each couple [type of piece / is it a player piece ?].\n\n"

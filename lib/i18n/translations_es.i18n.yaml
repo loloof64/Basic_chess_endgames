@@ -55,8 +55,8 @@ scriptParser:
   missingScriptType: "No se pudo generar la posición: compruebe que todas las secciones del script declaran un tipo de script correcto."
   miscErrorDialogTitle: "Equivocado global"
 scriptType:
-  playerKingConstraint: "Restricción del rey del jugador"
-  computerKingConstraint: "Restricción del rey de la computadora"
+  playerKingConstraint: "Restricción sobre rey del jugador"
+  computerKingConstraint: "Restricción sobre rey de la computadora"
   kingsMutualConstraint: "Restricción mutua de reyes"
   otherPiecesGlobalConstraint: "Restricción global de otras piezas"
   otherPiecesIndexedConstraint: "Restricción indexada de otras piezas"
@@ -94,9 +94,9 @@ script_editor_page:
   computer_king_constraint: "Restricciones rey de la computadora"
   kings_mutual_constraint: "Restricciones mutuas de los reyes"
   other_pieces_count_constraint: "Restricciones número otras piezas"
-  other_pieces_global_constraint: "Restricciones globales otras piezas"
-  other_pieces_mutual_constraint: "Restricciones mutuas de otras piezas"
-  other_pieces_indexed_constraint: "Restricciones de otras piezas por orden"
+  other_pieces_global_constraint: "Restricciones globales sobre otras piezas"
+  other_pieces_mutual_constraint: "Restricciones mutuas sobre otras piezas"
+  other_pieces_indexed_constraint: "Restricciones sobre otras piezas por orden"
   game_goal: "Objetivo del juego"
   add_count: "Añadir"
   type_already_added: "Ya se agregó este tipo."
@@ -124,6 +124,27 @@ syntax_manual_page:
     debe respetar todas las reglas de todos los subprogramas definidos. \n\nPor supuesto, también \
     debe respetar las reglas estándar del ajedrez (por ejemplo, el rey del lado que no está en turno \
     no puede estar en jaque).\n\n"
-  scripts_kinds_player_king_constraint_title: "Restricción del rey del jugador\n\n"
+  scripts_kinds_player_king_constraint_title: "Restricción sobre rey del jugador\n\n"
   scripts_kinds_player_king_constraint_description: "Indica las restricciones de posicionamiento del \
     rey del jugador (dado que el color del jugador se elegirá al azar).\n\n"
+  scripts_kinds_computer_king_constraint_title: "Restricciones sobre rey de la computadora\n\n"
+  scripts_kinds_computer_king_constraint_description: "Indica las restricciones de posicionamiento del \
+    rey de la computadora (dado que el color del jugador se elegirá al azar).\n\n"
+  scripts_kinds_kings_mutual_constraints_title: "Restricciones mutuas de los reyes\n\n"
+  scripts_kinds_kings_mutual_constraints_description: "Indica las restricciones de posicionamiento \
+    que ambos reyes deben respetar entre sí.\n\n"
+  scripts_kinds_other_pieces_count_constraints_title: "Restricciones sobre número de otras piezas\n\n"
+  scripts_kinds_other_pieces_count_constraints_description: "Indica las restricciones de conteo en \
+    piezas que no son reyes.\n\n"
+  scripts_kinds_other_pieces_global_constraints_title: "Restricciones globales sobre otras piezas\n\n"
+  scripts_kinds_other_pieces_global_constraints_description: "Indica las restricciones de \
+    posicionamiento para las piezas que no son reyes, para cada par [tipo de pieza / \
+    ¿es una pieza de jugador?].\n\n"
+  scripts_kinds_other_pieces_mutual_constraints_title: "Restricciones mutuas sobre otras piezas\n\n"
+  scripts_kinds_other_pieces_mutual_constraints_description: "Indica las restricciones de \
+    posicionamiento para las piezas que no son reyes, que deben respetar entre sí, dos a dos,\
+    para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n"
+  scripts_kinds_other_pieces_indexed_constraints_title: "Restricciones sobre otras piezas por orden\n\n"
+  scripts_kinds_other_pieces_indexed_constraints_description: "Indica las restricciones de \
+    posicionamiento para las piezas que no son reyes, que deben respetar dado su orden de aparición en \
+    el tablero de ajedrez, para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n"
