@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 252 (84 per locale)
+/// Strings: 291 (97 per locale)
 ///
-/// Built on 2023-11-03 at 13:23 UTC
+/// Built on 2023-11-04 at 00:08 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -174,6 +174,7 @@ class _TranslationsEn implements BaseTranslations<AppLocale, _TranslationsEn> {
 	late final _TranslationsPrivacyEn privacy = _TranslationsPrivacyEn._(_root);
 	late final _TranslationsUseConditionsEn use_conditions = _TranslationsUseConditionsEn._(_root);
 	late final _TranslationsScriptEditorPageEn script_editor_page = _TranslationsScriptEditorPageEn._(_root);
+	late final _TranslationsSyntaxManualPageEn syntax_manual_page = _TranslationsSyntaxManualPageEn._(_root);
 }
 
 // Path: misc
@@ -350,6 +351,28 @@ class _TranslationsScriptEditorPageEn {
 	String get variables_button_label => 'Predefined variables';
 }
 
+// Path: syntax_manual_page
+class _TranslationsSyntaxManualPageEn {
+	_TranslationsSyntaxManualPageEn._(this._root);
+
+	final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Scripts\' syntax';
+	String get scripts_goal => 'Scripts\' goal';
+	String get scripts_kinds => 'Scripts kinds';
+	String get scripts_format => 'Scripts\' format';
+	String get comments => 'Comments';
+	String get variable_creation => 'Variable creation';
+	String get predefined_variables_and_values => 'Predefined variables and values';
+	String get boolean_expressions => 'Boolean expressions';
+	String get int_expressions => 'Integer expressions';
+	String get scripts_goal_description => 'A position generation script is split into several subscripts, each of its own kind. \n\nA subscript\'s goal is to check that the generated position follow all of its constraints. \n\nIf at least one condition is not met, then the algorithm will try to \'fix\' the position so that all conditions are met.';
+	String get scripts_kinds_head_description => 'There are several types of sub-scripts, and all rules of all defined sub-scripts must be respected by the generated position. \n\nOf course, it must also respect standard chess rules (for example : king of side not in turn musn\'t be in chess).\n\n';
+	String get scripts_kinds_player_king_constraint_title => 'Player\'s king\'s constraints\n\n';
+	String get scripts_kinds_player_king_constraint_description => 'Tells about the positioning constraints on the players\'s king (given that the player\'s color will be randomly choosen).\n\n';
+}
+
 // Path: <root>
 class _TranslationsEs extends _TranslationsEn {
 
@@ -381,6 +404,7 @@ class _TranslationsEs extends _TranslationsEn {
 	@override late final _TranslationsPrivacyEs privacy = _TranslationsPrivacyEs._(_root);
 	@override late final _TranslationsUseConditionsEs use_conditions = _TranslationsUseConditionsEs._(_root);
 	@override late final _TranslationsScriptEditorPageEs script_editor_page = _TranslationsScriptEditorPageEs._(_root);
+	@override late final _TranslationsSyntaxManualPageEs syntax_manual_page = _TranslationsSyntaxManualPageEs._(_root);
 }
 
 // Path: misc
@@ -557,6 +581,28 @@ class _TranslationsScriptEditorPageEs extends _TranslationsScriptEditorPageEn {
 	@override String get variables_button_label => 'Variables predefinidas';
 }
 
+// Path: syntax_manual_page
+class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
+	_TranslationsSyntaxManualPageEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Sintaxis de scripts';
+	@override String get scripts_goal => 'Objetivo de los scripts';
+	@override String get scripts_kinds => 'Tipos de scripts';
+	@override String get scripts_format => 'Formato de los scripts';
+	@override String get comments => 'Comentarios';
+	@override String get variable_creation => 'Creación de variables';
+	@override String get predefined_variables_and_values => 'Variables y valores predefinidos';
+	@override String get boolean_expressions => 'Expresiones booleanas';
+	@override String get int_expressions => 'Expresiones enteras';
+	@override String get scripts_goal_description => 'Un script de generación de posiciones se divide en varios subprogramas, cada uno de su propio tipo. \n\nEl objetivo de un subprograma es comprobar que la posición generada cumple con todas sus restricciones. \n\nSi al menos una condición no se cumple, el algoritmo intentará \'arreglar\' la posición para que se cumplan todas las condiciones.';
+	@override String get scripts_kinds_head_description => 'Existen varios tipos de subprogramas, y la posición generada debe respetar todas las reglas de todos los subprogramas definidos. \n\nPor supuesto, también debe respetar las reglas estándar del ajedrez (por ejemplo, el rey del lado que no está en turno no puede estar en jaque).\n\n';
+	@override String get scripts_kinds_player_king_constraint_title => 'Restricción del rey del jugador\n\n';
+	@override String get scripts_kinds_player_king_constraint_description => 'Indica las restricciones de posicionamiento del rey del jugador (dado que el color del jugador se elegirá al azar).\n\n';
+}
+
 // Path: <root>
 class _TranslationsFr extends _TranslationsEn {
 
@@ -588,6 +634,7 @@ class _TranslationsFr extends _TranslationsEn {
 	@override late final _TranslationsPrivacyFr privacy = _TranslationsPrivacyFr._(_root);
 	@override late final _TranslationsUseConditionsFr use_conditions = _TranslationsUseConditionsFr._(_root);
 	@override late final _TranslationsScriptEditorPageFr script_editor_page = _TranslationsScriptEditorPageFr._(_root);
+	@override late final _TranslationsSyntaxManualPageFr syntax_manual_page = _TranslationsSyntaxManualPageFr._(_root);
 }
 
 // Path: misc
@@ -762,4 +809,26 @@ class _TranslationsScriptEditorPageFr extends _TranslationsScriptEditorPageEn {
 	@override String get before_exit_message => 'Souhaitez-vous quitter la page et annuler l\'édition du script ?';
 	@override String get syntax_button_label => 'Règles de syntaxe';
 	@override String get variables_button_label => 'Variables prédéfinies';
+}
+
+// Path: syntax_manual_page
+class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
+	_TranslationsSyntaxManualPageFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Syntaxe des scripts';
+	@override String get scripts_goal => 'Objectif des scripts';
+	@override String get scripts_kinds => 'Types de scripts';
+	@override String get scripts_format => 'Format des scripts';
+	@override String get comments => 'Commentaires';
+	@override String get variable_creation => 'Création de variable';
+	@override String get predefined_variables_and_values => 'Variables et valeurs prédéfinies';
+	@override String get boolean_expressions => 'Expressions booléennes';
+	@override String get int_expressions => 'Expressions entières';
+	@override String get scripts_goal_description => 'Un script de génération de position est composé de plusieurs sous-scripts, chacun étant de son propre type. \n\nLe but d\'un sous-script est de vérifier que la position générée respecte toutes ses contraintes. \n\nSi au moins une des conditions n\'est pas respectée, alors l\'algorithme tentera de \'fixer\' la position de telle manière que toutes les contraintes soient respectéees.';
+	@override String get scripts_kinds_head_description => 'Il y a plusieurs types de sous-scripts, et toutes les règles définies dans l\'ensemble des sous-scripts doivent être respectées par la position générée. \n\nBien sûr, elle doit aussi respecter les règles standards (par exemple : le roi qui n\'est pas au trait ne doit pas être en échec).\n\n';
+	@override String get scripts_kinds_player_king_constraint_title => 'Contraintes sur le roi du joueur\n\n';
+	@override String get scripts_kinds_player_king_constraint_description => 'Renseigne sur les contraintes d\'emplacement du roi du joueur (sachant que la couleur du joueur est tirée aléatoirement).\n\n';
 }

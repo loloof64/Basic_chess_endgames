@@ -106,3 +106,24 @@ script_editor_page:
   beforeExitMessage: "¿Desea salir de esta página y cancelar la edición del script?"
   syntax_button_label: "Reglas de sintaxis"
   variables_button_label: "Variables predefinidas"
+syntax_manual_page:
+  title: "Sintaxis de scripts"
+  scripts_goal: "Objetivo de los scripts"
+  scripts_kinds: "Tipos de scripts"
+  scripts_format: "Formato de los scripts"
+  comments: "Comentarios"
+  variable_creation: "Creación de variables"
+  predefined_variables_and_values: "Variables y valores predefinidos"
+  boolean_expressions: "Expresiones booleanas"
+  int_expressions: "Expresiones enteras"
+  scripts_goal_description: "Un script de generación de posiciones se divide en varios subprogramas, \
+    cada uno de su propio tipo. \n\nEl objetivo de un subprograma es comprobar que la posición generada \
+    cumple con todas sus restricciones. \n\nSi al menos una condición no se cumple, el algoritmo intentará \
+    'arreglar' la posición para que se cumplan todas las condiciones."
+  scripts_kinds_head_description: "Existen varios tipos de subprogramas, y la posición generada \
+    debe respetar todas las reglas de todos los subprogramas definidos. \n\nPor supuesto, también \
+    debe respetar las reglas estándar del ajedrez (por ejemplo, el rey del lado que no está en turno \
+    no puede estar en jaque).\n\n"
+  scripts_kinds_player_king_constraint_title: "Restricción del rey del jugador\n\n"
+  scripts_kinds_player_king_constraint_description: "Indica las restricciones de posicionamiento del \
+    rey del jugador (dado que el color del jugador se elegirá al azar).\n\n"

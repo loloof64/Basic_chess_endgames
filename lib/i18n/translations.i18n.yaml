@@ -103,3 +103,23 @@ script_editor_page:
   beforeExitMessage: "Do you want to leave this page and cancel script edition ?"
   syntax_button_label: "Syntax rules"
   variables_button_label: "Predefined variables"
+syntax_manual_page:
+  title: "Scripts' syntax"
+  scripts_goal: "Scripts' goal"
+  scripts_kinds: "Scripts kinds"
+  scripts_format: "Scripts' format"
+  comments: "Comments"
+  variable_creation: "Variable creation"
+  predefined_variables_and_values: "Predefined variables and values"
+  boolean_expressions: "Boolean expressions"
+  int_expressions: "Integer expressions"
+  scripts_goal_description: "A position generation script is split into several subscripts, \
+    each of its own kind. \n\nA subscript's goal is to check that the generated position follow all of \
+    its constraints. \n\nIf at least one condition is not met, then the algorithm will try to 'fix' the \
+    position so that all conditions are met."
+  scripts_kinds_head_description: "There are several types of sub-scripts, and all rules of all \
+    defined sub-scripts must be respected by the generated position. \n\nOf course, it must also respect \
+    standard chess rules (for example : king of side not in turn musn't be in chess).\n\n"
+  scripts_kinds_player_king_constraint_title: "Player's king's constraints\n\n"
+  scripts_kinds_player_king_constraint_description: "Tells about the positioning constraints on \
+    the players's king (given that the player's color will be randomly choosen).\n\n"

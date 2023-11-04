@@ -19,14 +19,16 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
         builder: (ctx2) {
           return AlertDialog(
             title: Text(t.privacy.title),
-            content: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(t.privacy.content1),
-                Text(t.privacy.content2),
-                Text(t.privacy.content3),
-              ],
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(t.privacy.content1),
+                  Text(t.privacy.content2),
+                  Text(t.privacy.content3),
+                ],
+              ),
             ),
             actions: [
               TextButton(
@@ -46,7 +48,7 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
         builder: (ctx2) {
           return AlertDialog(
             title: Text(t.use_conditions.title),
-            content: Text(t.use_conditions.content),
+            content: SingleChildScrollView(child: Text(t.use_conditions.content)),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(ctx2).pop(),

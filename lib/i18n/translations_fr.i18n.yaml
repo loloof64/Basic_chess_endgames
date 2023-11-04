@@ -107,3 +107,26 @@ script_editor_page:
   beforeExitMessage: "Souhaitez-vous quitter la page et annuler l'édition du script ?"
   syntax_button_label: "Règles de syntaxe"
   variables_button_label: "Variables prédéfinies"
+syntax_manual_page:
+  title: "Syntaxe des scripts"
+  scripts_goal: "Objectif des scripts"
+  scripts_kinds: "Types de scripts"
+  scripts_format: "Format des scripts"
+  comments: "Commentaires"
+  variable_creation: "Création de variable"
+  predefined_variables_and_values: "Variables et valeurs prédéfinies"
+  boolean_expressions: "Expressions booléennes"
+  int_expressions: "Expressions entières"
+  scripts_goal_description: "Un script de génération de position est composé de plusieurs \
+    sous-scripts, chacun étant de son propre type. \n\nLe but d'un sous-script est de vérifier que \
+    la position générée respecte toutes ses contraintes. \n\nSi au moins une des conditions n'est \
+    pas respectée, alors l'algorithme tentera de 'fixer' la position de telle manière que toutes \
+    les contraintes soient respectéees."
+  scripts_kinds_head_description: "Il y a plusieurs types de sous-scripts, et toutes les règles \
+    définies dans l'ensemble des sous-scripts doivent être respectées par la position générée. \
+    \n\nBien sûr, elle doit aussi respecter les règles standards (par exemple : le roi qui n'est \
+    pas au trait ne doit pas être en échec).\n\n"
+  scripts_kinds_player_king_constraint_title: "Contraintes sur le roi du joueur\n\n"
+  scripts_kinds_player_king_constraint_description: "Renseigne sur les contraintes d'emplacement du \
+    roi du joueur (sachant que la couleur du joueur est tirée aléatoirement).\n\n"
+  
