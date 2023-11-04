@@ -123,6 +123,7 @@ syntax_manual_page:
   variables: "Variables"
   predefined_variables: "Variables predefinidas"
   int_expressions: "Expresiones enteras"
+  bool_expressions: "Expresiones booleanas"
   scripts_goal_description:
     "Un script de generación de posiciones se divide en varios subprogramas, \
     cada uno de su propio tipo. \n\nEl objetivo de un subprograma es comprobar que la posición generada \
@@ -274,7 +275,7 @@ syntax_manual_page:
   scripts_predefined_variables_other_pieces_indexed_constraints_apparition:
     "el índice (empezando en \
     0) de aparición en el tablero"
-  scripts_int_expressions_head_description:
+  int_expressions_head_description:
     "Una expresión entera es simplemente una expresión \
     cuyo valor final producido es un entero.\n\n"
   int_expression_parenthesis_title: "Paréntesis\n\n"
@@ -285,7 +286,7 @@ syntax_manual_page:
   int_expression_parenthesis_sample_text: "Este es un ejemplo:\n\n"
   int_expression_conditional_title: "Expresión condicional\n\n"
   int_expression_conditional_description:
-    "Para producir expresiones condicionalmente. \
+    "Para producir expresiones condicionalmente.\n\n\
     Cuidado con la palabra clave 'numIf'.\n\n"
   int_expression_conditional_syntax: "numIf([expresión booleana]) then \
     [expresión entera] else [expresión entera]\n\n"
@@ -293,7 +294,8 @@ syntax_manual_page:
   int_expression_absolute_description: "Produce el valor absoluto de la expresión dada.\n\n"
   int_expression_absolute_syntax: "abs([expresión entera])\n\n"
   int_expression_modulo_title: "Expresión modulo\n\n"
-  int_expression_modulo_description: "Produce el valor modular de la expresión dada.\n\nEs el \
+  int_expression_modulo_description:
+    "Produce el valor modular de la expresión dada.\n\nEs el \
     resto de la división del primer operando por el segundo.\n\n"
   int_expression_modulo_syntax: "[expresión entera] % [expresión entera]\n\n"
   int_expression_modulo_sample_code: "miVariableEntera % 2\n\n"
@@ -316,3 +318,37 @@ syntax_manual_page:
     Estos son los valores enteros predefinidos para los \
     rangos del tablero de ajedrez: Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n
     "
+  bool_expressions_head_description:
+    "Una expresión booleana es simplemente una expresión cuyo \
+    valor final producido es un valor booleano.\n\n"
+  bool_expression_parenthesis_title: "Paréntesis\n\n"
+  bool_expression_parenthesis_description:
+    "Útil para aislar una expresión booleana, \
+    de modo que se calcule con prioridad.\n\n"
+  bool_expression_parenthesis_syntax: "([expresión booleana])\n\n"
+  bool_expression_conditional_title: "Expresión condicional\n\n"
+  bool_expression_conditional_description:
+    "Para producir expresiones condicionalmente.\n\n\
+    Cuidado con la palabra clave 'boolIf'.\n\n"
+  bool_expression_conditional_syntax: "boolIf([expresión booleana]) then \
+    [expresión booleana] else [expresión booleana]\n\n"
+  bool_expression_variable_title: "Variables\n\n"
+  bool_expression_variable_description: "Booleanas variables también son expresiones.\n\n"
+  bool_expression_integer_comparation_title: "Comparación de enteros\n\n"
+  bool_expression_integer_comparation_description: "You can compare two integers values.\n\n\
+    '==' es para igualdad y '!=' es para diferencia.\n\n"
+  bool_expression_integer_comparation_syntax_1: "[expresión entera] < [expresión entera]\n\n"
+  bool_expression_integer_comparation_syntax_2: "[expresión entera] > [expresión entera]\n\n"
+  bool_expression_integer_comparation_syntax_3: "[expresión entera] <= [expresión entera]\n\n"
+  bool_expression_integer_comparation_syntax_4: "[expresión entera] >= [expresión entera]\n\n"
+  bool_expression_integer_comparation_syntax_5: "[expresión entera] == [expresión entera]\n\n"
+  bool_expression_integer_comparation_syntax_6: "[expresión entera] != [expresión entera]\n\n"
+  bool_expression_boolean_comparation_title: "Comparación de booleanos\n\n"
+  bool_expression_boolean_comparation_description: "Puedes comparar dos valores booleanos.\n\n\
+    '<==>' es para la igualdad y '<!=>' es para la diferencia.\n\n"
+  bool_expression_boolean_comparation_syntax_1: "[expresión booleana] <==> [expresión booleana]\n\n"
+  bool_expression_boolean_comparation_syntax_2: "[expresión booleana] <!=> [expresión booleana]\n\n"
+  bool_expression_logical_operators_title: "Operadores lógicos\n\n"
+  bool_expression_logical_operators_description: "Hay dos operadores lógicos disponibles.\n\n"
+  bool_expression_logical_operators_syntax_1: "[expresión booleana] and [expresión booleana]\n\n"
+  bool_expression_logical_operators_syntax_2: "[expresión booleana] or [expresión booleana]\n\n"

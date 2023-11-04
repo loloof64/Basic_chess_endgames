@@ -118,6 +118,7 @@ syntax_manual_page:
   variables: "Variables"
   predefined_variables: "Predefined variables"
   int_expressions: "Integer expressions"
+  bool_expressions: "Boolean expressions"
   scripts_goal_description:
     "A position generation script is split into several sub-scripts, \
     each of its own kind. \n\nA sub-script's goal is to check that the generated position follow all of \
@@ -265,7 +266,7 @@ syntax_manual_page:
   scripts_predefined_variables_other_pieces_indexed_constraints_apparition:
     "the index (starting at \
     0) of apparition on the board"
-  scripts_int_expressions_head_description:
+  int_expressions_head_description:
     "An integer expression is simply an expression whose \
     final produced value is an integer.\n\n"
   int_expression_parenthesis_title: "Parenthesis\n\n"
@@ -276,7 +277,7 @@ syntax_manual_page:
   int_expression_parenthesis_sample_text: "An example :\n\n"
   int_expression_conditional_title: "Conditional expression\n\n"
   int_expression_conditional_description:
-    "For producing expressions conditionnaly. \
+    "For producing expressions conditionnaly.\n\n\
     Beware of the 'numIf' keyword.\n\n"
   int_expression_conditional_syntax: "numIf([boolean expression]) then \
     [integer expression] else [integer expression]\n\n"
@@ -284,12 +285,14 @@ syntax_manual_page:
   int_expression_absolute_description: "Produces the absolute value of the given expression.\n\n"
   int_expression_absolute_syntax: "abs([integer expression])\n\n"
   int_expression_modulo_title: "Modulo expression\n\n"
-  int_expression_modulo_description: "Produces the modulo value of the given expression.\n\n \
+  int_expression_modulo_description:
+    "Produces the modulo value of the given expression.\n\n \
     It's the remainder of the division of the first operand by the second.\n\n"
   int_expression_modulo_syntax: "[integer expression] % [integer expression]\n\n"
   int_expression_modulo_sample_code: "myIntVariable % 2\n\n"
   int_expression_arithmetic_title: "Arithmetic operators\n\n"
-  int_expression_arithmetic_description: "There are two arithmetic operators available: \
+  int_expression_arithmetic_description:
+    "There are two arithmetic operators available: \
     '+' and '-'.\n\n"
   int_expression_arithmetic_syntax_1: "[integer expression] + [integer expression]\n"
   int_expression_arithmetic_syntax_or: "or\n"
@@ -307,3 +310,37 @@ syntax_manual_page:
     board files : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n\
     These are predefined integer values for the chess \
     board ranks : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n"
+  bool_expressions_head_description:
+    "An boolean expression is simply an expression whose \
+    final produced value is a boolean.\n\n"
+  bool_expression_parenthesis_title: "Parenthesis\n\n"
+  bool_expression_parenthesis_description:
+    "Useful for isolating an boolean expression, so that \
+    it will be computed in priority.\n\n"
+  bool_expression_parenthesis_syntax: "([boolean expression])\n\n"
+  bool_expression_conditional_title: "Conditional expression\n\n"
+  bool_expression_conditional_description:
+    "For producing expressions conditionnaly.\n\n\
+    Beware of the 'boolIf' keyword.\n\n"
+  bool_expression_conditional_syntax: "boolIf([boolean expression]) then \
+    [boolean expression] else [boolean expression]\n\n"
+  bool_expression_variable_title: "Variables\n\n"
+  bool_expression_variable_description: "Boolean variables are also expressions.\n\n"
+  bool_expression_integer_comparation_title: "Integers comparation\n\n"
+  bool_expression_integer_comparation_description: "You can compare two integer values.\n\n
+    '==' is for equality and '!=' is for difference.\n\n"
+  bool_expression_integer_comparation_syntax_1: "[integer expression] < [integer expression]\n\n"
+  bool_expression_integer_comparation_syntax_2: "[integer expression] > [integer expression]\n\n"
+  bool_expression_integer_comparation_syntax_3: "[integer expression] <= [integer expression]\n\n"
+  bool_expression_integer_comparation_syntax_4: "[integer expression] >= [integer expression]\n\n"
+  bool_expression_integer_comparation_syntax_5: "[integer expression] == [integer expression]\n\n"
+  bool_expression_integer_comparation_syntax_6: "[integer expression] != [integer expression]\n\n"
+  bool_expression_boolean_comparation_title: "Boolean comparation\n\n"
+  bool_expression_boolean_comparation_description: "You can compare two boolean values.\n\n\
+    '<==>' is for equality and '<!=>' is for difference.\n\n"
+  bool_expression_boolean_comparation_syntax_1: "[boolean expression] <==> [boolean expression]\n\n"
+  bool_expression_boolean_comparation_syntax_2: "[boolean expression] <!=> [boolean expression]\n\n"
+  bool_expression_logical_operators_title: "Logical operators\n\n"
+  bool_expression_logical_operators_description: "There are two available logical operators.\n\n"
+  bool_expression_logical_operators_syntax_1: "[boolean expression] and [boolean expression]\n\n"
+  bool_expression_logical_operators_syntax_2: "[boolean expression] or [boolean expression]\n\n"

@@ -43,6 +43,10 @@ List<DropdownMenuItem<SyntaxManualSection>> dropDownItems = [
     value: SyntaxManualSection.intExpressions,
     child: Text(t.syntax_manual_page.int_expressions),
   ),
+  DropdownMenuItem(
+    value: SyntaxManualSection.booleanExpressions,
+    child: Text(t.syntax_manual_page.bool_expressions),
+  ),
 ];
 
 const Map<SyntaxManualSection, Widget> dropDownWidgets = {
@@ -53,6 +57,7 @@ const Map<SyntaxManualSection, Widget> dropDownWidgets = {
   SyntaxManualSection.variables: ScriptsVariablesWidget(),
   SyntaxManualSection.predefinedVariables: ScriptPredefinedVariablesWidget(),
   SyntaxManualSection.intExpressions: ScriptIntExpressionsWidget(),
+  SyntaxManualSection.booleanExpressions: ScriptBooleanExpressionsWidget(),
 };
 
 const typeTitleStyle = TextStyle(
@@ -572,7 +577,7 @@ class ScriptIntExpressionsWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: RichText(
         text: TextSpan(
-          text: t.syntax_manual_page.scripts_int_expressions_head_description,
+          text: t.syntax_manual_page.int_expressions_head_description,
           style: DefaultTextStyle.of(context).style,
           children: [
             TextSpan(
@@ -693,6 +698,185 @@ class ScriptIntExpressionsWidget extends StatelessWidget {
             TextSpan(
               text: t.syntax_manual_page
                   .int_expression_predefined_values_description,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ScriptBooleanExpressionsWidget extends StatelessWidget {
+  const ScriptBooleanExpressionsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: RichText(
+        text: TextSpan(
+          text: t.syntax_manual_page.bool_expressions_head_description,
+          style: DefaultTextStyle.of(context).style,
+          children: [
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_parenthesis_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_parenthesis_description,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_parenthesis_syntax,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_parenthesis_sample_text,
+            ),
+            TextSpan(
+              text: "(playerKingFile > FileC)\n\n",
+              style: codeSampleStyle,
+            ),
+
+
+
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_conditional_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_conditional_description,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_conditional_syntax,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_parenthesis_sample_text,
+            ),
+            TextSpan(
+              text: "boolIf(playerKingFile > FileD) then (playerKingRank < Rank4) else (playerKingRank > Rank5)\n\n",
+              style: codeSampleStyle,
+            ),
+
+
+
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_variable_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_variable_description,
+            ),
+
+
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_integer_comparation_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_integer_comparation_description,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_integer_comparation_syntax_1,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_arithmetic_syntax_or,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_integer_comparation_syntax_2,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_arithmetic_syntax_or,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_integer_comparation_syntax_3,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_arithmetic_syntax_or,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_integer_comparation_syntax_4,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_arithmetic_syntax_or,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_integer_comparation_syntax_5,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_arithmetic_syntax_or,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_integer_comparation_syntax_6,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_parenthesis_sample_text,
+            ),
+            TextSpan(
+              text: "playerKingFile != computerKingFile\n\n",
+              style: codeSampleStyle,
+            ),
+
+
+
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_boolean_comparation_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_boolean_comparation_description,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_boolean_comparation_syntax_1,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_arithmetic_syntax_or
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_boolean_comparation_syntax_2,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_parenthesis_sample_text,
+            ),
+            TextSpan(
+              text: "playerHasWhite <==> ((computerKingFile % 2) > 0)\n\n",
+              style: codeSampleStyle,
+            ),
+
+
+
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_logical_operators_title,
+              style: typeTitleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_logical_operators_description,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_logical_operators_syntax_1,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_arithmetic_syntax_or,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.bool_expression_logical_operators_syntax_2,
+              style: codeSampleStyle,
+            ),
+            TextSpan(
+              text: t.syntax_manual_page.int_expression_parenthesis_sample_text,
+            ),
+            TextSpan(
+              text: "playerHasWhite or ((computerKingFile % 2) > 0)\n\n",
+              style: codeSampleStyle,
             ),
           ],
         ),

@@ -124,6 +124,7 @@ syntax_manual_page:
   variables: "Variables"
   predefined_variables: "Variables prédéfinies"
   int_expressions: "Expressions entières"
+  bool_expressions: "Expressions booléennes"
   scripts_goal_description:
     "Un script de génération de position est composé de plusieurs \
     sous-scripts, chacun étant de son propre type. \n\nLe but d'un sous-script est de vérifier que \
@@ -278,8 +279,7 @@ syntax_manual_page:
   scripts_predefined_variables_other_pieces_indexed_constraints_apparition:
     "l'index (démarrant \
     à 0) d'apparition sur l'échiquier"
-  scripts_int_expressions_head_description:
-    "Une expression entière est simplement une \
+  int_expressions_head_description: "Une expression entière est simplement une \
     expression dont la valeur finalement produite est un entier.\n\n"
   int_expression_parenthesis_title: "Parenthèses\n\n"
   int_expression_parenthesis_description:
@@ -289,7 +289,7 @@ syntax_manual_page:
   int_expression_parenthesis_sample_text: "À titre d'exemple :\n\n"
   int_expression_conditional_title: "Expression conditionnelle\n\n"
   int_expression_conditional_description:
-    "Pour produire une expression de manière conditionnelle. \
+    "Pour produire une expression de manière conditionnelle.\n\n\
     Attention au mot-clé 'numIf'.\n\n"
   int_expression_conditional_syntax: "numIf([expression booléenne]) then \
     [expression entière] else [expression entière]\n\n"
@@ -297,7 +297,8 @@ syntax_manual_page:
   int_expression_absolute_description: "Produit la valeur absolue de l'expression donnée.\n\n"
   int_expression_absolute_syntax: "abs([expression entière])\n\n"
   int_expression_modulo_title: "Expression modulo\n\n"
-  int_expression_modulo_description: "Produit la valeur modulo de l'expression donnée.\n\nC'est \
+  int_expression_modulo_description:
+    "Produit la valeur modulo de l'expression donnée.\n\nC'est \
     le reste de la division de la première opérande par la seconde.\n\n"
   int_expression_modulo_syntax: "[expression entière] % [expression entière]\n\n"
   int_expression_modulo_sample_code: "maVariableEntiere % 2\n\n"
@@ -307,7 +308,8 @@ syntax_manual_page:
   int_expression_arithmetic_syntax_or: "ou\n"
   int_expression_arithmetic_syntax_2: "[expression entière] - [expression entière]\n\n"
   int_expression_literal_title: "Litéraux\n\n"
-  int_expression_literal_description: "Vous pouvez utiliser des valeurs litérales (1, 25, \
+  int_expression_literal_description:
+    "Vous pouvez utiliser des valeurs litérales (1, 25, \
     150 par exemple).\n\n"
   int_expression_variable_title: "Variables\n\n"
   int_expression_variable_description: "Les variables entières sont également des expressions.\n\n"
@@ -321,3 +323,38 @@ syntax_manual_page:
     Voici les valeurs entières prédéfines pour les rangées \
     de l'échiquier : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n
     "
+  bool_expressions_head_description:
+    "Une expression booléenne est simplement un expression dont \
+    la valeur finale produite est un booléen.\n\n"
+  bool_expression_parenthesis_title: "Parenthèses\n\n"
+  bool_expression_parenthesis_description:
+    "Utile pour isoler une expression entière, de sorte qu'\
+    elle sera calculée en priorité.\n\n"
+  bool_expression_parenthesis_syntax: "([expression booléenne])\n\n"
+  bool_expression_conditional_title: "Expression conditionnelle\n\n"
+  bool_expression_conditional_description:
+    "Pour produire une expression de manière conditionnelle.\n\n\
+    Attention au mot-clé 'boolIf'.\n\n"
+  bool_expression_conditional_syntax: "boolIf([expression booléenne]) then \
+    [expression booléenne] else [expression booléenne]\n\n"
+  bool_expression_variable_title: "Variables\n\n"
+  bool_expression_variable_description: "Les variables booléennes sont \
+    également des expressions.\n\n"
+  bool_expression_integer_comparation_title: "Comparaison d'entiers\n\n"
+  bool_expression_integer_comparation_description: "Vous pouvez comparer deux valeurs entières.\n\n\
+    '==' pour l'égalité et '!=' pour la différence.\n\n"
+  bool_expression_integer_comparation_syntax_1: "[expression entière] < [expression entière]\n\n"
+  bool_expression_integer_comparation_syntax_2: "[expression entière] > [expression entière]\n\n"
+  bool_expression_integer_comparation_syntax_3: "[expression entière] <= [expression entière]\n\n"
+  bool_expression_integer_comparation_syntax_4: "[expression entière] >= [expression entière]\n\n"
+  bool_expression_integer_comparation_syntax_5: "[expression entière] == [expression entière]\n\n"
+  bool_expression_integer_comparation_syntax_6: "[expression entière] != [expression entière]\n\n"
+  bool_expression_boolean_comparation_title: "Comparaison de booléens\n\n"
+  bool_expression_boolean_comparation_description: "Vous pouvez comparer deux valeurs entières.\n\n\
+    '<==>' est pour l'égalité and '<!=>' est pour la différence.\n\n"
+  bool_expression_boolean_comparation_syntax_1: "[expression booléenne] <==> [expression booléenne]\n\n"
+  bool_expression_boolean_comparation_syntax_2: "[expression booléenne] <!=> [expression booléenne]\n\n"
+  bool_expression_logical_operators_title: "Opérateurs logiques\n\n"
+  bool_expression_logical_operators_description: "Il y a deux opérateurs logiques disponibles.\n\n"
+  bool_expression_logical_operators_syntax_1: "[expression booléenne] and [expression booléenne]\n\n"
+  bool_expression_logical_operators_syntax_2: "[expression booléenne] or [expression booléenne]\n\n"

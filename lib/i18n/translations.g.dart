@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 531 (177 per locale)
+/// Strings: 609 (203 per locale)
 ///
-/// Built on 2023-11-04 at 19:02 UTC
+/// Built on 2023-11-04 at 21:04 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -368,6 +368,7 @@ class _TranslationsSyntaxManualPageEn {
 	String get variables => 'Variables';
 	String get predefined_variables => 'Predefined variables';
 	String get int_expressions => 'Integer expressions';
+	String get bool_expressions => 'Boolean expressions';
 	String get scripts_goal_description => 'A position generation script is split into several sub-scripts, each of its own kind. \n\nA sub-script\'s goal is to check that the generated position follow all of its constraints. \n\nIf at least one condition is not met, then the algorithm will try to \'fix\' the position so that all conditions are met.';
 	String get scripts_kinds_head_description => 'There are several types of sub-scripts, and all rules of all defined sub-scripts must be respected by the generated position. \n\nOf course, it must also respect standard chess rules (for example : king of side not in turn musn\'t be in chess).\n\n';
 	String get scripts_kinds_player_king_constraint_title => 'Player\'s king\'s constraints\n\n';
@@ -425,13 +426,13 @@ class _TranslationsSyntaxManualPageEn {
 	String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_second => 'the file which has been set for the second piece';
 	String get scripts_predefined_variables_other_pieces_indexed_constraints_title => '\n\nOthers pieces\' constraints by order\n\n';
 	String get scripts_predefined_variables_other_pieces_indexed_constraints_apparition => 'the index (starting at 0) of apparition on the board';
-	String get scripts_int_expressions_head_description => 'An integer expression is simply an expression whose final produced value is an integer.\n\n';
+	String get int_expressions_head_description => 'An integer expression is simply an expression whose final produced value is an integer.\n\n';
 	String get int_expression_parenthesis_title => 'Parenthesis\n\n';
 	String get int_expression_parenthesis_description => 'Useful for isolating an integer expression, so that it will be computed in priority.\n\n';
 	String get int_expression_parenthesis_syntax => '([integer expression])\n\n';
 	String get int_expression_parenthesis_sample_text => 'An example :\n\n';
 	String get int_expression_conditional_title => 'Conditional expression\n\n';
-	String get int_expression_conditional_description => 'For producing expressions conditionnaly. Beware of the \'numIf\' keyword.\n\n';
+	String get int_expression_conditional_description => 'For producing expressions conditionnaly.\n\nBeware of the \'numIf\' keyword.\n\n';
 	String get int_expression_conditional_syntax => 'numIf([boolean expression]) then [integer expression] else [integer expression]\n\n';
 	String get int_expression_absolute_title => 'Absolute value\n\n';
 	String get int_expression_absolute_description => 'Produces the absolute value of the given expression.\n\n';
@@ -451,6 +452,31 @@ class _TranslationsSyntaxManualPageEn {
 	String get int_expression_variable_description => 'Integer variables are also expressions.\n\n';
 	String get int_expression_predefined_values_title => 'Predefined values\n\n';
 	String get int_expression_predefined_values_description => 'All sub-scripts have the same predefined integer values (you can\'t name a variable with one of those names).\n\nAll of these values takes the chess board\'s orientation into account.\n\nThese are predefined integer values for the chess board files : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\nThese are predefined integer values for the chess board ranks : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n';
+	String get bool_expressions_head_description => 'An boolean expression is simply an expression whose final produced value is a boolean.\n\n';
+	String get bool_expression_parenthesis_title => 'Parenthesis\n\n';
+	String get bool_expression_parenthesis_description => 'Useful for isolating an boolean expression, so that it will be computed in priority.\n\n';
+	String get bool_expression_parenthesis_syntax => '([boolean expression])\n\n';
+	String get bool_expression_conditional_title => 'Conditional expression\n\n';
+	String get bool_expression_conditional_description => 'For producing expressions conditionnaly.\n\nBeware of the \'boolIf\' keyword.\n\n';
+	String get bool_expression_conditional_syntax => 'boolIf([boolean expression]) then [boolean expression] else [boolean expression]\n\n';
+	String get bool_expression_variable_title => 'Variables\n\n';
+	String get bool_expression_variable_description => 'Boolean variables are also expressions.\n\n';
+	String get bool_expression_integer_comparation_title => 'Integers comparation\n\n';
+	String get bool_expression_integer_comparation_description => 'You can compare two integer values.\n\n \'==\' is for equality and \'!=\' is for difference.\n\n';
+	String get bool_expression_integer_comparation_syntax_1 => '[integer expression] < [integer expression]\n\n';
+	String get bool_expression_integer_comparation_syntax_2 => '[integer expression] > [integer expression]\n\n';
+	String get bool_expression_integer_comparation_syntax_3 => '[integer expression] <= [integer expression]\n\n';
+	String get bool_expression_integer_comparation_syntax_4 => '[integer expression] >= [integer expression]\n\n';
+	String get bool_expression_integer_comparation_syntax_5 => '[integer expression] == [integer expression]\n\n';
+	String get bool_expression_integer_comparation_syntax_6 => '[integer expression] != [integer expression]\n\n';
+	String get bool_expression_boolean_comparation_title => 'Boolean comparation\n\n';
+	String get bool_expression_boolean_comparation_description => 'You can compare two boolean values.\n\n\'<==>\' is for equality and \'<!=>\' is for difference.\n\n';
+	String get bool_expression_boolean_comparation_syntax_1 => '[boolean expression] <==> [boolean expression]\n\n';
+	String get bool_expression_boolean_comparation_syntax_2 => '[boolean expression] <!=> [boolean expression]\n\n';
+	String get bool_expression_logical_operators_title => 'Logical operators\n\n';
+	String get bool_expression_logical_operators_description => 'There are two available logical operators.\n\n';
+	String get bool_expression_logical_operators_syntax_1 => '[boolean expression] and [boolean expression]\n\n';
+	String get bool_expression_logical_operators_syntax_2 => '[boolean expression] or [boolean expression]\n\n';
 }
 
 // Path: <root>
@@ -678,6 +704,7 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get variables => 'Variables';
 	@override String get predefined_variables => 'Variables predefinidas';
 	@override String get int_expressions => 'Expresiones enteras';
+	@override String get bool_expressions => 'Expresiones booleanas';
 	@override String get scripts_goal_description => 'Un script de generación de posiciones se divide en varios subprogramas, cada uno de su propio tipo. \n\nEl objetivo de un subprograma es comprobar que la posición generada cumple con todas sus restricciones. \n\nSi al menos una condición no se cumple, el algoritmo intentará \'arreglar\' la posición para que se cumplan todas las condiciones.';
 	@override String get scripts_kinds_head_description => 'Existen varios tipos de subprogramas, y la posición generada debe respetar todas las reglas de todos los subprogramas definidos. \n\nPor supuesto, también debe respetar las reglas estándar del ajedrez (por ejemplo, el rey del lado que no está en turno no puede estar en jaque).\n\n';
 	@override String get scripts_kinds_player_king_constraint_title => 'Restricción sobre rey del jugador\n\n';
@@ -735,13 +762,13 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_second => 'la columna que ha sido preparado para la segunda pieza';
 	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_title => '\n\nRestricciones sobre otras piezas por orden\n\n';
 	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_apparition => 'el índice (empezando en 0) de aparición en el tablero';
-	@override String get scripts_int_expressions_head_description => 'Una expresión entera es simplemente una expresión cuyo valor final producido es un entero.\n\n';
+	@override String get int_expressions_head_description => 'Una expresión entera es simplemente una expresión cuyo valor final producido es un entero.\n\n';
 	@override String get int_expression_parenthesis_title => 'Paréntesis\n\n';
 	@override String get int_expression_parenthesis_description => 'Útil para aislar una expresión entera, de modo que se calcule con prioridad.\n\n';
 	@override String get int_expression_parenthesis_syntax => '([expresión entera])\n\n';
 	@override String get int_expression_parenthesis_sample_text => 'Este es un ejemplo:\n\n';
 	@override String get int_expression_conditional_title => 'Expresión condicional\n\n';
-	@override String get int_expression_conditional_description => 'Para producir expresiones condicionalmente. Cuidado con la palabra clave \'numIf\'.\n\n';
+	@override String get int_expression_conditional_description => 'Para producir expresiones condicionalmente.\n\nCuidado con la palabra clave \'numIf\'.\n\n';
 	@override String get int_expression_conditional_syntax => 'numIf([expresión booleana]) then [expresión entera] else [expresión entera]\n\n';
 	@override String get int_expression_absolute_title => 'Valor absoluto\n\n';
 	@override String get int_expression_absolute_description => 'Produce el valor absoluto de la expresión dada.\n\n';
@@ -761,6 +788,31 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get int_expression_variable_description => 'Las variables enteras también son expresiones.\n\n';
 	@override String get int_expression_predefined_values_title => 'Valores predefinidos\n\n';
 	@override String get int_expression_predefined_values_description => 'Todos las subrutinas tienen los mismos valores enteros predefinidos (no puedes nombrar una variable con uno de esos nombres).\n\nTodos estos valores tienen en cuenta la orientación del tablero de ajedrez.\n\nEstos son los valores enteros predefinidos para las columnas del tablero de ajedrez: FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\nEstos son los valores enteros predefinidos para los rangos del tablero de ajedrez: Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n ';
+	@override String get bool_expressions_head_description => 'Una expresión booleana es simplemente una expresión cuyo valor final producido es un valor booleano.\n\n';
+	@override String get bool_expression_parenthesis_title => 'Paréntesis\n\n';
+	@override String get bool_expression_parenthesis_description => 'Útil para aislar una expresión booleana, de modo que se calcule con prioridad.\n\n';
+	@override String get bool_expression_parenthesis_syntax => '([expresión booleana])\n\n';
+	@override String get bool_expression_conditional_title => 'Expresión condicional\n\n';
+	@override String get bool_expression_conditional_description => 'Para producir expresiones condicionalmente.\n\nCuidado con la palabra clave \'boolIf\'.\n\n';
+	@override String get bool_expression_conditional_syntax => 'boolIf([expresión booleana]) then [expresión booleana] else [expresión booleana]\n\n';
+	@override String get bool_expression_variable_title => 'Variables\n\n';
+	@override String get bool_expression_variable_description => 'Booleanas variables también son expresiones.\n\n';
+	@override String get bool_expression_integer_comparation_title => 'Comparación de enteros\n\n';
+	@override String get bool_expression_integer_comparation_description => 'You can compare two integers values.\n\n\'==\' es para igualdad y \'!=\' es para diferencia.\n\n';
+	@override String get bool_expression_integer_comparation_syntax_1 => '[expresión entera] < [expresión entera]\n\n';
+	@override String get bool_expression_integer_comparation_syntax_2 => '[expresión entera] > [expresión entera]\n\n';
+	@override String get bool_expression_integer_comparation_syntax_3 => '[expresión entera] <= [expresión entera]\n\n';
+	@override String get bool_expression_integer_comparation_syntax_4 => '[expresión entera] >= [expresión entera]\n\n';
+	@override String get bool_expression_integer_comparation_syntax_5 => '[expresión entera] == [expresión entera]\n\n';
+	@override String get bool_expression_integer_comparation_syntax_6 => '[expresión entera] != [expresión entera]\n\n';
+	@override String get bool_expression_boolean_comparation_title => 'Comparación de booleanos\n\n';
+	@override String get bool_expression_boolean_comparation_description => 'Puedes comparar dos valores booleanos.\n\n\'<==>\' es para la igualdad y \'<!=>\' es para la diferencia.\n\n';
+	@override String get bool_expression_boolean_comparation_syntax_1 => '[expresión booleana] <==> [expresión booleana]\n\n';
+	@override String get bool_expression_boolean_comparation_syntax_2 => '[expresión booleana] <!=> [expresión booleana]\n\n';
+	@override String get bool_expression_logical_operators_title => 'Operadores lógicos\n\n';
+	@override String get bool_expression_logical_operators_description => 'Hay dos operadores lógicos disponibles.\n\n';
+	@override String get bool_expression_logical_operators_syntax_1 => '[expresión booleana] and [expresión booleana]\n\n';
+	@override String get bool_expression_logical_operators_syntax_2 => '[expresión booleana] or [expresión booleana]\n\n';
 }
 
 // Path: <root>
@@ -988,6 +1040,7 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 	@override String get variables => 'Variables';
 	@override String get predefined_variables => 'Variables prédéfinies';
 	@override String get int_expressions => 'Expressions entières';
+	@override String get bool_expressions => 'Expressions booléennes';
 	@override String get scripts_goal_description => 'Un script de génération de position est composé de plusieurs sous-scripts, chacun étant de son propre type. \n\nLe but d\'un sous-script est de vérifier que la position générée respecte toutes ses contraintes. \n\nSi au moins une des conditions n\'est pas respectée, alors l\'algorithme tentera de \'fixer\' la position de telle manière que toutes les contraintes soient respectéees.';
 	@override String get scripts_kinds_head_description => 'Il y a plusieurs types de sous-scripts, et toutes les règles définies dans l\'ensemble des sous-scripts doivent être respectées par la position générée. \n\nBien sûr, elle doit aussi respecter les règles standards (par exemple : le roi qui n\'est pas au trait ne doit pas être en échec).\n\n';
 	@override String get scripts_kinds_player_king_constraint_title => 'Contraintes sur le roi du joueur\n\n';
@@ -1045,13 +1098,13 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_second => 'la rangée qui a été choisie pour la deuxième pièce';
 	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_title => '\n\nContraintes des autres pièces par ordre\n\n';
 	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_apparition => 'l\'index (démarrant à 0) d\'apparition sur l\'échiquier';
-	@override String get scripts_int_expressions_head_description => 'Une expression entière est simplement une expression dont la valeur finalement produite est un entier.\n\n';
+	@override String get int_expressions_head_description => 'Une expression entière est simplement une expression dont la valeur finalement produite est un entier.\n\n';
 	@override String get int_expression_parenthesis_title => 'Parenthèses\n\n';
 	@override String get int_expression_parenthesis_description => 'Utile pour isoler une expression entière, de sorte qu\'elle soit calculée en priorité.\n\n';
 	@override String get int_expression_parenthesis_syntax => '([expression entière])\n\n';
 	@override String get int_expression_parenthesis_sample_text => 'À titre d\'exemple :\n\n';
 	@override String get int_expression_conditional_title => 'Expression conditionnelle\n\n';
-	@override String get int_expression_conditional_description => 'Pour produire une expression de manière conditionnelle. Attention au mot-clé \'numIf\'.\n\n';
+	@override String get int_expression_conditional_description => 'Pour produire une expression de manière conditionnelle.\n\nAttention au mot-clé \'numIf\'.\n\n';
 	@override String get int_expression_conditional_syntax => 'numIf([expression booléenne]) then [expression entière] else [expression entière]\n\n';
 	@override String get int_expression_absolute_title => 'Valeur absolue\n\n';
 	@override String get int_expression_absolute_description => 'Produit la valeur absolue de l\'expression donnée.\n\n';
@@ -1071,4 +1124,29 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 	@override String get int_expression_variable_description => 'Les variables entières sont également des expressions.\n\n';
 	@override String get int_expression_predefined_values_title => 'Valeurs prédéfinies\n\n';
 	@override String get int_expression_predefined_values_description => 'Tous les sous-scripts ont les même valeurs prédéfinies (vous ne pouvez pas nommer une variable avec un de leurs noms).\n\nToutes ces valeurs prennent en compte l\'orientation de l\'échiquier.\n\nVoici les valeurs entières prédéfines pour les colonnes de l\'échiquier : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\nVoici les valeurs entières prédéfines pour les rangées de l\'échiquier : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n ';
+	@override String get bool_expressions_head_description => 'Une expression booléenne est simplement un expression dont la valeur finale produite est un booléen.\n\n';
+	@override String get bool_expression_parenthesis_title => 'Parenthèses\n\n';
+	@override String get bool_expression_parenthesis_description => 'Utile pour isoler une expression entière, de sorte qu\'elle sera calculée en priorité.\n\n';
+	@override String get bool_expression_parenthesis_syntax => '([expression booléenne])\n\n';
+	@override String get bool_expression_conditional_title => 'Expression conditionnelle\n\n';
+	@override String get bool_expression_conditional_description => 'Pour produire une expression de manière conditionnelle.\n\nAttention au mot-clé \'boolIf\'.\n\n';
+	@override String get bool_expression_conditional_syntax => 'boolIf([expression booléenne]) then [expression booléenne] else [expression booléenne]\n\n';
+	@override String get bool_expression_variable_title => 'Variables\n\n';
+	@override String get bool_expression_variable_description => 'Les variables booléennes sont également des expressions.\n\n';
+	@override String get bool_expression_integer_comparation_title => 'Comparaison d\'entiers\n\n';
+	@override String get bool_expression_integer_comparation_description => 'Vous pouvez comparer deux valeurs entières.\n\n\'==\' pour l\'égalité et \'!=\' pour la différence.\n\n';
+	@override String get bool_expression_integer_comparation_syntax_1 => '[expression entière] < [expression entière]\n\n';
+	@override String get bool_expression_integer_comparation_syntax_2 => '[expression entière] > [expression entière]\n\n';
+	@override String get bool_expression_integer_comparation_syntax_3 => '[expression entière] <= [expression entière]\n\n';
+	@override String get bool_expression_integer_comparation_syntax_4 => '[expression entière] >= [expression entière]\n\n';
+	@override String get bool_expression_integer_comparation_syntax_5 => '[expression entière] == [expression entière]\n\n';
+	@override String get bool_expression_integer_comparation_syntax_6 => '[expression entière] != [expression entière]\n\n';
+	@override String get bool_expression_boolean_comparation_title => 'Comparaison de booléens\n\n';
+	@override String get bool_expression_boolean_comparation_description => 'Vous pouvez comparer deux valeurs entières.\n\n\'<==>\' est pour l\'égalité and \'<!=>\' est pour la différence.\n\n';
+	@override String get bool_expression_boolean_comparation_syntax_1 => '[expression booléenne] <==> [expression booléenne]\n\n';
+	@override String get bool_expression_boolean_comparation_syntax_2 => '[expression booléenne] <!=> [expression booléenne]\n\n';
+	@override String get bool_expression_logical_operators_title => 'Opérateurs logiques\n\n';
+	@override String get bool_expression_logical_operators_description => 'Il y a deux opérateurs logiques disponibles.\n\n';
+	@override String get bool_expression_logical_operators_syntax_1 => '[expression booléenne] and [expression booléenne]\n\n';
+	@override String get bool_expression_logical_operators_syntax_2 => '[expression booléenne] or [expression booléenne]\n\n';
 }
