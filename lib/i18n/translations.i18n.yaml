@@ -109,10 +109,7 @@ syntax_manual_page:
   scripts_kinds: "Scripts kinds"
   scripts_format: "Scripts' format"
   comments: "Comments"
-  variable_creation: "Variable creation"
-  predefined_variables_and_values: "Predefined variables and values"
-  boolean_expressions: "Boolean expressions"
-  int_expressions: "Integer expressions"
+  variables: "Variables"
   scripts_goal_description: "A position generation script is split into several subscripts, \
     each of its own kind. \n\nA subscript's goal is to check that the generated position follow all of \
     its constraints. \n\nIf at least one condition is not met, then the algorithm will try to 'fix' the \
@@ -143,3 +140,43 @@ syntax_manual_page:
   scripts_kinds_other_pieces_indexed_constraints_description: "Tells about the positioning \
     constraints for pieces other than kings, that they must respect given their apparition order \
     on the chess board, for each couple [type of piece / is it a player piece ?].\n\n"
+  scripts_format_head_description: "Each script may start with one or several variables creation \
+    statements. \n\nBut the final expression must be a statement that returns a boolean expression. \n\n\
+    This return expression will be used by the algorithm in order to check that the generated \
+    position is correct.\n\n"
+  scripts_format_main_description_1: "This is the syntax for the return expression :\n\n"
+  scripts_format_code_section_1: "return [your boolean expression];\n\n"
+  scripts_format_main_description_2: "This is a simple script sample :\n\n"
+  scripts_comments_head_description: "You can use two forms of comments, which are inspired \
+    by comments from the C language.\n\n"
+  scripts_kinds_multiline_comments_title: "Multilines comments\n\n"
+  scripts_kinds_multiline_comments_description: "A multiline comment starts with '/*' and ends \
+    with '*/', and can expand on several lines.\n\n"
+  scripts_kinds_multiline_comments_sample: "/* This is a\n \
+    multilines comment.\n\
+    \n\
+    And can expand on several lines.*/\n\n"
+  scripts_kinds_single_line_comments_title: "Single line comments\n\n"
+  scripts_kinds_single_line_comments_description_1: "A single line comment can only be on a single \
+    line, and just starts by '//'. \n\nSo all following characters of the given line are parts of \
+    the comment.\n\n"
+  scripts_kinds_single_line_comments_sample_1: "// This is a single line comment\n\n"
+  scripts_kinds_single_line_comments_description_2: "A single line comment can also follow a \
+    statement on the same line.\n\n"
+  scripts_kinds_single_line_comments_sample_2: "myIntVariable := FileF; // Sets to the value of \
+    the F file\n\n"
+  scripts_variables_head_description: "These are things to consider about variables :\n\n"
+  scripts_kinds_variables_name_rules_title: "Naming rules\n\n"
+  scripts_kinds_variables_name_rules_description: "A variable name must start with a letter \
+    (either uppercase or lowercase). \n\nThen the following characters can be letters \
+    (uppercase and/or lowercase), digits or underscore ('_'). \n\nAlso keep in mind that you \
+    can't use name of predifined value or of a predefined variable (given that each script \
+    type, as you'll see later, has its own set of predefined variables).\n\n"
+  scripts_kinds_variables_creation_title: "Variable creation statement\n\n"
+  scripts_kinds_variables_creation_description: "This is the syntax for creating either an \
+    int variable or a boolean variable :\n\n"
+  scripts_kinds_variables_creation_format: "[identifier] := [int expression | boolean \
+    expression];\n\n"
+  scripts_kinds_variables_creation_sample_head_text: "This is an example :\n\n"
+  scripts_kinds_variables_creation_sample_code: "myRank := boolIf(kingsInOpposition) \
+    then Rank4 else Rank1;\n\n"
