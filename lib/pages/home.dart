@@ -18,8 +18,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'dart:developer' as developer;
-
 const mainListItemsGap = 8.0;
 const leadingImagesSize = 60.0;
 const titlesFontSize = 26.0;
@@ -37,13 +35,24 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   Isolate? _positionGenerationIsolate;
   bool _isGeneratingPosition = false;
+  bool _failedLoadingCustomExercises = false;
   int _selectedTabIndex = 0;
-  Directory? _currentDirectory;
+  Directory? _currentAddedExercisesDirectory;
+  List<FileSystemEntity>? _customExercisesItems;
 
   @override
   void initState() {
     FlutterNativeSplash.remove();
     WidgetsBinding.instance.addPostFrameCallback((_) => _showRgpdWarning());
+    getApplicationDocumentsDirectory().then((directory) async {
+      _currentAddedExercisesDirectory = directory;
+      _customExercisesItems = await _getAddedExercisesFolderItems();
+      setState(() {});
+    }).catchError((error) {
+      setState(() {
+        _failedLoadingCustomExercises = true;
+      });
+    });
     super.initState();
   }
 
@@ -53,6 +62,11 @@ class _HomePageState extends ConsumerState<HomePage> {
       priority: Isolate.immediate,
     );
     super.dispose();
+  }
+
+  Future<List<FileSystemEntity>?> _getAddedExercisesFolderItems() async {
+    final items = _currentAddedExercisesDirectory?.list(recursive: false);
+    return await items?.toList();
   }
 
   void _showHomePageHelpDialog() {
@@ -217,10 +231,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-  void _updateCurrentDirectory({required Directory directory}) {
-    setState(() {
-      _currentDirectory = directory;
-    });
+  void _reloadCurrentFolder() async {
+    _customExercisesItems = await _getAddedExercisesFolderItems();
+    setState(() {});
   }
 
   @override
@@ -267,7 +280,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                   onGameSelected: _tryGeneratingAndPlayingPositionFromSample,
                 ),
                 AddedExercisesWidget(
-                  onCurrentDirectoryUpdate: _updateCurrentDirectory,
+                  failedLoadingContent: _failedLoadingCustomExercises,
+                  folderItems: _customExercisesItems,
                 ),
               ],
             ),
@@ -283,17 +297,20 @@ class _HomePageState extends ConsumerState<HomePage> {
         ),
         floatingActionButton: _selectedTabIndex == 1
             ? FloatingActionButton(
-                onPressed: () {
-                  if (_currentDirectory != null) {
-                    Navigator.of(context).push(
+                onPressed: () async {
+                  if (_currentAddedExercisesDirectory != null) {
+                    final result = await Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
                           return ScriptEditorPage(
-                            currentDirectory: _currentDirectory!,
+                            currentDirectory: _currentAddedExercisesDirectory!,
                           );
                         },
                       ),
                     );
+                    if (result is FolderNeedsReload) {
+                      _reloadCurrentFolder();
+                    }
                   }
                 },
                 child: const FaIcon(FontAwesomeIcons.plus),
@@ -362,38 +379,21 @@ class IntegratedExercisesWidget extends StatelessWidget {
   }
 }
 
-class AddedExercisesWidget extends StatefulWidget {
-  final void Function({required Directory directory}) onCurrentDirectoryUpdate;
+class AddedExercisesWidget extends StatelessWidget {
+  //true if and only if we failed to load content
+  final bool failedLoadingContent;
+
+  /*
+  null if we have not yet loaded content, otherwise,
+  it's the list of contents.
+  */
+  final List<FileSystemEntity>? folderItems;
 
   const AddedExercisesWidget({
     super.key,
-    required this.onCurrentDirectoryUpdate,
+    required this.failedLoadingContent,
+    required this.folderItems,
   });
-
-  @override
-  State<AddedExercisesWidget> createState() => _AddedExercisesWidgetState();
-}
-
-class _AddedExercisesWidgetState extends State<AddedExercisesWidget> {
-  final Future<Directory?> _currentDirectoryFuture =
-      getApplicationDocumentsDirectory();
-
-  Future<List<FileSystemEntity>?> _getDirectoryElementsList(
-      Directory? directory) async {
-    final elements = directory?.list(recursive: false);
-    return await elements?.toList();
-  }
-
-  @override
-  void initState() {
-    _currentDirectoryFuture.then((setDirectory) {
-      setState(() {
-        if (setDirectory == null) return;
-        widget.onCurrentDirectoryUpdate(directory: setDirectory);
-      });
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -424,49 +424,13 @@ class _AddedExercisesWidgetState extends State<AddedExercisesWidget> {
       ),
     );
 
-    return FutureBuilder<Directory?>(
-        future: _currentDirectoryFuture,
-        builder: (BuildContext context, AsyncSnapshot<Directory?> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              developer.log(snapshot.error!.toString(), name: 'loloof64');
-              return failedLoadingExerciseWidget;
-            } else if (snapshot.hasData) {
-              final directory = snapshot.data;
-              return FutureBuilder(
-                  future: _getDirectoryElementsList(directory),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<FileSystemEntity>?> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasError) {
-                        developer.log(snapshot.error!.toString(),
-                            name: 'loloof64');
-                        return failedLoadingExerciseWidget;
-                      } else if (snapshot.hasData) {
-                        final elements = snapshot.data;
-                        if (elements == null) {
-                          return failedLoadingExerciseWidget;
-                        } else {
-                          if (elements.isEmpty) {
-                            return emptyFolderWidget;
-                          } else {
-                            return FolderContentWidget(elements: elements);
-                          }
-                        }
-                      } else {
-                        return failedLoadingExerciseWidget;
-                      }
-                    } else {
-                      return waitingWidget;
-                    }
-                  });
-            } else {
-              return failedLoadingExerciseWidget;
-            }
-          } else {
-            return waitingWidget;
-          }
-        });
+    return failedLoadingContent
+        ? failedLoadingExerciseWidget
+        : folderItems == null
+            ? waitingWidget
+            : folderItems!.isEmpty
+                ? emptyFolderWidget
+                : FolderContentWidget(elements: folderItems!);
   }
 }
 

@@ -14,6 +14,8 @@ import 'package:logger/logger.dart';
 const winningString = "win";
 const drawingString = "draw";
 
+class FolderNeedsReload {}
+
 class ScriptEditorPage extends StatefulWidget {
   final Directory currentDirectory;
 
@@ -178,6 +180,8 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
             "${widget.currentDirectory.path}/$fileBaseName$fileDiscriminator.txt";
         try {
           File newFileInstance = File(newFilePath);
+
+          // Computing next name in order to avoid overriding existing file
           if (await newFileInstance.exists()) {
             int discriminatorNumber = 1;
             do {
@@ -198,13 +202,16 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           setState(() {
             _isSavingFile = false;
           });
+
+          // File has been saved
+
           if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(t.script_editor_page.exercise_creation_success),
             ),
           );
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(FolderNeedsReload);
         } on FileSystemException {
           setState(() {
             _isSavingFile = false;
