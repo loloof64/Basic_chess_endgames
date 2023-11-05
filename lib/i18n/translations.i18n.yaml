@@ -23,6 +23,7 @@ home:
   contextual_menu_file_rename: "Rename"
   confirm_delete_file_title: "Delete file ?"
   confirm_delete_file_msg: "Do you want to delete the file '$name' ?"
+  file_name_already_taken: "This name is already in use."
 rgpd:
   text: "By using this app, you agree with :"
   privacy: "the Privacy Policy"

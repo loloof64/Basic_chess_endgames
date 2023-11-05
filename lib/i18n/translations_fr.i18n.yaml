@@ -25,6 +25,7 @@ home:
   contextual_menu_file_rename: "Renommer"
   confirm_delete_file_title: "Supprimer le fichier ?"
   confirm_delete_file_msg: "Souhaitez-vous supprimer le fichier '$name'?"
+  file_name_already_taken: "Ce nom est déjà utilisé."
 rgpd:
   text: "En utilisant cette application, vous vous conformez à :"
   privacy: "la Politique de Confidentialité"

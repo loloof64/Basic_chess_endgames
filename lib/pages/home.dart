@@ -39,7 +39,8 @@ class _HomePageState extends ConsumerState<HomePage> {
   int _selectedTabIndex = 0;
   Directory? _currentAddedExercisesDirectory;
   List<FileSystemEntity>? _customExercisesItems;
-  final TextEditingController _renameCustomFileController = TextEditingController();
+  final TextEditingController _renameCustomFileController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -339,11 +340,24 @@ class _HomePageState extends ConsumerState<HomePage> {
           actions: [
             TextButton(
               onPressed: () async {
-                Navigator.of(context).pop();
-                String newPath = "$currentPath/${_renameCustomFileController.text}";
+                String newPath =
+                    "$currentPath/${_renameCustomFileController.text}";
                 if (!newPath.endsWith('.txt')) newPath += '.txt';
-                await fileInstance.rename(newPath);
-                _reloadCurrentFolder();
+                final alreadyExists = await File(newPath).exists();
+
+                if (!alreadyExists) {
+                  if (!mounted) return;
+                  Navigator.of(context).pop();
+                  await fileInstance.rename(newPath);
+                  _reloadCurrentFolder();
+                } else {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(t.home.file_name_already_taken),
+                    ),
+                  );
+                }
               },
               child: Text(
                 t.misc.button_ok,
