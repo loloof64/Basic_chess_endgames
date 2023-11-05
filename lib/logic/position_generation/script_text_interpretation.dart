@@ -421,8 +421,10 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
         final generatedPosition = positionGenerator.generatePosition();
         parameters.sendPort
             .send((generatedPosition, <PositionGenerationError>[]));
-      } on PositionGenerationLoopException {
-        parameters.sendPort.send(
+      } on PositionGenerationLoopException catch (ex) {
+        Logger().e(ex.message);
+        if (parameters.inGameMode) {
+          parameters.sendPort.send(
           (
             null,
             <PositionGenerationError>[
@@ -433,6 +435,11 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
             ],
           ),
         );
+        }
+        else {
+          parameters.sendPort
+            .send(("", <PositionGenerationError>[]));
+        }
       }
     }
   } on MissingOtherPieceScriptTypeException {
@@ -508,11 +515,13 @@ Future<void> showGenerationErrorsPopups({
 }
 
 class SampleScriptGenerationParameters {
+  final bool inGameMode;
   final SendPort sendPort;
   final String gameScript;
   final TranslationsWrapper translations;
 
   SampleScriptGenerationParameters({
+    required this.inGameMode,
     required this.gameScript,
     required this.sendPort,
     required this.translations,

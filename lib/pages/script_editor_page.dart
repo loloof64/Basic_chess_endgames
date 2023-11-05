@@ -85,6 +85,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     _scriptCheckerIsolate = await Isolate.spawn(
       generatePositionFromScript,
       SampleScriptGenerationParameters(
+        inGameMode: false,
         gameScript: script,
         translations: TranslationsWrapper(
           miscErrorDialogTitle: t.script_parser.misc_error_dialog_title,

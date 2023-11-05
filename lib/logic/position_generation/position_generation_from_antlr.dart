@@ -224,7 +224,7 @@ class PositionGeneratorFromAntlr {
       }
     }
 
-    throw Exception("Failed to place player king !");
+    throw PositionGenerationLoopException(message: "Failed to place player king !");
   }
 
   String _placeComputerKingInPosition(String startFen, bool playerHasWhite) {
@@ -304,7 +304,7 @@ class PositionGeneratorFromAntlr {
       }
     }
 
-    throw Exception("Failed to place computer king !");
+    throw PositionGenerationLoopException(message: "Failed to place computer king !");
   }
 
   String? _placeOtherPiecesInPosition(

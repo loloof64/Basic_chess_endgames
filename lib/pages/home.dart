@@ -125,6 +125,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     _positionGenerationIsolate = await Isolate.spawn(
       generatePositionFromScript,
       SampleScriptGenerationParameters(
+        inGameMode: true,
         gameScript: script,
         translations: TranslationsWrapper(
           miscErrorDialogTitle: t.script_parser.misc_error_dialog_title,
