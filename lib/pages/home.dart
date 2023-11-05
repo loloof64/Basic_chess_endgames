@@ -232,8 +232,17 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _reloadCurrentFolder() async {
-    _customExercisesItems = await _getAddedExercisesFolderItems();
-    setState(() {});
+    setState(() {
+      _failedLoadingCustomExercises = false;
+    });
+    try {
+      _customExercisesItems = await _getAddedExercisesFolderItems();
+      setState(() {});
+    } catch (ex) {
+      setState(() {
+        _failedLoadingCustomExercises = true;
+      });
+    }
   }
 
   @override

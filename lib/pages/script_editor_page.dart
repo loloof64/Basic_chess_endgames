@@ -211,7 +211,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
               content: Text(t.script_editor_page.exercise_creation_success),
             ),
           );
-          Navigator.of(context).pop(FolderNeedsReload);
+          Navigator.of(context).pop(FolderNeedsReload());
         } on FileSystemException {
           setState(() {
             _isSavingFile = false;
