@@ -220,6 +220,81 @@ class _HomePageState extends ConsumerState<HomePage> {
     _tryGeneratingAndPlayingPositionFromString(script);
   }
 
+  void _handleCustomFileLongClic({required String fileName}) async {
+    if (_currentAddedExercisesDirectory == null) return;
+
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _showConfirmDeleteCustomFile(fileName);
+                  },
+                  child: Text(
+                    t.home.contextual_menu_file_delete,
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  void _showConfirmDeleteCustomFile(String fileName) async {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(t.home.confirm_delete_file_title),
+          content: Text(t.home.confirm_delete_file_msg(Name: fileName)),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _deleteCustomFile(fileName);
+              },
+              child: Text(
+                t.misc.button_ok,
+                style: const TextStyle(
+                  color: Colors.green,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                t.misc.button_cancel,
+                style: const TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _deleteCustomFile(String fileName) async {
+    if (_currentAddedExercisesDirectory == null) return;
+
+    final currentPath = _currentAddedExercisesDirectory!.path;
+    final fileInstance = File("$currentPath/$fileName");
+    await fileInstance.delete();
+    _reloadCurrentFolder();
+  }
+
   void _tryPlayingGeneratedPosition(String position, Goal goal) {
     final validPositionStatus = chess.Chess.validate_fen(position);
     if (!validPositionStatus['valid']) {
@@ -307,6 +382,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   failedLoadingContent: _failedLoadingCustomExercises,
                   folderItems: _customExercisesItems,
                   onFileClic: _handleCustomFileClic,
+                  onFileLongClic: _handleCustomFileLongClic,
                 ),
               ],
             ),
@@ -415,12 +491,14 @@ class AddedExercisesWidget extends StatelessWidget {
   final List<FileSystemEntity>? folderItems;
 
   final void Function({required String fileName}) onFileClic;
+  final void Function({required String fileName}) onFileLongClic;
 
   const AddedExercisesWidget({
     super.key,
     required this.failedLoadingContent,
     required this.folderItems,
     required this.onFileClic,
+    required this.onFileLongClic,
   });
 
   @override
@@ -461,17 +539,20 @@ class AddedExercisesWidget extends StatelessWidget {
                 : FolderContentWidget(
                     elements: folderItems!,
                     onFileClic: onFileClic,
+                    onFileLongClic: onFileLongClic,
                   );
   }
 }
 
 class FolderContentWidget extends StatelessWidget {
   final void Function({required String fileName}) onFileClic;
+  final void Function({required String fileName}) onFileLongClic;
 
   const FolderContentWidget({
     super.key,
     required this.elements,
     required this.onFileClic,
+    required this.onFileLongClic,
   });
 
   final List<FileSystemEntity> elements;
@@ -489,6 +570,7 @@ class FolderContentWidget extends StatelessWidget {
             : FileItemWidget(
                 name: name,
                 onClic: onFileClic,
+                onLongClic: onFileLongClic,
               );
       },
       itemCount: elements.length,
@@ -498,11 +580,13 @@ class FolderContentWidget extends StatelessWidget {
 
 class FileItemWidget extends StatelessWidget {
   final void Function({required String fileName}) onClic;
+  final void Function({required String fileName}) onLongClic;
 
   const FileItemWidget({
     super.key,
     required this.name,
     required this.onClic,
+    required this.onLongClic,
   });
 
   final String name;
@@ -511,6 +595,7 @@ class FileItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => onClic(fileName: name),
+      onLongPress: () => onLongClic(fileName: name),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

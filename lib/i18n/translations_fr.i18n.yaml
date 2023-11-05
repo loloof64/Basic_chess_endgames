@@ -21,6 +21,9 @@ home:
   no_game_yet: "Aucun élément"
   failed_loading_added_exercises: "Échec de chargement des exercises personnalisés"
   misc_generating_error: "Erreur de génération de la position pour une erreur diverse."
+  contextual_menu_file_delete: "Supprimer"
+  confirm_delete_file_title: "Supprimer le fichier ?"
+  confirm_delete_file_msg: "Souhaitez-vous supprimer le fichier '$name'?"
 rgpd:
   text: "En utilisant cette application, vous vous conformez à :"
   privacy: "la Politique de Confidentialité"

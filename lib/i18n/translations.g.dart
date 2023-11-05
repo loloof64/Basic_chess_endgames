@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 621 (207 per locale)
+/// Strings: 630 (210 per locale)
 ///
-/// Built on 2023-11-05 at 13:30 UTC
+/// Built on 2023-11-05 at 16:18 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -208,6 +208,9 @@ class _TranslationsHomeEn {
 	String get no_game_yet => 'No element';
 	String get failed_loading_added_exercises => 'Failed to load custom exercises list';
 	String get misc_generating_error => 'Failed to generate the position for a miscellaneous error.';
+	String get contextual_menu_file_delete => 'Delete';
+	String get confirm_delete_file_title => 'Delete file ?';
+	String confirm_delete_file_msg({required Object Name}) => 'Do you want to delete the file \'${Name}\' ?';
 }
 
 // Path: rgpd
@@ -548,6 +551,9 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get no_game_yet => 'No hay elemento';
 	@override String get failed_loading_added_exercises => 'Error al cargar la lista de ejercicios personalizados';
 	@override String get misc_generating_error => 'Error al generar la posición para un error misceláneo.';
+	@override String get contextual_menu_file_delete => 'Borrar';
+	@override String get confirm_delete_file_title => 'Borrar el archivo ?';
+	@override String confirm_delete_file_msg({required Object Name}) => '¿Quieres borrar el archivo \'${Name}\'?';
 }
 
 // Path: rgpd
@@ -888,6 +894,9 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get no_game_yet => 'Aucun élément';
 	@override String get failed_loading_added_exercises => 'Échec de chargement des exercises personnalisés';
 	@override String get misc_generating_error => 'Erreur de génération de la position pour une erreur diverse.';
+	@override String get contextual_menu_file_delete => 'Supprimer';
+	@override String get confirm_delete_file_title => 'Supprimer le fichier ?';
+	@override String confirm_delete_file_msg({required Object Name}) => 'Souhaitez-vous supprimer le fichier \'${Name}\'?';
 }
 
 // Path: rgpd
