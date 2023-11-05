@@ -107,6 +107,10 @@ class _HomePageState extends ConsumerState<HomePage> {
   Future<void> _tryGeneratingAndPlayingPositionFromSample(
       AssetGame game) async {
     final gameScript = await rootBundle.loadString(game.assetPath);
+    await _tryGeneratingAndPlayingPositionFromString(gameScript);
+  }
+
+  Future<void> _tryGeneratingAndPlayingPositionFromString(String script) async {
     final receivePort = ReceivePort();
 
     if (!mounted) return;
@@ -118,7 +122,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     _positionGenerationIsolate = await Isolate.spawn(
       generatePositionFromScript,
       SampleScriptGenerationParameters(
-        gameScript: gameScript,
+        gameScript: script,
         translations: TranslationsWrapper(
           miscErrorDialogTitle: t.script_parser.misc_error_dialog_title,
           missingScriptType: t.script_parser.missing_script_type,
@@ -200,9 +204,20 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         );
       } else {
-        _tryPlayingGeneratedPosition(newPosition, game.goal);
+        final goalString = script.trim().split("\n").last;
+        final gameGoal = goalString == winningString ? Goal.win : Goal.draw;
+        _tryPlayingGeneratedPosition(newPosition, gameGoal);
       }
     });
+  }
+
+  void _handleCustomFileClic({required String fileName}) async {
+    if (_currentAddedExercisesDirectory == null) return;
+
+    final currentPath = _currentAddedExercisesDirectory!.path;
+    final fileInstance = File("$currentPath/$fileName");
+    final script = await fileInstance.readAsString();
+    _tryGeneratingAndPlayingPositionFromString(script);
   }
 
   void _tryPlayingGeneratedPosition(String position, Goal goal) {
@@ -291,6 +306,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 AddedExercisesWidget(
                   failedLoadingContent: _failedLoadingCustomExercises,
                   folderItems: _customExercisesItems,
+                  onFileClic: _handleCustomFileClic,
                 ),
               ],
             ),
@@ -398,10 +414,13 @@ class AddedExercisesWidget extends StatelessWidget {
   */
   final List<FileSystemEntity>? folderItems;
 
+  final void Function({required String fileName}) onFileClic;
+
   const AddedExercisesWidget({
     super.key,
     required this.failedLoadingContent,
     required this.folderItems,
+    required this.onFileClic,
   });
 
   @override
@@ -439,14 +458,20 @@ class AddedExercisesWidget extends StatelessWidget {
             ? waitingWidget
             : folderItems!.isEmpty
                 ? emptyFolderWidget
-                : FolderContentWidget(elements: folderItems!);
+                : FolderContentWidget(
+                    elements: folderItems!,
+                    onFileClic: onFileClic,
+                  );
   }
 }
 
 class FolderContentWidget extends StatelessWidget {
+  final void Function({required String fileName}) onFileClic;
+
   const FolderContentWidget({
     super.key,
     required this.elements,
+    required this.onFileClic,
   });
 
   final List<FileSystemEntity> elements;
@@ -461,7 +486,10 @@ class FolderContentWidget extends StatelessWidget {
 
         return isDirectory
             ? FolderItemWidget(name: name)
-            : FileItemWidget(name: name);
+            : FileItemWidget(
+                name: name,
+                onClic: onFileClic,
+              );
       },
       itemCount: elements.length,
     );
@@ -469,45 +497,51 @@ class FolderContentWidget extends StatelessWidget {
 }
 
 class FileItemWidget extends StatelessWidget {
+  final void Function({required String fileName}) onClic;
+
   const FileItemWidget({
     super.key,
     required this.name,
+    required this.onClic,
   });
 
   final String name;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: SizedBox(
-            width: folderItemIconSize,
-            height: folderItemIconSize,
-            child: FaIcon(
-              FontAwesomeIcons.fileLines,
-              color: Colors.black,
-              size: folderItemIconSize,
-            ),
-          ),
-        ),
-        Flexible(
-          flex: 1,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              name,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: folderItemTextSize,
+    return InkWell(
+      onTap: () => onClic(fileName: name),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: folderItemIconSize,
+              height: folderItemIconSize,
+              child: FaIcon(
+                FontAwesomeIcons.fileLines,
+                color: Colors.black,
+                size: folderItemIconSize,
               ),
             ),
           ),
-        ),
-      ],
+          Flexible(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                name,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: folderItemTextSize,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
