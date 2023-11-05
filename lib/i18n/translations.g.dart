@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 615 (205 per locale)
+/// Strings: 618 (206 per locale)
 ///
-/// Built on 2023-11-05 at 01:33 UTC
+/// Built on 2023-11-05 at 10:59 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -265,6 +265,7 @@ class _TranslationsScriptParserEn {
 	String parse_error_dialog_title({required Object Title}) => 'Script error for ${Title}';
 	String get type_error => 'Please check that you don\'t use int value instead of boolean value and vice versa.';
 	String get missing_script_type => 'Failed to generate position : please check that all of the script sections declares a correct script type.';
+	String unrecognized_script_type({required Object Type}) => 'Unrecognized script type : ${Type}.';
 	String get misc_error_dialog_title => 'Global error';
 	String get misc_checking_error => 'The errors checking has failed for a miscellaneous error.';
 }
@@ -603,6 +604,7 @@ class _TranslationsScriptParserEs extends _TranslationsScriptParserEn {
 	@override String parse_error_dialog_title({required Object Title}) => 'Error de script para ${Title}';
 	@override String get type_error => 'Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa.';
 	@override String get missing_script_type => 'No se pudo generar la posición: compruebe que todas las secciones del script declaran un tipo de script correcto.';
+	@override String unrecognized_script_type({required Object Type}) => 'Tipo de escritura no reconocido: ${Type}.';
 	@override String get misc_error_dialog_title => 'Equivocado global';
 	@override String get misc_checking_error => 'La verificación de errores ha fallado debido a un error misceláneo.';
 }
@@ -941,6 +943,7 @@ class _TranslationsScriptParserFr extends _TranslationsScriptParserEn {
 	@override String parse_error_dialog_title({required Object Title}) => 'Erreur de script pour ${Title}';
 	@override String get type_error => 'Veuillez vérifier que vous n\'utilisez pas de valeur entière à la place de valeur booléenne, et vice versa.';
 	@override String get missing_script_type => 'Échec de génération de la position: veuillez vérifier que toutes les sections du script déclarent un type de script correct.';
+	@override String unrecognized_script_type({required Object Type}) => 'Type de script non reconnu : ${Type}.';
 	@override String get misc_error_dialog_title => 'Erreur globale';
 	@override String get misc_checking_error => 'La vérification d\'erreurs a échoué pour une raison diverse.';
 }

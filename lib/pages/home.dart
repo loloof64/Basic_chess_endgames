@@ -129,6 +129,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               t.script_type.other_pieces_indexed_constraint,
           otherPiecesMutualConstraint:
               t.script_type.other_pieces_mutual_constraint,
+          unrecognizedScriptType: t.script_parser.unrecognized_script_type,
         ),
         sendPort: receivePort.sendPort,
       ),

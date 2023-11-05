@@ -59,6 +59,7 @@ scriptParser:
     de valeur booléenne, et vice versa."
   missingScriptType: "Échec de génération de la position: veuillez vérifier que toutes les \
     sections du script déclarent un type de script correct."
+  unrecognized_script_type: "Type de script non reconnu : $type."
   miscErrorDialogTitle: "Erreur globale"
   misc_checking_error: "La vérification d'erreurs a échoué pour une raison diverse."
 scriptType:

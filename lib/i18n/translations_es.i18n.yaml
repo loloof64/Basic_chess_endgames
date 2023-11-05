@@ -56,6 +56,7 @@ scriptParser:
   parseErrorDialogTitle: "Error de script para $title"
   typeError: "Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa."
   missingScriptType: "No se pudo generar la posición: compruebe que todas las secciones del script declaran un tipo de script correcto."
+  unrecognized_script_type: "Tipo de escritura no reconocido: $type."
   miscErrorDialogTitle: "Equivocado global"
   misc_checking_error: "La verificación de errores ha fallado debido a un error misceláneo."
 scriptType:

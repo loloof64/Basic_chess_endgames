@@ -47,6 +47,7 @@ class TranslationsWrapper {
   final String Function({required Object Name}) variableNotAffected;
   final String Function({required Object Name}) overridingPredefinedVariable;
   final String Function({required Object Title}) parseErrorDialogTitle;
+  final String Function({required Object Type}) unrecognizedScriptType;
   final String Function({
     required Object LineNumber,
     required Object PositionInLine,
@@ -78,6 +79,7 @@ class TranslationsWrapper {
     required this.variableNotAffected,
     required this.overridingPredefinedVariable,
     required this.parseErrorDialogTitle,
+    required this.unrecognizedScriptType,
     required this.noViableAltException,
     required this.inputMismatch,
   });
@@ -137,7 +139,7 @@ enum ScriptType {
       'other pieces mutual constraints' =>
         ScriptType.otherPiecesMutualConstraint,
       'goal' => ScriptType.goal,
-      _ => throw UnRecognizedScriptTypeException()
+      _ => throw UnRecognizedScriptTypeException(line)
     };
   }
 }
@@ -146,7 +148,11 @@ class MissingScriptTypeException implements Exception {}
 
 class MissingOtherPieceScriptTypeException implements Exception {}
 
-class UnRecognizedScriptTypeException implements Exception {}
+class UnRecognizedScriptTypeException implements Exception {
+  final String type;
+
+  const UnRecognizedScriptTypeException(this.type);
+}
 
 class ScriptTextTransformer {
   final TranslationsWrapper translations;
@@ -158,6 +164,9 @@ class ScriptTextTransformer {
     required this.allConstraintsScriptText,
   });
 
+  // can throw exceptions
+  // MissingOtherPieceScriptTypeException
+  // UnRecognizedScriptTypeException
   (PositionGeneratorConstraintsExpr, List<PositionGenerationError>)
       transformTextIntoConstraints() {
     final errors = <PositionGenerationError>[];
@@ -171,6 +180,9 @@ class ScriptTextTransformer {
     return (constraints, errors);
   }
 
+  // can throw exceptions
+  // MissingOtherPieceScriptTypeException
+  // UnRecognizedScriptTypeException
   List<PositionGenerationError> _transformScriptIntoConstraint(String script) {
     if (script.trim().isEmpty) return [];
     try {
@@ -354,6 +366,7 @@ class ScriptTextTransformer {
 
   // can throw exceptions
   // MissingOtherPieceScriptTypeException
+  // UnRecognizedScriptTypeException
   (
     Map<PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>,
     List<PositionGenerationError>
@@ -390,32 +403,54 @@ class ScriptTextTransformer {
 }
 
 void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
-  final (constraintsExpr, generationErrors) = ScriptTextTransformer(
-    allConstraintsScriptText: parameters.gameScript,
-    translations: parameters.translations,
-  ).transformTextIntoConstraints();
-  if (generationErrors.isNotEmpty) {
-    parameters.sendPort.send((null, generationErrors));
-  } else {
-    final positionGenerator = PositionGeneratorFromAntlr();
-    positionGenerator.setConstraints(constraintsExpr);
-    try {
-      final generatedPosition = positionGenerator.generatePosition();
-      parameters.sendPort
-          .send((generatedPosition, <PositionGenerationError>[]));
-    } on PositionGenerationLoopException {
-      parameters.sendPort.send(
-        (
-          null,
-          <PositionGenerationError>[
-            PositionGenerationError(
-              parameters.translations.miscErrorDialogTitle,
-              parameters.translations.failedGeneratingPosition,
-            )
-          ],
-        ),
-      );
+  try {
+    final (constraintsExpr, generationErrors) = ScriptTextTransformer(
+      allConstraintsScriptText: parameters.gameScript,
+      translations: parameters.translations,
+    ).transformTextIntoConstraints();
+    if (generationErrors.isNotEmpty) {
+      parameters.sendPort.send((null, generationErrors));
+    } else {
+      final positionGenerator = PositionGeneratorFromAntlr();
+      positionGenerator.setConstraints(constraintsExpr);
+      try {
+        final generatedPosition = positionGenerator.generatePosition();
+        parameters.sendPort
+            .send((generatedPosition, <PositionGenerationError>[]));
+      } on PositionGenerationLoopException {
+        parameters.sendPort.send(
+          (
+            null,
+            <PositionGenerationError>[
+              PositionGenerationError(
+                parameters.translations.miscErrorDialogTitle,
+                parameters.translations.failedGeneratingPosition,
+              )
+            ],
+          ),
+        );
+      }
     }
+  } on MissingOtherPieceScriptTypeException {
+    parameters.sendPort.send((
+      null,
+      <PositionGenerationError>[
+        PositionGenerationError(
+          parameters.translations.miscErrorDialogTitle,
+          parameters.translations.missingScriptType,
+        )
+      ]
+    ));
+  } on UnRecognizedScriptTypeException catch (ex) {
+    parameters.sendPort.send((
+      null,
+      <PositionGenerationError>[
+        PositionGenerationError(
+          parameters.translations.miscErrorDialogTitle,
+          parameters.translations.unrecognizedScriptType(Type: ex.type),
+        )
+      ]
+    ));
   }
 }
 
