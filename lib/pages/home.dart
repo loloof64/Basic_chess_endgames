@@ -38,6 +38,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   Isolate? _positionGenerationIsolate;
   bool _isGeneratingPosition = false;
   int _selectedTabIndex = 0;
+  Directory? _currentDirectory;
 
   @override
   void initState() {
@@ -108,7 +109,8 @@ class _HomePageState extends ConsumerState<HomePage> {
           miscErrorDialogTitle: t.script_parser.misc_error_dialog_title,
           missingScriptType: t.script_parser.missing_script_type,
           miscParseError: t.script_parser.misc_parse_error,
-          maxGenerationAttemptsAchieved: t.home.max_generation_attempts_achieved,
+          maxGenerationAttemptsAchieved:
+              t.home.max_generation_attempts_achieved,
           failedGeneratingPosition: t.home.failed_generating_position,
           unrecognizedSymbol: t.script_parser.unrecognized_symbol,
           typeError: t.script_parser.type_error,
@@ -215,6 +217,12 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
+  void _updateCurrentDirectory({required Directory directory}) {
+    setState(() {
+      _currentDirectory = directory;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final sampleGames = getAssetGames(context);
@@ -258,7 +266,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                   games: sampleGames,
                   onGameSelected: _tryGeneratingAndPlayingPositionFromSample,
                 ),
-                const AddedExercisesWidget(),
+                AddedExercisesWidget(
+                  onCurrentDirectoryUpdate: _updateCurrentDirectory,
+                ),
               ],
             ),
             if (_isGeneratingPosition)
@@ -274,13 +284,17 @@ class _HomePageState extends ConsumerState<HomePage> {
         floatingActionButton: _selectedTabIndex == 1
             ? FloatingActionButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const ScriptEditorPage();
-                      },
-                    ),
-                  );
+                  if (_currentDirectory != null) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ScriptEditorPage(
+                            currentDirectory: _currentDirectory!,
+                          );
+                        },
+                      ),
+                    );
+                  }
                 },
                 child: const FaIcon(FontAwesomeIcons.plus),
               )
@@ -349,7 +363,12 @@ class IntegratedExercisesWidget extends StatelessWidget {
 }
 
 class AddedExercisesWidget extends StatefulWidget {
-  const AddedExercisesWidget({super.key});
+  final void Function({required Directory directory}) onCurrentDirectoryUpdate;
+
+  const AddedExercisesWidget({
+    super.key,
+    required this.onCurrentDirectoryUpdate,
+  });
 
   @override
   State<AddedExercisesWidget> createState() => _AddedExercisesWidgetState();
@@ -363,6 +382,17 @@ class _AddedExercisesWidgetState extends State<AddedExercisesWidget> {
       Directory? directory) async {
     final elements = directory?.list(recursive: false);
     return await elements?.toList();
+  }
+
+  @override
+  void initState() {
+    _currentDirectoryFuture.then((setDirectory) {
+      setState(() {
+        if (setDirectory == null) return;
+        widget.onCurrentDirectoryUpdate(directory: setDirectory);
+      });
+    });
+    super.initState();
   }
 
   @override

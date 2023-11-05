@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:isolate';
 
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
@@ -14,7 +15,12 @@ const winningString = "win";
 const drawingString = "draw";
 
 class ScriptEditorPage extends StatefulWidget {
-  const ScriptEditorPage({super.key});
+  final Directory currentDirectory;
+
+  const ScriptEditorPage({
+    super.key,
+    required this.currentDirectory,
+  });
 
   @override
   State<ScriptEditorPage> createState() => _ScriptEditorPageState();
@@ -22,6 +28,7 @@ class ScriptEditorPage extends StatefulWidget {
 
 class _ScriptEditorPageState extends State<ScriptEditorPage> {
   bool _isCheckingPosition = false;
+  bool _isSavingFile = false;
   Isolate? _scriptCheckerIsolate;
 
   final TextEditingController _playerKingConstraintsScriptController =
@@ -64,6 +71,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
 
   void _processUserScript() async {
     if (_isCheckingPosition) return;
+    if (_isSavingFile) return;
 
     final script = _getWholeScriptContent();
     final receivePort = ReceivePort();
@@ -80,7 +88,8 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           miscErrorDialogTitle: t.script_parser.misc_error_dialog_title,
           missingScriptType: t.script_parser.missing_script_type,
           miscParseError: t.script_parser.misc_parse_error,
-          maxGenerationAttemptsAchieved: t.home.max_generation_attempts_achieved,
+          maxGenerationAttemptsAchieved:
+              t.home.max_generation_attempts_achieved,
           failedGeneratingPosition: t.home.failed_generating_position,
           unrecognizedSymbol: t.script_parser.unrecognized_symbol,
           typeError: t.script_parser.type_error,
@@ -160,11 +169,41 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           ),
         );
       } else {
-        // TODO save file
-
-        ////////////////////////////////////
-        print("Script ready to be saved !");
-        /////////////////////////////////////
+        setState(() {
+          _isSavingFile = true;
+        });
+        final newFilePath = "${widget.currentDirectory.path}/temp.txt";
+        try {
+          final newFile = await File(newFilePath).create(recursive: false);
+          await newFile.writeAsString(script);
+          setState(() {
+            _isSavingFile = false;
+          });
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(t.script_editor_page.exercise_creation_success),
+            ),
+          );
+          Navigator.of(context).pop();
+        } on FileSystemException {
+          setState(() {
+            _isSavingFile = false;
+          });
+          if (!mounted) return;
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(
+                    t.script_parser.misc_error_dialog_title,
+                  ),
+                  content: Text(
+                    t.script_parser.misc_checking_error,
+                  ),
+                );
+              });
+        }
       }
     });
   }

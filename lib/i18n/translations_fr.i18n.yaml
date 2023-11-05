@@ -120,7 +120,7 @@ script_editor_page:
   should_draw: "Annuler"
   beforeExitTitle: "Annuler l'édition du script ?"
   beforeExitMessage: "Souhaitez-vous quitter la page et annuler l'édition du script ?"
-  syntax_button_label: "Règles de syntaxe"
+  exercise_creation_success: "Exercise sauvegardé"
 syntax_manual_page:
   title: "Syntaxe des scripts"
   table_header_variable_name: "Nom"

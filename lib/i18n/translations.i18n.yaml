@@ -110,7 +110,7 @@ script_editor_page:
   should_draw: "Draw"
   beforeExitTitle: "Cancel script edition ?"
   beforeExitMessage: "Do you want to leave this page and cancel script edition ?"
-  syntax_button_label: "Syntax rules"
+  exercise_creation_success: "Saved exercise."
 syntax_manual_page:
   title: "Scripts' syntax"
   table_header_variable_name: "Name"
