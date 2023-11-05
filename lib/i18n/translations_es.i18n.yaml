@@ -7,6 +7,9 @@ misc:
 home:
   title: "Inicio"
   failedLoadingExercise: "No se pudo cargar el ejercicio: la posición de ajedrez no es válida."
+  maxGenerationAttemptsAchieved: "Es imposible generar una posición a partir de estos guiones: \
+    se han superado los intentos máximos de generación.\n\nComprueba que tus restricciones no sean \
+    demasiado restrictivas."
   failedGeneratingPosition: "Falló al generar la posición."
   helpMessage:
     "Aquí puedes seleccionar el tipo de posición con la que quieres jugar. \
@@ -53,9 +56,9 @@ scriptParser:
   noAntlr4Token: "[Sin ocurrencia]"
   eof: "[FinDeArchivo]"
   overridingPredefinedVariable: "Intentas cambiar el valor de la variable predefinida $name."
-  parseErrorDialogTitle: "Error de script para $title"
+  parseErrorDialogTitle: "Error de guione para $title"
   typeError: "Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa."
-  missingScriptType: "No se pudo generar la posición: compruebe que todas las secciones del script declaran un tipo de script correcto."
+  missingScriptType: "No se pudo generar la posición: compruebe que todas las secciones del guione declaran un tipo de guione correcto."
   unrecognized_script_type: "Tipo de escritura no reconocido: $type."
   miscErrorDialogTitle: "Equivocado global"
   misc_checking_error: "La verificación de errores ha fallado debido a un error misceláneo."
@@ -111,24 +114,24 @@ script_editor_page:
   type_already_added: "Ya se agregó este tipo."
   should_win: "Ganar"
   should_draw: "Empate"
-  beforeExitTitle: "¿Cancelar la edición del script?"
-  beforeExitMessage: "¿Desea salir de esta página y cancelar la edición del script?"
+  beforeExitTitle: "¿Cancelar la edición del guione?"
+  beforeExitMessage: "¿Desea salir de esta página y cancelar la edición del guione?"
   syntax_button_label: "Reglas de sintaxis"
 syntax_manual_page:
-  title: "Sintaxis de scripts"
+  title: "Sintaxis de guiones"
   table_header_variable_name: "Nombre"
   table_header_variable_type: "Tipo"
   table_header_variable_use: "Uso"
-  scripts_goal: "Objetivo de los scripts"
-  scripts_kinds: "Tipos de scripts"
-  scripts_format: "Formato de los scripts"
+  scripts_goal: "Objetivo de los guiones"
+  scripts_kinds: "Tipos de guiones"
+  scripts_format: "Formato de los guiones"
   comments: "Comentarios"
   variables: "Variables"
   predefined_variables: "Variables predefinidas"
   int_expressions: "Expresiones enteras"
   bool_expressions: "Expresiones booleanas"
   scripts_goal_description:
-    "Un script de generación de posiciones se divide en varios subprogramas, \
+    "Un guione de generación de posiciones se divide en varios subprogramas, \
     cada uno de su propio tipo y en un lenguaje personalizado, cuyas siguientes \
     secciones te ayudarán a comprender.\n\nEl objetivo de un subprograma es \
     comprobar que la posición generada cumple con todas sus restricciones.\n\n\
@@ -172,7 +175,7 @@ syntax_manual_page:
     posicionamiento para las piezas que no son reyes, que deben respetar dado su orden de aparición en \
     el tablero de ajedrez, para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n"
   scripts_format_head_description:
-    "Cada script puede comenzar con una o varias declaraciones de \
+    "Cada guione puede comenzar con una o varias declaraciones de \
     creación de variables.\n\nPero la expresión final debe ser una declaración que devuelva una \
     expresión booleana.\n\nEsta expresión de retorno será utilizada por el algoritmo para comprobar \
     que la posición generada es correcta.\n\n\
@@ -181,7 +184,7 @@ syntax_manual_page:
     "
   scripts_format_main_description_1: "Esta es la sintaxis para la expresión de retorno:\n\n"
   scripts_format_code_section_1: "return [su expresión booleana];\n\n"
-  scripts_format_main_description_2: "Este es un ejemplo de script simple :\n\n"
+  scripts_format_main_description_2: "Este es un ejemplo de guione simple :\n\n"
   scripts_comments_head_description:
     "Puedes usar dos formas de comentarios, que están \
     inspirados en los comentarios del lenguaje C.\n\n"
@@ -212,7 +215,7 @@ syntax_manual_page:
     letra (mayúscula o minúscula).\n\nLuego, los caracteres siguientes pueden ser letras \
     (mayúsculas y/o minúsculas), dígitos o guiones bajos ('_').\n\nTen en cuenta también que no \
     puedes usar el nombre de un valor predefinido o de una variable predefinida (ya que cada tipo \
-    de script, como verás más adelante, tiene su propio conjunto de variables predefinidas).\n\n"
+    de guione, como verás más adelante, tiene su propio conjunto de variables predefinidas).\n\n"
   scripts_variables_creation_title: "Instrucción de creación de variable\n\n"
   scripts_variables_creation_description:
     "Esta es la sintaxis para crear una variable \

@@ -80,6 +80,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           miscErrorDialogTitle: t.script_parser.misc_error_dialog_title,
           missingScriptType: t.script_parser.missing_script_type,
           miscParseError: t.script_parser.misc_parse_error,
+          maxGenerationAttemptsAchieved: t.home.max_generation_attempts_achieved,
           failedGeneratingPosition: t.home.failed_generating_position,
           unrecognizedSymbol: t.script_parser.unrecognized_symbol,
           typeError: t.script_parser.type_error,

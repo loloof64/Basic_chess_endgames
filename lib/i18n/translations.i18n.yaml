@@ -8,6 +8,8 @@ home:
   title: "Home"
   failedLoadingExercise: "Failed to load exercise : the chess position is not valid."
   failedGeneratingPosition: "Failed to generate the position."
+  maxGenerationAttemptsAchieved: "Impossible to generate a position from these scripts : \
+    maximum generation attempts surpassed.\n\nPlease check that your constraints aren't too restrictive."
   helpMessage:
     "Here you can select the type of position you want to play with. \
     A line which leading icon is a trophy will generate a position in which you should win. \

@@ -35,6 +35,7 @@ class TranslationsWrapper {
   final String typeError;
   final String noAntlr4Token;
   final String eof;
+  final String maxGenerationAttemptsAchieved;
   final String failedGeneratingPosition;
   final String playerKingConstraint;
   final String computerKingConstraint;
@@ -68,6 +69,7 @@ class TranslationsWrapper {
     required this.typeError,
     required this.noAntlr4Token,
     required this.eof,
+    required this.maxGenerationAttemptsAchieved,
     required this.failedGeneratingPosition,
     required this.playerKingConstraint,
     required this.computerKingConstraint,
@@ -377,6 +379,8 @@ class ScriptTextTransformer {
     final errorsList = <PositionGenerationError>[];
 
     for (var scriptDivision in parts) {
+      if (scriptDivision.trim().isEmpty) continue;
+      
       final divisionParts =
           scriptDivision.split('\n').where((line) => line.trim().isNotEmpty);
       final firstLine = divisionParts.firstOrNull?.trim();
@@ -424,7 +428,7 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
             <PositionGenerationError>[
               PositionGenerationError(
                 parameters.translations.miscErrorDialogTitle,
-                parameters.translations.failedGeneratingPosition,
+                parameters.translations.maxGenerationAttemptsAchieved,
               )
             ],
           ),

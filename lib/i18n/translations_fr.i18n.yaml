@@ -7,6 +7,9 @@ misc:
 home:
   title: "Accueil"
   failedLoadingExercise: "Échec de chargement de l'exerice : la position d'échecs est invalide."
+  maxGenerationAttemptsAchieved: "Impossible de générer une position à partir de ces scripts : \
+    nombre de tentatives maximum dépassés.\n\nVeuillez vérifier que vos contraintes ne sont pas \
+    trop restrictives."
   failedGeneratingPosition: "Échec de génération de la position."
   helpMessage:
     "Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer. \

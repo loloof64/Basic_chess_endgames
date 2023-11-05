@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 618 (206 per locale)
+/// Strings: 621 (207 per locale)
 ///
-/// Built on 2023-11-05 at 10:59 UTC
+/// Built on 2023-11-05 at 12:25 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -201,6 +201,7 @@ class _TranslationsHomeEn {
 	String get title => 'Home';
 	String get failed_loading_exercise => 'Failed to load exercise : the chess position is not valid.';
 	String get failed_generating_position => 'Failed to generate the position.';
+	String get max_generation_attempts_achieved => 'Impossible to generate a position from these scripts : maximum generation attempts surpassed.\n\nPlease check that your constraints aren\'t too restrictive.';
 	String get help_message => 'Here you can select the type of position you want to play with. A line which leading icon is a trophy will generate a position in which you should win. Otherwise, with a handshake leading icon, your goal will be to save the game and make draw.';
 	String get tab_integrated => 'Integrated';
 	String get tab_added => 'Added';
@@ -539,6 +540,7 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	// Translations
 	@override String get title => 'Inicio';
 	@override String get failed_loading_exercise => 'No se pudo cargar el ejercicio: la posición de ajedrez no es válida.';
+	@override String get max_generation_attempts_achieved => 'Es imposible generar una posición a partir de estos guiones: se han superado los intentos máximos de generación.\n\nComprueba que tus restricciones no sean demasiado restrictivas.';
 	@override String get failed_generating_position => 'Falló al generar la posición.';
 	@override String get help_message => 'Aquí puedes seleccionar el tipo de posición con la que quieres jugar. Una línea cuyo icono principal es un trofeo generará una posición en la que deberías ganar. De lo contrario, con un icono principal de un apretón de manos, tu objetivo será salvar la partida y hacer empate.';
 	@override String get tab_integrated => 'Integrados';
@@ -601,9 +603,9 @@ class _TranslationsScriptParserEs extends _TranslationsScriptParserEn {
 	@override String get no_antlr4_token => '[Sin ocurrencia]';
 	@override String get eof => '[FinDeArchivo]';
 	@override String overriding_predefined_variable({required Object Name}) => 'Intentas cambiar el valor de la variable predefinida ${Name}.';
-	@override String parse_error_dialog_title({required Object Title}) => 'Error de script para ${Title}';
+	@override String parse_error_dialog_title({required Object Title}) => 'Error de guione para ${Title}';
 	@override String get type_error => 'Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa.';
-	@override String get missing_script_type => 'No se pudo generar la posición: compruebe que todas las secciones del script declaran un tipo de script correcto.';
+	@override String get missing_script_type => 'No se pudo generar la posición: compruebe que todas las secciones del guione declaran un tipo de guione correcto.';
 	@override String unrecognized_script_type({required Object Type}) => 'Tipo de escritura no reconocido: ${Type}.';
 	@override String get misc_error_dialog_title => 'Equivocado global';
 	@override String get misc_checking_error => 'La verificación de errores ha fallado debido a un error misceláneo.';
@@ -687,8 +689,8 @@ class _TranslationsScriptEditorPageEs extends _TranslationsScriptEditorPageEn {
 	@override String get type_already_added => 'Ya se agregó este tipo.';
 	@override String get should_win => 'Ganar';
 	@override String get should_draw => 'Empate';
-	@override String get before_exit_title => '¿Cancelar la edición del script?';
-	@override String get before_exit_message => '¿Desea salir de esta página y cancelar la edición del script?';
+	@override String get before_exit_title => '¿Cancelar la edición del guione?';
+	@override String get before_exit_message => '¿Desea salir de esta página y cancelar la edición del guione?';
 	@override String get syntax_button_label => 'Reglas de sintaxis';
 }
 
@@ -699,19 +701,19 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override final _TranslationsEs _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Sintaxis de scripts';
+	@override String get title => 'Sintaxis de guiones';
 	@override String get table_header_variable_name => 'Nombre';
 	@override String get table_header_variable_type => 'Tipo';
 	@override String get table_header_variable_use => 'Uso';
-	@override String get scripts_goal => 'Objetivo de los scripts';
-	@override String get scripts_kinds => 'Tipos de scripts';
-	@override String get scripts_format => 'Formato de los scripts';
+	@override String get scripts_goal => 'Objetivo de los guiones';
+	@override String get scripts_kinds => 'Tipos de guiones';
+	@override String get scripts_format => 'Formato de los guiones';
 	@override String get comments => 'Comentarios';
 	@override String get variables => 'Variables';
 	@override String get predefined_variables => 'Variables predefinidas';
 	@override String get int_expressions => 'Expresiones enteras';
 	@override String get bool_expressions => 'Expresiones booleanas';
-	@override String get scripts_goal_description => 'Un script de generación de posiciones se divide en varios subprogramas, cada uno de su propio tipo y en un lenguaje personalizado, cuyas siguientes secciones te ayudarán a comprender.\n\nEl objetivo de un subprograma es comprobar que la posición generada cumple con todas sus restricciones.\n\nSi al menos una condición no se cumple, el algoritmo intentará \'arreglar\' la posición para que se cumplan todas las condiciones.';
+	@override String get scripts_goal_description => 'Un guione de generación de posiciones se divide en varios subprogramas, cada uno de su propio tipo y en un lenguaje personalizado, cuyas siguientes secciones te ayudarán a comprender.\n\nEl objetivo de un subprograma es comprobar que la posición generada cumple con todas sus restricciones.\n\nSi al menos una condición no se cumple, el algoritmo intentará \'arreglar\' la posición para que se cumplan todas las condiciones.';
 	@override String get scripts_kinds_head_description => 'Existen varios tipos de subprogramas, y la posición generada debe respetar todas las reglas de todos los subprogramas definidos.\n\nPor supuesto, también debe respetar las reglas estándar del ajedrez (por ejemplo, el rey del lado que no está en turno no puede estar en jaque).\n\n';
 	@override String get scripts_kinds_player_king_constraint_title => 'Restricción sobre rey del jugador\n\n';
 	@override String get scripts_kinds_player_king_constraint_description => 'Indica las restricciones de posicionamiento del rey del jugador (dado que el color del jugador se elegirá al azar).\n\n';
@@ -727,10 +729,10 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_kinds_other_pieces_mutual_constraints_description => 'Indica las restricciones de posicionamiento para las piezas que no son reyes, que deben respetar entre sí, dos a dos,para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n';
 	@override String get scripts_kinds_other_pieces_indexed_constraints_title => 'Restricciones sobre otras piezas por orden\n\n';
 	@override String get scripts_kinds_other_pieces_indexed_constraints_description => 'Indica las restricciones de posicionamiento para las piezas que no son reyes, que deben respetar dado su orden de aparición en el tablero de ajedrez, para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n';
-	@override String get scripts_format_head_description => 'Cada script puede comenzar con una o varias declaraciones de creación de variables.\n\nPero la expresión final debe ser una declaración que devuelva una expresión booleana.\n\nEsta expresión de retorno será utilizada por el algoritmo para comprobar que la posición generada es correcta.\n\nPor favor tenga en cuenta que una declaración puede extenderse en varias líneas: terminan tan pronto como se encuentra el carácter \';\'.\n\nAdemás, tenga cuidado con la sensibilidad a las mayúsculas: las mayúsculas o minúsculas pueden marcar la diferencia.\n\n ';
+	@override String get scripts_format_head_description => 'Cada guione puede comenzar con una o varias declaraciones de creación de variables.\n\nPero la expresión final debe ser una declaración que devuelva una expresión booleana.\n\nEsta expresión de retorno será utilizada por el algoritmo para comprobar que la posición generada es correcta.\n\nPor favor tenga en cuenta que una declaración puede extenderse en varias líneas: terminan tan pronto como se encuentra el carácter \';\'.\n\nAdemás, tenga cuidado con la sensibilidad a las mayúsculas: las mayúsculas o minúsculas pueden marcar la diferencia.\n\n ';
 	@override String get scripts_format_main_description_1 => 'Esta es la sintaxis para la expresión de retorno:\n\n';
 	@override String get scripts_format_code_section_1 => 'return [su expresión booleana];\n\n';
-	@override String get scripts_format_main_description_2 => 'Este es un ejemplo de script simple :\n\n';
+	@override String get scripts_format_main_description_2 => 'Este es un ejemplo de guione simple :\n\n';
 	@override String get scripts_comments_head_description => 'Puedes usar dos formas de comentarios, que están inspirados en los comentarios del lenguaje C.\n\n';
 	@override String get scripts_comments_multiline_comments_title => 'Comentarios multilínea\n\n';
 	@override String get scripts_comments_multiline_comments_description => 'Un comentario multilínea comienza con \'/*\' y termina con \'*/\', y puede expandirse en varias líneas.';
@@ -742,7 +744,7 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_comments_single_line_comments_sample_2 => 'miVariableEntera := FileF; // Establece el valor de la columna F\n\n';
 	@override String get scripts_variables_head_description => 'Estos son aspectos a considerar sobre las variables:\n\n';
 	@override String get scripts_variables_name_rules_title => 'Reglas de nomenclatura\n\n';
-	@override String get scripts_variables_name_rules_description => 'Un nombre de variable debe comenzar con una letra (mayúscula o minúscula).\n\nLuego, los caracteres siguientes pueden ser letras (mayúsculas y/o minúsculas), dígitos o guiones bajos (\'_\').\n\nTen en cuenta también que no puedes usar el nombre de un valor predefinido o de una variable predefinida (ya que cada tipo de script, como verás más adelante, tiene su propio conjunto de variables predefinidas).\n\n';
+	@override String get scripts_variables_name_rules_description => 'Un nombre de variable debe comenzar con una letra (mayúscula o minúscula).\n\nLuego, los caracteres siguientes pueden ser letras (mayúsculas y/o minúsculas), dígitos o guiones bajos (\'_\').\n\nTen en cuenta también que no puedes usar el nombre de un valor predefinido o de una variable predefinida (ya que cada tipo de guione, como verás más adelante, tiene su propio conjunto de variables predefinidas).\n\n';
 	@override String get scripts_variables_creation_title => 'Instrucción de creación de variable\n\n';
 	@override String get scripts_variables_creation_description => 'Esta es la sintaxis para crear una variable entera o una variable booleana:\n\n';
 	@override String get scripts_variables_creation_format => '[identificador] := [expresión entera | expresión booleana];\n\n';
@@ -878,6 +880,7 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	// Translations
 	@override String get title => 'Accueil';
 	@override String get failed_loading_exercise => 'Échec de chargement de l\'exerice : la position d\'échecs est invalide.';
+	@override String get max_generation_attempts_achieved => 'Impossible de générer une position à partir de ces scripts : nombre de tentatives maximum dépassés.\n\nVeuillez vérifier que vos contraintes ne sont pas trop restrictives.';
 	@override String get failed_generating_position => 'Échec de génération de la position.';
 	@override String get help_message => 'Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer. Une ligne dont l\'icône est un trophée générera une position où vous devrez gagner. Sinon si la ligne commence par une poignée de main, vous devrez sauver la partie et faire partie nulle.';
 	@override String get tab_integrated => 'Intégrés';
