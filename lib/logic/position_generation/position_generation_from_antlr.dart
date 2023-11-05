@@ -6,7 +6,7 @@ import 'package:basicchessendgamestrainer/logic/position_generation/position_gen
 import 'package:chess/chess.dart' as chess;
 
 const int maxOtherPiecesPlacementTries = 30;
-const int maxOverallTries = 10;
+const int maxOverallTries = 30;
 
 const int boardCellsCount = 64;
 

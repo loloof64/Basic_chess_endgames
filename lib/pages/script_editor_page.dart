@@ -422,56 +422,66 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
               Tab(icon: FaIcon(FontAwesomeIcons.futbol)),
             ]),
           ),
-          body: TabBarView(children: [
-            PlayerKingConstraintsEditorWidget(
-              controller: _playerKingConstraintsScriptController,
-            ),
-            ComputerKingContraintsEditorWidget(
-              controller: _computerKingConstraintsScriptController,
-            ),
-            KingsMutualConstraintEditorWidget(
-              controller: _kingsMutualConstraintsScriptController,
-            ),
-            OtherPiecesCountConstraintsEditorWidget(
-              onScriptUpdate: (counts) {
-                _updateOtherPiecesCountConstraintsScript(counts);
-              },
-              onKindAdded: (kind) {
-                setState(() {
-                  _otherPiecesGlobalConstraintsScripts[kind] =
-                      TextEditingController();
-                  _otherPiecesMutualConstraintsScripts[kind] =
-                      TextEditingController();
-                  _otherPiecesIndexedConstraintsScripts[kind] =
-                      TextEditingController();
-                });
-              },
-              onKindRemoved: (kind) {
-                setState(() {
-                  _otherPiecesGlobalConstraintsScripts.remove(kind);
-                  _otherPiecesMutualConstraintsScripts.remove(kind);
-                  _otherPiecesIndexedConstraintsScripts.remove(kind);
-                });
-              },
-              currentScript: _otherPiecesCountConstraintsScript,
-            ),
-            OtherPiecesGlobalConstraintEditorWidget(
-              availablePiecesKinds: otherPiecesKinds,
-              controllers: _otherPiecesGlobalConstraintsScripts,
-            ),
-            OtherPiecesMutualConstraintEditorWidget(
-              availablePiecesKinds: otherPiecesKinds,
-              controllers: _otherPiecesMutualConstraintsScripts,
-            ),
-            OtherPiecesIndexedConstraintEditorWidget(
-              availablePiecesKinds: otherPiecesKinds,
-              controllers: _otherPiecesIndexedConstraintsScripts,
-            ),
-            GameGoalEditorWidget(
-                script: _goalScript,
-                onChanged: (newValue) {
-                  _updateGoalScript(newValue);
-                }),
+          body: Stack(children: [
+            TabBarView(children: [
+              PlayerKingConstraintsEditorWidget(
+                controller: _playerKingConstraintsScriptController,
+              ),
+              ComputerKingContraintsEditorWidget(
+                controller: _computerKingConstraintsScriptController,
+              ),
+              KingsMutualConstraintEditorWidget(
+                controller: _kingsMutualConstraintsScriptController,
+              ),
+              OtherPiecesCountConstraintsEditorWidget(
+                onScriptUpdate: (counts) {
+                  _updateOtherPiecesCountConstraintsScript(counts);
+                },
+                onKindAdded: (kind) {
+                  setState(() {
+                    _otherPiecesGlobalConstraintsScripts[kind] =
+                        TextEditingController();
+                    _otherPiecesMutualConstraintsScripts[kind] =
+                        TextEditingController();
+                    _otherPiecesIndexedConstraintsScripts[kind] =
+                        TextEditingController();
+                  });
+                },
+                onKindRemoved: (kind) {
+                  setState(() {
+                    _otherPiecesGlobalConstraintsScripts.remove(kind);
+                    _otherPiecesMutualConstraintsScripts.remove(kind);
+                    _otherPiecesIndexedConstraintsScripts.remove(kind);
+                  });
+                },
+                currentScript: _otherPiecesCountConstraintsScript,
+              ),
+              OtherPiecesGlobalConstraintEditorWidget(
+                availablePiecesKinds: otherPiecesKinds,
+                controllers: _otherPiecesGlobalConstraintsScripts,
+              ),
+              OtherPiecesMutualConstraintEditorWidget(
+                availablePiecesKinds: otherPiecesKinds,
+                controllers: _otherPiecesMutualConstraintsScripts,
+              ),
+              OtherPiecesIndexedConstraintEditorWidget(
+                availablePiecesKinds: otherPiecesKinds,
+                controllers: _otherPiecesIndexedConstraintsScripts,
+              ),
+              GameGoalEditorWidget(
+                  script: _goalScript,
+                  onChanged: (newValue) {
+                    _updateGoalScript(newValue);
+                  }),
+            ]),
+            if (_isCheckingPosition || _isSavingFile)
+              const Center(
+                child: SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: CircularProgressIndicator(),
+                ),
+              )
           ]),
           floatingActionButton: FloatingActionButton(
             onPressed: _processUserScript,
