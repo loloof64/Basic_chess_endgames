@@ -39,6 +39,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   int _selectedTabIndex = 0;
   Directory? _currentAddedExercisesDirectory;
   List<FileSystemEntity>? _customExercisesItems;
+  final TextEditingController _renameCustomFileController = TextEditingController();
 
   @override
   void initState() {
@@ -61,6 +62,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     _positionGenerationIsolate?.kill(
       priority: Isolate.immediate,
     );
+    _renameCustomFileController.dispose();
     super.dispose();
   }
 
@@ -242,6 +244,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                     t.home.contextual_menu_file_delete,
                   ),
                 ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _showRenameCustomFileDialog(fileName);
+                  },
+                  child: Text(
+                    t.home.contextual_menu_file_rename,
+                  ),
+                ),
               ],
             ),
           );
@@ -261,6 +272,78 @@ class _HomePageState extends ConsumerState<HomePage> {
               onPressed: () {
                 Navigator.of(context).pop();
                 _deleteCustomFile(fileName);
+              },
+              child: Text(
+                t.misc.button_ok,
+                style: const TextStyle(
+                  color: Colors.green,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                t.misc.button_cancel,
+                style: const TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showRenameCustomFileDialog(String fileName) async {
+    if (_currentAddedExercisesDirectory == null) return;
+
+    final currentPath = _currentAddedExercisesDirectory!.path;
+    final fileInstance = File("$currentPath/$fileName");
+    String fileNameWithoutExtension;
+    if (fileName.contains('.')) {
+      final parts = fileName.split('.');
+      fileNameWithoutExtension = parts.sublist(0, parts.length - 1).join('.');
+    } else {
+      fileNameWithoutExtension = fileName;
+    }
+    _renameCustomFileController.text = fileNameWithoutExtension;
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _renameCustomFileController,
+                    ),
+                  ),
+                  const Text('.txt'),
+                ],
+              )
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                String newPath = "$currentPath/${_renameCustomFileController.text}";
+                if (!newPath.endsWith('.txt')) newPath += '.txt';
+                await fileInstance.rename(newPath);
+                _reloadCurrentFolder();
               },
               child: Text(
                 t.misc.button_ok,

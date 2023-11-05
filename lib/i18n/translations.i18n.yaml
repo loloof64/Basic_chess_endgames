@@ -20,6 +20,7 @@ home:
   failed_loading_added_exercises: "Failed to load custom exercises list"
   misc_generating_error: "Failed to generate the position for a miscellaneous error."
   contextual_menu_file_delete: "Delete"
+  contextual_menu_file_rename: "Rename"
   confirm_delete_file_title: "Delete file ?"
   confirm_delete_file_msg: "Do you want to delete the file '$name' ?"
 rgpd:
