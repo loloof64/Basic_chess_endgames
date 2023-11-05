@@ -172,10 +172,29 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         setState(() {
           _isSavingFile = true;
         });
-        final newFilePath = "${widget.currentDirectory.path}/temp.txt";
+        const fileBaseName = 'temp';
+        String fileDiscriminator = '';
+        String newFilePath =
+            "${widget.currentDirectory.path}/$fileBaseName$fileDiscriminator.txt";
         try {
-          final newFile = await File(newFilePath).create(recursive: false);
-          await newFile.writeAsString(script);
+          File newFileInstance = File(newFilePath);
+          if (await newFileInstance.exists()) {
+            int discriminatorNumber = 1;
+            do {
+              fileDiscriminator = '_$discriminatorNumber';
+              newFilePath =
+                  "${widget.currentDirectory.path}/$fileBaseName$fileDiscriminator.txt";
+              newFileInstance = File(newFilePath);
+
+              if (!await newFileInstance.exists()) break;
+              discriminatorNumber++;
+            } while (true);
+          }
+          final newFile = await newFileInstance.create(recursive: false);
+          await newFile.writeAsString(
+            script,
+            mode: FileMode.writeOnly,
+          );
           setState(() {
             _isSavingFile = false;
           });
