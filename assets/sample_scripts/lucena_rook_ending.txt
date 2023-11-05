@@ -1,4 +1,4 @@
-# player king
+# player king constraints
 
 isOnRightFile := (file >= FileB) and (file <= FileG);
 isOnRightRank := rank == (numIf playerHasWhite then Rank8 else Rank1);
@@ -6,21 +6,21 @@ return isOnRightFile and isOnRightRank;
 
 @@@@@@
 
-# computer king
+# computer king constraints
 
 kingOnComputerSecondRank := boolIf playerHasWhite then (rank == Rank7) else (rank == Rank2);
 return kingOnComputerSecondRank;
 
 @@@@@@
 
-# kings mutual constraint
+# kings mutual constraints
 
 kingOnLongSide := boolIf (playerKingFile <= FileD) then (computerKingFile == (playerKingFile + 2)) else (computerKingFile == (playerKingFile - 2));
 return kingOnLongSide;
 
 @@@@@@
 
-# other pieces count
+# other pieces counts
 
 player pawn : 1
 player rook : 1
@@ -28,7 +28,7 @@ computer rook : 1
 
 @@@@@@
 
-# other pieces global constraint
+# other pieces global constraints
 
 [player pawn]
 

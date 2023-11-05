@@ -1,3 +1,4 @@
+import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/piece_kind_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -109,41 +110,9 @@ Map<PieceKind, int> convertScriptToPiecesCounts(String script) {
     final elementsStrings = line.split(" : ");
     final kindString = elementsStrings.first.trim();
     final count = int.parse(elementsStrings.last.trim());
-    final kind = PieceKind.values
-        .firstWhere((element) => element.stringRepr == kindString);
+    final kind = PieceKind.from(kindString);
     result[kind] = count;
   }
 
   return result;
-}
-
-PieceKind kindFromString(String kindString) {
-  switch (kindString) {
-    case "player pawn":
-      return PieceKind.playerPawn;
-    case "player knight":
-      return PieceKind.playerKnight;
-    case "player bishop":
-      return PieceKind.playerBishop;
-    case "player rook":
-      return PieceKind.playerRook;
-    case "player queen":
-      return PieceKind.playerQueen;
-    case "player king":
-      return PieceKind.playerKing;
-    case "computer pawn":
-      return PieceKind.computerPawn;
-    case "computer knight":
-      return PieceKind.computerKnight;
-    case "computer bishop":
-      return PieceKind.computerBishop;
-    case "computer rook":
-      return PieceKind.computerRook;
-    case "computer queen":
-      return PieceKind.computerQueen;
-    case "computer king":
-      return PieceKind.computerKing;
-    default:
-      throw "Invalid kind string '$kindString'";
-  }
 }

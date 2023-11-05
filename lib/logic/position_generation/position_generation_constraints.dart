@@ -41,7 +41,7 @@ class PieceKind extends Equatable {
   }
 
   String toEasyString() {
-    return "${side.runtimeType.toString()} ${pieceType.runtimeType.toString()}";
+    return "${side.toString().split('.').last} ${pieceType.toString().split('.').last}";
   }
 }
 

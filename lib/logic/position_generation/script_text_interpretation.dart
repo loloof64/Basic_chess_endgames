@@ -1,10 +1,12 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:collection';
+import 'dart:isolate';
 
 import 'package:antlr4/antlr4.dart';
 import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.dart';
 import 'package:basicchessendgamestrainer/antlr4/script_language_builder.dart';
+import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import 'package:logger/logger.dart';
 
 const scriptsSeparator = '@@@@@@';
 const otherPiecesSingleScriptSeparator = '---';
+const positionGenerationErrorDialogSpacer = 20.0;
 
 @immutable
 class PositionGenerationError {
@@ -123,15 +126,15 @@ enum ScriptType {
   // can throw UnRecognizedScriptTypeException
   static ScriptType from(String line) {
     return switch (line) {
-      'player king' => ScriptType.playerKingConstraint,
-      'computer king' => ScriptType.computerKingConstraint,
-      'kings mutual constraint' => ScriptType.mutualKingConstraint,
-      'other pieces count' => ScriptType.otherPiecesCount,
-      'other pieces global constraint' =>
+      'player king constraints' => ScriptType.playerKingConstraint,
+      'computer king constraints' => ScriptType.computerKingConstraint,
+      'kings mutual constraints' => ScriptType.mutualKingConstraint,
+      'other pieces counts' => ScriptType.otherPiecesCount,
+      'other pieces global constraints' =>
         ScriptType.otherPiecesGlobalConstraint,
-      'other pieces indexed constraint' =>
+      'other pieces indexed constraints' =>
         ScriptType.otherPiecesIndexedConstraint,
-      'other pieces mutual constraint' =>
+      'other pieces mutual constraints' =>
         ScriptType.otherPiecesMutualConstraint,
       'goal' => ScriptType.goal,
       _ => throw UnRecognizedScriptTypeException()
@@ -169,6 +172,7 @@ class ScriptTextTransformer {
   }
 
   List<PositionGenerationError> _transformScriptIntoConstraint(String script) {
+    if (script.trim().isEmpty) return [];
     try {
       final lines = script.split(RegExp(r'\r?\n')).where(
             (line) => line.trim().isNotEmpty,
@@ -383,4 +387,95 @@ class ScriptTextTransformer {
   bool _parseGoalScript(String scriptContent) {
     return scriptContent.split('\n').first.trim() == 'win';
   }
+}
+
+void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
+  final (constraintsExpr, generationErrors) = ScriptTextTransformer(
+    allConstraintsScriptText: parameters.gameScript,
+    translations: parameters.translations,
+  ).transformTextIntoConstraints();
+  if (generationErrors.isNotEmpty) {
+    parameters.sendPort.send((null, generationErrors));
+  } else {
+    final positionGenerator = PositionGeneratorFromAntlr();
+    positionGenerator.setConstraints(constraintsExpr);
+    try {
+      final generatedPosition = positionGenerator.generatePosition();
+      parameters.sendPort
+          .send((generatedPosition, <PositionGenerationError>[]));
+    } on PositionGenerationLoopException {
+      parameters.sendPort.send(
+        (
+          null,
+          <PositionGenerationError>[
+            PositionGenerationError(
+              parameters.translations.miscErrorDialogTitle,
+              parameters.translations.failedGeneratingPosition,
+            )
+          ],
+        ),
+      );
+    }
+  }
+}
+
+Future<void> showGenerationErrorsPopups({
+  required List<PositionGenerationError> errors,
+  required BuildContext context,
+}) async {
+  for (final singleError in errors) {
+    showDialog(
+        context: context,
+        builder: (ctx2) {
+          return Dialog(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(singleError.title),
+                  const SizedBox(
+                    height: positionGenerationErrorDialogSpacer,
+                  ),
+                  Text(singleError.message),
+                  const SizedBox(
+                    height: positionGenerationErrorDialogSpacer,
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Theme.of(
+                          context,
+                        ).colorScheme.primary,
+                      ),
+                    ),
+                    child: Text(
+                      t.misc.button_ok,
+                      style: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+}
+
+class SampleScriptGenerationParameters {
+  final SendPort sendPort;
+  final String gameScript;
+  final TranslationsWrapper translations;
+
+  SampleScriptGenerationParameters({
+    required this.gameScript,
+    required this.sendPort,
+    required this.translations,
+  });
 }

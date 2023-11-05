@@ -11,11 +11,13 @@ home:
   helpMessage:
     "Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer. \
     Une ligne dont l'icône est un trophée générera une position où vous devrez gagner. \
-    Sinon si la ligne commence par une poignée de main, vous devrez sauver la partie et faire partie nulle."
+    Sinon si la ligne commence par une poignée de main, vous devrez sauver la \
+    partie et faire partie nulle."
   tab_integrated: "Intégrés"
   tab_added: "Ajoutés"
   no_game_yet: "Aucun élément"
   failed_loading_added_exercises: "Échec de chargement des exercises personnalisés"
+  misc_generating_error: "Erreur de génération de la position pour une erreur diverse."
 rgpd:
   text: "En utilisant cette application, vous vous conformez à :"
   privacy: "la Politique de Confidentialité"
@@ -53,9 +55,12 @@ scriptParser:
   eof: "[FinDeFichier]"
   overridingPredefinedVariable: "Vous essayez de modifier la valeur de la variable prédéfinie $name."
   parseErrorDialogTitle: "Erreur de script pour $title"
-  typeError: "Veuillez vérifier que vous n'utilisez pas de valeur entière à la place de valeur booléenne, et vice versa."
-  missingScriptType: "Échec de génération de la position: veuillez vérifier que toutes les sections du script déclarent un type de script correct."
+  typeError: "Veuillez vérifier que vous n'utilisez pas de valeur entière à la place \
+    de valeur booléenne, et vice versa."
+  missingScriptType: "Échec de génération de la position: veuillez vérifier que toutes les \
+    sections du script déclarent un type de script correct."
   miscErrorDialogTitle: "Erreur globale"
+  misc_checking_error: "La vérification d'erreurs a échoué pour une raison diverse."
 scriptType:
   playerKingConstraint: "Contraintes du roi du joueur"
   computerKingConstraint: "Contraintes du roi de l'ordinateur"

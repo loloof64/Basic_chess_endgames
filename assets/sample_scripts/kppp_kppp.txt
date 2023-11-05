@@ -1,25 +1,25 @@
-# player king
+# player king constraints
 
 isRightRank := rank == numIf playerHasWhite then Rank1 else Rank8;
 return isRightRank;
 
 @@@@@@
 
-# computer king
+# computer king constraints
 
 isRightRank := rank == numIf playerHasWhite then Rank1 else Rank8;
 return isRightRank;
 
 @@@@@@
 
-# other pieces count
+# other pieces counts
 
 player pawn : 3
 computer pawn : 3
 
 @@@@@@
 
-# other pieces global constraint
+# other pieces global constraints
 
 [player pawn]
 
@@ -35,7 +35,7 @@ return isRightRank;
 
 @@@@@@
 
-# other pieces indexed constraint
+# other pieces indexed constraints
 
 [player pawn]
 

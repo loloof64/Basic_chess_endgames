@@ -1,4 +1,4 @@
-# player king
+# player king constraints
 
 // player's king must be on its first rank
 isRightRank := rank == numIf playerHasWhite then Rank1 else Rank8;
@@ -6,7 +6,7 @@ return isRightRank;
 
 @@@@@@
 
-# computer king
+# computer king constraints
 
 // computer king must be on its fifth's rank
 isRightRank := rank == numIf playerHasWhite then Rank4 else Rank5;
@@ -14,7 +14,7 @@ return isRightRank;
 
 @@@@@@
 
-# kings mutual constraint
+# kings mutual constraints
 
 // kings must be close in terms of columns
 kingsAreOnNeighboursColumns := abs(playerKingFile - computerKingFile) <= 1;
@@ -22,13 +22,13 @@ return kingsAreOnNeighboursColumns;
 
 @@@@@@
 
-# other pieces count
+# other pieces counts
 
 computer pawn : 1
 
 @@@@@@
 
-# other pieces global constraint
+# other pieces global constraints
 
 [computer pawn]
 

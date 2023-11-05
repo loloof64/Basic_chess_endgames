@@ -16,6 +16,7 @@ home:
   tab_added: "Added"
   no_game_yet: "No element"
   failed_loading_added_exercises: "Failed to load custom exercises list"
+  misc_generating_error: "Failed to generate the position for a miscellaneous error."
 rgpd:
   text: "By using this app, you agree with :"
   privacy: "the Privacy Policy"
@@ -54,6 +55,7 @@ scriptParser:
   typeError: "Please check that you don't use int value instead of boolean value and vice versa."
   missingScriptType: "Failed to generate position : please check that all of the script sections declares a correct script type."
   miscErrorDialogTitle: "Global error"
+  misc_checking_error: "The errors checking has failed for a miscellaneous error."
 scriptType:
   playerKingConstraint: "Player king constraint"
   computerKingConstraint: "Computer king constraint"

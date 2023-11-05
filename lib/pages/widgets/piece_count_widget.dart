@@ -1,31 +1,32 @@
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
+import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/piece_kind_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 const countTextSize = 16.0;
 final allSelectableTypes = [
-  PieceKind.playerPawn,
-  PieceKind.playerKnight,
-  PieceKind.playerBishop,
-  PieceKind.playerRook,
-  PieceKind.playerQueen,
-  PieceKind.computerPawn,
-  PieceKind.computerKnight,
-  PieceKind.computerBishop,
-  PieceKind.computerRook,
-  PieceKind.computerQueen,
+  PieceKind.from('player pawn'),
+  PieceKind.from('player knight'),
+  PieceKind.from('player bishop'),
+  PieceKind.from('player rook'),
+  PieceKind.from('player queen'),
+  PieceKind.from('computer pawn'),
+  PieceKind.from('computer knight'),
+  PieceKind.from('computer bishop'),
+  PieceKind.from('computer rook'),
+  PieceKind.from('computer queen'),
 ];
 
 class PieceCountWidget extends StatefulWidget {
-  final PieceKind type;
+  final PieceKind kind;
   final int initialCount;
   final void Function(int newValue) onChanged;
-  final void Function(PieceKind type) onRemove;
+  final void Function(PieceKind kind) onRemove;
 
   const PieceCountWidget({
     super.key,
-    required this.type,
+    required this.kind,
     required this.onChanged,
     required this.onRemove,
     this.initialCount = 0,
@@ -45,21 +46,22 @@ class _PieceCountWidgetState extends State<PieceCountWidget> {
   }
 
   int _maxCountForPieceKind(PieceKind type) {
-    return (type == PieceKind.playerQueen || type == PieceKind.computerQueen)
+    final typeString = type.toEasyString();
+    return (typeString == 'player queen' || typeString == 'computer queen')
         ? 9
-        : (type == PieceKind.playerPawn || type == PieceKind.computerPawn)
+        : (typeString == 'player pawn' || typeString == 'computer pawn')
             ? 8
             : 10;
   }
 
   @override
   Widget build(BuildContext context) {
-    final maxCount = _maxCountForPieceKind(widget.type);
+    final maxCount = _maxCountForPieceKind(widget.kind);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        PieceKingWidget(kind: widget.type),
+        PieceKingWidget(kind: widget.kind),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 2.0),
           child: Slider(
@@ -91,7 +93,7 @@ class _PieceCountWidgetState extends State<PieceCountWidget> {
               color: Colors.red,
               size: chessImagesSize,
             ),
-            onPressed: () => widget.onRemove(widget.type),
+            onPressed: () => widget.onRemove(widget.kind),
           ),
         ),
       ],

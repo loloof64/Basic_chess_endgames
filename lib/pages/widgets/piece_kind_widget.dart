@@ -1,25 +1,8 @@
+import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 const chessImagesSize = 20.0;
-
-enum PieceKind {
-  playerPawn("player pawn"),
-  playerKnight("player knight"),
-  playerBishop("player bishop"),
-  playerRook("player rook"),
-  playerQueen("player queen"),
-  playerKing("player king"),
-  computerPawn("computer pawn"),
-  computerKnight("computer knight"),
-  computerBishop("computer bishop"),
-  computerRook("computer rook"),
-  computerQueen("computer queen"),
-  computerKing("computer king");
-
-  final String stringRepr;
-  const PieceKind(this.stringRepr);
-}
 
 class PieceKingWidget extends StatelessWidget {
   final PieceKind kind;
@@ -63,58 +46,58 @@ class StringPair {
 }
 
 StringPair pieceKindToAssetPathPair(PieceKind kind) {
-  switch (kind) {
-    case PieceKind.playerPawn:
+  switch (kind.toEasyString()) {
+    case 'player pawn':
       return const StringPair(
         first: 'assets/images/user.svg',
         second: 'assets/images/chess/Chess_plt45.svg',
       );
-    case PieceKind.playerKnight:
+    case 'player knight':
       return const StringPair(
         first: 'assets/images/user.svg',
         second: 'assets/images/chess/Chess_nlt45.svg',
       );
-    case PieceKind.playerBishop:
+    case 'player bishop':
       return const StringPair(
         first: 'assets/images/user.svg',
         second: 'assets/images/chess/Chess_blt45.svg',
       );
-    case PieceKind.playerRook:
+    case 'player rook':
       return const StringPair(
         first: 'assets/images/user.svg',
         second: 'assets/images/chess/Chess_rlt45.svg',
       );
-    case PieceKind.playerQueen:
+    case 'player queen':
       return const StringPair(
         first: 'assets/images/user.svg',
         second: 'assets/images/chess/Chess_qlt45.svg',
       );
-    case PieceKind.computerPawn:
+    case 'computer pawn':
       return const StringPair(
         first: 'assets/images/computer.svg',
         second: 'assets/images/chess/Chess_plt45.svg',
       );
-    case PieceKind.computerKnight:
+    case 'computer knight':
       return const StringPair(
         first: 'assets/images/computer.svg',
         second: 'assets/images/chess/Chess_nlt45.svg',
       );
-    case PieceKind.computerBishop:
+    case 'computer bishop':
       return const StringPair(
         first: 'assets/images/computer.svg',
         second: 'assets/images/chess/Chess_blt45.svg',
       );
-    case PieceKind.computerRook:
+    case 'computer rook':
       return const StringPair(
         first: 'assets/images/computer.svg',
         second: 'assets/images/chess/Chess_rlt45.svg',
       );
-    case PieceKind.computerQueen:
+    case 'computer queen':
       return const StringPair(
         first: 'assets/images/computer.svg',
         second: 'assets/images/chess/Chess_qlt45.svg',
       );
     default:
-      throw "Invalid piece type $PieceKind";
+      throw "Invalid piece type '${kind.toEasyString()}'";
   }
 }

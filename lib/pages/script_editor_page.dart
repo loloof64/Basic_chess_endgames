@@ -1,10 +1,14 @@
+import 'dart:isolate';
+
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
+import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
+import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:basicchessendgamestrainer/pages/syntax_manual.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/piece_count_widget.dart';
-import 'package:basicchessendgamestrainer/pages/widgets/piece_kind_widget.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/script_editor_common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:logger/logger.dart';
 
 const winningString = "win";
 const drawingString = "draw";
@@ -17,6 +21,9 @@ class ScriptEditorPage extends StatefulWidget {
 }
 
 class _ScriptEditorPageState extends State<ScriptEditorPage> {
+  bool _isCheckingPosition = false;
+  Isolate? _scriptCheckerIsolate;
+
   final TextEditingController _playerKingConstraintsScriptController =
       TextEditingController(text: "");
   final TextEditingController _computerKingConstraintsScriptController =
@@ -37,6 +44,9 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
 
   @override
   void dispose() {
+    _scriptCheckerIsolate?.kill(
+      priority: Isolate.immediate,
+    );
     _playerKingConstraintsScriptController.dispose();
     _computerKingConstraintsScriptController.dispose();
     _kingsMutualConstraintsScriptController.dispose();
@@ -52,10 +62,193 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     super.dispose();
   }
 
+  void _processUserScript() async {
+    if (_isCheckingPosition) return;
+
+    final script = _getWholeScriptContent();
+    final receivePort = ReceivePort();
+
+    setState(() {
+      _isCheckingPosition = true;
+    });
+
+    _scriptCheckerIsolate = await Isolate.spawn(
+      generatePositionFromScript,
+      SampleScriptGenerationParameters(
+        gameScript: script,
+        translations: TranslationsWrapper(
+          miscErrorDialogTitle: t.script_parser.misc_error_dialog_title,
+          missingScriptType: t.script_parser.missing_script_type,
+          miscParseError: t.script_parser.misc_parse_error,
+          failedGeneratingPosition: t.home.failed_generating_position,
+          unrecognizedSymbol: t.script_parser.unrecognized_symbol,
+          typeError: t.script_parser.type_error,
+          noAntlr4Token: t.script_parser.no_antlr4_token,
+          eof: t.script_parser.eof,
+          variableNotAffected: t.script_parser.variable_not_affected,
+          overridingPredefinedVariable:
+              t.script_parser.overriding_predefined_variable,
+          parseErrorDialogTitle: t.script_parser.parse_error_dialog_title,
+          noViableAltException: t.script_parser.no_viable_alt_exception,
+          inputMismatch: t.script_parser.input_mismatch,
+          playerKingConstraint: t.script_type.player_king_constraint,
+          computerKingConstraint: t.script_type.computer_king_constraint,
+          kingsMutualConstraint: t.script_type.kings_mutual_constraint,
+          otherPiecesCountConstraint: t.script_type.piece_kind_count_constraint,
+          otherPiecesGlobalConstraint:
+              t.script_type.other_pieces_global_constraint,
+          otherPiecesIndexedConstraint:
+              t.script_type.other_pieces_indexed_constraint,
+          otherPiecesMutualConstraint:
+              t.script_type.other_pieces_mutual_constraint,
+        ),
+        sendPort: receivePort.sendPort,
+      ),
+    );
+    setState(() {});
+
+    receivePort.handleError((error) async {
+      Logger().e(error);
+
+      receivePort.close();
+      _scriptCheckerIsolate?.kill(
+        priority: Isolate.immediate,
+      );
+
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(
+                t.script_parser.misc_error_dialog_title,
+              ),
+              content: Text(
+                t.script_parser.misc_checking_error,
+              ),
+            );
+          });
+
+      setState(() {
+        _isCheckingPosition = false;
+      });
+    });
+
+    receivePort.listen((message) async {
+      receivePort.close();
+      _scriptCheckerIsolate?.kill(
+        priority: Isolate.immediate,
+      );
+
+      setState(() {
+        _isCheckingPosition = false;
+      });
+
+      final (newPosition, errors) =
+          message as (String?, List<PositionGenerationError>);
+
+      if (newPosition == null) {
+        await showGenerationErrorsPopups(errors: errors, context: context);
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              t.home.failed_generating_position,
+            ),
+          ),
+        );
+      } else {
+        // TODO save file
+
+        ////////////////////////////////////
+        print("Script ready to be saved !");
+        /////////////////////////////////////
+      }
+    });
+  }
+
+  String _getWholeScriptContent() {
+    var result = "";
+
+    if (_playerKingConstraintsScriptController.text.isNotEmpty) {
+      result += "# player king constraints\n\n";
+      result += _playerKingConstraintsScriptController.text;
+      result += "\n\n$scriptsSeparator\n\n";
+    }
+
+    if (_computerKingConstraintsScriptController.text.isNotEmpty) {
+      result += "# computer king constraints\n\n";
+      result += _computerKingConstraintsScriptController.text;
+      result += "\n\n$scriptsSeparator\n\n";
+    }
+
+    if (_kingsMutualConstraintsScriptController.text.isNotEmpty) {
+      result += "# kings mutual constraints\n\n";
+      result += _kingsMutualConstraintsScriptController.text;
+      result += "\n\n$scriptsSeparator\n\n";
+    }
+
+    if (_otherPiecesCountConstraintsScript.isNotEmpty) {
+      result += "# other pieces counts\n\n";
+      result += _otherPiecesCountConstraintsScript;
+      result += "\n\n$scriptsSeparator\n\n";
+    }
+
+    if (_otherPiecesGlobalConstraintsScripts.isNotEmpty) {
+      var temp = "";
+      for (var kind in _otherPiecesGlobalConstraintsScripts.keys) {
+        if (_otherPiecesGlobalConstraintsScripts[kind]!.text.isEmpty) continue;
+        temp += "[${kind.toEasyString()}]\n\n";
+        temp += _otherPiecesGlobalConstraintsScripts[kind]!.text;
+        temp += "\n\n$otherPiecesSingleScriptSeparator\n\n";
+      }
+      if (temp.isNotEmpty) {
+        result += "# other pieces global constraints\n\n";
+        result += temp;
+        result += "\n\n$scriptsSeparator\n\n";
+      }
+    }
+
+    if (_otherPiecesMutualConstraintsScripts.isNotEmpty) {
+      var temp = "";
+      for (var kind in _otherPiecesMutualConstraintsScripts.keys) {
+        if (_otherPiecesMutualConstraintsScripts[kind]!.text.isEmpty) continue;
+        temp += "[${kind.toEasyString()}]\n\n";
+        temp += _otherPiecesMutualConstraintsScripts[kind]!.text;
+        temp += "\n\n$otherPiecesSingleScriptSeparator\n\n";
+      }
+      if (temp.isNotEmpty) {
+        result += "# other pieces mutual constraints\n\n";
+        result += temp;
+        result += "\n\n$scriptsSeparator\n\n";
+      }
+    }
+
+    if (_otherPiecesIndexedConstraintsScripts.isNotEmpty) {
+      var temp = "";
+      for (var kind in _otherPiecesIndexedConstraintsScripts.keys) {
+        if (_otherPiecesIndexedConstraintsScripts[kind]!.text.isEmpty) continue;
+        temp += "[${kind.toEasyString()}]\n\n";
+        temp += _otherPiecesIndexedConstraintsScripts[kind]!.text;
+        temp += "\n\n$otherPiecesSingleScriptSeparator\n\n";
+      }
+      if (temp.isNotEmpty) {
+        result += "# other pieces indexed constraints\n\n";
+        result += temp;
+        result += "\n\n$scriptsSeparator\n\n";
+      }
+    }
+
+    result += "# goal\n\n";
+    result += _goalScript;
+
+    return result;
+  }
+
   void _updateOtherPiecesCountConstraintsScript(Map<PieceKind, int> counts) {
     final script = [
       for (var entry in counts.entries)
-        "${entry.key.stringRepr} : ${entry.value}"
+        "${entry.key.toEasyString()} : ${entry.value}"
     ].join("\n");
     setState(() {
       _otherPiecesCountConstraintsScript = script;
@@ -214,7 +407,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                 }),
           ]),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {},
+            onPressed: _processUserScript,
             child: const FaIcon(FontAwesomeIcons.solidFloppyDisk),
           ),
         ),
@@ -332,8 +525,10 @@ class _OtherPiecesCountConstraintsEditorWidgetState
   @override
   void initState() {
     _content = convertScriptToPiecesCounts(widget.currentScript);
-    _content.removeWhere((key, value) =>
-        key == PieceKind.playerKing || key == PieceKind.computerKing);
+    _content.removeWhere((key, value) {
+      final type = key.toEasyString();
+      return type == 'player king' || type == 'computer king';
+    });
     _updateAvailableTypes();
     super.initState();
   }
@@ -374,7 +569,7 @@ class _OtherPiecesCountConstraintsEditorWidgetState
         Padding(
           padding: const EdgeInsets.all(10),
           child: PieceCountWidget(
-            type: entry.key,
+            kind: entry.key,
             initialCount: entry.value,
             onChanged: (newValue) {
               setState(() {

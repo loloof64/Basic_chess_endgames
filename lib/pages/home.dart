@@ -2,7 +2,6 @@ import 'dart:isolate';
 import 'dart:io';
 
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
-import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:basicchessendgamestrainer/pages/script_editor_page.dart';
 import 'package:chess/chess.dart' as chess;
@@ -16,6 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'dart:developer' as developer;
@@ -24,51 +24,8 @@ const mainListItemsGap = 8.0;
 const leadingImagesSize = 60.0;
 const titlesFontSize = 26.0;
 const rgpdWarningHeight = 200.0;
-const positionGenerationErrorDialogSpacer = 20.0;
 const folderItemIconSize = 45.0;
 const folderItemTextSize = 20.0;
-
-class SampleScriptGenerationParameters {
-  final SendPort sendPort;
-  final String gameScript;
-  final TranslationsWrapper translations;
-
-  SampleScriptGenerationParameters({
-    required this.gameScript,
-    required this.sendPort,
-    required this.translations,
-  });
-}
-
-void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
-  final (constraintsExpr, generationErrors) = ScriptTextTransformer(
-    allConstraintsScriptText: parameters.gameScript,
-    translations: parameters.translations,
-  ).transformTextIntoConstraints();
-  if (generationErrors.isNotEmpty) {
-    parameters.sendPort.send((null, generationErrors));
-  } else {
-    final positionGenerator = PositionGeneratorFromAntlr();
-    positionGenerator.setConstraints(constraintsExpr);
-    try {
-      final generatedPosition = positionGenerator.generatePosition();
-      parameters.sendPort
-          .send((generatedPosition, <PositionGenerationError>[]));
-    } on PositionGenerationLoopException {
-      parameters.sendPort.send(
-        (
-          null,
-          <PositionGenerationError>[
-            PositionGenerationError(
-              parameters.translations.miscErrorDialogTitle,
-              parameters.translations.failedGeneratingPosition,
-            )
-          ],
-        ),
-      );
-    }
-  }
-}
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -178,6 +135,28 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
     setState(() {});
 
+    receivePort.handleError((error) async {
+      Logger().e(error);
+      receivePort.close();
+      _positionGenerationIsolate?.kill(
+        priority: Isolate.immediate,
+      );
+
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(
+                t.home.misc_generating_error,
+              ),
+            );
+          });
+
+      setState(() {
+        _isGeneratingPosition = false;
+      });
+    });
+
     receivePort.listen((message) async {
       receivePort.close();
       _positionGenerationIsolate?.kill(
@@ -192,7 +171,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           message as (String?, List<PositionGenerationError>);
 
       if (newPosition == null) {
-        await _showGenerationErrorsPopups(errors);
+        await showGenerationErrorsPopups(errors: errors, context: context);
         if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -206,53 +185,6 @@ class _HomePageState extends ConsumerState<HomePage> {
         _tryPlayingGeneratedPosition(newPosition, game.goal);
       }
     });
-  }
-
-  Future<void> _showGenerationErrorsPopups(
-      List<PositionGenerationError> errors) async {
-    for (final singleError in errors) {
-      showDialog(
-          context: context,
-          builder: (ctx2) {
-            return Dialog(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(singleError.title),
-                    const SizedBox(
-                      height: positionGenerationErrorDialogSpacer,
-                    ),
-                    Text(singleError.message),
-                    const SizedBox(
-                      height: positionGenerationErrorDialogSpacer,
-                    ),
-                    ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Theme.of(
-                            context,
-                          ).colorScheme.primary,
-                        ),
-                      ),
-                      child: Text(
-                        t.misc.button_ok,
-                        style: TextStyle(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onPrimary,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
-          });
-    }
   }
 
   void _tryPlayingGeneratedPosition(String position, Goal goal) {

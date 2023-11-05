@@ -16,6 +16,7 @@ home:
   tab_added: "Añadidos"
   no_game_yet: "No hay elemento"
   failed_loading_added_exercises: "Error al cargar la lista de ejercicios personalizados"
+  misc_generating_error: "Error al generar la posición para un error misceláneo."
 rgpd:
   text: "Al utilizar esta aplicación, estás de acuerdo con:"
   privacy: "la Política de Privacidad"
@@ -56,6 +57,7 @@ scriptParser:
   typeError: "Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa."
   missingScriptType: "No se pudo generar la posición: compruebe que todas las secciones del script declaran un tipo de script correcto."
   miscErrorDialogTitle: "Equivocado global"
+  misc_checking_error: "La verificación de errores ha fallado debido a un error misceláneo."
 scriptType:
   playerKingConstraint: "Restricción sobre rey del jugador"
   computerKingConstraint: "Restricción sobre rey de la computadora"

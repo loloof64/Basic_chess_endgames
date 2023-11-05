@@ -1,4 +1,4 @@
-# player king
+# player king constraints
 
 /* player king rank must be in the computer third's rank */
 isRightRank := rank == (numIf playerHasWhite then Rank6 else Rank3);
@@ -10,26 +10,26 @@ return isRightRank and fileInRightColumn;
 
 @@@@@@
 
-# computer king
+# computer king constraints
 
 /* computer king must be the player's eight rank */
 return rank == (numIf playerHasWhite then Rank8 else Rank1);
 
 @@@@@@
 
-# kings mutual constraint
+# kings mutual constraints
 
 return playerKingFile == computerKingFile;
 
 @@@@@@
 
-# other pieces count
+# other pieces counts
 
 player pawn : 1
 
 @@@@@@
 
-# other pieces global constraint
+# other pieces global constraints
 
 [player pawn]
 

@@ -1,4 +1,4 @@
-# computer king
+# computer king constraints
 
 kingInCenterColumn := (file >= FileC) and (file <= FileF);
 kingInCenterRank := (rank >= Rank3) and (rank <= Rank6);
@@ -7,7 +7,7 @@ return kingInCenterColumn and kingInCenterRank;
 
 @@@@@@
 
-# other pieces count
+# other pieces counts
 
 player rook : 1
 

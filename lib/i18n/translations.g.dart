@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 609 (203 per locale)
+/// Strings: 615 (205 per locale)
 ///
-/// Built on 2023-11-04 at 22:01 UTC
+/// Built on 2023-11-05 at 01:33 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -206,6 +206,7 @@ class _TranslationsHomeEn {
 	String get tab_added => 'Added';
 	String get no_game_yet => 'No element';
 	String get failed_loading_added_exercises => 'Failed to load custom exercises list';
+	String get misc_generating_error => 'Failed to generate the position for a miscellaneous error.';
 }
 
 // Path: rgpd
@@ -265,6 +266,7 @@ class _TranslationsScriptParserEn {
 	String get type_error => 'Please check that you don\'t use int value instead of boolean value and vice versa.';
 	String get missing_script_type => 'Failed to generate position : please check that all of the script sections declares a correct script type.';
 	String get misc_error_dialog_title => 'Global error';
+	String get misc_checking_error => 'The errors checking has failed for a miscellaneous error.';
 }
 
 // Path: script_type
@@ -542,6 +544,7 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get tab_added => 'Añadidos';
 	@override String get no_game_yet => 'No hay elemento';
 	@override String get failed_loading_added_exercises => 'Error al cargar la lista de ejercicios personalizados';
+	@override String get misc_generating_error => 'Error al generar la posición para un error misceláneo.';
 }
 
 // Path: rgpd
@@ -601,6 +604,7 @@ class _TranslationsScriptParserEs extends _TranslationsScriptParserEn {
 	@override String get type_error => 'Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa.';
 	@override String get missing_script_type => 'No se pudo generar la posición: compruebe que todas las secciones del script declaran un tipo de script correcto.';
 	@override String get misc_error_dialog_title => 'Equivocado global';
+	@override String get misc_checking_error => 'La verificación de errores ha fallado debido a un error misceláneo.';
 }
 
 // Path: script_type
@@ -878,6 +882,7 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get tab_added => 'Ajoutés';
 	@override String get no_game_yet => 'Aucun élément';
 	@override String get failed_loading_added_exercises => 'Échec de chargement des exercises personnalisés';
+	@override String get misc_generating_error => 'Erreur de génération de la position pour une erreur diverse.';
 }
 
 // Path: rgpd
@@ -937,6 +942,7 @@ class _TranslationsScriptParserFr extends _TranslationsScriptParserEn {
 	@override String get type_error => 'Veuillez vérifier que vous n\'utilisez pas de valeur entière à la place de valeur booléenne, et vice versa.';
 	@override String get missing_script_type => 'Échec de génération de la position: veuillez vérifier que toutes les sections du script déclarent un type de script correct.';
 	@override String get misc_error_dialog_title => 'Erreur globale';
+	@override String get misc_checking_error => 'La vérification d\'erreurs a échoué pour une raison diverse.';
 }
 
 // Path: script_type
