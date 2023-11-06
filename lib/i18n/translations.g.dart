@@ -6,7 +6,7 @@
 /// Locales: 3
 /// Strings: 669 (223 per locale)
 ///
-/// Built on 2023-11-06 at 23:25 UTC
+/// Built on 2023-11-06 at 23:35 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -203,7 +203,7 @@ class _TranslationsHomeEn {
 	String get failed_generating_position => 'Failed to generate the position.';
 	String get max_generation_attempts_achieved => 'Impossible to generate a position from these scripts : maximum generation attempts surpassed.\n\nPlease check that your constraints aren\'t too restrictive.';
 	String get samples_help_message => 'Here you can select the type of position you want to play with.\nA line which leading icon is a trophy will generate a position in which you should win.\nOtherwise, with a handshake leading icon, your goal will be to save the game and make draw.\n\nYou can also see the code of an example by making a long press on it.';
-	String get custom_scripts_help_message => 'Here you can create and run your custom exercises (with a single press on it).\n\nYou can also edit/rename/delete a single exercise with a long press on it.\n\nYou can also manage folders.';
+	String get custom_scripts_help_message => 'Here you can create and run your custom exercises (with a single press on it).\n\nYou can also edit/rename/delete a single exercise with a long press on it.\n\nYou can also add/rename/delete folders.';
 	String get tab_integrated => 'Integrated';
 	String get tab_added => 'Added';
 	String get no_game_yet => 'No element';
@@ -559,7 +559,7 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get max_generation_attempts_achieved => 'Es imposible generar una posición a partir de estos guiones: se han superado los intentos máximos de generación.\n\nComprueba que tus restricciones no sean demasiado restrictivas.';
 	@override String get failed_generating_position => 'Falló al generar la posición.';
 	@override String get samples_help_message => 'Aquí puedes seleccionar el tipo de posición con la que quieres jugar.\nUna línea cuyo icono principal es un trofeo generará una posición en la que deberías ganar.\nDe lo contrario, con un icono principal de un apretón de manos, tu objetivo será salvar la partida y hacer empate.\n\nTambién puedes ver el código de un ejemplo presionándolo durante unos segundos.';
-	@override String get custom_scripts_help_message => 'Aquí puedes crear y ejecutar tus ejercicios personalizados (con una sola pulsación en ello).\n\n También puedes editar/renombrar/eliminar un ejercicio individual con una pulsación larga sobre él.\n\n También puedes gestionar carpetas.';
+	@override String get custom_scripts_help_message => 'Aquí puedes crear y ejecutar tus ejercicios personalizados (con una sola pulsación en ello).\n\n También puedes editar/renombrar/eliminar un ejercicio individual con una pulsación larga sobre él.\n\n También puedes añadir/renombrar/eliminar carpetas.';
 	@override String get tab_integrated => 'Integrados';
 	@override String get tab_added => 'Añadidos';
 	@override String get no_game_yet => 'No hay elemento';
@@ -915,7 +915,7 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get max_generation_attempts_achieved => 'Impossible de générer une position à partir de ces scripts : nombre de tentatives maximum dépassés.\n\nVeuillez vérifier que vos contraintes ne sont pas trop restrictives.';
 	@override String get failed_generating_position => 'Échec de génération de la position.';
 	@override String get samples_help_message => 'Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer.\nUne ligne dont l\'icône est un trophée générera une position où vous devrez gagner.\nSinon si la ligne commence par une poignée de main, vous devrez sauver la partie et faire partie nulle.\n\nVous pouvez aussi voir le code d\'un exemple en faisant un appui-long dessus.';
-	@override String get custom_scripts_help_message => 'Ici vous pouvez créér et exécuter vos exercices personnalisés (par un simple appui dessus).\n\n Vous pouvez aussi éditer/renommer/supprimer un unique exercice par un appui long dessus.\n\n Vous pouvez aussi gérer des dossiers.';
+	@override String get custom_scripts_help_message => 'Ici vous pouvez créér et exécuter vos exercices personnalisés (par un simple appui dessus).\n\n Vous pouvez aussi éditer/renommer/supprimer un unique exercice par un appui long dessus.\n\n Vous pouvez aussi ajouter/renommer/supprimer des dossiers.';
 	@override String get tab_integrated => 'Intégrés';
 	@override String get tab_added => 'Ajoutés';
 	@override String get no_game_yet => 'Aucun élément';

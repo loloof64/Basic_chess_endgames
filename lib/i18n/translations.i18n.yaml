@@ -18,7 +18,7 @@ home:
     You can also see the code of an example by making a long press on it."
   custom_scripts_help_message: "Here you can create and run your custom exercises (with a single press on it).\n\n\
     You can also edit/rename/delete a single exercise with a long press on it.\n\n\
-    You can also manage folders."
+    You can also add/rename/delete folders."
   tab_integrated: "Integrated"
   tab_added: "Added"
   no_game_yet: "No element"
