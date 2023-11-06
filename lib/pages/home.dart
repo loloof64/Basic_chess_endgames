@@ -223,6 +223,21 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
+  void _renameFolder(
+      {required String oldFolderName, required String newFolderName}) async {
+    if (_currentAddedExercisesDirectory == null) {
+      throw "custom exercises folder is not ready";
+    }
+
+    final currentDirectoryPath = _currentAddedExercisesDirectory!.path;
+    final folderInstance = Directory("$currentDirectoryPath/$oldFolderName");
+    if (!await folderInstance.exists()) return;
+
+    final newFolderPath = "$currentDirectoryPath/$newFolderName";
+    await folderInstance.rename(newFolderPath);
+    _reloadCurrentFolder();
+  }
+
   Future<InitialScriptsSet> _getInitialScriptSetFor(String fileName) async {
     if (_currentAddedExercisesDirectory == null) {
       throw "custom exercises folder is not ready";
@@ -485,7 +500,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     if (folderName == '..') {
       setState(() {
-      _currentAddedExercisesDirectory = _currentAddedExercisesDirectory?.parent;
+        _currentAddedExercisesDirectory =
+            _currentAddedExercisesDirectory?.parent;
       });
       _reloadCurrentFolder();
       return;
@@ -502,7 +518,117 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _handleCustomFolderLongClic({required String folderName}) {
-    // TODO implement folder long clic
+    if (_currentAddedExercisesDirectory == null) {
+      throw "custom exercises folder is not ready";
+    }
+
+    if (folderName == '..') return;
+    final isProtectedFlutterAssetsFolder = (folderName == 'flutter_assets') &&
+        (_currentAddedExercisesDirectory?.path == _rootDirectory?.path);
+    if (isProtectedFlutterAssetsFolder) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            t.home.protected_folder,
+          ),
+        ),
+      );
+      return;
+    }
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _purposeRenameCustomFolder(folderName: folderName);
+                },
+                child: Text(
+                  t.home.contextual_menu_file_rename,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _purposeRenameCustomFolder({required String folderName}) {
+    setState(() {
+      _newFolderNameTextController.text = folderName;
+    });
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return AlertDialog(
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(t.home.rename_folder_prompt),
+              Expanded(
+                child: TextField(
+                  controller: _newFolderNameTextController,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+
+                if (await _folderAlreadyExists(
+                    _newFolderNameTextController.text)) {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        t.home.file_name_already_taken,
+                      ),
+                    ),
+                  );
+                  return;
+                }
+
+                _renameFolder(
+                  newFolderName: _newFolderNameTextController.text,
+                  oldFolderName: folderName,
+                );
+              },
+              child: Text(
+                t.misc.button_ok,
+                style: const TextStyle(
+                  color: Colors.green,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                t.misc.button_cancel,
+                style: const TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _showConfirmDeleteCustomFile(String fileName) async {
@@ -673,7 +799,8 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
     try {
       _customExercisesItems = await _getAddedExercisesFolderItems();
-      final isBelowRootLevel = _currentAddedExercisesDirectory?.path != _rootDirectory?.path;
+      final isBelowRootLevel =
+          _currentAddedExercisesDirectory?.path != _rootDirectory?.path;
       if (isBelowRootLevel) {
         _customExercisesItems?.add(Directory('..'));
       }
@@ -982,7 +1109,9 @@ class FolderContentWidget extends StatelessWidget {
             itemBuilder: (context, index) {
               final item = elements[index];
               final isDirectory = FileSystemEntity.isDirectorySync(item.path);
-              final name = item.path == '..' ? '..' :  File(item.absolute.path).uri.pathSegments.last;
+              final name = item.path == '..'
+                  ? '..'
+                  : File(item.absolute.path).uri.pathSegments.last;
 
               return isDirectory
                   ? FolderItemWidget(
