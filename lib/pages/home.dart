@@ -24,6 +24,7 @@ const titlesFontSize = 26.0;
 const rgpdWarningHeight = 200.0;
 const folderItemIconSize = 45.0;
 const folderItemTextSize = 20.0;
+const folderPathFontSize = 22.0;
 
 extension FolderItemsExtension on List<FileSystemEntity> {
   Future<void> order() async {
@@ -57,6 +58,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   bool _isGeneratingPosition = false;
   bool _failedLoadingCustomExercises = false;
   int _selectedTabIndex = 0;
+  Directory? _rootDirectory;
   Directory? _currentAddedExercisesDirectory;
   List<FileSystemEntity>? _customExercisesItems;
   final TextEditingController _renameCustomFileController =
@@ -69,6 +71,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     FlutterNativeSplash.remove();
     WidgetsBinding.instance.addPostFrameCallback((_) => _showRgpdWarning());
     getApplicationDocumentsDirectory().then((directory) async {
+      _rootDirectory = directory;
       _currentAddedExercisesDirectory = directory;
       _customExercisesItems = await _getAddedExercisesFolderItems();
       await _customExercisesItems?.order();
@@ -475,6 +478,33 @@ class _HomePageState extends ConsumerState<HomePage> {
         });
   }
 
+  void _handleCustomFolderClic({required String folderName}) async {
+    if (_currentAddedExercisesDirectory == null) {
+      throw "custom exercises folder is not ready";
+    }
+
+    if (folderName == '..') {
+      setState(() {
+      _currentAddedExercisesDirectory = _currentAddedExercisesDirectory?.parent;
+      });
+      _reloadCurrentFolder();
+      return;
+    }
+
+    final currentPath = _currentAddedExercisesDirectory!.path;
+    final folderInstance = Directory("$currentPath/$folderName");
+    if (!await folderInstance.exists()) return;
+
+    setState(() {
+      _currentAddedExercisesDirectory = folderInstance;
+    });
+    _reloadCurrentFolder();
+  }
+
+  void _handleCustomFolderLongClic({required String folderName}) {
+    // TODO implement folder long clic
+  }
+
   void _showConfirmDeleteCustomFile(String fileName) async {
     showDialog(
       context: context,
@@ -643,6 +673,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
     try {
       _customExercisesItems = await _getAddedExercisesFolderItems();
+      final isBelowRootLevel = _currentAddedExercisesDirectory?.path != _rootDirectory?.path;
+      if (isBelowRootLevel) {
+        _customExercisesItems?.add(Directory('..'));
+      }
       await _customExercisesItems?.order();
       setState(() {});
     } catch (ex) {
@@ -707,10 +741,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                   onGetInitialScriptSet: _getInitialScriptSetFromAssetScript,
                 ),
                 AddedExercisesWidget(
+                  rootDirectory: _rootDirectory,
+                  currentDirectory: _currentAddedExercisesDirectory,
                   failedLoadingContent: _failedLoadingCustomExercises,
                   folderItems: _customExercisesItems,
                   onFileClic: _handleCustomFileClic,
                   onFileLongClic: _handleCustomFileLongClic,
+                  onFolderClic: _handleCustomFolderClic,
+                  onFolderLongClic: _handleCustomFolderLongClic,
                 ),
               ],
             ),
@@ -839,15 +877,25 @@ class AddedExercisesWidget extends StatelessWidget {
   */
   final List<FileSystemEntity>? folderItems;
 
+  final Directory? rootDirectory;
+  final Directory? currentDirectory;
+
   final void Function({required String fileName}) onFileClic;
   final void Function({required String fileName}) onFileLongClic;
+
+  final void Function({required String folderName}) onFolderClic;
+  final void Function({required String folderName}) onFolderLongClic;
 
   const AddedExercisesWidget({
     super.key,
     required this.failedLoadingContent,
+    required this.rootDirectory,
+    required this.currentDirectory,
     required this.folderItems,
     required this.onFileClic,
     required this.onFileLongClic,
+    required this.onFolderClic,
+    required this.onFolderLongClic,
   });
 
   @override
@@ -886,43 +934,72 @@ class AddedExercisesWidget extends StatelessWidget {
             : folderItems!.isEmpty
                 ? emptyFolderWidget
                 : FolderContentWidget(
+                    rootDirectory: rootDirectory,
+                    currentDirectory: currentDirectory,
                     elements: folderItems!,
                     onFileClic: onFileClic,
                     onFileLongClic: onFileLongClic,
+                    onFolderClic: onFolderClic,
+                    onFolderLongClic: onFolderLongClic,
                   );
   }
 }
 
 class FolderContentWidget extends StatelessWidget {
+  final Directory? rootDirectory;
+  final Directory? currentDirectory;
+  final List<FileSystemEntity> elements;
+
   final void Function({required String fileName}) onFileClic;
   final void Function({required String fileName}) onFileLongClic;
 
+  final void Function({required String folderName}) onFolderClic;
+  final void Function({required String folderName}) onFolderLongClic;
+
   const FolderContentWidget({
     super.key,
+    required this.rootDirectory,
+    required this.currentDirectory,
     required this.elements,
     required this.onFileClic,
     required this.onFileLongClic,
+    required this.onFolderClic,
+    required this.onFolderLongClic,
   });
-
-  final List<FileSystemEntity> elements;
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        final item = elements[index];
-        final isDirectory = FileSystemEntity.isDirectorySync(item.path);
-        final name = File(item.absolute.path).uri.pathSegments.last;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CurrentFolderPathWidget(
+          rootDirectory: rootDirectory,
+          currentDirectory: currentDirectory,
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemBuilder: (context, index) {
+              final item = elements[index];
+              final isDirectory = FileSystemEntity.isDirectorySync(item.path);
+              final name = item.path == '..' ? '..' :  File(item.absolute.path).uri.pathSegments.last;
 
-        return isDirectory
-            ? FolderItemWidget(name: name)
-            : FileItemWidget(
-                name: name,
-                onClic: onFileClic,
-                onLongClic: onFileLongClic,
-              );
-      },
-      itemCount: elements.length,
+              return isDirectory
+                  ? FolderItemWidget(
+                      name: name,
+                      onClic: onFolderClic,
+                      onLongClic: onFolderLongClic,
+                    )
+                  : FileItemWidget(
+                      name: name,
+                      onClic: onFileClic,
+                      onLongClic: onFileLongClic,
+                    );
+            },
+            itemCount: elements.length,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -981,41 +1058,87 @@ class FileItemWidget extends StatelessWidget {
 }
 
 class FolderItemWidget extends StatelessWidget {
+  final void Function({required String folderName}) onClic;
+  final void Function({required String folderName}) onLongClic;
+
   const FolderItemWidget({
     super.key,
     required this.name,
+    required this.onClic,
+    required this.onLongClic,
   });
 
   final String name;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: SizedBox(
-            width: folderItemIconSize,
-            child: FaIcon(
-              FontAwesomeIcons.solidFolder,
-              color: Colors.yellow,
-              size: folderItemIconSize,
+    return InkWell(
+      onTap: () => onClic(folderName: name),
+      onLongPress: () => onLongClic(folderName: name),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: folderItemIconSize,
+              child: FaIcon(
+                FontAwesomeIcons.solidFolder,
+                color: Colors.yellow,
+                size: folderItemIconSize,
+              ),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            name,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: folderItemTextSize,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              name,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: folderItemTextSize,
+              ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class CurrentFolderPathWidget extends StatelessWidget {
+  final Directory? rootDirectory;
+  final Directory? currentDirectory;
+
+  const CurrentFolderPathWidget({
+    super.key,
+    required this.rootDirectory,
+    required this.currentDirectory,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    String text;
+    if ((rootDirectory == null) || (currentDirectory == null)) {
+      text = t.home.loading_content;
+    } else {
+      text = currentDirectory!.path
+          .replaceFirst(rootDirectory!.path, t.home.root_directory);
+    }
+
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      color: Colors.yellow.shade200,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Text(
+          text,
+          maxLines: 1,
+          style: const TextStyle(
+            fontSize: folderPathFontSize,
+          ),
         ),
-      ],
+      ),
     );
   }
 }
