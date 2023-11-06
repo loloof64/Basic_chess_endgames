@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 636 (212 per locale)
+/// Strings: 639 (213 per locale)
 ///
-/// Built on 2023-11-05 at 17:21 UTC
+/// Built on 2023-11-05 at 18:42 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -210,6 +210,7 @@ class _TranslationsHomeEn {
 	String get misc_generating_error => 'Failed to generate the position for a miscellaneous error.';
 	String get contextual_menu_file_delete => 'Delete';
 	String get contextual_menu_file_rename => 'Rename';
+	String get contextual_menu_file_edit => 'Edit';
 	String get confirm_delete_file_title => 'Delete file ?';
 	String confirm_delete_file_msg({required Object Name}) => 'Do you want to delete the file \'${Name}\' ?';
 	String get file_name_already_taken => 'This name is already in use.';
@@ -555,6 +556,7 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get misc_generating_error => 'Error al generar la posición para un error misceláneo.';
 	@override String get contextual_menu_file_delete => 'Borrar';
 	@override String get contextual_menu_file_rename => 'Renombrar';
+	@override String get contextual_menu_file_edit => 'Editar';
 	@override String get confirm_delete_file_title => 'Borrar el archivo ?';
 	@override String confirm_delete_file_msg({required Object Name}) => '¿Quieres borrar el archivo \'${Name}\'?';
 	@override String get file_name_already_taken => 'Este nombre ya está en uso.';
@@ -900,6 +902,7 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get misc_generating_error => 'Erreur de génération de la position pour une erreur diverse.';
 	@override String get contextual_menu_file_delete => 'Supprimer';
 	@override String get contextual_menu_file_rename => 'Renommer';
+	@override String get contextual_menu_file_edit => 'Éditer';
 	@override String get confirm_delete_file_title => 'Supprimer le fichier ?';
 	@override String confirm_delete_file_msg({required Object Name}) => 'Souhaitez-vous supprimer le fichier \'${Name}\'?';
 	@override String get file_name_already_taken => 'Ce nom est déjà utilisé.';

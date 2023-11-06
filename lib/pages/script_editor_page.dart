@@ -16,11 +16,78 @@ const drawingString = "draw";
 
 class FolderNeedsReload {}
 
+class InitialScriptsSet {
+  final String playerKingConstraints;
+  final String computerKingConstraints;
+  final String kingsMutualConstraints;
+  final String otherPiecesCountConstraints;
+  final String otherPiecesGlobalConstaints;
+  final String otherPiecesMutualConstaints;
+  final String otherPiecesIndexedConstaints;
+  final bool winningGoal;
+
+  const InitialScriptsSet({
+    required this.playerKingConstraints,
+    required this.computerKingConstraints,
+    required this.kingsMutualConstraints,
+    required this.otherPiecesCountConstraints,
+    required this.otherPiecesGlobalConstaints,
+    required this.otherPiecesMutualConstaints,
+    required this.otherPiecesIndexedConstaints,
+    required this.winningGoal,
+  });
+
+  const InitialScriptsSet.empty()
+      : playerKingConstraints = "",
+        computerKingConstraints = "",
+        kingsMutualConstraints = "",
+        otherPiecesCountConstraints = "",
+        otherPiecesGlobalConstaints = "",
+        otherPiecesMutualConstaints = "",
+        otherPiecesIndexedConstaints = "",
+        winningGoal = true;
+}
+
+extension ScriptFiller on Map<PieceKind, TextEditingController> {
+  void fillFrom(
+      String sectionScripts, String otherPiecesCountConstraintsScript) {
+    final otherPiecesKinds =
+        convertScriptToPiecesCounts(otherPiecesCountConstraintsScript)
+            .keys
+            .toList();
+    if (sectionScripts.isNotEmpty) {
+      final content = sectionScripts.trim();
+      final parts = content.split(otherPiecesSingleScriptSeparator);
+      for (final pieceKindScript in parts) {
+        if (pieceKindScript.isEmpty) continue;
+        final pieceKindScriptContent = pieceKindScript.trim();
+        final subScriptLines = pieceKindScriptContent.split("\n");
+        final typeLine = subScriptLines.first.trim();
+        final subScript = subScriptLines.sublist(1).join("\n");
+
+        final pieceKind =
+            PieceKind.from(typeLine.substring(1, typeLine.length - 1));
+        this[pieceKind] = TextEditingController(text: subScript);
+      }
+    }
+    // setting also TextEditingController for those "fields" which still miss one
+    for (final kind in otherPiecesKinds) {
+      if (this[kind] == null) {
+        this[kind] = TextEditingController(text: "");
+      }
+    }
+  }
+}
+
 class ScriptEditorPage extends StatefulWidget {
+  final String? originalFileName;
+  final InitialScriptsSet initialScriptsSet;
   final Directory currentDirectory;
 
   const ScriptEditorPage({
     super.key,
+    this.originalFileName,
+    required this.initialScriptsSet,
     required this.currentDirectory,
   });
 
@@ -50,6 +117,30 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
       <PieceKind, TextEditingController>{};
   String _otherPiecesCountConstraintsScript = "";
   String _goalScript = winningString;
+
+  @override
+  void initState() {
+    _playerKingConstraintsScriptController.text =
+        widget.initialScriptsSet.playerKingConstraints;
+    _computerKingConstraintsScriptController.text =
+        widget.initialScriptsSet.computerKingConstraints;
+    _kingsMutualConstraintsScriptController.text =
+        widget.initialScriptsSet.kingsMutualConstraints;
+    _otherPiecesCountConstraintsScript =
+        widget.initialScriptsSet.otherPiecesCountConstraints;
+    _otherPiecesGlobalConstraintsScripts.fillFrom(
+        widget.initialScriptsSet.otherPiecesGlobalConstaints,
+        _otherPiecesCountConstraintsScript);
+    _otherPiecesMutualConstraintsScripts.fillFrom(
+        widget.initialScriptsSet.otherPiecesMutualConstaints,
+        _otherPiecesCountConstraintsScript);
+    _otherPiecesIndexedConstraintsScripts.fillFrom(
+        widget.initialScriptsSet.otherPiecesIndexedConstaints,
+        _otherPiecesCountConstraintsScript);
+    _goalScript =
+        widget.initialScriptsSet.winningGoal ? winningString : drawingString;
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -175,26 +266,36 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         setState(() {
           _isSavingFile = true;
         });
-        const fileBaseName = 'temp';
-        String fileDiscriminator = '';
-        String newFilePath =
-            "${widget.currentDirectory.path}/$fileBaseName$fileDiscriminator.txt";
-        try {
-          File newFileInstance = File(newFilePath);
+        String newFileName;
 
+        if (widget.originalFileName == null) {
           // Computing next name in order to avoid overriding existing file
-          if (await newFileInstance.exists()) {
+          const fileBaseName = 'temp';
+          String fileDiscriminator = '';
+          String tempFilePath =
+              "${widget.currentDirectory.path}/$fileBaseName$fileDiscriminator.txt";
+          File tempFileInstance = File(tempFilePath);
+
+          if (await tempFileInstance.exists()) {
             int discriminatorNumber = 1;
             do {
               fileDiscriminator = '_$discriminatorNumber';
-              newFilePath =
+              tempFilePath =
                   "${widget.currentDirectory.path}/$fileBaseName$fileDiscriminator.txt";
-              newFileInstance = File(newFilePath);
+              tempFileInstance = File(tempFilePath);
 
-              if (!await newFileInstance.exists()) break;
+              if (!await tempFileInstance.exists()) break;
               discriminatorNumber++;
             } while (true);
           }
+            newFileName = "$fileBaseName$fileDiscriminator.txt";
+        } else {
+          newFileName = widget.originalFileName!;
+        }
+
+        try {
+          String newFilePath = "${widget.currentDirectory.path}/$newFileName";
+          File newFileInstance = File(newFilePath);
           final newFile = await newFileInstance.create(recursive: false);
           await newFile.writeAsString(
             script,

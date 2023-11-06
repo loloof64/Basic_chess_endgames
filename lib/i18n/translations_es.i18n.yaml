@@ -22,6 +22,7 @@ home:
   misc_generating_error: "Error al generar la posición para un error misceláneo."
   contextual_menu_file_delete: "Borrar"
   contextual_menu_file_rename: "Renombrar"
+  contextual_menu_file_edit: "Editar"
   confirm_delete_file_title: "Borrar el archivo ?"
   confirm_delete_file_msg: "¿Quieres borrar el archivo '$name'?"
   file_name_already_taken: "Este nombre ya está en uso."

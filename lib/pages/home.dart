@@ -107,6 +107,70 @@ class _HomePageState extends ConsumerState<HomePage> {
         });
   }
 
+  Future<InitialScriptsSet> _getInitialScriptSetFor(String fileName) async {
+    if (_currentAddedExercisesDirectory == null) {
+      throw "custom exercises folder is not ready";
+    }
+
+    final currentPath = _currentAddedExercisesDirectory!.path;
+    final fileInstance = File("$currentPath/$fileName");
+    final script = await fileInstance.readAsString();
+
+    String playerKingConstraint = "";
+    String computerKingConstraint = "";
+    String kingsMutualConstraint = "";
+    String otherPiecesCount = "";
+    String otherPiecesGlobalConstaints = "";
+    String otherPiecesMutualConstaints = "";
+    String otherPiecesIndexedConstaints = "";
+    bool winningGoal = true;
+
+    final parts = script.trim().split(scriptsSeparator);
+    for (final currentScript in parts) {
+      final lines = currentScript.trim().split('\n');
+      final typeString = lines.first.trim();
+      final lastLine = lines.last;
+      final content = lines.sublist(1).join('\n');
+
+      switch (typeString) {
+        case '# player king constraints':
+          playerKingConstraint = content;
+          break;
+        case '# computer king constraints':
+          computerKingConstraint = content;
+          break;
+        case '# kings mutual constraints':
+          kingsMutualConstraint = content;
+          break;
+        case '# other pieces counts':
+          otherPiecesCount = content;
+          break;
+        case '# other pieces global constraints':
+          otherPiecesGlobalConstaints = content;
+          break;
+        case '# other pieces mutual constraints':
+          otherPiecesMutualConstaints = content;
+          break;
+        case '# other pieces indexed constraints':
+          otherPiecesIndexedConstaints = content;
+          break;
+        case '# goal':
+          winningGoal = (lastLine == winningString);
+          break;
+      }
+    }
+    return InitialScriptsSet(
+      playerKingConstraints: playerKingConstraint,
+      computerKingConstraints: computerKingConstraint,
+      kingsMutualConstraints: kingsMutualConstraint,
+      otherPiecesCountConstraints: otherPiecesCount,
+      otherPiecesGlobalConstaints: otherPiecesGlobalConstaints,
+      otherPiecesMutualConstaints: otherPiecesMutualConstaints,
+      otherPiecesIndexedConstaints: otherPiecesIndexedConstaints,
+      winningGoal: winningGoal,
+    );
+  }
+
   Future<void> _tryGeneratingAndPlayingPositionFromSample(
       AssetGame game) async {
     final gameScript = await rootBundle.loadString(game.assetPath);
@@ -216,7 +280,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _handleCustomFileClic({required String fileName}) async {
-    if (_currentAddedExercisesDirectory == null) return;
+    if (_currentAddedExercisesDirectory == null) {
+      throw "custom exercises folder is not ready";
+    }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
     final fileInstance = File("$currentPath/$fileName");
@@ -225,7 +291,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _handleCustomFileLongClic({required String fileName}) async {
-    if (_currentAddedExercisesDirectory == null) return;
+    if (_currentAddedExercisesDirectory == null) {
+      throw "custom exercises folder is not ready";
+    }
 
     showDialog(
         barrierDismissible: true,
@@ -238,13 +306,27 @@ class _HomePageState extends ConsumerState<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     Navigator.of(context).pop();
-                    _showConfirmDeleteCustomFile(fileName);
+                    final initialScriptsSet =
+                        await _getInitialScriptSetFor(fileName);
+                    if (!mounted) return;
+                    final result = await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ScriptEditorPage(
+                            originalFileName: fileName,
+                            initialScriptsSet: initialScriptsSet,
+                            currentDirectory: _currentAddedExercisesDirectory!,
+                          );
+                        },
+                      ),
+                    );
+                    if (result is FolderNeedsReload) {
+                      _reloadCurrentFolder();
+                    }
                   },
-                  child: Text(
-                    t.home.contextual_menu_file_delete,
-                  ),
+                  child: Text(t.home.contextual_menu_file_edit),
                 ),
                 TextButton(
                   onPressed: () {
@@ -253,6 +335,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                   },
                   child: Text(
                     t.home.contextual_menu_file_rename,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _showConfirmDeleteCustomFile(fileName);
+                  },
+                  child: Text(
+                    t.home.contextual_menu_file_delete,
                   ),
                 ),
               ],
@@ -300,7 +391,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _showRenameCustomFileDialog(String fileName) async {
-    if (_currentAddedExercisesDirectory == null) return;
+    if (_currentAddedExercisesDirectory == null) {
+      throw "custom exercises folder is not ready";
+    }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
     final fileInstance = File("$currentPath/$fileName");
@@ -385,7 +478,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _deleteCustomFile(String fileName) async {
-    if (_currentAddedExercisesDirectory == null) return;
+    if (_currentAddedExercisesDirectory == null) {
+      throw "custom exercises folder is not ready";
+    }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
     final fileInstance = File("$currentPath/$fileName");
@@ -502,6 +597,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       MaterialPageRoute(
                         builder: (context) {
                           return ScriptEditorPage(
+                            initialScriptsSet: const InitialScriptsSet.empty(),
                             currentDirectory: _currentAddedExercisesDirectory!,
                           );
                         },

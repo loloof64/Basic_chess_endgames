@@ -23,6 +23,7 @@ home:
   misc_generating_error: "Erreur de génération de la position pour une erreur diverse."
   contextual_menu_file_delete: "Supprimer"
   contextual_menu_file_rename: "Renommer"
+  contextual_menu_file_edit: "Éditer"
   confirm_delete_file_title: "Supprimer le fichier ?"
   confirm_delete_file_msg: "Souhaitez-vous supprimer le fichier '$name'?"
   file_name_already_taken: "Ce nom est déjà utilisé."

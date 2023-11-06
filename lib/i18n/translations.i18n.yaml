@@ -21,6 +21,7 @@ home:
   misc_generating_error: "Failed to generate the position for a miscellaneous error."
   contextual_menu_file_delete: "Delete"
   contextual_menu_file_rename: "Rename"
+  contextual_menu_file_edit: "Edit"
   confirm_delete_file_title: "Delete file ?"
   confirm_delete_file_msg: "Do you want to delete the file '$name' ?"
   file_name_already_taken: "This name is already in use."
