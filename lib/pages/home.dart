@@ -77,7 +77,11 @@ class _HomePageState extends ConsumerState<HomePage> {
         context: context,
         builder: (ctx2) {
           return AlertDialog(
-            content: Text(t.home.help_message),
+            content: Text(
+              _selectedTabIndex == 0
+                  ? t.home.samples_help_message
+                  : t.home.custom_scripts_help_message,
+            ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(ctx2).pop(),
@@ -119,7 +123,8 @@ class _HomePageState extends ConsumerState<HomePage> {
     return _getInitialScriptSetFromScriptString(script);
   }
 
-  Future<InitialScriptsSet> _getInitialScriptSetFromAssetScript(String assetPath) async {
+  Future<InitialScriptsSet> _getInitialScriptSetFromAssetScript(
+      String assetPath) async {
     final gameScript = await rootBundle.loadString(assetPath);
     return _getInitialScriptSetFromScriptString(gameScript);
   }
@@ -551,8 +556,10 @@ class _HomePageState extends ConsumerState<HomePage> {
           actions: [
             IconButton(
               onPressed: _showHomePageHelpDialog,
-              icon: const Icon(
-                Icons.question_mark_rounded,
+              icon: FaIcon(
+                _selectedTabIndex == 0
+                    ? FontAwesomeIcons.question
+                    : FontAwesomeIcons.circleQuestion,
               ),
             ),
           ],
@@ -629,7 +636,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 class IntegratedExercisesWidget extends StatelessWidget {
   final List<AssetGame> games;
   final void Function(AssetGame game) onGameSelected;
-  final Future<InitialScriptsSet> Function(String assetPath) onGetInitialScriptSet;
+  final Future<InitialScriptsSet> Function(String assetPath)
+      onGetInitialScriptSet;
 
   const IntegratedExercisesWidget({
     super.key,

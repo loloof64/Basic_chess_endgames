@@ -8,13 +8,17 @@ home:
   title: "Home"
   failedLoadingExercise: "Failed to load exercise : the chess position is not valid."
   failedGeneratingPosition: "Failed to generate the position."
-  maxGenerationAttemptsAchieved: "Impossible to generate a position from these scripts : \
+  maxGenerationAttemptsAchieved:
+    "Impossible to generate a position from these scripts : \
     maximum generation attempts surpassed.\n\nPlease check that your constraints aren't too restrictive."
-  helpMessage:
+  samples_help_message:
     "Here you can select the type of position you want to play with.\n\
     A line which leading icon is a trophy will generate a position in which you should win.\n\
     Otherwise, with a handshake leading icon, your goal will be to save the game and make draw.\n\n\
     You can also see the code of an example by making a long press on it."
+  custom_scripts_help_message: "Here you can create and run your custom exercises (with a single press on it).\n\n\
+    You can also edit/rename/delete a single exercise with a long press on it.\n\n\
+    You can also manage folders."
   tab_integrated: "Integrated"
   tab_added: "Added"
   no_game_yet: "No element"
