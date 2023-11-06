@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 660 (220 per locale)
+/// Strings: 669 (223 per locale)
 ///
-/// Built on 2023-11-06 at 23:05 UTC
+/// Built on 2023-11-06 at 23:25 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -213,8 +213,11 @@ class _TranslationsHomeEn {
 	String get contextual_menu_file_rename => 'Rename';
 	String get contextual_menu_file_edit => 'Edit';
 	String get contextual_menu_rename_folder => 'Rename';
+	String get contextual_menu_folder_delete => 'Delete';
 	String get confirm_delete_file_title => 'Delete file ?';
 	String confirm_delete_file_msg({required Object Name}) => 'Do you want to delete the file \'${Name}\' ?';
+	String get confirm_delete_folder_title => 'Delete folder ?';
+	String confirm_delete_folder_msg({required Object Name}) => 'Do you want to delete the folder \'${Name}\' ?';
 	String get file_name_already_taken => 'This name is already in use.';
 	String get new_folder_prompt => 'Name : ';
 	String get rename_folder_prompt => 'New name : ';
@@ -566,8 +569,11 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get contextual_menu_file_rename => 'Renombrar';
 	@override String get contextual_menu_file_edit => 'Editar';
 	@override String get contextual_menu_rename_folder => 'Renombrar';
+	@override String get contextual_menu_folder_delete => 'Borrar';
 	@override String get confirm_delete_file_title => 'Borrar el archivo ?';
 	@override String confirm_delete_file_msg({required Object Name}) => '¿Quieres borrar el archivo \'${Name}\'?';
+	@override String get confirm_delete_folder_title => '¿Borrar la carpeta?';
+	@override String confirm_delete_folder_msg({required Object Name}) => '¿Quieres borrar la carpeta \'${Name}\'?';
 	@override String get file_name_already_taken => 'Este nombre ya está en uso.';
 	@override String get new_folder_prompt => 'Nombre :';
 	@override String get rename_folder_prompt => 'Nuevo nombre : ';
@@ -919,8 +925,11 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get contextual_menu_file_rename => 'Renommer';
 	@override String get contextual_menu_file_edit => 'Éditer';
 	@override String get contextual_menu_rename_folder => 'Renommer';
+	@override String get contextual_menu_folder_delete => 'Supprimer';
 	@override String get confirm_delete_file_title => 'Supprimer le fichier ?';
 	@override String confirm_delete_file_msg({required Object Name}) => 'Souhaitez-vous supprimer le fichier \'${Name}\'?';
+	@override String get confirm_delete_folder_title => 'Supprimer le dossier ?';
+	@override String confirm_delete_folder_msg({required Object Name}) => 'Souhaitez-vous supprimer le dossier \'${Name}\'?';
 	@override String get file_name_already_taken => 'Ce nom est déjà utilisé.';
 	@override String get new_folder_prompt => 'Nom : ';
 	@override String get rename_folder_prompt => 'Nouveau nom : ';

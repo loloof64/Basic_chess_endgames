@@ -555,6 +555,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                   t.home.contextual_menu_file_rename,
                 ),
               ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _purposeDeleteCustomFolder(folderName: folderName);
+                },
+                child: Text(
+                  t.home.contextual_menu_folder_delete,
+                ),
+              ),
             ],
           ),
         );
@@ -629,6 +638,56 @@ class _HomePageState extends ConsumerState<HomePage> {
         );
       },
     );
+  }
+
+  void _purposeDeleteCustomFolder({required String folderName}) async {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(t.home.confirm_delete_folder_title),
+          content: Text(t.home.confirm_delete_folder_msg(Name: folderName)),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _deleteCustomFolder(folderName);
+              },
+              child: Text(
+                t.misc.button_ok,
+                style: const TextStyle(
+                  color: Colors.green,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                t.misc.button_cancel,
+                style: const TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _deleteCustomFolder(String folderName) async {
+    if (_currentAddedExercisesDirectory == null) {
+      throw "custom exercises folder is not ready";
+    }
+
+    final currentPath = _currentAddedExercisesDirectory!.path;
+    final folderInstance = File("$currentPath/$folderName");
+
+    await folderInstance.delete(recursive: true);
+    _reloadCurrentFolder();
   }
 
   void _showConfirmDeleteCustomFile(String fileName) async {
