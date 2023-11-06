@@ -25,6 +25,26 @@ const rgpdWarningHeight = 200.0;
 const folderItemIconSize = 45.0;
 const folderItemTextSize = 20.0;
 
+extension FolderItemsExtension on List<FileSystemEntity> {
+  Future<void> order() async {
+    final isDirectory = Map.fromEntries(await map((entity) async =>
+            MapEntry(entity, await FileSystemEntity.isDirectory(entity.path)))
+        .wait);
+
+    sort((first, second) {
+      final firstIsFolder = isDirectory[first]!;
+      final secondIsFolder = isDirectory[second]!;
+      final areOfSameType = firstIsFolder == secondIsFolder;
+
+      if (areOfSameType) {
+        return first.path.compareTo(second.path);
+      } else {
+        return firstIsFolder ? -1 : 1;
+      }
+    });
+  }
+}
+
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
@@ -51,6 +71,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     getApplicationDocumentsDirectory().then((directory) async {
       _currentAddedExercisesDirectory = directory;
       _customExercisesItems = await _getAddedExercisesFolderItems();
+      await _customExercisesItems?.order();
       setState(() {});
     }).catchError((error) {
       setState(() {
@@ -152,13 +173,15 @@ class _HomePageState extends ConsumerState<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(t.home.new_folder_prompt),
-              Expanded(child: TextField(controller: _newFolderNameTextController)),
+              Expanded(
+                  child: TextField(controller: _newFolderNameTextController)),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () async {
-                if (await _folderAlreadyExists(_newFolderNameTextController.text)) {
+                if (await _folderAlreadyExists(
+                    _newFolderNameTextController.text)) {
                   if (!mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -620,6 +643,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
     try {
       _customExercisesItems = await _getAddedExercisesFolderItems();
+      await _customExercisesItems?.order();
       setState(() {});
     } catch (ex) {
       setState(() {
