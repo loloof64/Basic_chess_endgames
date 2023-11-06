@@ -81,12 +81,14 @@ extension ScriptFiller on Map<PieceKind, TextEditingController> {
 
 class ScriptEditorPage extends StatefulWidget {
   final String? originalFileName;
+  final bool readOnly;
   final InitialScriptsSet initialScriptsSet;
-  final Directory currentDirectory;
+  final Directory? currentDirectory;
 
   const ScriptEditorPage({
     super.key,
     this.originalFileName,
+    this.readOnly = false,
     required this.initialScriptsSet,
     required this.currentDirectory,
   });
@@ -163,6 +165,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
   }
 
   void _processUserScript() async {
+    if (widget.currentDirectory == null) return;
     if (_isCheckingPosition) return;
     if (_isSavingFile) return;
 
@@ -273,7 +276,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           const fileBaseName = 'temp';
           String fileDiscriminator = '';
           String tempFilePath =
-              "${widget.currentDirectory.path}/$fileBaseName$fileDiscriminator.txt";
+              "${widget.currentDirectory!.path}/$fileBaseName$fileDiscriminator.txt";
           File tempFileInstance = File(tempFilePath);
 
           if (await tempFileInstance.exists()) {
@@ -281,20 +284,20 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
             do {
               fileDiscriminator = '_$discriminatorNumber';
               tempFilePath =
-                  "${widget.currentDirectory.path}/$fileBaseName$fileDiscriminator.txt";
+                  "${widget.currentDirectory!.path}/$fileBaseName$fileDiscriminator.txt";
               tempFileInstance = File(tempFilePath);
 
               if (!await tempFileInstance.exists()) break;
               discriminatorNumber++;
             } while (true);
           }
-            newFileName = "$fileBaseName$fileDiscriminator.txt";
+          newFileName = "$fileBaseName$fileDiscriminator.txt";
         } else {
           newFileName = widget.originalFileName!;
         }
 
         try {
-          String newFilePath = "${widget.currentDirectory.path}/$newFileName";
+          String newFilePath = "${widget.currentDirectory!.path}/$newFileName";
           File newFileInstance = File(newFilePath);
           final newFile = await newFileInstance.create(recursive: false);
           await newFile.writeAsString(
@@ -435,6 +438,8 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
   }
 
   Future<bool> _handleExitPage() async {
+    if (widget.readOnly) return true;
+
     return await showDialog(
         context: context,
         builder: (ctx2) {
@@ -585,10 +590,12 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                 ),
               )
           ]),
-          floatingActionButton: FloatingActionButton(
-            onPressed: _processUserScript,
-            child: const FaIcon(FontAwesomeIcons.solidFloppyDisk),
-          ),
+          floatingActionButton: widget.readOnly
+              ? null
+              : FloatingActionButton(
+                  onPressed: _processUserScript,
+                  child: const FaIcon(FontAwesomeIcons.solidFloppyDisk),
+                ),
         ),
       ),
     );

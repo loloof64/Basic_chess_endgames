@@ -116,6 +116,15 @@ class _HomePageState extends ConsumerState<HomePage> {
     final fileInstance = File("$currentPath/$fileName");
     final script = await fileInstance.readAsString();
 
+    return _getInitialScriptSetFromScriptString(script);
+  }
+
+  Future<InitialScriptsSet> _getInitialScriptSetFromAssetScript(String assetPath) async {
+    final gameScript = await rootBundle.loadString(assetPath);
+    return _getInitialScriptSetFromScriptString(gameScript);
+  }
+
+  InitialScriptsSet _getInitialScriptSetFromScriptString(String script) {
     String playerKingConstraint = "";
     String computerKingConstraint = "";
     String kingsMutualConstraint = "";
@@ -570,6 +579,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 IntegratedExercisesWidget(
                   games: sampleGames,
                   onGameSelected: _tryGeneratingAndPlayingPositionFromSample,
+                  onGetInitialScriptSet: _getInitialScriptSetFromAssetScript,
                 ),
                 AddedExercisesWidget(
                   failedLoadingContent: _failedLoadingCustomExercises,
@@ -619,11 +629,13 @@ class _HomePageState extends ConsumerState<HomePage> {
 class IntegratedExercisesWidget extends StatelessWidget {
   final List<AssetGame> games;
   final void Function(AssetGame game) onGameSelected;
+  final Future<InitialScriptsSet> Function(String assetPath) onGetInitialScriptSet;
 
   const IntegratedExercisesWidget({
     super.key,
     required this.games,
     required this.onGameSelected,
+    required this.onGetInitialScriptSet,
   });
 
   @override
@@ -666,6 +678,23 @@ class IntegratedExercisesWidget extends StatelessWidget {
                   leading: leadingImage,
                   title: title,
                   onTap: () => onGameSelected(game),
+                  onLongPress: () async {
+                    final initialScriptsSet =
+                        await onGetInitialScriptSet(game.assetPath);
+                    if (!context.mounted) return;
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ScriptEditorPage(
+                            readOnly: true,
+                            originalFileName: null,
+                            initialScriptsSet: initialScriptsSet,
+                            currentDirectory: null,
+                          );
+                        },
+                      ),
+                    );
+                  },
                 );
               }),
         ),
