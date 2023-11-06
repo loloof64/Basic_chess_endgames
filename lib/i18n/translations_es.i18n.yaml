@@ -35,6 +35,7 @@ home:
   confirm_delete_file_title: "Borrar el archivo ?"
   confirm_delete_file_msg: "¿Quieres borrar el archivo '$name'?"
   file_name_already_taken: "Este nombre ya está en uso."
+  new_folder_prompt: "Nombre :"
 rgpd:
   text: "Al utilizar esta aplicación, estás de acuerdo con:"
   privacy: "la Política de Privacidad"

@@ -41,6 +41,8 @@ class _HomePageState extends ConsumerState<HomePage> {
   List<FileSystemEntity>? _customExercisesItems;
   final TextEditingController _renameCustomFileController =
       TextEditingController();
+  final TextEditingController _newFolderNameTextController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -63,6 +65,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     _positionGenerationIsolate?.kill(
       priority: Isolate.immediate,
     );
+    _newFolderNameTextController.dispose();
     _renameCustomFileController.dispose();
     super.dispose();
   }
@@ -109,6 +112,89 @@ class _HomePageState extends ConsumerState<HomePage> {
             ),
           );
         });
+  }
+
+  Future<bool> _folderAlreadyExists(String name) async {
+    if (_currentAddedExercisesDirectory == null) {
+      throw "custom exercises folder is not ready";
+    }
+
+    final currentPath = _currentAddedExercisesDirectory!.path;
+    final directoryInstance = Directory("$currentPath/$name");
+
+    return await directoryInstance.exists();
+  }
+
+  void _createFolder(String name) async {
+    if (_currentAddedExercisesDirectory == null) {
+      throw "custom exercises folder is not ready";
+    }
+
+    final currentPath = _currentAddedExercisesDirectory!.path;
+    final directoryInstance = Directory("$currentPath/$name");
+
+    await directoryInstance.create(recursive: false);
+    _reloadCurrentFolder();
+  }
+
+  void _purposeCreateFolder() {
+    setState(() {
+      _newFolderNameTextController.text = "";
+    });
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(t.home.new_folder_prompt),
+              Expanded(child: TextField(controller: _newFolderNameTextController)),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                if (await _folderAlreadyExists(_newFolderNameTextController.text)) {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        t.home.file_name_already_taken,
+                      ),
+                    ),
+                  );
+                  return;
+                }
+                if (!mounted) return;
+                Navigator.of(context).pop();
+                _createFolder(_newFolderNameTextController.text);
+              },
+              child: Text(
+                t.misc.button_ok,
+                style: const TextStyle(
+                  color: Colors.green,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                t.misc.button_cancel,
+                style: const TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<InitialScriptsSet> _getInitialScriptSetFor(String fileName) async {
@@ -554,6 +640,13 @@ class _HomePageState extends ConsumerState<HomePage> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(t.home.title),
           actions: [
+            if (_selectedTabIndex == 1)
+              IconButton(
+                onPressed: _purposeCreateFolder,
+                icon: const FaIcon(
+                  FontAwesomeIcons.solidFolder,
+                ),
+              ),
             IconButton(
               onPressed: _showHomePageHelpDialog,
               icon: FaIcon(
@@ -582,6 +675,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         body: Stack(
           children: <Widget>[
             TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 IntegratedExercisesWidget(
                   games: sampleGames,

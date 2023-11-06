@@ -30,6 +30,7 @@ home:
   confirm_delete_file_title: "Delete file ?"
   confirm_delete_file_msg: "Do you want to delete the file '$name' ?"
   file_name_already_taken: "This name is already in use."
+  new_folder_prompt: "Name : "
 rgpd:
   text: "By using this app, you agree with :"
   privacy: "the Privacy Policy"

@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 642 (214 per locale)
+/// Strings: 645 (215 per locale)
 ///
-/// Built on 2023-11-06 at 09:56 UTC
+/// Built on 2023-11-06 at 10:11 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -215,6 +215,7 @@ class _TranslationsHomeEn {
 	String get confirm_delete_file_title => 'Delete file ?';
 	String confirm_delete_file_msg({required Object Name}) => 'Do you want to delete the file \'${Name}\' ?';
 	String get file_name_already_taken => 'This name is already in use.';
+	String get new_folder_prompt => 'Name : ';
 }
 
 // Path: rgpd
@@ -562,6 +563,7 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get confirm_delete_file_title => 'Borrar el archivo ?';
 	@override String confirm_delete_file_msg({required Object Name}) => '¿Quieres borrar el archivo \'${Name}\'?';
 	@override String get file_name_already_taken => 'Este nombre ya está en uso.';
+	@override String get new_folder_prompt => 'Nombre :';
 }
 
 // Path: rgpd
@@ -909,6 +911,7 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get confirm_delete_file_title => 'Supprimer le fichier ?';
 	@override String confirm_delete_file_msg({required Object Name}) => 'Souhaitez-vous supprimer le fichier \'${Name}\'?';
 	@override String get file_name_already_taken => 'Ce nom est déjà utilisé.';
+	@override String get new_folder_prompt => 'Nom : ';
 }
 
 // Path: rgpd
