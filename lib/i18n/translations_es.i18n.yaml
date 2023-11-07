@@ -9,8 +9,9 @@ home:
   failedLoadingExercise: "No se pudo cargar el ejercicio: la posición de ajedrez no es válida."
   maxGenerationAttemptsAchieved:
     "Es imposible generar una posición a partir de estos guiones: \
-    se han superado los intentos máximos de generación.\n\nComprueba que tus restricciones no sean \
-    demasiado restrictivas."
+    se han superado los intentos máximos de generación.\n\nComprueba que tus \
+    restricciones no sean demasiado restrictivas.\n\nAdemás, por favor, asegúrate \
+    de que todas tus variables estén declaradas antes de usarlas."
   failedGeneratingPosition: "Falló al generar la posición."
   samples_help_message:
     "Aquí puedes seleccionar el tipo de posición con la que quieres jugar.\n\
@@ -39,7 +40,7 @@ home:
   contextual_menu_clone_sample_code: "Clonar en los ejercicios añadidos"
   confirm_delete_file_title: "Borrar el archivo ?"
   confirm_delete_file_msg: "¿Quieres borrar el archivo '$name'?"
-  confirm_delete_folder_title: "¿Borrar la carpeta?" 
+  confirm_delete_folder_title: "¿Borrar la carpeta?"
   confirm_delete_folder_msg: "¿Quieres borrar la carpeta '$name'?"
   file_name_already_taken: "Este nombre ya está en uso."
   new_folder_prompt: "Nombre :"
@@ -209,6 +210,9 @@ syntax_manual_page:
     que la posición generada es correcta.\n\n\
     Por favor tenga en cuenta que una declaración puede extenderse en varias líneas: terminan tan pronto como se encuentra el carácter ';'.\n\n\
     Además, tenga cuidado con la sensibilidad a las mayúsculas: las mayúsculas o minúsculas pueden marcar la diferencia.\n\n
+    Finalmente, en cada guión, debes comprobar que no utilizas ninguna variable no \
+    declarada: aunque tu código sea aceptado, siempre fallará a la hora de \
+    generar la posición.\n\n
     "
   scripts_format_main_description_1: "Esta es la sintaxis para la expresión de retorno:\n\n"
   scripts_format_code_section_1: "return [su expresión booleana];\n\n"

@@ -10,7 +10,8 @@ home:
   failedGeneratingPosition: "Failed to generate the position."
   maxGenerationAttemptsAchieved:
     "Impossible to generate a position from these scripts : \
-    maximum generation attempts surpassed.\n\nPlease check that your constraints aren't too restrictive."
+    maximum generation attempts surpassed.\n\nPlease check that your constraints \
+    aren't too restrictive.\n\nAlso, please check that all of your variables are declared before use."
   samples_help_message:
     "Here you can select the type of position you want to play with.\n\
     A line which leading icon is a trophy will generate a position in which you should win.\n\
@@ -195,7 +196,7 @@ syntax_manual_page:
     position is correct.\n\n\
     Please take into account that a statement can expand on several lines : they end as soon as the character ';' is met.\n\n\
     Also, beware of the case sensitivity : uppercase or lowercase can make the difference.\n\n
-    "
+    At last, in each sub-script, you should check that you don't use an undeclared variable : though your code will be accepted, it will always fail to generate the position.\n\n"
   scripts_format_main_description_1: "This is the syntax for the return expression :\n\n"
   scripts_format_code_section_1: "return [your boolean expression];\n\n"
   scripts_format_main_description_2: "This is a simple script sample :\n\n"

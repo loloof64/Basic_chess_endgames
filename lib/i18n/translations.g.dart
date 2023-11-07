@@ -6,7 +6,7 @@
 /// Locales: 3
 /// Strings: 678 (226 per locale)
 ///
-/// Built on 2023-11-07 at 00:24 UTC
+/// Built on 2023-11-07 at 13:16 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -201,7 +201,7 @@ class _TranslationsHomeEn {
 	String get title => 'Home';
 	String get failed_loading_exercise => 'Failed to load exercise : the chess position is not valid.';
 	String get failed_generating_position => 'Failed to generate the position.';
-	String get max_generation_attempts_achieved => 'Impossible to generate a position from these scripts : maximum generation attempts surpassed.\n\nPlease check that your constraints aren\'t too restrictive.';
+	String get max_generation_attempts_achieved => 'Impossible to generate a position from these scripts : maximum generation attempts surpassed.\n\nPlease check that your constraints aren\'t too restrictive.\n\nAlso, please check that all of your variables are declared before use.';
 	String get samples_help_message => 'Here you can select the type of position you want to play with.\nA line which leading icon is a trophy will generate a position in which you should win.\nOtherwise, with a handshake leading icon, your goal will be to save the game and make draw.\n\nYou can also see the code of an example, or even clone it into current folder of customs exercises section, by making a long press on it.';
 	String get custom_scripts_help_message => 'Here you can create and run your custom exercises (with a single press on it).\n\nYou can also edit/rename/delete a single exercise with a long press on it.\n\nYou can also add/rename/delete folders.';
 	String get tab_integrated => 'Integrated';
@@ -408,7 +408,7 @@ class _TranslationsSyntaxManualPageEn {
 	String get scripts_kinds_other_pieces_mutual_constraints_description => 'Tells about the positioning constraints for pieces other by kings, that they must respect between each other, two by two, for each couple [type of piece / is it a player piece ?].\n\n';
 	String get scripts_kinds_other_pieces_indexed_constraints_title => 'Other pieces constraints by order\n\n';
 	String get scripts_kinds_other_pieces_indexed_constraints_description => 'Tells about the positioning constraints for pieces other than kings, that they must respect given their apparition order on the chess board, for each couple [type of piece / is it a player piece ?].\n\n';
-	String get scripts_format_head_description => 'Each script may start with one or several variables creation statements.\n\nBut the final expression must be a statement that returns a boolean expression.\n\nThis return expression will be used by the algorithm in order to check that the generated position is correct.\n\nPlease take into account that a statement can expand on several lines : they end as soon as the character \';\' is met.\n\nAlso, beware of the case sensitivity : uppercase or lowercase can make the difference.\n\n ';
+	String get scripts_format_head_description => 'Each script may start with one or several variables creation statements.\n\nBut the final expression must be a statement that returns a boolean expression.\n\nThis return expression will be used by the algorithm in order to check that the generated position is correct.\n\nPlease take into account that a statement can expand on several lines : they end as soon as the character \';\' is met.\n\nAlso, beware of the case sensitivity : uppercase or lowercase can make the difference.\n\n At last, in each sub-script, you should check that you don\'t use an undeclared variable : though your code will be accepted, it will always fail to generate the position.\n\n';
 	String get scripts_format_main_description_1 => 'This is the syntax for the return expression :\n\n';
 	String get scripts_format_code_section_1 => 'return [your boolean expression];\n\n';
 	String get scripts_format_main_description_2 => 'This is a simple script sample :\n\n';
@@ -559,7 +559,7 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	// Translations
 	@override String get title => 'Inicio';
 	@override String get failed_loading_exercise => 'No se pudo cargar el ejercicio: la posición de ajedrez no es válida.';
-	@override String get max_generation_attempts_achieved => 'Es imposible generar una posición a partir de estos guiones: se han superado los intentos máximos de generación.\n\nComprueba que tus restricciones no sean demasiado restrictivas.';
+	@override String get max_generation_attempts_achieved => 'Es imposible generar una posición a partir de estos guiones: se han superado los intentos máximos de generación.\n\nComprueba que tus restricciones no sean demasiado restrictivas.\n\nAdemás, por favor, asegúrate de que todas tus variables estén declaradas antes de usarlas.';
 	@override String get failed_generating_position => 'Falló al generar la posición.';
 	@override String get samples_help_message => 'Aquí puedes seleccionar el tipo de posición con la que quieres jugar.\nUna línea cuyo icono principal es un trofeo generará una posición en la que deberías ganar.\nDe lo contrario, con un icono principal de un apretón de manos, tu objetivo será salvar la partida y hacer empate.\n\nTambién puedes ver el código de un ejemplo, o incluso clonarlo en la carpeta actual de la sección de ejercicios de aduanas, presionándolo durante unos segundos.';
 	@override String get custom_scripts_help_message => 'Aquí puedes crear y ejecutar tus ejercicios personalizados (con una sola pulsación en ello).\n\n También puedes editar/renombrar/eliminar un ejercicio individual con una pulsación larga sobre él.\n\n También puedes añadir/renombrar/eliminar carpetas.';
@@ -767,7 +767,7 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_kinds_other_pieces_mutual_constraints_description => 'Indica las restricciones de posicionamiento para las piezas que no son reyes, que deben respetar entre sí, dos a dos,para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n';
 	@override String get scripts_kinds_other_pieces_indexed_constraints_title => 'Restricciones sobre otras piezas por orden\n\n';
 	@override String get scripts_kinds_other_pieces_indexed_constraints_description => 'Indica las restricciones de posicionamiento para las piezas que no son reyes, que deben respetar dado su orden de aparición en el tablero de ajedrez, para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n';
-	@override String get scripts_format_head_description => 'Cada guione puede comenzar con una o varias declaraciones de creación de variables.\n\nPero la expresión final debe ser una declaración que devuelva una expresión booleana.\n\nEsta expresión de retorno será utilizada por el algoritmo para comprobar que la posición generada es correcta.\n\nPor favor tenga en cuenta que una declaración puede extenderse en varias líneas: terminan tan pronto como se encuentra el carácter \';\'.\n\nAdemás, tenga cuidado con la sensibilidad a las mayúsculas: las mayúsculas o minúsculas pueden marcar la diferencia.\n\n ';
+	@override String get scripts_format_head_description => 'Cada guione puede comenzar con una o varias declaraciones de creación de variables.\n\nPero la expresión final debe ser una declaración que devuelva una expresión booleana.\n\nEsta expresión de retorno será utilizada por el algoritmo para comprobar que la posición generada es correcta.\n\nPor favor tenga en cuenta que una declaración puede extenderse en varias líneas: terminan tan pronto como se encuentra el carácter \';\'.\n\nAdemás, tenga cuidado con la sensibilidad a las mayúsculas: las mayúsculas o minúsculas pueden marcar la diferencia.\n\n Finalmente, en cada guión, debes comprobar que no utilizas ninguna variable no declarada: aunque tu código sea aceptado, siempre fallará a la hora de generar la posición.\n\n ';
 	@override String get scripts_format_main_description_1 => 'Esta es la sintaxis para la expresión de retorno:\n\n';
 	@override String get scripts_format_code_section_1 => 'return [su expresión booleana];\n\n';
 	@override String get scripts_format_main_description_2 => 'Este es un ejemplo de guione simple :\n\n';
@@ -918,7 +918,7 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	// Translations
 	@override String get title => 'Accueil';
 	@override String get failed_loading_exercise => 'Échec de chargement de l\'exerice : la position d\'échecs est invalide.';
-	@override String get max_generation_attempts_achieved => 'Impossible de générer une position à partir de ces scripts : nombre de tentatives maximum dépassés.\n\nVeuillez vérifier que vos contraintes ne sont pas trop restrictives.';
+	@override String get max_generation_attempts_achieved => 'Impossible de générer une position à partir de ces scripts : nombre de tentatives maximum dépassés.\n\nVeuillez vérifier que vos contraintes ne sont pas trop restrictives.\n\nÉgalement, veuillez vérifier que vos variables soient déclarées avant utilisation.';
 	@override String get failed_generating_position => 'Échec de génération de la position.';
 	@override String get samples_help_message => 'Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer.\nUne ligne dont l\'icône est un trophée générera une position où vous devrez gagner.\nSinon si la ligne commence par une poignée de main, vous devrez sauver la partie et faire partie nulle.\n\nVous pouvez aussi voir le code d\'un exemple, ou même le cloner dans le dossier courant de la section exercices personnels, en faisant un appui-long dessus.';
 	@override String get custom_scripts_help_message => 'Ici vous pouvez créér et exécuter vos exercices personnalisés (par un simple appui dessus).\n\n Vous pouvez aussi éditer/renommer/supprimer un unique exercice par un appui long dessus.\n\n Vous pouvez aussi ajouter/renommer/supprimer des dossiers.';
@@ -1126,7 +1126,7 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 	@override String get scripts_kinds_other_pieces_mutual_constraints_description => 'Renseigne sur les contraintes de positionnement des pièces autres que les rois, qu\'elles doivent respecter entre elles, deux par deux, pour chaque couple [type de pièce / est-ce une pièce d\'un joueur ?].\n\n';
 	@override String get scripts_kinds_other_pieces_indexed_constraints_title => 'Contraintes des autres pièces par ordre\n\n';
 	@override String get scripts_kinds_other_pieces_indexed_constraints_description => 'Renseigne sur les contraintes de positionnement des pièces autres que les rois, qu\'elles doivent respecter en fonction de l\'ordre d\'apparition sur l\'échiquier, pour chaque couple [type de pièce / est-ce une pièce du joueur ?].\n\n';
-	@override String get scripts_format_head_description => 'Chaque script peut commencer par une ou plusieures instructions de création de variables.\n\nMais au final la dernière instruction doit retourner une expression booléenne.\n\nCette expression de retour sera utilisée par l\'algorithme afin de vérifier que la position générée est correcte.\n\nVeuillez aussi prendre en compte le fait qu\'une instruction peut s\'étendre sur plusieurs lignes : elles se terminent dès le caractère \';\'.\n\nAussi, faites attention à la casse : les majuscules ou les minuscules peuvent faire la différence.\n\n';
+	@override String get scripts_format_head_description => 'Chaque script peut commencer par une ou plusieures instructions de création de variables.\n\nMais au final la dernière instruction doit retourner une expression booléenne.\n\nCette expression de retour sera utilisée par l\'algorithme afin de vérifier que la position générée est correcte.\n\nVeuillez aussi prendre en compte le fait qu\'une instruction peut s\'étendre sur plusieurs lignes : elles se terminent dès le caractère \';\'.\n\nAussi, faites attention à la casse : les majuscules ou les minuscules peuvent faire la différence.\n\n Enfin, vous devriez vérifier que dans chaque sous-script, vous n\'utilisez pas de variable non déclarée : bien que le code soit accepté, il ne pourra jamais générer de position.\n\n';
 	@override String get scripts_format_main_description_1 => 'Voici la syntaxe pour l\'expression de retour :\n\n';
 	@override String get scripts_format_code_section_1 => 'return [votre expression booléenne];\n\n';
 	@override String get scripts_format_main_description_2 => 'Voici un exemple simple de script :\n\n';

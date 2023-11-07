@@ -9,8 +9,9 @@ home:
   failedLoadingExercise: "Échec de chargement de l'exerice : la position d'échecs est invalide."
   maxGenerationAttemptsAchieved:
     "Impossible de générer une position à partir de ces scripts : \
-    nombre de tentatives maximum dépassés.\n\nVeuillez vérifier que vos contraintes ne sont pas \
-    trop restrictives."
+    nombre de tentatives maximum dépassés.\n\nVeuillez vérifier que vos \
+    contraintes ne sont pas trop restrictives.\n\nÉgalement, veuillez vérifier que vos \
+    variables soient déclarées avant utilisation."
   failedGeneratingPosition: "Échec de génération de la position."
   samples_help_message:
     "Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer.\n\
@@ -211,7 +212,10 @@ syntax_manual_page:
     expression booléenne.\n\nCette expression de retour sera utilisée par l'algorithme afin de \
     vérifier que la position générée est correcte.\n\n\
     Veuillez aussi prendre en compte le fait qu'une instruction peut s'étendre sur plusieurs lignes : elles se terminent dès le caractère ';'.\n\n\
-    Aussi, faites attention à la casse : les majuscules ou les minuscules peuvent faire la différence.\n\n"
+    Aussi, faites attention à la casse : les majuscules ou les minuscules peuvent faire la différence.\n\n
+    Enfin, vous devriez vérifier que dans chaque sous-script, vous n'utilisez pas de \
+    variable non déclarée : bien que le code soit accepté, il ne pourra jamais générer \
+    de position.\n\n"
   scripts_format_main_description_1: "Voici la syntaxe pour l'expression de retour :\n\n"
   scripts_format_code_section_1: "return [votre expression booléenne];\n\n"
   scripts_format_main_description_2: "Voici un exemple simple de script :\n\n"
