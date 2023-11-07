@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
+import 'package:basicchessendgamestrainer/logic/utils.dart';
 import 'package:basicchessendgamestrainer/pages/script_editor_page.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_content.dart';
@@ -872,6 +873,86 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
   }
 
+  void _readSampleCodeInEditor(String assetPath) async {
+    final initialScriptsSet =
+        await _getInitialScriptSetFromAssetScript(assetPath);
+    if (!mounted) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return ScriptEditorPage(
+            readOnly: true,
+            originalFileName: null,
+            initialScriptsSet: initialScriptsSet,
+            currentDirectory: null,
+          );
+        },
+      ),
+    );
+  }
+
+  void _cloneSampleCodeInCurrentCustomFolder(String assetPath) async {
+    if (_currentAddedExercisesDirectory == null) {
+      throw "custom exercises folder is not ready";
+    }
+
+    final gameScript = await rootBundle.loadString(assetPath);
+    final fileName =
+        await getTempFileNameInDirectory(_currentAddedExercisesDirectory!);
+
+    final newFilePath = "${_currentAddedExercisesDirectory!.path}/$fileName";
+    final newFile = File(newFilePath);
+    await newFile.create(recursive: false);
+    await newFile.writeAsString(gameScript);
+
+    _reloadCurrentFolder();
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          t.home.cloned_sample_exercise(Name: fileName),
+        ),
+      ),
+    );
+  }
+
+  void _showSampleScriptContextualMenu(AssetGame game) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _readSampleCodeInEditor(game.assetPath);
+                },
+                child: Text(
+                  t.home.contextual_menu_see_sample_code,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _cloneSampleCodeInCurrentCustomFolder(game.assetPath);
+                },
+                child: Text(
+                  t.home.contextual_menu_clone_sample_code,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final sampleGames = getAssetGames(context);
@@ -924,7 +1005,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 IntegratedExercisesWidget(
                   games: sampleGames,
                   onGameSelected: _tryGeneratingAndPlayingPositionFromSample,
-                  onGetInitialScriptSet: _getInitialScriptSetFromAssetScript,
+                  onGameLongClick: _showSampleScriptContextualMenu,
                 ),
                 AddedExercisesWidget(
                   rootDirectory: _rootDirectory,
@@ -978,14 +1059,13 @@ class _HomePageState extends ConsumerState<HomePage> {
 class IntegratedExercisesWidget extends StatelessWidget {
   final List<AssetGame> games;
   final void Function(AssetGame game) onGameSelected;
-  final Future<InitialScriptsSet> Function(String assetPath)
-      onGetInitialScriptSet;
+  final void Function(AssetGame game) onGameLongClick;
 
   const IntegratedExercisesWidget({
     super.key,
     required this.games,
     required this.onGameSelected,
-    required this.onGetInitialScriptSet,
+    required this.onGameLongClick,
   });
 
   @override
@@ -1028,23 +1108,7 @@ class IntegratedExercisesWidget extends StatelessWidget {
                   leading: leadingImage,
                   title: title,
                   onTap: () => onGameSelected(game),
-                  onLongPress: () async {
-                    final initialScriptsSet =
-                        await onGetInitialScriptSet(game.assetPath);
-                    if (!context.mounted) return;
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return ScriptEditorPage(
-                            readOnly: true,
-                            originalFileName: null,
-                            initialScriptsSet: initialScriptsSet,
-                            currentDirectory: null,
-                          );
-                        },
-                      ),
-                    );
-                  },
+                  onLongPress: () => onGameLongClick(game),
                 );
               }),
         ),

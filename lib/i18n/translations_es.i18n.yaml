@@ -34,6 +34,8 @@ home:
   contextual_menu_file_edit: "Editar"
   contextual_menu_rename_folder: "Renombrar"
   contextual_menu_folder_delete: "Borrar"
+  contextual_menu_see_sample_code: "Ver código"
+  contextual_menu_clone_sample_code: "Clonar en los ejercicios añadidos"
   confirm_delete_file_title: "Borrar el archivo ?"
   confirm_delete_file_msg: "¿Quieres borrar el archivo '$name'?"
   confirm_delete_folder_title: "¿Borrar la carpeta?" 
@@ -44,6 +46,7 @@ home:
   loading_content: "Cargando ..."
   root_directory: "'Raíz'"
   protected_folder: "Carpeta protegida"
+  cloned_sample_exercise: "Muestra clonada con el nombre $name."
 rgpd:
   text: "Al utilizar esta aplicación, estás de acuerdo con:"
   privacy: "la Política de Privacidad"

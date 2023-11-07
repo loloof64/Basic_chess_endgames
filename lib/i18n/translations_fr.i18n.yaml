@@ -33,6 +33,8 @@ home:
   contextual_menu_file_edit: "Éditer"
   contextual_menu_rename_folder: "Renommer"
   contextual_menu_folder_delete: "Supprimer"
+  contextual_menu_see_sample_code: "Voir le code"
+  contextual_menu_clone_sample_code: "Cloner dans les exercices ajoutés"
   confirm_delete_file_title: "Supprimer le fichier ?"
   confirm_delete_file_msg: "Souhaitez-vous supprimer le fichier '$name'?"
   confirm_delete_folder_title: "Supprimer le dossier ?" 
@@ -43,6 +45,7 @@ home:
   loading_content: "Chargement ..."
   root_directory: "'Racine'"
   protected_folder: "Dossier protégé"
+  cloned_sample_exercise: "Exemple cloné sous le nom $name."
 rgpd:
   text: "En utilisant cette application, vous vous conformez à :"
   privacy: "la Politique de Confidentialité"

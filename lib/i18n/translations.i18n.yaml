@@ -29,6 +29,8 @@ home:
   contextual_menu_file_edit: "Edit"
   contextual_menu_rename_folder: "Rename"
   contextual_menu_folder_delete: "Delete"
+  contextual_menu_see_sample_code: "See code"
+  contextual_menu_clone_sample_code: "Cloner dans les exercices ajoutés"
   confirm_delete_file_title: "Delete file ?"
   confirm_delete_file_msg: "Do you want to delete the file '$name' ?"
   confirm_delete_folder_title: "Delete folder ?"
@@ -39,6 +41,7 @@ home:
   loading_content: "Loading ..."
   root_directory: "'Root'"
   protected_folder: "Protected folder"
+  cloned_sample_exercise: "Cloned sample under name $name."
 rgpd:
   text: "By using this app, you agree with :"
   privacy: "the Privacy Policy"

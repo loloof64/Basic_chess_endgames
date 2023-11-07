@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 669 (223 per locale)
+/// Strings: 678 (226 per locale)
 ///
-/// Built on 2023-11-06 at 23:35 UTC
+/// Built on 2023-11-07 at 00:18 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -214,6 +214,8 @@ class _TranslationsHomeEn {
 	String get contextual_menu_file_edit => 'Edit';
 	String get contextual_menu_rename_folder => 'Rename';
 	String get contextual_menu_folder_delete => 'Delete';
+	String get contextual_menu_see_sample_code => 'See code';
+	String get contextual_menu_clone_sample_code => 'Cloner dans les exercices ajoutés';
 	String get confirm_delete_file_title => 'Delete file ?';
 	String confirm_delete_file_msg({required Object Name}) => 'Do you want to delete the file \'${Name}\' ?';
 	String get confirm_delete_folder_title => 'Delete folder ?';
@@ -224,6 +226,7 @@ class _TranslationsHomeEn {
 	String get loading_content => 'Loading ...';
 	String get root_directory => '\'Root\'';
 	String get protected_folder => 'Protected folder';
+	String cloned_sample_exercise({required Object Name}) => 'Cloned sample under name ${Name}.';
 }
 
 // Path: rgpd
@@ -570,6 +573,8 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get contextual_menu_file_edit => 'Editar';
 	@override String get contextual_menu_rename_folder => 'Renombrar';
 	@override String get contextual_menu_folder_delete => 'Borrar';
+	@override String get contextual_menu_see_sample_code => 'Ver código';
+	@override String get contextual_menu_clone_sample_code => 'Clonar en los ejercicios añadidos';
 	@override String get confirm_delete_file_title => 'Borrar el archivo ?';
 	@override String confirm_delete_file_msg({required Object Name}) => '¿Quieres borrar el archivo \'${Name}\'?';
 	@override String get confirm_delete_folder_title => '¿Borrar la carpeta?';
@@ -580,6 +585,7 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get loading_content => 'Cargando ...';
 	@override String get root_directory => '\'Raíz\'';
 	@override String get protected_folder => 'Carpeta protegida';
+	@override String cloned_sample_exercise({required Object Name}) => 'Muestra clonada con el nombre ${Name}.';
 }
 
 // Path: rgpd
@@ -926,6 +932,8 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get contextual_menu_file_edit => 'Éditer';
 	@override String get contextual_menu_rename_folder => 'Renommer';
 	@override String get contextual_menu_folder_delete => 'Supprimer';
+	@override String get contextual_menu_see_sample_code => 'Voir le code';
+	@override String get contextual_menu_clone_sample_code => 'Cloner dans les exercices ajoutés';
 	@override String get confirm_delete_file_title => 'Supprimer le fichier ?';
 	@override String confirm_delete_file_msg({required Object Name}) => 'Souhaitez-vous supprimer le fichier \'${Name}\'?';
 	@override String get confirm_delete_folder_title => 'Supprimer le dossier ?';
@@ -936,6 +944,7 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get loading_content => 'Chargement ...';
 	@override String get root_directory => '\'Racine\'';
 	@override String get protected_folder => 'Dossier protégé';
+	@override String cloned_sample_exercise({required Object Name}) => 'Exemple cloné sous le nom ${Name}.';
 }
 
 // Path: rgpd

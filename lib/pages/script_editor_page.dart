@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
+import 'package:basicchessendgamestrainer/logic/utils.dart';
 import 'package:basicchessendgamestrainer/pages/syntax_manual.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/piece_count_widget.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/script_editor_common_widgets.dart';
@@ -272,26 +273,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         String newFileName;
 
         if (widget.originalFileName == null) {
-          // Computing next name in order to avoid overriding existing file
-          const fileBaseName = 'temp';
-          String fileDiscriminator = '';
-          String tempFilePath =
-              "${widget.currentDirectory!.path}/$fileBaseName$fileDiscriminator.txt";
-          File tempFileInstance = File(tempFilePath);
-
-          if (await tempFileInstance.exists()) {
-            int discriminatorNumber = 1;
-            do {
-              fileDiscriminator = '_$discriminatorNumber';
-              tempFilePath =
-                  "${widget.currentDirectory!.path}/$fileBaseName$fileDiscriminator.txt";
-              tempFileInstance = File(tempFilePath);
-
-              if (!await tempFileInstance.exists()) break;
-              discriminatorNumber++;
-            } while (true);
-          }
-          newFileName = "$fileBaseName$fileDiscriminator.txt";
+          newFileName = await getTempFileNameInDirectory(widget.currentDirectory!);
         } else {
           newFileName = widget.originalFileName!;
         }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 const piecesRefs = "NBRQK";
 
 extension FanConverter on String {
@@ -45,4 +47,26 @@ extension FanConverter on String {
 
     return result;
   }
+}
+
+Future<String> getTempFileNameInDirectory(Directory targetDirectory) async {
+  const fileBaseName = 'temp';
+  String fileDiscriminator = '';
+  String tempFilePath =
+      "${targetDirectory.path}/$fileBaseName$fileDiscriminator.txt";
+  File tempFileInstance = File(tempFilePath);
+
+  if (await tempFileInstance.exists()) {
+    int discriminatorNumber = 1;
+    do {
+      fileDiscriminator = '_$discriminatorNumber';
+      tempFilePath =
+          "${targetDirectory.path}/$fileBaseName$fileDiscriminator.txt";
+      tempFileInstance = File(tempFilePath);
+
+      if (!await tempFileInstance.exists()) break;
+      discriminatorNumber++;
+    } while (true);
+  }
+  return "$fileBaseName$fileDiscriminator.txt";
 }
