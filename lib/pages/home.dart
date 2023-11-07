@@ -27,6 +27,18 @@ const folderItemIconSize = 45.0;
 const folderItemTextSize = 20.0;
 const folderPathFontSize = 22.0;
 
+class FolderItem {
+  final String name;
+  final bool isFolder;
+  bool? hasWinningGoal;
+  String? path;
+
+  FolderItem({
+    required this.name,
+    required this.isFolder,
+  });
+}
+
 extension FolderItemsExtension on List<FileSystemEntity> {
   Future<void> order() async {
     final isDirectory = Map.fromEntries(await map((entity) async =>
@@ -44,6 +56,23 @@ extension FolderItemsExtension on List<FileSystemEntity> {
         return firstIsFolder ? -1 : 1;
       }
     });
+  }
+
+  List<FolderItem> toFolderItemsList() {
+    return map((elt) {
+      return FolderItem(
+        name: elt.path.split('/').last,
+        isFolder: elt is Directory,
+      );
+    }).toList();
+  }
+}
+
+extension SampleItemsExtension on List<AssetGame> {
+  List<FolderItem> toFolderItemsList() {
+    return map((elt) {
+      return FolderItem(name: elt.label, isFolder: false)..path = elt.assetPath;
+    }).toList();
   }
 }
 
@@ -66,11 +95,14 @@ class _HomePageState extends ConsumerState<HomePage> {
       TextEditingController();
   final TextEditingController _newFolderNameTextController =
       TextEditingController();
+  List<FolderItem> _sampleGames = [];
 
   @override
   void initState() {
     FlutterNativeSplash.remove();
     WidgetsBinding.instance.addPostFrameCallback((_) => _showRgpdWarning());
+    _sampleGames = getAssetGames(context).toFolderItemsList();
+    _computeSampleGamesLeadingIcons().then((value) => null);
     getApplicationDocumentsDirectory().then((directory) async {
       _rootDirectory = directory;
       _currentAddedExercisesDirectory = directory;
@@ -93,6 +125,20 @@ class _HomePageState extends ConsumerState<HomePage> {
     _newFolderNameTextController.dispose();
     _renameCustomFileController.dispose();
     super.dispose();
+  }
+
+  bool? _getWinningGoalFromScript(String script) {
+    final lastLine = script.trim().split('\n').last;
+    return lastLine == winningString ? true : lastLine == drawingString ? false : null;
+  }
+
+  Future<void> _computeSampleGamesLeadingIcons() async {
+    for (var item in _sampleGames) {
+      final assetPath = item.path!;
+      final script = await rootBundle.loadString(assetPath);
+      item.hasWinningGoal = _getWinningGoalFromScript(script);
+    }
+    setState(() {});
   }
 
   Future<List<FileSystemEntity>?> _getAddedExercisesFolderItems() async {
@@ -314,8 +360,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   Future<void> _tryGeneratingAndPlayingPositionFromSample(
-      AssetGame game) async {
-    final gameScript = await rootBundle.loadString(game.assetPath);
+      FolderItem game) async {
+    final assetPath = game.path!;
+    final gameScript = await rootBundle.loadString(assetPath);
     await _tryGeneratingAndPlayingPositionFromString(gameScript);
   }
 
@@ -873,7 +920,8 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
   }
 
-  void _readSampleCodeInEditor(String assetPath) async {
+  void _readSampleCodeInEditor(FolderItem game) async {
+    final assetPath = game.path!;
     final initialScriptsSet =
         await _getInitialScriptSetFromAssetScript(assetPath);
     if (!mounted) return;
@@ -891,12 +939,14 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-  void _cloneSampleCodeInCurrentCustomFolder(String assetPath) async {
+  void _cloneSampleCodeInCurrentCustomFolder(FolderItem game) async {
     if (_currentAddedExercisesDirectory == null) {
       throw "custom exercises folder is not ready";
     }
 
-    final gameScript = await rootBundle.loadString(assetPath);
+    final appPath = await getApplicationDocumentsDirectory();
+    final gamePath = "$appPath/${game.name}";
+    final gameScript = await rootBundle.loadString(gamePath);
     final fileName =
         await getTempFileNameInDirectory(_currentAddedExercisesDirectory!);
 
@@ -917,7 +967,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-  void _showSampleScriptContextualMenu(AssetGame game) {
+  void _showSampleScriptContextualMenu(FolderItem game) {
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -931,7 +981,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  _readSampleCodeInEditor(game.assetPath);
+                  _readSampleCodeInEditor(game);
                 },
                 child: Text(
                   t.home.contextual_menu_see_sample_code,
@@ -940,7 +990,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  _cloneSampleCodeInCurrentCustomFolder(game.assetPath);
+                  _cloneSampleCodeInCurrentCustomFolder(game);
                 },
                 child: Text(
                   t.home.contextual_menu_clone_sample_code,
@@ -955,7 +1005,6 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final sampleGames = getAssetGames(context);
     final progressBarSize = MediaQuery.of(context).size.shortestSide * 0.80;
 
     return DefaultTabController(
@@ -1003,7 +1052,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 IntegratedExercisesWidget(
-                  games: sampleGames,
+                  games: _sampleGames,
                   onGameSelected: _tryGeneratingAndPlayingPositionFromSample,
                   onGameLongClick: _showSampleScriptContextualMenu,
                 ),
@@ -1057,9 +1106,9 @@ class _HomePageState extends ConsumerState<HomePage> {
 }
 
 class IntegratedExercisesWidget extends StatelessWidget {
-  final List<AssetGame> games;
-  final void Function(AssetGame game) onGameSelected;
-  final void Function(AssetGame game) onGameLongClick;
+  final List<FolderItem> games;
+  final void Function(FolderItem game) onGameSelected;
+  final void Function(FolderItem game) onGameLongClick;
 
   const IntegratedExercisesWidget({
     super.key,
@@ -1082,22 +1131,28 @@ class IntegratedExercisesWidget extends StatelessWidget {
               itemBuilder: (ctx2, index) {
                 final game = games[index];
 
-                final leadingImage = game.goal == Goal.draw
-                    ? SvgPicture.asset(
-                        'assets/images/handshake.svg',
-                        fit: BoxFit.cover,
-                        width: leadingImagesSize,
-                        height: leadingImagesSize,
+                final leadingImage = game.hasWinningGoal == null
+                    ? const FaIcon(
+                        FontAwesomeIcons.fileLines,
+                        color: Colors.black,
+                        size: leadingImagesSize,
                       )
-                    : SvgPicture.asset(
-                        'assets/images/trophy.svg',
-                        fit: BoxFit.cover,
-                        width: leadingImagesSize,
-                        height: leadingImagesSize,
-                      );
+                    : game.hasWinningGoal!
+                        ? SvgPicture.asset(
+                            'assets/images/trophy.svg',
+                            fit: BoxFit.cover,
+                            width: leadingImagesSize,
+                            height: leadingImagesSize,
+                          )
+                        : SvgPicture.asset(
+                            'assets/images/handshake.svg',
+                            fit: BoxFit.cover,
+                            width: leadingImagesSize,
+                            height: leadingImagesSize,
+                          );
 
                 final title = Text(
-                  game.label,
+                  game.name,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: titlesFontSize,
@@ -1105,6 +1160,7 @@ class IntegratedExercisesWidget extends StatelessWidget {
                 );
 
                 return ListTile(
+                  contentPadding: const EdgeInsets.all(8.0),
                   leading: leadingImage,
                   title: title,
                   onTap: () => onGameSelected(game),
