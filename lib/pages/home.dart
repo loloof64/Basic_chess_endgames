@@ -152,11 +152,16 @@ class _HomePageState extends ConsumerState<HomePage> {
       if (item.isFolder) {
         continue;
       }
+      try {
+
       final exercisePath =
           "${_currentAddedExercisesDirectory!.path}/${item.name}";
       final exerciseFile = File(exercisePath);
       final script = await exerciseFile.readAsString();
       item.hasWinningGoal = _getWinningGoalFromScript(script);
+      } on FileSystemException {
+        continue;
+      }
     }
     setState(() {
       _customExercisesItems = [..._customExercisesItems!];
