@@ -599,20 +599,6 @@ class _HomePageState extends ConsumerState<HomePage> {
       throw "custom exercises folder is not ready";
     }
 
-    if (folderName == '..') return;
-    final isProtectedFlutterAssetsFolder = (folderName == 'flutter_assets') &&
-        (_currentAddedExercisesDirectory?.path == _rootDirectory?.path);
-    if (isProtectedFlutterAssetsFolder) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            t.home.protected_folder,
-          ),
-        ),
-      );
-      return;
-    }
-
     showDialog(
       context: context,
       barrierDismissible: true,
