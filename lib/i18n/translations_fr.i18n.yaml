@@ -150,7 +150,7 @@ script_editor_page:
   should_draw: "Annuler"
   beforeExitTitle: "Annuler l'édition du script ?"
   beforeExitMessage: "Souhaitez-vous quitter la page et annuler l'édition du script ?"
-  exercise_creation_success: "Exercise sauvegardé"
+  exercise_creation_success: "Exercise sauvegardé sous le nom $name"
 syntax_manual_page:
   title: "Syntaxe des scripts"
   table_header_variable_name: "Nom"

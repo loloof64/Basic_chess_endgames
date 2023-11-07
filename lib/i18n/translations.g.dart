@@ -6,7 +6,7 @@
 /// Locales: 3
 /// Strings: 678 (226 per locale)
 ///
-/// Built on 2023-11-07 at 13:16 UTC
+/// Built on 2023-11-07 at 16:37 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -370,7 +370,7 @@ class _TranslationsScriptEditorPageEn {
 	String get should_draw => 'Draw';
 	String get before_exit_title => 'Cancel script edition ?';
 	String get before_exit_message => 'Do you want to leave this page and cancel script edition ?';
-	String get exercise_creation_success => 'Saved exercise.';
+	String exercise_creation_success({required Object Name}) => 'Saved exercise under name ${Name}.';
 }
 
 // Path: syntax_manual_page
@@ -729,7 +729,7 @@ class _TranslationsScriptEditorPageEs extends _TranslationsScriptEditorPageEn {
 	@override String get should_draw => 'Empate';
 	@override String get before_exit_title => '¿Cancelar la edición del guione?';
 	@override String get before_exit_message => '¿Desea salir de esta página y cancelar la edición del guione?';
-	@override String get exercise_creation_success => 'Ejercicio guardado.';
+	@override String exercise_creation_success({required Object Name}) => 'Ejercicio guardado bajo el nombre ${Name}.';
 }
 
 // Path: syntax_manual_page
@@ -1088,7 +1088,7 @@ class _TranslationsScriptEditorPageFr extends _TranslationsScriptEditorPageEn {
 	@override String get should_draw => 'Annuler';
 	@override String get before_exit_title => 'Annuler l\'édition du script ?';
 	@override String get before_exit_message => 'Souhaitez-vous quitter la page et annuler l\'édition du script ?';
-	@override String get exercise_creation_success => 'Exercise sauvegardé';
+	@override String exercise_creation_success({required Object Name}) => 'Exercise sauvegardé sous le nom ${Name}';
 }
 
 // Path: syntax_manual_page

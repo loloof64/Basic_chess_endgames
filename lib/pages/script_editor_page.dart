@@ -273,7 +273,8 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         String newFileName;
 
         if (widget.originalFileName == null) {
-          newFileName = await getTempFileNameInDirectory(widget.currentDirectory!);
+          newFileName =
+              await getTempFileNameInDirectory(widget.currentDirectory!);
         } else {
           newFileName = widget.originalFileName!;
         }
@@ -295,7 +296,8 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(t.script_editor_page.exercise_creation_success),
+              content: Text(t.script_editor_page
+                  .exercise_creation_success(Name: newFileName)),
             ),
           );
           Navigator.of(context).pop(FolderNeedsReload());

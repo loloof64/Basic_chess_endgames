@@ -145,7 +145,7 @@ script_editor_page:
   should_draw: "Empate"
   beforeExitTitle: "¿Cancelar la edición del guione?"
   beforeExitMessage: "¿Desea salir de esta página y cancelar la edición del guione?"
-  exercise_creation_success: "Ejercicio guardado."
+  exercise_creation_success: "Ejercicio guardado bajo el nombre $name."
 syntax_manual_page:
   title: "Sintaxis de guiones"
   table_header_variable_name: "Nombre"

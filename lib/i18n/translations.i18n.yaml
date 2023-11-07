@@ -135,7 +135,7 @@ script_editor_page:
   should_draw: "Draw"
   beforeExitTitle: "Cancel script edition ?"
   beforeExitMessage: "Do you want to leave this page and cancel script edition ?"
-  exercise_creation_success: "Saved exercise."
+  exercise_creation_success: "Saved exercise under name $name."
 syntax_manual_page:
   title: "Scripts' syntax"
   table_header_variable_name: "Name"

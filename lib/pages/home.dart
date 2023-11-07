@@ -961,10 +961,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     if (_currentAddedExercisesDirectory == null) {
       throw "custom exercises folder is not ready";
     }
-
-    final appPath = await getApplicationDocumentsDirectory();
-    final gamePath = "$appPath/${game.name}";
-    final gameScript = await rootBundle.loadString(gamePath);
+    final gameScript = await rootBundle.loadString(game.path!);
     final fileName =
         await getTempFileNameInDirectory(_currentAddedExercisesDirectory!);
 
