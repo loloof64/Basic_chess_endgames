@@ -17,7 +17,8 @@ home:
     Una línea cuyo icono principal es un trofeo generará una posición en la que deberías ganar.\n\
     De lo contrario, con un icono principal de un apretón de manos, tu objetivo será salvar la \
     partida y hacer empate.\n\n\
-    También puedes ver el código de un ejemplo presionándolo durante unos segundos."
+    También puedes ver el código de un ejemplo, o incluso clonarlo en la carpeta actual de la sección \
+    de ejercicios de aduanas, presionándolo durante unos segundos."
   custom_scripts_help_message:
     "Aquí puedes crear y ejecutar tus ejercicios personalizados \
     (con una sola pulsación en ello).\n\n

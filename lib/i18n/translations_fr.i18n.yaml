@@ -7,7 +7,8 @@ misc:
 home:
   title: "Accueil"
   failedLoadingExercise: "Échec de chargement de l'exerice : la position d'échecs est invalide."
-  maxGenerationAttemptsAchieved: "Impossible de générer une position à partir de ces scripts : \
+  maxGenerationAttemptsAchieved:
+    "Impossible de générer une position à partir de ces scripts : \
     nombre de tentatives maximum dépassés.\n\nVeuillez vérifier que vos contraintes ne sont pas \
     trop restrictives."
   failedGeneratingPosition: "Échec de génération de la position."
@@ -16,7 +17,8 @@ home:
     Une ligne dont l'icône est un trophée générera une position où vous devrez gagner.\n\
     Sinon si la ligne commence par une poignée de main, vous devrez sauver la \
     partie et faire partie nulle.\n\n\
-    Vous pouvez aussi voir le code d'un exemple en faisant un appui-long dessus."
+    Vous pouvez aussi voir le code d'un exemple, ou même le cloner dans le dossier courant de la \
+    section exercices personnels, en faisant un appui-long dessus."
   custom_scripts_help_message:
     "Ici vous pouvez créér et exécuter vos exercices personnalisés \
     (par un simple appui dessus).\n\n
@@ -37,7 +39,7 @@ home:
   contextual_menu_clone_sample_code: "Cloner dans les exercices ajoutés"
   confirm_delete_file_title: "Supprimer le fichier ?"
   confirm_delete_file_msg: "Souhaitez-vous supprimer le fichier '$name'?"
-  confirm_delete_folder_title: "Supprimer le dossier ?" 
+  confirm_delete_folder_title: "Supprimer le dossier ?"
   confirm_delete_folder_msg: "Souhaitez-vous supprimer le dossier '$name'?"
   file_name_already_taken: "Ce nom est déjà utilisé."
   new_folder_prompt: "Nom : "
@@ -83,9 +85,11 @@ scriptParser:
   eof: "[FinDeFichier]"
   overridingPredefinedVariable: "Vous essayez de modifier la valeur de la variable prédéfinie $name."
   parseErrorDialogTitle: "Erreur de script pour $title"
-  typeError: "Veuillez vérifier que vous n'utilisez pas de valeur entière à la place \
+  typeError:
+    "Veuillez vérifier que vous n'utilisez pas de valeur entière à la place \
     de valeur booléenne, et vice versa."
-  missingScriptType: "Échec de génération de la position: veuillez vérifier que toutes les \
+  missingScriptType:
+    "Échec de génération de la position: veuillez vérifier que toutes les \
     sections du script déclarent un type de script correct."
   unrecognized_script_type: "Type de script non reconnu : $type."
   miscErrorDialogTitle: "Erreur globale"
