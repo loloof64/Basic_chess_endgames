@@ -90,7 +90,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   int _selectedTabIndex = 0;
   Directory? _rootDirectory;
   Directory? _currentAddedExercisesDirectory;
-  List<FileSystemEntity>? _customExercisesItems;
+  List<FolderItem>? _customExercisesItems;
   final TextEditingController _renameCustomFileController =
       TextEditingController();
   final TextEditingController _newFolderNameTextController =
@@ -102,12 +102,12 @@ class _HomePageState extends ConsumerState<HomePage> {
     FlutterNativeSplash.remove();
     WidgetsBinding.instance.addPostFrameCallback((_) => _showRgpdWarning());
     _sampleGames = getAssetGames(context).toFolderItemsList();
-    _computeSampleGamesLeadingIcons().then((value) => null);
+    _computeSampleExercisesLeadingIcons().then((value) => null);
     getApplicationDocumentsDirectory().then((directory) async {
       _rootDirectory = directory;
       _currentAddedExercisesDirectory = directory;
       _customExercisesItems = await _getAddedExercisesFolderItems();
-      await _customExercisesItems?.order();
+      _computeCustomExercisesLeadingIcons().then((value) => null);
       setState(() {});
     }).catchError((error) {
       setState(() {
@@ -129,10 +129,14 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   bool? _getWinningGoalFromScript(String script) {
     final lastLine = script.trim().split('\n').last;
-    return lastLine == winningString ? true : lastLine == drawingString ? false : null;
+    return lastLine == winningString
+        ? true
+        : lastLine == drawingString
+            ? false
+            : null;
   }
 
-  Future<void> _computeSampleGamesLeadingIcons() async {
+  Future<void> _computeSampleExercisesLeadingIcons() async {
     for (var item in _sampleGames) {
       final assetPath = item.path!;
       final script = await rootBundle.loadString(assetPath);
@@ -141,9 +145,29 @@ class _HomePageState extends ConsumerState<HomePage> {
     setState(() {});
   }
 
-  Future<List<FileSystemEntity>?> _getAddedExercisesFolderItems() async {
+  Future<void> _computeCustomExercisesLeadingIcons() async {
+    if (_currentAddedExercisesDirectory == null) return;
+    if (_customExercisesItems == null) return;
+    for (var item in _customExercisesItems!) {
+      if (item.isFolder) {
+        continue;
+      }
+      final exercisePath =
+          "${_currentAddedExercisesDirectory!.path}/${item.name}";
+      final exerciseFile = File(exercisePath);
+      final script = await exerciseFile.readAsString();
+      item.hasWinningGoal = _getWinningGoalFromScript(script);
+    }
+    setState(() {
+      _customExercisesItems = [..._customExercisesItems!];
+    });
+  }
+
+  Future<List<FolderItem>?> _getAddedExercisesFolderItems() async {
     final items = _currentAddedExercisesDirectory?.list(recursive: false);
-    return await items?.toList();
+    final result = await items?.toList();
+    await result?.order();
+    return result?.toFolderItemsList();
   }
 
   void _showHomePageHelpDialog() {
@@ -908,11 +932,14 @@ class _HomePageState extends ConsumerState<HomePage> {
       _customExercisesItems = await _getAddedExercisesFolderItems();
       final isBelowRootLevel =
           _currentAddedExercisesDirectory?.path != _rootDirectory?.path;
-      if (isBelowRootLevel) {
-        _customExercisesItems?.add(Directory('..'));
+      if (isBelowRootLevel && _customExercisesItems != null) {
+        _customExercisesItems = [
+          FolderItem(name: '..', isFolder: true),
+          ..._customExercisesItems!
+        ];
       }
-      await _customExercisesItems?.order();
       setState(() {});
+      _computeCustomExercisesLeadingIcons().then((value) => null);
     } catch (ex) {
       setState(() {
         _failedLoadingCustomExercises = true;
@@ -1181,7 +1208,7 @@ class AddedExercisesWidget extends StatelessWidget {
   null if we have not yet loaded content, otherwise,
   it's the list of contents.
   */
-  final List<FileSystemEntity>? folderItems;
+  final List<FolderItem>? folderItems;
 
   final Directory? rootDirectory;
   final Directory? currentDirectory;
@@ -1254,7 +1281,7 @@ class AddedExercisesWidget extends StatelessWidget {
 class FolderContentWidget extends StatelessWidget {
   final Directory? rootDirectory;
   final Directory? currentDirectory;
-  final List<FileSystemEntity> elements;
+  final List<FolderItem> elements;
 
   final void Function({required String fileName}) onFileClic;
   final void Function({required String fileName}) onFileLongClic;
@@ -1287,10 +1314,8 @@ class FolderContentWidget extends StatelessWidget {
           child: ListView.builder(
             itemBuilder: (context, index) {
               final item = elements[index];
-              final isDirectory = FileSystemEntity.isDirectorySync(item.path);
-              final name = item.path == '..'
-                  ? '..'
-                  : File(item.absolute.path).uri.pathSegments.last;
+              final isDirectory = item.isFolder;
+              final name = item.path == '..' ? '..' : item.name;
 
               return isDirectory
                   ? FolderItemWidget(
@@ -1300,6 +1325,7 @@ class FolderContentWidget extends StatelessWidget {
                     )
                   : FileItemWidget(
                       name: name,
+                      hasWinningGoal: item.hasWinningGoal,
                       onClic: onFileClic,
                       onLongClic: onFileLongClic,
                     );
@@ -1313,17 +1339,19 @@ class FolderContentWidget extends StatelessWidget {
 }
 
 class FileItemWidget extends StatelessWidget {
+  final String name;
+  final bool? hasWinningGoal;
+
   final void Function({required String fileName}) onClic;
   final void Function({required String fileName}) onLongClic;
 
   const FileItemWidget({
     super.key,
     required this.name,
+    required this.hasWinningGoal,
     required this.onClic,
     required this.onLongClic,
   });
-
-  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -1334,16 +1362,30 @@ class FileItemWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: SizedBox(
               width: folderItemIconSize,
               height: folderItemIconSize,
-              child: FaIcon(
-                FontAwesomeIcons.fileLines,
-                color: Colors.black,
-                size: folderItemIconSize,
-              ),
+              child: hasWinningGoal == true
+                  ? SvgPicture.asset(
+                      'assets/images/trophy.svg',
+                      fit: BoxFit.cover,
+                      width: folderItemIconSize,
+                      height: folderItemIconSize,
+                    )
+                  : hasWinningGoal == false
+                      ? SvgPicture.asset(
+                          'assets/images/handshake.svg',
+                          fit: BoxFit.cover,
+                          width: folderItemIconSize,
+                          height: folderItemIconSize,
+                        )
+                      : const FaIcon(
+                          FontAwesomeIcons.fileLines,
+                          color: Colors.black,
+                          size: folderItemIconSize,
+                        ),
             ),
           ),
           Flexible(
