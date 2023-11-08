@@ -8,7 +8,7 @@ import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.da
 import 'package:basicchessendgamestrainer/antlr4/script_language_builder.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
-import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
+import 'package:basicchessendgamestrainer/logic/position_generation/improved_position_generation_from_antlr.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 

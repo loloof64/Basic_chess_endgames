@@ -2,8 +2,8 @@ import 'dart:isolate';
 import 'dart:io';
 
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
-import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:basicchessendgamestrainer/logic/utils.dart';
+import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:basicchessendgamestrainer/pages/script_editor_page.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_content.dart';

@@ -490,7 +490,7 @@ bool evaluateBoolExpression(
             left,
             intVariablesValues,
             boolVariablesValues,
-          ) &&
+          ) ||
           evaluateBoolExpression(
             right,
             intVariablesValues,
