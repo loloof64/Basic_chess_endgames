@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:path/path.dart' as p;
 
 const piecesRefs = "NBRQK";
 
@@ -53,7 +54,7 @@ Future<String> getTempFileNameInDirectory(Directory targetDirectory) async {
   const fileBaseName = 'temp';
   String fileDiscriminator = '';
   String tempFilePath =
-      "${targetDirectory.path}/$fileBaseName$fileDiscriminator.txt";
+      "${targetDirectory.path}${p.separator}$fileBaseName$fileDiscriminator.txt";
   File tempFileInstance = File(tempFilePath);
 
   if (await tempFileInstance.exists()) {
@@ -61,7 +62,7 @@ Future<String> getTempFileNameInDirectory(Directory targetDirectory) async {
     do {
       fileDiscriminator = '_$discriminatorNumber';
       tempFilePath =
-          "${targetDirectory.path}/$fileBaseName$fileDiscriminator.txt";
+          "${targetDirectory.path}${p.separator}$fileBaseName$fileDiscriminator.txt";
       tempFileInstance = File(tempFilePath);
 
       if (!await tempFileInstance.exists()) break;

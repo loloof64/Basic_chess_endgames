@@ -18,6 +18,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 const mainListItemsGap = 8.0;
 const leadingImagesSize = 60.0;
@@ -61,7 +62,7 @@ extension FolderItemsExtension on List<FileSystemEntity> {
   List<FolderItem> toFolderItemsList() {
     return map((elt) {
       return FolderItem(
-        name: elt.path.split('/').last,
+        name: elt.path.split(p.separator).last,
         isFolder: elt is Directory,
       );
     }).toList();
@@ -153,12 +154,11 @@ class _HomePageState extends ConsumerState<HomePage> {
         continue;
       }
       try {
-
-      final exercisePath =
-          "${_currentAddedExercisesDirectory!.path}/${item.name}";
-      final exerciseFile = File(exercisePath);
-      final script = await exerciseFile.readAsString();
-      item.hasWinningGoal = _getWinningGoalFromScript(script);
+        final exercisePath =
+            "${_currentAddedExercisesDirectory!.path}${p.separator}${item.name}";
+        final exerciseFile = File(exercisePath);
+        final script = await exerciseFile.readAsString();
+        item.hasWinningGoal = _getWinningGoalFromScript(script);
       } on FileSystemException {
         continue;
       }
@@ -220,7 +220,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
-    final directoryInstance = Directory("$currentPath/$name");
+    final directoryInstance = Directory("$currentPath${p.separator}$name");
 
     return await directoryInstance.exists();
   }
@@ -231,7 +231,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
-    final directoryInstance = Directory("$currentPath/$name");
+    final directoryInstance = Directory("$currentPath${p.separator}$name");
 
     await directoryInstance.create(recursive: false);
     _reloadCurrentFolder();
@@ -306,10 +306,11 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     final currentDirectoryPath = _currentAddedExercisesDirectory!.path;
-    final folderInstance = Directory("$currentDirectoryPath/$oldFolderName");
+    final folderInstance =
+        Directory("$currentDirectoryPath${p.separator}$oldFolderName");
     if (!await folderInstance.exists()) return;
 
-    final newFolderPath = "$currentDirectoryPath/$newFolderName";
+    final newFolderPath = "$currentDirectoryPath${p.separator}$newFolderName";
     await folderInstance.rename(newFolderPath);
     _reloadCurrentFolder();
   }
@@ -320,7 +321,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
-    final fileInstance = File("$currentPath/$fileName");
+    final fileInstance = File("$currentPath${p.separator}$fileName");
     final script = await fileInstance.readAsString();
 
     return _getInitialScriptSetFromScriptString(script);
@@ -503,7 +504,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
-    final fileInstance = File("$currentPath/$fileName");
+    final fileInstance = File("$currentPath${p.separator}$fileName");
     final script = await fileInstance.readAsString();
     _tryGeneratingAndPlayingPositionFromString(script);
   }
@@ -585,7 +586,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
-    final folderInstance = Directory("$currentPath/$folderName");
+    final folderInstance = Directory("$currentPath${p.separator}$folderName");
     if (!await folderInstance.exists()) return;
 
     setState(() {
@@ -747,7 +748,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
-    final folderInstance = File("$currentPath/$folderName");
+    final folderInstance = File("$currentPath${p.separator}$folderName");
 
     await folderInstance.delete(recursive: true);
     _reloadCurrentFolder();
@@ -797,7 +798,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
-    final fileInstance = File("$currentPath/$fileName");
+    final fileInstance = File("$currentPath${p.separator}$fileName");
     String fileNameWithoutExtension;
     if (fileName.contains('.')) {
       final parts = fileName.split('.');
@@ -836,7 +837,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             TextButton(
               onPressed: () async {
                 String newPath =
-                    "$currentPath/${_renameCustomFileController.text}";
+                    "$currentPath${p.separator}${_renameCustomFileController.text}";
                 if (!newPath.endsWith('.txt')) newPath += '.txt';
                 final alreadyExists = await File(newPath).exists();
 
@@ -884,7 +885,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
-    final fileInstance = File("$currentPath/$fileName");
+    final fileInstance = File("$currentPath${p.separator}$fileName");
     await fileInstance.delete();
     _reloadCurrentFolder();
   }
@@ -965,7 +966,8 @@ class _HomePageState extends ConsumerState<HomePage> {
     final fileName =
         await getTempFileNameInDirectory(_currentAddedExercisesDirectory!);
 
-    final newFilePath = "${_currentAddedExercisesDirectory!.path}/$fileName";
+    final newFilePath =
+        "${_currentAddedExercisesDirectory!.path}${p.separator}$fileName";
     final newFile = File(newFilePath);
     await newFile.create(recursive: false);
     await newFile.writeAsString(gameScript);

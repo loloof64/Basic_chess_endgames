@@ -11,6 +11,7 @@ import 'package:basicchessendgamestrainer/pages/widgets/script_editor_common_wid
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
+import 'package:path/path.dart' as p;
 
 const winningString = "win";
 const drawingString = "draw";
@@ -280,7 +281,8 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         }
 
         try {
-          String newFilePath = "${widget.currentDirectory!.path}/$newFileName";
+          String newFilePath =
+              "${widget.currentDirectory!.path}${p.separator}$newFileName";
           File newFileInstance = File(newFilePath);
           final newFile = await newFileInstance.create(recursive: false);
           await newFile.writeAsString(
