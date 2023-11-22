@@ -421,8 +421,12 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     return convertScriptToPiecesCounts(script).keys.toList();
   }
 
-  Future<bool> _handleExitPage() async {
-    if (widget.readOnly) return true;
+  void _handleExitPage(bool didPop) async {
+    if (didPop) return;
+    if (widget.readOnly) {
+      Navigator.of(context).pop();
+      return;
+    }
 
     return await showDialog(
         context: context,
@@ -437,7 +441,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
             actions: [
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop(false);
+                  Navigator.of(context).pop();
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
@@ -453,7 +457,8 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop(true);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
@@ -477,8 +482,9 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     final otherPiecesKinds = _getOtherPiecesKindsFromPiecesCountScript(
         _otherPiecesCountConstraintsScript);
 
-    return WillPopScope(
-      onWillPop: _handleExitPage,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: _handleExitPage,
       child: DefaultTabController(
         length: 8,
         child: Scaffold(

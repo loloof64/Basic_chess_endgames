@@ -12,7 +12,7 @@ import 'package:simple_chess_board/models/piece_type.dart';
 import 'package:simple_chess_board/models/short_move.dart';
 import 'package:simple_chess_board/widgets/chessboard.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
-import 'package:stockfish/stockfish.dart';
+import 'package:flutter_stockfish_plugin/stockfish.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 const stockfishLoadingDelayMs = 2000;
@@ -617,7 +617,8 @@ class _GamePageState extends ConsumerState<GamePage> {
     _stockfish.stdin = "go movetime 1200";
   }
 
-  Future<bool> _handleExitPage() async {
+  void _handleExitPage(bool didPop) async {
+    if (didPop) return;
     return await showDialog(
         context: context,
         builder: (ctx2) {
@@ -631,7 +632,7 @@ class _GamePageState extends ConsumerState<GamePage> {
             actions: [
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop(false);
+                  Navigator.of(context).pop();
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
@@ -647,7 +648,8 @@ class _GamePageState extends ConsumerState<GamePage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop(true);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
@@ -697,8 +699,9 @@ class _GamePageState extends ConsumerState<GamePage> {
     final gameGoal = ref.read(gameProvider).goal;
     final loadingSpinnerSize = MediaQuery.of(context).size.shortestSide * 0.80;
 
-    return WillPopScope(
-      onWillPop: _handleExitPage,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: _handleExitPage,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
