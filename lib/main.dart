@@ -10,7 +10,7 @@ void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  runApp(TranslationProvider(child: const App()));
+  runApp(ProviderScope(child: TranslationProvider(child: const App())));
 }
 
 class App extends StatelessWidget {
