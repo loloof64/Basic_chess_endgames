@@ -1,6 +1,7 @@
 import 'dart:isolate';
 import 'dart:io';
 
+import 'package:basicchessendgamestrainer/data/stockfish_manager.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/utils.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
@@ -14,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show SystemNavigator, rootBundle;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -1020,103 +1021,113 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
+  void _handleExit(bool didPop) async {
+    if (didPop) return;
+    stockfishManager.dispose();
+    await SystemNavigator.pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     final progressBarSize = MediaQuery.of(context).size.shortestSide * 0.80;
 
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(t.home.title),
-          actions: [
-            if (_selectedTabIndex == 1)
-              IconButton(
-                onPressed: _purposeCreateFolder,
-                icon: const FaIcon(
-                  FontAwesomeIcons.solidFolder,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: _handleExit,
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: Text(t.home.title),
+            actions: [
+              if (_selectedTabIndex == 1)
+                IconButton(
+                  onPressed: _purposeCreateFolder,
+                  icon: const FaIcon(
+                    FontAwesomeIcons.solidFolder,
+                  ),
                 ),
-              ),
-            IconButton(
-              onPressed: _showHomePageHelpDialog,
-              icon: FaIcon(
-                _selectedTabIndex == 0
-                    ? FontAwesomeIcons.question
-                    : FontAwesomeIcons.circleQuestion,
-              ),
-            ),
-          ],
-          bottom: TabBar(
-            tabs: [
-              Tab(
-                icon: const FaIcon(FontAwesomeIcons.gifts),
-                text: t.home.tab_integrated,
-              ),
-              Tab(
-                icon: const FaIcon(FontAwesomeIcons.compassDrafting),
-                text: t.home.tab_added,
+              IconButton(
+                onPressed: _showHomePageHelpDialog,
+                icon: FaIcon(
+                  _selectedTabIndex == 0
+                      ? FontAwesomeIcons.question
+                      : FontAwesomeIcons.circleQuestion,
+                ),
               ),
             ],
-            onTap: (index) => setState(() {
-              _selectedTabIndex = index;
-            }),
-          ),
-        ),
-        body: Stack(
-          children: <Widget>[
-            TabBarView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                IntegratedExercisesWidget(
-                  games: _sampleGames,
-                  onGameSelected: _tryGeneratingAndPlayingPositionFromSample,
-                  onGameLongClick: _showSampleScriptContextualMenu,
+            bottom: TabBar(
+              tabs: [
+                Tab(
+                  icon: const FaIcon(FontAwesomeIcons.gifts),
+                  text: t.home.tab_integrated,
                 ),
-                AddedExercisesWidget(
-                  rootDirectory: _rootDirectory,
-                  currentDirectory: _currentAddedExercisesDirectory,
-                  failedLoadingContent: _failedLoadingCustomExercises,
-                  folderItems: _customExercisesItems,
-                  onFileClic: _handleCustomFileClic,
-                  onFileLongClic: _handleCustomFileLongClic,
-                  onFolderClic: _handleCustomFolderClic,
-                  onFolderLongClic: _handleCustomFolderLongClic,
+                Tab(
+                  icon: const FaIcon(FontAwesomeIcons.compassDrafting),
+                  text: t.home.tab_added,
                 ),
               ],
+              onTap: (index) => setState(() {
+                _selectedTabIndex = index;
+              }),
             ),
-            if (_isGeneratingPosition)
-              Center(
-                child: SizedBox(
-                  width: progressBarSize,
-                  height: progressBarSize,
-                  child: const CircularProgressIndicator(),
-                ),
+          ),
+          body: Stack(
+            children: <Widget>[
+              TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  IntegratedExercisesWidget(
+                    games: _sampleGames,
+                    onGameSelected: _tryGeneratingAndPlayingPositionFromSample,
+                    onGameLongClick: _showSampleScriptContextualMenu,
+                  ),
+                  AddedExercisesWidget(
+                    rootDirectory: _rootDirectory,
+                    currentDirectory: _currentAddedExercisesDirectory,
+                    failedLoadingContent: _failedLoadingCustomExercises,
+                    folderItems: _customExercisesItems,
+                    onFileClic: _handleCustomFileClic,
+                    onFileLongClic: _handleCustomFileLongClic,
+                    onFolderClic: _handleCustomFolderClic,
+                    onFolderLongClic: _handleCustomFolderLongClic,
+                  ),
+                ],
               ),
-          ],
-        ),
-        floatingActionButton: _selectedTabIndex == 1
-            ? FloatingActionButton(
-                onPressed: () async {
-                  if (_currentAddedExercisesDirectory != null) {
-                    final result = await Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return ScriptEditorPage(
-                            initialScriptsSet: const InitialScriptsSet.empty(),
-                            currentDirectory: _currentAddedExercisesDirectory!,
-                          );
-                        },
-                      ),
-                    );
-                    if (result is FolderNeedsReload) {
-                      _reloadCurrentFolder();
+              if (_isGeneratingPosition)
+                Center(
+                  child: SizedBox(
+                    width: progressBarSize,
+                    height: progressBarSize,
+                    child: const CircularProgressIndicator(),
+                  ),
+                ),
+            ],
+          ),
+          floatingActionButton: _selectedTabIndex == 1
+              ? FloatingActionButton(
+                  onPressed: () async {
+                    if (_currentAddedExercisesDirectory != null) {
+                      final result = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ScriptEditorPage(
+                              initialScriptsSet: const InitialScriptsSet.empty(),
+                              currentDirectory: _currentAddedExercisesDirectory!,
+                            );
+                          },
+                        ),
+                      );
+                      if (result is FolderNeedsReload) {
+                        _reloadCurrentFolder();
+                      }
                     }
-                  }
-                },
-                child: const FaIcon(FontAwesomeIcons.plus),
-              )
-            : null,
+                  },
+                  child: const FaIcon(FontAwesomeIcons.plus),
+                )
+              : null,
+        ),
       ),
     );
   }

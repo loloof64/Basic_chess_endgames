@@ -1,4 +1,5 @@
 import 'package:basicchessendgamestrainer/components/history.dart';
+import 'package:basicchessendgamestrainer/data/stockfish_manager.dart';
 import 'package:basicchessendgamestrainer/logic/utils.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/game_page_landscape.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/game_page_portrait.dart';
@@ -12,10 +13,8 @@ import 'package:simple_chess_board/models/piece_type.dart';
 import 'package:simple_chess_board/models/short_move.dart';
 import 'package:simple_chess_board/widgets/chessboard.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
-import 'package:flutter_stockfish_plugin/stockfish.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-const stockfishLoadingDelayMs = 2000;
 const piecesSize = 60.0;
 
 class GamePage extends ConsumerStatefulWidget {
@@ -38,35 +37,25 @@ class _GamePageState extends ConsumerState<GamePage> {
       ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
   int? _historySelectedNodeIndex;
   bool _engineThinking = false;
-  final _stockfish = Stockfish();
   bool _stockfishReady = false;
 
   @override
   void initState() {
-    _stockfish.stdout.listen((line) {
+    stockfishManager.geOutputStream().listen((line) {
       _processStockfishLine(line);
     });
-    Future.delayed(const Duration(milliseconds: stockfishLoadingDelayMs))
-        .then((value) {
-      _stockfish.stdin = 'isready';
-      final startPosition = ref.read(gameProvider).startPosition;
-      final gameStartAsWhite = startPosition.split(" ")[1] == "w";
-      if (gameStartAsWhite) {
-        _whitePlayerType = PlayerType.human;
-        _blackPlayerType = PlayerType.computer;
-      } else {
-        _whitePlayerType = PlayerType.computer;
-        _blackPlayerType = PlayerType.human;
-      }
-      _doStartNewGame();
-    });
+    stockfishManager.sendCommand('isready');
+    final startPosition = ref.read(gameProvider).startPosition;
+    final gameStartAsWhite = startPosition.split(" ")[1] == "w";
+    if (gameStartAsWhite) {
+      _whitePlayerType = PlayerType.human;
+      _blackPlayerType = PlayerType.computer;
+    } else {
+      _whitePlayerType = PlayerType.computer;
+      _blackPlayerType = PlayerType.human;
+    }
+    _doStartNewGame();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _stockfish.dispose();
-    super.dispose();
   }
 
   void _updateHistoryScrollPosition() {
@@ -128,6 +117,7 @@ class _GamePageState extends ConsumerState<GamePage> {
   }
 
   void _processStockfishLine(String line) {
+    if (!mounted) return;
     final trimedLine = line.trim().toLowerCase();
     if (trimedLine == 'readyok') {
       setState(() {
@@ -139,6 +129,7 @@ class _GamePageState extends ConsumerState<GamePage> {
   }
 
   void _processBestMove(String moveUci) {
+    if (!mounted) return;
     final startSquareStr = moveUci.substring(0, 2);
     final endSquareStr = moveUci.substring(2, 4);
     final promotionStr = moveUci.length >= 5 ? moveUci.substring(5, 6) : null;
@@ -613,8 +604,8 @@ class _GamePageState extends ConsumerState<GamePage> {
       _engineThinking = true;
     });
 
-    _stockfish.stdin = "position fen ${_gameLogic!.fen}";
-    _stockfish.stdin = "go movetime 1200";
+    stockfishManager.sendCommand("position fen ${_gameLogic!.fen}");
+    stockfishManager.sendCommand("go movetime 1200");
   }
 
   void _handleExitPage(bool didPop) async {
