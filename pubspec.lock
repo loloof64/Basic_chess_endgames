@@ -101,10 +101,10 @@ packages:
     dependency: "direct main"
     description:
       name: chess_vectors_flutter
-      sha256: "988ff9ec3fa00174f0c0bbe0d50ca776803d9c8fff84d326876ee8a2e11dce31"
+      sha256: "5d9d013d2f1340bde1fda15d915262a420f75ff7f1e219860cb364073e5a3456"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.18"
+    version: "1.1.0"
   ci:
     dependency: transitive
     description:
@@ -241,6 +241,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
+  filesystem_picker:
+    dependency: "direct main"
+    description:
+      name: filesystem_picker
+      sha256: "37ab68968420c2073b68e002cae786d00ef1cfe18bd2b7255640338a0c47aa9a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   flex_color_scheme:
     dependency: "direct main"
     description:
@@ -262,6 +270,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_expandable_fab:
+    dependency: "direct main"
+    description:
+      name: flutter_expandable_fab
+      sha256: "2aa5735bebcdbc49f43bcb32a29f9f03a9b7029212b8cd9837ae332ab2edf647"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -274,10 +290,10 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_lints
-      sha256: "2118df84ef0c3ca93f96123a616ae8540879991b8b57af2f81b76a7ada49b2a4"
+      sha256: e2a421b7e59244faef694ba7b30562e489c2b489866e505074eb005cd7060db7
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.2"
+    version: "3.0.1"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -425,18 +441,18 @@ packages:
     dependency: transitive
     description:
       name: lints
-      sha256: "0a217c6c989d21039f1498c3ed9f3ed71b354e69873f13a8dfc3c9fe76f1b452"
+      sha256: cbf8d4b858bb0134ef3ef87841abdf8d63bfc255c266b7bf6b39daa1085c4290
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+    version: "3.0.0"
   logger:
     dependency: "direct main"
     description:
       name: logger
-      sha256: "7ad7215c15420a102ec687bb320a7312afd449bac63bfb1c60d9787c27b9767f"
+      sha256: "6bbb9d6f7056729537a4309bda2e74e18e5d9f14302489cc1e93f33b3fe32cac"
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.0"
+    version: "2.0.2+1"
   logging:
     dependency: transitive
     description:
@@ -646,18 +662,18 @@ packages:
     dependency: "direct main"
     description:
       name: slang
-      sha256: ce1270c6dada4163b42811682d49ecc12efa076efbdde066c05e7fd010c4eb23
+      sha256: "829ae38374a328ac8d97d5835e8b4e9bbed1993f66ca85771c5ccec9c87ac397"
       url: "https://pub.dev"
     source: hosted
-    version: "3.24.0"
+    version: "3.25.0"
   slang_flutter:
     dependency: "direct main"
     description:
       name: slang_flutter
-      sha256: cbd4dedb7543c5e791100ef565c30e42b609c918260bfb2f5114f420ccee1d56
+      sha256: cb5e1611744cca620cc03f93a54eca6918e25ae7d600cd940ef2d556e2be4c64
       url: "https://pub.dev"
     source: hosted
-    version: "3.24.0"
+    version: "3.25.0"
   source_span:
     dependency: transitive
     description:

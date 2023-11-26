@@ -1,7 +1,6 @@
 import 'dart:isolate';
 import 'dart:io';
 
-
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/utils.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
@@ -20,6 +19,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
 const mainListItemsGap = 8.0;
 const leadingImagesSize = 60.0;
@@ -980,13 +980,6 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(t.home.title),
           actions: [
-            if (_selectedTabIndex == 1)
-              IconButton(
-                onPressed: _purposeCreateFolder,
-                icon: const FaIcon(
-                  FontAwesomeIcons.solidFolder,
-                ),
-              ),
             IconButton(
               onPressed: _showHomePageHelpDialog,
               icon: FaIcon(
@@ -1044,26 +1037,39 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
               ),
           ],
         ),
+        floatingActionButtonLocation: ExpandableFab.location,
         floatingActionButton: _selectedTabIndex == 1
-            ? FloatingActionButton(
-                onPressed: () async {
-                  if (_currentAddedExercisesDirectory != null) {
-                    final result = await Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return ScriptEditorPage(
-                            initialScriptsSet: const InitialScriptsSet.empty(),
-                            currentDirectory: _currentAddedExercisesDirectory!,
-                          );
-                        },
-                      ),
-                    );
-                    if (result is FolderNeedsReload) {
-                      _reloadCurrentFolder();
-                    }
-                  }
-                },
-                child: const FaIcon(FontAwesomeIcons.plus),
+            ? ExpandableFab(
+                children: [
+                  FloatingActionButton.small(
+                    heroTag: null,
+                    onPressed: () async {
+                      if (_currentAddedExercisesDirectory != null) {
+                        final result = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ScriptEditorPage(
+                                initialScriptsSet:
+                                    const InitialScriptsSet.empty(),
+                                currentDirectory:
+                                    _currentAddedExercisesDirectory!,
+                              );
+                            },
+                          ),
+                        );
+                        if (result is FolderNeedsReload) {
+                          _reloadCurrentFolder();
+                        }
+                      }
+                    },
+                    child: const FaIcon(FontAwesomeIcons.fileLines),
+                  ),
+                  FloatingActionButton.small(
+                    heroTag: null,
+                    onPressed: _purposeCreateFolder,
+                    child: const FaIcon(FontAwesomeIcons.solidFolder),
+                  ),
+                ],
               )
             : null,
       ),
