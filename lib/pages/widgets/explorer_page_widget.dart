@@ -115,7 +115,9 @@ class _ExplorerPageWidgetState extends State<ExplorerPageWidget> {
       _failedLoadingContent = false;
     });
     try {
-      _folderItems = await _getFolderItems();
+      _folderItems = await _getFolderItems(
+        extensionFilters: widget.allowedExtensions,
+      );
       final isBelowRootLevel =
           _currentDirectory.path != widget.rootDirectory.path;
       if (isBelowRootLevel && _folderItems != null) {
@@ -136,10 +138,6 @@ class _ExplorerPageWidgetState extends State<ExplorerPageWidget> {
       {List<String>? extensionFilters}) async {
     final items = _currentDirectory.list(recursive: false);
     var result = await items.toList();
-    //////////////////////////////////
-    print("--------------------");
-    print(result);
-    //////////////////////////////////
     if (extensionFilters != null) {
       result = result
           .where(
@@ -152,10 +150,6 @@ class _ExplorerPageWidgetState extends State<ExplorerPageWidget> {
           .toList();
     }
     await result.order();
-    //////////////////////////////////
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    print(result);
-    //////////////////////////////////
     return result.toFolderItemsList();
   }
 
@@ -316,7 +310,8 @@ class _ExplorerPageWidgetState extends State<ExplorerPageWidget> {
                         ElevatedButton(
                           onPressed: _handleValidate,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
                           ),
                           child: Text(
                             t.misc.button_validate,
@@ -328,7 +323,8 @@ class _ExplorerPageWidgetState extends State<ExplorerPageWidget> {
                             Navigator.of(context).pop(null);
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.error,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.error,
                           ),
                           child: Text(
                             t.misc.button_cancel,
