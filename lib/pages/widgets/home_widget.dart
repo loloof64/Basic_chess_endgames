@@ -5,7 +5,9 @@ import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/utils.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:basicchessendgamestrainer/pages/script_editor_page.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/explorer_page_widget.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/home_page_widget.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/explorer_widgets.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_content.dart';
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
@@ -22,8 +24,6 @@ import 'package:path/path.dart' as p;
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
 const mainListItemsGap = 8.0;
-const leadingImagesSize = 60.0;
-const titlesFontSize = 26.0;
 const rgpdWarningHeight = 200.0;
 
 class HomeWidget extends ConsumerStatefulWidget {
@@ -447,18 +447,18 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     });
   }
 
-  void _handleCustomFileClic({required String fileName}) async {
+  void _handleCustomFileClic({required FolderItem fileItem}) async {
     if (_currentAddedExercisesDirectory == null) {
       throw "custom exercises folder is not ready";
     }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
-    final fileInstance = File("$currentPath${p.separator}$fileName");
+    final fileInstance = File("$currentPath${p.separator}${fileItem.name}");
     final script = await fileInstance.readAsString();
     _tryGeneratingAndPlayingPositionFromString(script);
   }
 
-  void _handleCustomFileLongClic({required String fileName}) async {
+  void _handleCustomFileLongClic({required FolderItem fileItem}) async {
     if (_currentAddedExercisesDirectory == null) {
       throw "custom exercises folder is not ready";
     }
@@ -477,13 +477,13 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                   onPressed: () async {
                     Navigator.of(context).pop();
                     final initialScriptsSet =
-                        await _getInitialScriptSetFor(fileName);
+                        await _getInitialScriptSetFor(fileItem.name);
                     if (!mounted) return;
                     final result = await Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
                           return ScriptEditorPage(
-                            originalFileName: fileName,
+                            originalFileName: fileItem.name,
                             initialScriptsSet: initialScriptsSet,
                             currentDirectory: _currentAddedExercisesDirectory!,
                           );
@@ -499,7 +499,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    _showRenameCustomFileDialog(fileName);
+                    _showRenameCustomFileDialog(fileItem.name);
                   },
                   child: Text(
                     t.home.contextual_menu_file_rename,
@@ -508,24 +508,31 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    _showConfirmDeleteCustomFile(fileName);
+                    _showConfirmDeleteCustomFile(fileItem.name);
                   },
                   child: Text(
                     t.home.contextual_menu_file_delete,
                   ),
                 ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _doExportCustomFile(fileItem.name);
+                  },
+                  child: Text(t.home.contextual_menu_file_export),
+                )
               ],
             ),
           );
         });
   }
 
-  void _handleCustomFolderClic({required String folderName}) async {
+  void _handleCustomFolderClic({required FolderItem folderItem}) async {
     if (_currentAddedExercisesDirectory == null) {
       throw "custom exercises folder is not ready";
     }
 
-    if (folderName == '..') {
+    if (folderItem.name == '..') {
       setState(() {
         _currentAddedExercisesDirectory =
             _currentAddedExercisesDirectory?.parent;
@@ -535,7 +542,8 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
-    final folderInstance = Directory("$currentPath${p.separator}$folderName");
+    final folderInstance =
+        Directory("$currentPath${p.separator}${folderItem.name}");
     if (!await folderInstance.exists()) return;
 
     setState(() {
@@ -544,7 +552,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     _reloadCurrentFolder();
   }
 
-  void _handleCustomFolderLongClic({required String folderName}) {
+  void _handleCustomFolderLongClic({required FolderItem folderItem}) {
     if (_currentAddedExercisesDirectory == null) {
       throw "custom exercises folder is not ready";
     }
@@ -562,7 +570,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  _purposeRenameCustomFolder(folderName: folderName);
+                  _purposeRenameCustomFolder(folderName: folderItem.name);
                 },
                 child: Text(
                   t.home.contextual_menu_file_rename,
@@ -571,7 +579,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  _purposeDeleteCustomFolder(folderName: folderName);
+                  _purposeDeleteCustomFolder(folderName: folderItem.name);
                 },
                 child: Text(
                   t.home.contextual_menu_folder_delete,
@@ -828,6 +836,54 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     );
   }
 
+  void _doExportCustomFile(String fileName) async {
+    if (_currentAddedExercisesDirectory == null) {
+      throw "custom exercises folder is not ready";
+    }
+
+    final currentPath = _currentAddedExercisesDirectory!.path;
+    final fileInstance = File("$currentPath${p.separator}$fileName");
+    final script = await fileInstance.readAsString();
+
+    Directory rootDirectory;
+    String rootDirectoryText;
+    if (Platform.isAndroid) {
+      rootDirectory = (await getExternalStorageDirectory())!;
+      rootDirectoryText = t.home.external_storage;
+    } else {
+      rootDirectory = await getApplicationDocumentsDirectory();
+      rootDirectoryText = t.home.documents_directory;
+    }
+
+    if (!mounted) return;
+    String? path = await Navigator.of(context)
+        .push<String?>(MaterialPageRoute(builder: (context) {
+      return ExplorerPageWidget(
+        title: t.home.export_script_title,
+        rootDirectoryText: rootDirectoryText,
+        rootDirectory: rootDirectory,
+        itemType: ExplorerItemType.file,
+        mode: ExplorerMode.save,
+        originFileName: fileName,
+        allowedExtensions: const ['.txt'],
+      );
+    }));
+
+    if (path == null) return;
+    if (!path.endsWith('.txt')) path += '.txt';
+    final fileToSave = File(path);
+    await fileToSave.writeAsString(script);
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          t.home.script_exported,
+        ),
+      ),
+    );
+  }
+
   void _deleteCustomFile(String fileName) async {
     if (_currentAddedExercisesDirectory == null) {
       throw "custom exercises folder is not ready";
@@ -969,6 +1025,41 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     );
   }
 
+  void _purposeImportElement() {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+              content: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: _showImportFileExplorer,
+                child: Text(
+                  t.home.import_file_menu,
+                ),
+              ),
+              TextButton(
+                onPressed: _showImportFolderExplorer,
+                child: Text(
+                  t.home.import_folder_menu,
+                ),
+              ),
+            ],
+          ));
+        });
+  }
+
+  void _showImportFileExplorer() async {
+    //TODO
+  }
+
+  void _showImportFolderExplorer() async {
+    //TODO
+  }
+
   @override
   Widget build(BuildContext context) {
     final progressBarSize = MediaQuery.of(context).size.shortestSide * 0.80;
@@ -1068,6 +1159,11 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                     heroTag: null,
                     onPressed: _purposeCreateFolder,
                     child: const FaIcon(FontAwesomeIcons.solidFolder),
+                  ),
+                  FloatingActionButton.small(
+                    heroTag: null,
+                    onPressed: _purposeImportElement,
+                    child: const FaIcon(FontAwesomeIcons.arrowUp),
                   ),
                 ],
               )

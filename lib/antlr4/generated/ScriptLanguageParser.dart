@@ -186,7 +186,7 @@ class ScriptLanguageParser extends Parser {
     return _ATN;
   }
 
-  ScriptLanguageParser(TokenStream input) : super(input) {
+  ScriptLanguageParser(super.input) {
     interpreter =
         ParserATNSimulator(this, _ATN, _decisionToDFA, _sharedContextCache);
   }
@@ -1721,8 +1721,7 @@ class ScriptLanguageContext extends ParserRuleContext {
       getRuleContexts<VariableAssignContext>();
   VariableAssignContext? variableAssign(int i) =>
       getRuleContext<VariableAssignContext>(i);
-  ScriptLanguageContext([ParserRuleContext? parent, int? invokingState])
-      : super(parent, invokingState);
+  ScriptLanguageContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_scriptLanguage;
   @override
@@ -1736,16 +1735,14 @@ class ScriptLanguageContext extends ParserRuleContext {
 }
 
 class VariableAssignContext extends ParserRuleContext {
-  VariableAssignContext([ParserRuleContext? parent, int? invokingState])
-      : super(parent, invokingState);
+  VariableAssignContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_variableAssign;
 }
 
 class TerminalExprContext extends ParserRuleContext {
   BooleanExprContext? booleanExpr() => getRuleContext<BooleanExprContext>(0);
-  TerminalExprContext([ParserRuleContext? parent, int? invokingState])
-      : super(parent, invokingState);
+  TerminalExprContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_terminalExpr;
   @override
@@ -1759,15 +1756,13 @@ class TerminalExprContext extends ParserRuleContext {
 }
 
 class BooleanExprContext extends ParserRuleContext {
-  BooleanExprContext([ParserRuleContext? parent, int? invokingState])
-      : super(parent, invokingState);
+  BooleanExprContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_booleanExpr;
 }
 
 class FileConstantContext extends ParserRuleContext {
-  FileConstantContext([ParserRuleContext? parent, int? invokingState])
-      : super(parent, invokingState);
+  FileConstantContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_fileConstant;
   @override
@@ -1781,8 +1776,7 @@ class FileConstantContext extends ParserRuleContext {
 }
 
 class RankConstantContext extends ParserRuleContext {
-  RankConstantContext([ParserRuleContext? parent, int? invokingState])
-      : super(parent, invokingState);
+  RankConstantContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_rankConstant;
   @override
@@ -1796,8 +1790,7 @@ class RankConstantContext extends ParserRuleContext {
 }
 
 class NumericExprContext extends ParserRuleContext {
-  NumericExprContext([ParserRuleContext? parent, int? invokingState])
-      : super(parent, invokingState);
+  NumericExprContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_numericExpr;
 }

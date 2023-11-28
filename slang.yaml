@@ -18,26 +18,6 @@ string_interpolation: dart
 flat_map: false
 translation_overrides: false
 timestamp: true
-maps:
-  - error.codes
-  - category
-  - iconNames
-pluralization:
-  auto: cardinal
-  default_parameter: n
-  cardinal:
-    - someKey.apple
-  ordinal:
-    - someKey.place
-contexts:
-  gender_context:
-    enum:
-      - male
-      - female
-    paths:
-      - my.path.to.greet
-    default_parameter: gender
-    generate_enum: true
 interfaces:
   PageData: onboarding.pages.*
   PageData2:

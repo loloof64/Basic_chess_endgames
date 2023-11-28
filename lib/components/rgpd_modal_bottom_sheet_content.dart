@@ -1,9 +1,10 @@
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+
+const spacerHeight = 10.0;
 
 class RgpdModalBottomSheetContent extends StatelessWidget {
-  final spacerHeight = 10.0;
-
   const RgpdModalBottomSheetContent({
     super.key,
     required this.height,
@@ -48,7 +49,8 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
         builder: (ctx2) {
           return AlertDialog(
             title: Text(t.use_conditions.title),
-            content: SingleChildScrollView(child: Text(t.use_conditions.content)),
+            content:
+                SingleChildScrollView(child: Text(t.use_conditions.content)),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(ctx2).pop(),
@@ -77,9 +79,7 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onSecondary,
               ),
             ),
-            SizedBox(
-              height: spacerHeight,
-            ),
+            const Gap(spacerHeight),
             InkWell(
               onTap: _showPrivacyDialog,
               child: Text(
@@ -90,9 +90,7 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              height: spacerHeight,
-            ),
+            const Gap(spacerHeight),
             InkWell(
               onTap: _showUseConditionsDialog,
               child: Text(

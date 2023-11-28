@@ -4,6 +4,7 @@ misc:
   buttonCancel: "Cancel"
   buttonAccept: "Accept"
   buttonDeny: "Deny"
+  buttonValidate: "Validate"
 home:
   title: "Home"
   failedLoadingExercise: "Failed to load exercise : the chess position is not valid."
@@ -44,6 +45,20 @@ home:
   root_directory: "'Root'"
   protected_folder: "Protected folder"
   cloned_sample_exercise: "Cloned sample under name $name."
+  contextual_menu_file_export: "Export"
+  export_script_title: "Export"
+  documents_directory: "Documents"
+  external_storage: "External storage"
+  script_exported: "Script has been exported"
+  import_file_menu: "Import file"
+  import_folder_menu: "Import folder"
+explorer:
+  failed_loading_content: "Failed to load content"
+  save_file_prompt: "Name : "
+  empty_item_name: "You must specify a name."
+  new_folder_title: "Add a new folder"
+  new_folder_prompt: "Name : "
+  folder_already_exists: "This name is already in use."
 rgpd:
   text: "By using this app, you agree with :"
   privacy: "the Privacy Policy"

@@ -4,6 +4,7 @@ misc:
   buttonCancel: "Annuler"
   buttonAccept: "Accepter"
   buttonDeny: "Refuser"
+  buttonValidate: "Valider"
 home:
   title: "Accueil"
   failedLoadingExercise: "Échec de chargement de l'exerice : la position d'échecs est invalide."
@@ -49,6 +50,20 @@ home:
   root_directory: "'Racine'"
   protected_folder: "Dossier protégé"
   cloned_sample_exercise: "Exemple cloné sous le nom $name."
+  contextual_menu_file_export: "Exporter"
+  export_script_title: "Exporter"
+  documents_directory: "Documents"
+  external_storage: "Stockage externe"
+  script_exported: "Le script a été exporté."
+  import_file_menu: "Importer un fichier"
+  import_folder_menu: "Importer un dossier"
+explorer:
+  failed_loading_content: "Échec de chargement du contenu"
+  save_file_prompt: "Nom : "
+  empty_item_name: "Vous devez spécifier un nom de fichier."
+  new_folder_title: "Ajouter un nouveau dossier"
+  new_folder_prompt: "Nom : "
+  folder_already_exists: "Ce nom est déjà utilisé."
 rgpd:
   text: "En utilisant cette application, vous vous conformez à :"
   privacy: "la Politique de Confidentialité"

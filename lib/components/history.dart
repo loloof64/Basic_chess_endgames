@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:fast_equatable/fast_equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -6,14 +6,17 @@ enum File { fileA, fileB, fileC, fileD, fileE, fileF, fileG, fileH }
 
 enum Rank { rank_1, rank_2, rank_3, rank_4, rank_5, rank_6, rank_7, rank_8 }
 
-class Cell extends Equatable {
+class Cell with FastEquatable {
   final File file;
   final Rank rank;
 
-  const Cell({
+  Cell({
     required this.file,
     required this.rank,
   });
+
+  @override
+  bool get cacheHash => true;
 
   Cell.fromSquareIndex(int squareIndex)
       : this(
@@ -32,10 +35,7 @@ class Cell extends Equatable {
   }
 
   @override
-  List<Object?> get props => [file, rank];
-
-  @override
-  bool get stringify => true;
+  List<Object?> get hashParameters => [file, rank];
 
   String getUciString() {
     final fileStr = String.fromCharCode('a'.codeUnitAt(0) + file.index);
@@ -44,11 +44,11 @@ class Cell extends Equatable {
   }
 }
 
-class Move extends Equatable {
+class Move with FastEquatable {
   final Cell from;
   final Cell to;
 
-  const Move({
+  Move({
     required this.from,
     required this.to,
   });
@@ -57,25 +57,32 @@ class Move extends Equatable {
       Move(from: Cell.from(other.from), to: Cell.from(other.to));
 
   @override
-  List<Object?> get props => [from, to];
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [from, to];
 }
 
-class HistoryNode extends Equatable {
+class HistoryNode with FastEquatable {
   final String caption;
   final String? fen;
   final Move? move;
 
-  const HistoryNode({
+  HistoryNode({
     required this.caption,
     this.fen,
     this.move,
   });
 
+
+  @override
+  bool get cacheHash => true;
+
   @override
   String toString() => 'HistoryNode(caption: $caption, fen: $fen, move: $move)';
 
   @override
-  List<Object?> get props => [caption, fen, move];
+  List<Object?> get hashParameters=> [caption, fen, move];
 }
 
 class ChessHistory extends StatelessWidget {
@@ -95,7 +102,7 @@ class ChessHistory extends StatelessWidget {
   }) onHistoryMoveRequested;
 
   const ChessHistory({
-    Key? key,
+    super.key,
     required this.selectedNodeIndex,
     required this.fontSize,
     required this.nodesDescriptions,
@@ -105,7 +112,7 @@ class ChessHistory extends StatelessWidget {
     required this.requestGotoNext,
     required this.requestGotoLast,
     required this.onHistoryMoveRequested,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -229,13 +236,13 @@ class HistoryButtonsZone extends StatelessWidget {
   final void Function() requestGotoLast;
 
   const HistoryButtonsZone({
-    Key? key,
+    super.key,
     required this.buttonsSize,
     required this.requestGotoFirst,
     required this.requestGotoPrevious,
     required this.requestGotoNext,
     required this.requestGotoLast,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

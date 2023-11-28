@@ -4,6 +4,7 @@ misc:
   buttonCancel: "Anular"
   buttonAccept: "Aceptar"
   buttonDeny: "Rechazar"
+  buttonValidate: "Validar"
 home:
   title: "Inicio"
   failedLoadingExercise: "No se pudo cargar el ejercicio: la posición de ajedrez no es válida."
@@ -49,6 +50,20 @@ home:
   root_directory: "'Raíz'"
   protected_folder: "Carpeta protegida"
   cloned_sample_exercise: "Muestra clonada con el nombre $name."
+  contextual_menu_file_export: "Exportar"
+  export_script_title: "Exportar"
+  documents_directory: "Documentos"
+  external_storage: "Almacenamiento externo"
+  script_exported: "El script se ha exportado"
+  import_file_menu: "Importar archivo"
+  import_folder_menu: "Importar carpeta"
+explorer:
+  failed_loading_content: "Error al cargar el contenido"
+  save_file_prompt: "Nombre:"
+  empty_item_name: "Debe especificar un nombre."
+  new_folder_title: "Añadir una nueva carpeta"
+  new_folder_prompt: "Nombre:"
+  folder_already_exists: "Este nombre ya está en uso."
 rgpd:
   text: "Al utilizar esta aplicación, estás de acuerdo con:"
   privacy: "la Política de Privacidad"

@@ -205,7 +205,7 @@ class ScriptLanguageLexer extends Lexer {
     return VOCABULARY;
   }
 
-  ScriptLanguageLexer(CharStream input) : super(input) {
+  ScriptLanguageLexer(super.input) {
     interpreter = LexerATNSimulator(_ATN, _decisionToDFA, _sharedContextCache,
         recog: this);
   }

@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 678 (226 per locale)
+/// Strings: 720 (240 per locale)
 ///
-/// Built on 2023-11-07 at 16:37 UTC
+/// Built on 2023-11-28 at 13:14 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -122,13 +122,6 @@ class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, _TranslationsEn> {
 	static List<String> get supportedLocalesRaw => instance.supportedLocalesRaw;
 }
 
-// context enums
-
-enum GenderContext {
-	male,
-	female,
-}
-
 // interfaces generated as mixins
 
 mixin PageData2 {
@@ -166,6 +159,7 @@ class _TranslationsEn implements BaseTranslations<AppLocale, _TranslationsEn> {
 	// Translations
 	late final _TranslationsMiscEn misc = _TranslationsMiscEn._(_root);
 	late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
+	late final _TranslationsExplorerEn explorer = _TranslationsExplorerEn._(_root);
 	late final _TranslationsRgpdEn rgpd = _TranslationsRgpdEn._(_root);
 	late final _TranslationsGamePageEn game_page = _TranslationsGamePageEn._(_root);
 	late final _TranslationsScriptParserEn script_parser = _TranslationsScriptParserEn._(_root);
@@ -189,6 +183,7 @@ class _TranslationsMiscEn {
 	String get button_cancel => 'Cancel';
 	String get button_accept => 'Accept';
 	String get button_deny => 'Deny';
+	String get button_validate => 'Validate';
 }
 
 // Path: home
@@ -227,6 +222,28 @@ class _TranslationsHomeEn {
 	String get root_directory => '\'Root\'';
 	String get protected_folder => 'Protected folder';
 	String cloned_sample_exercise({required Object Name}) => 'Cloned sample under name ${Name}.';
+	String get contextual_menu_file_export => 'Export';
+	String get export_script_title => 'Export';
+	String get documents_directory => 'Documents';
+	String get external_storage => 'External storage';
+	String get script_exported => 'Script has been exported';
+	String get import_file_menu => 'Import file';
+	String get import_folder_menu => 'Import folder';
+}
+
+// Path: explorer
+class _TranslationsExplorerEn {
+	_TranslationsExplorerEn._(this._root);
+
+	final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	String get failed_loading_content => 'Failed to load content';
+	String get save_file_prompt => 'Name : ';
+	String get empty_item_name => 'You must specify a name.';
+	String get new_folder_title => 'Add a new folder';
+	String get new_folder_prompt => 'Name : ';
+	String get folder_already_exists => 'This name is already in use.';
 }
 
 // Path: rgpd
@@ -525,6 +542,7 @@ class _TranslationsEs extends _TranslationsEn {
 	// Translations
 	@override late final _TranslationsMiscEs misc = _TranslationsMiscEs._(_root);
 	@override late final _TranslationsHomeEs home = _TranslationsHomeEs._(_root);
+	@override late final _TranslationsExplorerEs explorer = _TranslationsExplorerEs._(_root);
 	@override late final _TranslationsRgpdEs rgpd = _TranslationsRgpdEs._(_root);
 	@override late final _TranslationsGamePageEs game_page = _TranslationsGamePageEs._(_root);
 	@override late final _TranslationsScriptParserEs script_parser = _TranslationsScriptParserEs._(_root);
@@ -548,6 +566,7 @@ class _TranslationsMiscEs extends _TranslationsMiscEn {
 	@override String get button_cancel => 'Anular';
 	@override String get button_accept => 'Aceptar';
 	@override String get button_deny => 'Rechazar';
+	@override String get button_validate => 'Validar';
 }
 
 // Path: home
@@ -586,6 +605,28 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get root_directory => '\'Raíz\'';
 	@override String get protected_folder => 'Carpeta protegida';
 	@override String cloned_sample_exercise({required Object Name}) => 'Muestra clonada con el nombre ${Name}.';
+	@override String get contextual_menu_file_export => 'Exportar';
+	@override String get export_script_title => 'Exportar';
+	@override String get documents_directory => 'Documentos';
+	@override String get external_storage => 'Almacenamiento externo';
+	@override String get script_exported => 'El script se ha exportado';
+	@override String get import_file_menu => 'Importar archivo';
+	@override String get import_folder_menu => 'Importar carpeta';
+}
+
+// Path: explorer
+class _TranslationsExplorerEs extends _TranslationsExplorerEn {
+	_TranslationsExplorerEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get failed_loading_content => 'Error al cargar el contenido';
+	@override String get save_file_prompt => 'Nombre:';
+	@override String get empty_item_name => 'Debe especificar un nombre.';
+	@override String get new_folder_title => 'Añadir una nueva carpeta';
+	@override String get new_folder_prompt => 'Nombre:';
+	@override String get folder_already_exists => 'Este nombre ya está en uso.';
 }
 
 // Path: rgpd
@@ -884,6 +925,7 @@ class _TranslationsFr extends _TranslationsEn {
 	// Translations
 	@override late final _TranslationsMiscFr misc = _TranslationsMiscFr._(_root);
 	@override late final _TranslationsHomeFr home = _TranslationsHomeFr._(_root);
+	@override late final _TranslationsExplorerFr explorer = _TranslationsExplorerFr._(_root);
 	@override late final _TranslationsRgpdFr rgpd = _TranslationsRgpdFr._(_root);
 	@override late final _TranslationsGamePageFr game_page = _TranslationsGamePageFr._(_root);
 	@override late final _TranslationsScriptParserFr script_parser = _TranslationsScriptParserFr._(_root);
@@ -907,6 +949,7 @@ class _TranslationsMiscFr extends _TranslationsMiscEn {
 	@override String get button_cancel => 'Annuler';
 	@override String get button_accept => 'Accepter';
 	@override String get button_deny => 'Refuser';
+	@override String get button_validate => 'Valider';
 }
 
 // Path: home
@@ -945,6 +988,28 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get root_directory => '\'Racine\'';
 	@override String get protected_folder => 'Dossier protégé';
 	@override String cloned_sample_exercise({required Object Name}) => 'Exemple cloné sous le nom ${Name}.';
+	@override String get contextual_menu_file_export => 'Exporter';
+	@override String get export_script_title => 'Exporter';
+	@override String get documents_directory => 'Documents';
+	@override String get external_storage => 'Stockage externe';
+	@override String get script_exported => 'Le script a été exporté.';
+	@override String get import_file_menu => 'Importer un fichier';
+	@override String get import_folder_menu => 'Importer un dossier';
+}
+
+// Path: explorer
+class _TranslationsExplorerFr extends _TranslationsExplorerEn {
+	_TranslationsExplorerFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get failed_loading_content => 'Échec de chargement du contenu';
+	@override String get save_file_prompt => 'Nom : ';
+	@override String get empty_item_name => 'Vous devez spécifier un nom de fichier.';
+	@override String get new_folder_title => 'Ajouter un nouveau dossier';
+	@override String get new_folder_prompt => 'Nom : ';
+	@override String get folder_already_exists => 'Ce nom est déjà utilisé.';
 }
 
 // Path: rgpd
