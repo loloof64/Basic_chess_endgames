@@ -13,6 +13,7 @@ import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_con
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:basicchessendgamestrainer/pages/game_page.dart';
+import 'package:android_x_storage/android_x_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -514,13 +515,14 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                     t.home.contextual_menu_file_delete,
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    _doExportCustomFile(fileItem.name);
-                  },
-                  child: Text(t.home.contextual_menu_file_export),
-                )
+                if (Platform.isAndroid)
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      _doExportCustomFile(fileItem.name);
+                    },
+                    child: Text(t.home.contextual_menu_file_export),
+                  )
               ],
             ),
           );
@@ -840,6 +842,9 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     if (_currentAddedExercisesDirectory == null) {
       throw "custom exercises folder is not ready";
     }
+    if (!Platform.isAndroid) {
+      throw "exporting is not supported on desktop platform";
+    }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
     final fileInstance = File("$currentPath${p.separator}$fileName");
@@ -847,13 +852,30 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
 
     Directory rootDirectory;
     String rootDirectoryText;
-    if (Platform.isAndroid) {
-      rootDirectory = (await getExternalStorageDirectory())!;
-      rootDirectoryText = t.home.external_storage;
-    } else {
-      rootDirectory = await getApplicationDocumentsDirectory();
-      rootDirectoryText = t.home.documents_directory;
+    final errorSnackBar = SnackBar(
+          content: Text(
+        t.home.no_external_storage,
+      ),);
+
+    String? sdStoragePath;
+
+    try {
+      sdStoragePath = await AndroidXStorage().getSDCardStorageDirectory();
+    if (sdStoragePath == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
+      return;
     }
+    } on Exception {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
+      return;
+    }
+    
+    rootDirectory = Directory(
+      sdStoragePath,
+    );
+    rootDirectoryText = t.home.external_storage;
 
     if (!mounted) return;
     String? path = await Navigator.of(context)
@@ -872,7 +894,15 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     if (path == null) return;
     if (!path.endsWith('.txt')) path += '.txt';
     final fileToSave = File(path);
-    await fileToSave.writeAsString(script);
+
+    try {
+      await fileToSave.create();
+      await fileToSave.writeAsString(script);
+    }
+    on Exception catch (ex) {
+      Logger().e(ex);
+      return;
+    }
 
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(

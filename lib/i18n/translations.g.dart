@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 720 (240 per locale)
+/// Strings: 723 (241 per locale)
 ///
-/// Built on 2023-11-28 at 13:14 UTC
+/// Built on 2023-11-28 at 15:55 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -229,6 +229,7 @@ class _TranslationsHomeEn {
 	String get script_exported => 'Script has been exported';
 	String get import_file_menu => 'Import file';
 	String get import_folder_menu => 'Import folder';
+	String get no_external_storage => 'No SD card found';
 }
 
 // Path: explorer
@@ -612,6 +613,7 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get script_exported => 'El script se ha exportado';
 	@override String get import_file_menu => 'Importar archivo';
 	@override String get import_folder_menu => 'Importar carpeta';
+	@override String get no_external_storage => 'No hay tarjetas SD';
 }
 
 // Path: explorer
@@ -995,6 +997,7 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get script_exported => 'Le script a été exporté.';
 	@override String get import_file_menu => 'Importer un fichier';
 	@override String get import_folder_menu => 'Importer un dossier';
+	@override String get no_external_storage => 'Aucune carte SD';
 }
 
 // Path: explorer

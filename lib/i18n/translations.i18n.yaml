@@ -52,6 +52,7 @@ home:
   script_exported: "Script has been exported"
   import_file_menu: "Import file"
   import_folder_menu: "Import folder"
+  no_external_storage: "No SD card found"
 explorer:
   failed_loading_content: "Failed to load content"
   save_file_prompt: "Name : "

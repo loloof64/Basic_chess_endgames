@@ -6,6 +6,7 @@ import 'package:basicchessendgamestrainer/pages/widgets/explorer_content_widget.
 import 'package:basicchessendgamestrainer/pages/widgets/explorer_widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:logger/logger.dart';
 import 'package:path/path.dart' as p;
 
 enum ExplorerMode { open, save }
@@ -128,6 +129,7 @@ class _ExplorerPageWidgetState extends State<ExplorerPageWidget> {
       }
       setState(() {});
     } catch (ex) {
+      Logger().e(ex);
       setState(() {
         _failedLoadingContent = true;
       });
@@ -203,10 +205,13 @@ class _ExplorerPageWidgetState extends State<ExplorerPageWidget> {
 
   void _addNewFolder() async {
     if (_newFolderNameController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
           content: Text(
-        t.explorer.empty_item_name,
-      )));
+            t.explorer.empty_item_name,
+          ),
+        ),
+      );
       return;
     }
     final path =
@@ -219,18 +224,25 @@ class _ExplorerPageWidgetState extends State<ExplorerPageWidget> {
       )));
     }
 
-    await Directory(path).create(recursive: true);
-    _reloadCurrentFolder();
+    try {
+      await Directory(path).create(recursive: true);
+      _reloadCurrentFolder();
+    } on Exception catch (ex) {
+      Logger().e(ex);
+    }
   }
 
   void _handleValidate() {
     if (widget.mode == ExplorerMode.open && _selectedItem == null) return;
     if (widget.mode == ExplorerMode.save &&
         _saveFileNameController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
           content: Text(
-        t.explorer.empty_item_name,
-      )));
+            t.explorer.empty_item_name,
+          ),
+        ),
+      );
       return;
     }
     if (widget.itemType == ExplorerItemType.file) {
@@ -243,17 +255,19 @@ class _ExplorerPageWidgetState extends State<ExplorerPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final failedLoadingExerciseWidget = Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const FaIcon(
-          FontAwesomeIcons.xmark,
-          color: Colors.red,
-          size: 100.0,
-        ),
-        Text(t.explorer.failed_loading_content),
-      ],
+    final failedLoadingExerciseWidget = Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const FaIcon(
+            FontAwesomeIcons.xmark,
+            color: Colors.red,
+            size: 100.0,
+          ),
+          Text(t.explorer.failed_loading_content),
+        ],
+      ),
     );
 
     return Scaffold(
