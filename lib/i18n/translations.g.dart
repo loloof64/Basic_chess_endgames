@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 723 (241 per locale)
+/// Strings: 750 (250 per locale)
 ///
-/// Built on 2023-11-28 at 15:55 UTC
+/// Built on 2024-05-02 at 12:34 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -24,8 +24,8 @@ const AppLocale _baseLocale = AppLocale.en;
 /// - LocaleSettings.setLocale(AppLocale.en) // set locale
 /// - Locale locale = AppLocale.en.flutterLocale // get flutter locale from enum
 /// - if (LocaleSettings.currentLocale == AppLocale.en) // locale check
-enum AppLocale with BaseAppLocale<AppLocale, _TranslationsEn> {
-	en(languageCode: 'en', build: _TranslationsEn.build),
+enum AppLocale with BaseAppLocale<AppLocale, Translations> {
+	en(languageCode: 'en', build: Translations.build),
 	es(languageCode: 'es', build: _TranslationsEs.build),
 	fr(languageCode: 'fr', build: _TranslationsFr.build);
 
@@ -34,10 +34,10 @@ enum AppLocale with BaseAppLocale<AppLocale, _TranslationsEn> {
 	@override final String languageCode;
 	@override final String? scriptCode;
 	@override final String? countryCode;
-	@override final TranslationBuilder<AppLocale, _TranslationsEn> build;
+	@override final TranslationBuilder<AppLocale, Translations> build;
 
 	/// Gets current instance managed by [LocaleSettings].
-	_TranslationsEn get translations => LocaleSettings.instance.translationMap[this]!;
+	Translations get translations => LocaleSettings.instance.translationMap[this]!;
 }
 
 /// Method A: Simple
@@ -48,7 +48,7 @@ enum AppLocale with BaseAppLocale<AppLocale, _TranslationsEn> {
 ///
 /// Usage:
 /// String a = t.someKey.anotherKey;
-_TranslationsEn get t => LocaleSettings.instance.currentTranslations;
+Translations get t => LocaleSettings.instance.currentTranslations;
 
 /// Method B: Advanced
 ///
@@ -64,17 +64,10 @@ _TranslationsEn get t => LocaleSettings.instance.currentTranslations;
 /// Step 2:
 /// final t = Translations.of(context); // Get t variable.
 /// String a = t.someKey.anotherKey; // Use t variable.
-class Translations {
-	Translations._(); // no constructor
-
-	static _TranslationsEn of(BuildContext context) => InheritedLocaleData.of<AppLocale, _TranslationsEn>(context).translations;
-}
-
-/// The provider for method B
-class TranslationProvider extends BaseTranslationProvider<AppLocale, _TranslationsEn> {
+class TranslationProvider extends BaseTranslationProvider<AppLocale, Translations> {
 	TranslationProvider({required super.child}) : super(settings: LocaleSettings.instance);
 
-	static InheritedLocaleData<AppLocale, _TranslationsEn> of(BuildContext context) => InheritedLocaleData.of<AppLocale, _TranslationsEn>(context);
+	static InheritedLocaleData<AppLocale, Translations> of(BuildContext context) => InheritedLocaleData.of<AppLocale, Translations>(context);
 }
 
 /// Method B shorthand via [BuildContext] extension method.
@@ -83,11 +76,11 @@ class TranslationProvider extends BaseTranslationProvider<AppLocale, _Translatio
 /// Usage (e.g. in a widget's build method):
 /// context.t.someKey.anotherKey
 extension BuildContextTranslationsExtension on BuildContext {
-	_TranslationsEn get t => TranslationProvider.of(this).translations;
+	Translations get t => TranslationProvider.of(this).translations;
 }
 
 /// Manages all translation instances and the current locale
-class LocaleSettings extends BaseFlutterLocaleSettings<AppLocale, _TranslationsEn> {
+class LocaleSettings extends BaseFlutterLocaleSettings<AppLocale, Translations> {
 	LocaleSettings._() : super(utils: AppLocaleUtils.instance);
 
 	static final instance = LocaleSettings._();
@@ -109,7 +102,7 @@ class LocaleSettings extends BaseFlutterLocaleSettings<AppLocale, _TranslationsE
 }
 
 /// Provides utility functions without any side effects.
-class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, _TranslationsEn> {
+class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, Translations> {
 	AppLocaleUtils._() : super(baseLocale: _baseLocale, locales: AppLocale.values);
 
 	static final instance = AppLocaleUtils._();
@@ -138,11 +131,16 @@ mixin PageData2 {
 // translations
 
 // Path: <root>
-class _TranslationsEn implements BaseTranslations<AppLocale, _TranslationsEn> {
+class Translations implements BaseTranslations<AppLocale, Translations> {
+	/// Returns the current translations of the given [context].
+	///
+	/// Usage:
+	/// final t = Translations.of(context);
+	static Translations of(BuildContext context) => InheritedLocaleData.of<AppLocale, Translations>(context).translations;
 
 	/// You can call this constructor and build your own translation instance of this locale.
 	/// Constructing via the enum [AppLocale.build] is preferred.
-	_TranslationsEn.build({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
+	Translations.build({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
 		: assert(overrides == null, 'Set "translation_overrides: true" in order to enable this feature.'),
 		  $meta = TranslationMetadata(
 		    locale: AppLocale.en,
@@ -152,12 +150,13 @@ class _TranslationsEn implements BaseTranslations<AppLocale, _TranslationsEn> {
 		  );
 
 	/// Metadata for the translations of <en>.
-	@override final TranslationMetadata<AppLocale, _TranslationsEn> $meta;
+	@override final TranslationMetadata<AppLocale, Translations> $meta;
 
-	late final _TranslationsEn _root = this; // ignore: unused_field
+	late final Translations _root = this; // ignore: unused_field
 
 	// Translations
 	late final _TranslationsMiscEn misc = _TranslationsMiscEn._(_root);
+	late final _TranslationsPickersEn pickers = _TranslationsPickersEn._(_root);
 	late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
 	late final _TranslationsExplorerEn explorer = _TranslationsExplorerEn._(_root);
 	late final _TranslationsRgpdEn rgpd = _TranslationsRgpdEn._(_root);
@@ -169,13 +168,14 @@ class _TranslationsEn implements BaseTranslations<AppLocale, _TranslationsEn> {
 	late final _TranslationsUseConditionsEn use_conditions = _TranslationsUseConditionsEn._(_root);
 	late final _TranslationsScriptEditorPageEn script_editor_page = _TranslationsScriptEditorPageEn._(_root);
 	late final _TranslationsSyntaxManualPageEn syntax_manual_page = _TranslationsSyntaxManualPageEn._(_root);
+	late final _TranslationsFileChooserEn file_chooser = _TranslationsFileChooserEn._(_root);
 }
 
 // Path: misc
 class _TranslationsMiscEn {
 	_TranslationsMiscEn._(this._root);
 
-	final _TranslationsEn _root; // ignore: unused_field
+	final Translations _root; // ignore: unused_field
 
 	// Translations
 	String get app_title => 'Basic chess endgames';
@@ -186,11 +186,23 @@ class _TranslationsMiscEn {
 	String get button_validate => 'Validate';
 }
 
+// Path: pickers
+class _TranslationsPickersEn {
+	_TranslationsPickersEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get documents_directory => 'Documents';
+	String get save_file_title => 'Script\'s saving';
+	String get cancelled => 'Selection dialog cancelled';
+}
+
 // Path: home
 class _TranslationsHomeEn {
 	_TranslationsHomeEn._(this._root);
 
-	final _TranslationsEn _root; // ignore: unused_field
+	final Translations _root; // ignore: unused_field
 
 	// Translations
 	String get title => 'Home';
@@ -230,13 +242,16 @@ class _TranslationsHomeEn {
 	String get import_file_menu => 'Import file';
 	String get import_folder_menu => 'Import folder';
 	String get no_external_storage => 'No SD card found';
+	String script_exported_to({required Object Name}) => 'Script has been exported to ${Name}';
+	String get failed_exporting_script => 'Failed to export script';
+	String get text_file_type => 'Text';
 }
 
 // Path: explorer
 class _TranslationsExplorerEn {
 	_TranslationsExplorerEn._(this._root);
 
-	final _TranslationsEn _root; // ignore: unused_field
+	final Translations _root; // ignore: unused_field
 
 	// Translations
 	String get failed_loading_content => 'Failed to load content';
@@ -251,7 +266,7 @@ class _TranslationsExplorerEn {
 class _TranslationsRgpdEn {
 	_TranslationsRgpdEn._(this._root);
 
-	final _TranslationsEn _root; // ignore: unused_field
+	final Translations _root; // ignore: unused_field
 
 	// Translations
 	String get text => 'By using this app, you agree with :';
@@ -263,7 +278,7 @@ class _TranslationsRgpdEn {
 class _TranslationsGamePageEn {
 	_TranslationsGamePageEn._(this._root);
 
-	final _TranslationsEn _root; // ignore: unused_field
+	final Translations _root; // ignore: unused_field
 
 	// Translations
 	String get title => 'Game page';
@@ -289,7 +304,7 @@ class _TranslationsGamePageEn {
 class _TranslationsScriptParserEn {
 	_TranslationsScriptParserEn._(this._root);
 
-	final _TranslationsEn _root; // ignore: unused_field
+	final Translations _root; // ignore: unused_field
 
 	// Translations
 	String variable_not_affected({required Object Name}) => 'The variable ${Name} has been used before having been defined.';
@@ -312,7 +327,7 @@ class _TranslationsScriptParserEn {
 class _TranslationsScriptTypeEn {
 	_TranslationsScriptTypeEn._(this._root);
 
-	final _TranslationsEn _root; // ignore: unused_field
+	final Translations _root; // ignore: unused_field
 
 	// Translations
 	String get player_king_constraint => 'Player king constraint';
@@ -328,7 +343,7 @@ class _TranslationsScriptTypeEn {
 class _TranslationsSampleScriptEn {
 	_TranslationsSampleScriptEn._(this._root);
 
-	final _TranslationsEn _root; // ignore: unused_field
+	final Translations _root; // ignore: unused_field
 
 	// Translations
 	String get kq_k => 'King + Queen Vs King';
@@ -346,7 +361,7 @@ class _TranslationsSampleScriptEn {
 class _TranslationsPrivacyEn {
 	_TranslationsPrivacyEn._(this._root);
 
-	final _TranslationsEn _root; // ignore: unused_field
+	final Translations _root; // ignore: unused_field
 
 	// Translations
 	String get title => 'Privacy policy';
@@ -359,7 +374,7 @@ class _TranslationsPrivacyEn {
 class _TranslationsUseConditionsEn {
 	_TranslationsUseConditionsEn._(this._root);
 
-	final _TranslationsEn _root; // ignore: unused_field
+	final Translations _root; // ignore: unused_field
 
 	// Translations
 	String get title => 'Use conditions';
@@ -370,7 +385,7 @@ class _TranslationsUseConditionsEn {
 class _TranslationsScriptEditorPageEn {
 	_TranslationsScriptEditorPageEn._(this._root);
 
-	final _TranslationsEn _root; // ignore: unused_field
+	final Translations _root; // ignore: unused_field
 
 	// Translations
 	String get title => 'Script editor page';
@@ -395,7 +410,7 @@ class _TranslationsScriptEditorPageEn {
 class _TranslationsSyntaxManualPageEn {
 	_TranslationsSyntaxManualPageEn._(this._root);
 
-	final _TranslationsEn _root; // ignore: unused_field
+	final Translations _root; // ignore: unused_field
 
 	// Translations
 	String get title => 'Scripts\' syntax';
@@ -520,9 +535,20 @@ class _TranslationsSyntaxManualPageEn {
 	String get bool_expression_logical_operators_syntax_2 => '[boolean expression] or [boolean expression]\n\n';
 }
 
-// Path: <root>
-class _TranslationsEs extends _TranslationsEn {
+// Path: file_chooser
+class _TranslationsFileChooserEn {
+	_TranslationsFileChooserEn._(this._root);
 
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get open => 'Open';
+	String get save => 'Save';
+	String get location => 'Location';
+}
+
+// Path: <root>
+class _TranslationsEs extends Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
 	/// Constructing via the enum [AppLocale.build] is preferred.
 	_TranslationsEs.build({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
@@ -536,12 +562,13 @@ class _TranslationsEs extends _TranslationsEn {
 		  super.build(cardinalResolver: cardinalResolver, ordinalResolver: ordinalResolver);
 
 	/// Metadata for the translations of <es>.
-	@override final TranslationMetadata<AppLocale, _TranslationsEn> $meta;
+	@override final TranslationMetadata<AppLocale, Translations> $meta;
 
 	@override late final _TranslationsEs _root = this; // ignore: unused_field
 
 	// Translations
 	@override late final _TranslationsMiscEs misc = _TranslationsMiscEs._(_root);
+	@override late final _TranslationsPickersEs pickers = _TranslationsPickersEs._(_root);
 	@override late final _TranslationsHomeEs home = _TranslationsHomeEs._(_root);
 	@override late final _TranslationsExplorerEs explorer = _TranslationsExplorerEs._(_root);
 	@override late final _TranslationsRgpdEs rgpd = _TranslationsRgpdEs._(_root);
@@ -553,6 +580,7 @@ class _TranslationsEs extends _TranslationsEn {
 	@override late final _TranslationsUseConditionsEs use_conditions = _TranslationsUseConditionsEs._(_root);
 	@override late final _TranslationsScriptEditorPageEs script_editor_page = _TranslationsScriptEditorPageEs._(_root);
 	@override late final _TranslationsSyntaxManualPageEs syntax_manual_page = _TranslationsSyntaxManualPageEs._(_root);
+	@override late final _TranslationsFileChooserEs file_chooser = _TranslationsFileChooserEs._(_root);
 }
 
 // Path: misc
@@ -568,6 +596,18 @@ class _TranslationsMiscEs extends _TranslationsMiscEn {
 	@override String get button_accept => 'Aceptar';
 	@override String get button_deny => 'Rechazar';
 	@override String get button_validate => 'Validar';
+}
+
+// Path: pickers
+class _TranslationsPickersEs extends _TranslationsPickersEn {
+	_TranslationsPickersEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get documents_directory => 'Documentos';
+	@override String get save_file_title => 'Guardar el script';
+	@override String get cancelled => 'Diálogo de selección cancelado';
 }
 
 // Path: home
@@ -614,6 +654,9 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get import_file_menu => 'Importar archivo';
 	@override String get import_folder_menu => 'Importar carpeta';
 	@override String get no_external_storage => 'No hay tarjetas SD';
+	@override String script_exported_to({required Object Name}) => 'Script exportado en el nombre ${Name}';
+	@override String get failed_exporting_script => 'Error al exportar el script';
+	@override String get text_file_type => 'Texto';
 }
 
 // Path: explorer
@@ -904,9 +947,20 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get bool_expression_logical_operators_syntax_2 => '[expresión booleana] or [expresión booleana]\n\n';
 }
 
-// Path: <root>
-class _TranslationsFr extends _TranslationsEn {
+// Path: file_chooser
+class _TranslationsFileChooserEs extends _TranslationsFileChooserEn {
+	_TranslationsFileChooserEs._(_TranslationsEs root) : this._root = root, super._(root);
 
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get open => 'Abrir';
+	@override String get save => 'Guardar';
+	@override String get location => 'Ubicación';
+}
+
+// Path: <root>
+class _TranslationsFr extends Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
 	/// Constructing via the enum [AppLocale.build] is preferred.
 	_TranslationsFr.build({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
@@ -920,12 +974,13 @@ class _TranslationsFr extends _TranslationsEn {
 		  super.build(cardinalResolver: cardinalResolver, ordinalResolver: ordinalResolver);
 
 	/// Metadata for the translations of <fr>.
-	@override final TranslationMetadata<AppLocale, _TranslationsEn> $meta;
+	@override final TranslationMetadata<AppLocale, Translations> $meta;
 
 	@override late final _TranslationsFr _root = this; // ignore: unused_field
 
 	// Translations
 	@override late final _TranslationsMiscFr misc = _TranslationsMiscFr._(_root);
+	@override late final _TranslationsPickersFr pickers = _TranslationsPickersFr._(_root);
 	@override late final _TranslationsHomeFr home = _TranslationsHomeFr._(_root);
 	@override late final _TranslationsExplorerFr explorer = _TranslationsExplorerFr._(_root);
 	@override late final _TranslationsRgpdFr rgpd = _TranslationsRgpdFr._(_root);
@@ -937,6 +992,7 @@ class _TranslationsFr extends _TranslationsEn {
 	@override late final _TranslationsUseConditionsFr use_conditions = _TranslationsUseConditionsFr._(_root);
 	@override late final _TranslationsScriptEditorPageFr script_editor_page = _TranslationsScriptEditorPageFr._(_root);
 	@override late final _TranslationsSyntaxManualPageFr syntax_manual_page = _TranslationsSyntaxManualPageFr._(_root);
+	@override late final _TranslationsFileChooserFr file_chooser = _TranslationsFileChooserFr._(_root);
 }
 
 // Path: misc
@@ -952,6 +1008,18 @@ class _TranslationsMiscFr extends _TranslationsMiscEn {
 	@override String get button_accept => 'Accepter';
 	@override String get button_deny => 'Refuser';
 	@override String get button_validate => 'Valider';
+}
+
+// Path: pickers
+class _TranslationsPickersFr extends _TranslationsPickersEn {
+	_TranslationsPickersFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get documents_directory => 'Documents';
+	@override String get save_file_title => 'Sauvegarde du script';
+	@override String get cancelled => 'Dialogue de sélection annulé';
 }
 
 // Path: home
@@ -998,6 +1066,9 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get import_file_menu => 'Importer un fichier';
 	@override String get import_folder_menu => 'Importer un dossier';
 	@override String get no_external_storage => 'Aucune carte SD';
+	@override String script_exported_to({required Object Name}) => 'Script exporté sous le nom ${Name}';
+	@override String get failed_exporting_script => 'Échec de l\'exportation du script';
+	@override String get text_file_type => 'Texte';
 }
 
 // Path: explorer
@@ -1286,4 +1357,16 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 	@override String get bool_expression_logical_operators_description => 'Il y a deux opérateurs logiques disponibles.\n\n';
 	@override String get bool_expression_logical_operators_syntax_1 => '[expression booléenne] and [expression booléenne]\n\n';
 	@override String get bool_expression_logical_operators_syntax_2 => '[expression booléenne] or [expression booléenne]\n\n';
+}
+
+// Path: file_chooser
+class _TranslationsFileChooserFr extends _TranslationsFileChooserEn {
+	_TranslationsFileChooserFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get open => 'Ouvrir';
+	@override String get save => 'Sauvegarder';
+	@override String get location => 'Emplacement';
 }

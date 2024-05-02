@@ -5,7 +5,6 @@ import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/utils.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:basicchessendgamestrainer/pages/script_editor_page.dart';
-import 'package:basicchessendgamestrainer/pages/widgets/explorer_page_widget.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/home_page_widget.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/explorer_widgets.dart';
 import 'package:chess/chess.dart' as chess;
@@ -13,7 +12,7 @@ import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_con
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:basicchessendgamestrainer/pages/game_page.dart';
-import 'package:android_x_storage/android_x_storage.dart';
+import 'package:basicchessendgamestrainer/components/file_chooser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,6 +22,7 @@ import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:external_path/external_path.dart';
 
 const mainListItemsGap = 8.0;
 const rgpdWarningHeight = 200.0;
@@ -39,6 +39,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
   bool _isGeneratingPosition = false;
   bool _failedLoadingCustomExercises = false;
   int _selectedTabIndex = 0;
+  Directory? _savingScriptPath;
   Directory? _rootDirectory;
   Directory? _currentAddedExercisesDirectory;
   List<FolderItem>? _customExercisesItems;
@@ -65,6 +66,15 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         _failedLoadingCustomExercises = true;
       });
     });
+    if (Platform.isAndroid) {
+      ExternalPath.getExternalStoragePublicDirectory(
+              ExternalPath.DIRECTORY_DOCUMENTS)
+          .then((path) {
+        setState(() {
+          _savingScriptPath = Directory(path);
+        });
+      });
+    }
     super.initState();
   }
 
@@ -211,7 +221,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
               onPressed: () async {
                 if (await _folderAlreadyExists(
                     _newFolderNameTextController.text)) {
-                  if (!mounted) return;
+                  if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
@@ -221,7 +231,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                   );
                   return;
                 }
-                if (!mounted) return;
+                if (!context.mounted) return;
                 Navigator.of(context).pop();
                 _createFolder(_newFolderNameTextController.text);
               },
@@ -479,7 +489,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                     Navigator.of(context).pop();
                     final initialScriptsSet =
                         await _getInitialScriptSetFor(fileItem.name);
-                    if (!mounted) return;
+                    if (!context.mounted) return;
                     final result = await Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
@@ -515,14 +525,14 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                     t.home.contextual_menu_file_delete,
                   ),
                 ),
-                if (Platform.isAndroid)
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      _doExportCustomFile(fileItem.name);
-                    },
-                    child: Text(t.home.contextual_menu_file_export),
-                  )
+                //TODO set back if (Platform.isAndroid)
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _doExportCustomFile(fileItem.name);
+                  },
+                  child: Text(t.home.contextual_menu_file_export),
+                )
               ],
             ),
           );
@@ -623,7 +633,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
 
                 if (await _folderAlreadyExists(
                     _newFolderNameTextController.text)) {
-                  if (!mounted) return;
+                  if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
@@ -801,12 +811,12 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                 final alreadyExists = await File(newPath).exists();
 
                 if (!alreadyExists) {
-                  if (!mounted) return;
+                  if (!context.mounted) return;
                   Navigator.of(context).pop();
                   await fileInstance.rename(newPath);
                   _reloadCurrentFolder();
                 } else {
-                  if (!mounted) return;
+                  if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(t.home.file_name_already_taken),
@@ -843,64 +853,62 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       throw "custom exercises folder is not ready";
     }
     if (!Platform.isAndroid) {
-      throw "exporting is not supported on desktop platform";
+      throw "exporting is only supported on Android";
+    }
+    if (_savingScriptPath == null) {
+      throw "current value of _savingScriptPath is null";
     }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
     final fileInstance = File("$currentPath${p.separator}$fileName");
     final script = await fileInstance.readAsString();
 
-    Directory rootDirectory;
-    String rootDirectoryText;
-    final errorSnackBar = SnackBar(
-          content: Text(
-        t.home.no_external_storage,
-      ),);
-
-    String? sdStoragePath;
-
-    try {
-      sdStoragePath = await AndroidXStorage().getSDCardStorageDirectory();
-    if (sdStoragePath == null) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
-      return;
-    }
-    } on Exception {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
-      return;
-    }
-    
-    rootDirectory = Directory(
-      sdStoragePath,
-    );
-    rootDirectoryText = t.home.external_storage;
-
     if (!mounted) return;
-    String? path = await Navigator.of(context)
-        .push<String?>(MaterialPageRoute(builder: (context) {
-      return ExplorerPageWidget(
-        title: t.home.export_script_title,
-        rootDirectoryText: rootDirectoryText,
-        rootDirectory: rootDirectory,
-        itemType: ExplorerItemType.file,
-        mode: ExplorerMode.save,
-        originFileName: fileName,
-        allowedExtensions: const ['.txt'],
+    final String? fileLocation = await showDialog(
+        context: context,
+        builder: (context) {
+          return const FileChooser(mode: FileChooserMode.save);
+        });
+    if (fileLocation == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            t.home.failed_exporting_script,
+          ),
+        ),
       );
-    }));
-
-    if (path == null) return;
-    if (!path.endsWith('.txt')) path += '.txt';
+      return;
+    }
+    final path =
+        !fileLocation.endsWith('.txt') ? '$fileLocation.txt' : fileLocation;
     final fileToSave = File(path);
 
     try {
       await fileToSave.create();
       await fileToSave.writeAsString(script);
-    }
-    on Exception catch (ex) {
+      final savedFileName = path.split('/').last;
+      setState(() {
+        _savingScriptPath = Directory(path);
+      });
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            t.home.script_exported_to(Name: savedFileName),
+          ),
+        ),
+      );
+    } on Exception catch (ex) {
       Logger().e(ex);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            t.home.failed_exporting_script,
+          ),
+        ),
+      );
       return;
     }
 

@@ -5,6 +5,10 @@ misc:
   buttonAccept: "Accepter"
   buttonDeny: "Refuser"
   buttonValidate: "Valider"
+pickers:
+  documents_directory: "Documents"
+  save_file_title: "Sauvegarde du script"
+  cancelled: "Dialogue de sélection annulé"
 home:
   title: "Accueil"
   failedLoadingExercise: "Échec de chargement de l'exerice : la position d'échecs est invalide."
@@ -58,6 +62,9 @@ home:
   import_file_menu: "Importer un fichier"
   import_folder_menu: "Importer un dossier"
   no_external_storage: "Aucune carte SD"
+  script_exported_to: "Script exporté sous le nom $name"
+  failed_exporting_script: "Échec de l'exportation du script"
+  text_file_type: "Texte"
 explorer:
   failed_loading_content: "Échec de chargement du contenu"
   save_file_prompt: "Nom : "
@@ -421,3 +428,7 @@ syntax_manual_page:
   bool_expression_logical_operators_description: "Il y a deux opérateurs logiques disponibles.\n\n"
   bool_expression_logical_operators_syntax_1: "[expression booléenne] and [expression booléenne]\n\n"
   bool_expression_logical_operators_syntax_2: "[expression booléenne] or [expression booléenne]\n\n"
+file_chooser:
+  open: "Ouvrir"
+  save: "Sauvegarder"
+  location: "Emplacement"

@@ -5,6 +5,10 @@ misc:
   buttonAccept: "Accept"
   buttonDeny: "Deny"
   buttonValidate: "Validate"
+pickers:
+  documents_directory: "Documents"
+  save_file_title: "Script's saving"
+  cancelled: "Selection dialog cancelled"
 home:
   title: "Home"
   failedLoadingExercise: "Failed to load exercise : the chess position is not valid."
@@ -53,6 +57,9 @@ home:
   import_file_menu: "Import file"
   import_folder_menu: "Import folder"
   no_external_storage: "No SD card found"
+  script_exported_to: "Script has been exported to $name"
+  failed_exporting_script: "Failed to export script"
+  text_file_type: "Text"
 explorer:
   failed_loading_content: "Failed to load content"
   save_file_prompt: "Name : "
@@ -397,3 +404,7 @@ syntax_manual_page:
   bool_expression_logical_operators_description: "There are two available logical operators.\n\n"
   bool_expression_logical_operators_syntax_1: "[boolean expression] and [boolean expression]\n\n"
   bool_expression_logical_operators_syntax_2: "[boolean expression] or [boolean expression]\n\n"
+file_chooser:
+  open: "Open"
+  save: "Save"
+  location: "Location"

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:flutter/material.dart';
 

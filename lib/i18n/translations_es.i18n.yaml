@@ -5,6 +5,10 @@ misc:
   buttonAccept: "Aceptar"
   buttonDeny: "Rechazar"
   buttonValidate: "Validar"
+pickers:
+  documents_directory: "Documentos"
+  save_file_title: "Guardar el script"
+  cancelled: "Diálogo de selección cancelado"
 home:
   title: "Inicio"
   failedLoadingExercise: "No se pudo cargar el ejercicio: la posición de ajedrez no es válida."
@@ -58,6 +62,9 @@ home:
   import_file_menu: "Importar archivo"
   import_folder_menu: "Importar carpeta"
   no_external_storage: "No hay tarjetas SD"
+  script_exported_to: "Script exportado en el nombre $name"
+  failed_exporting_script: "Error al exportar el script"
+  text_file_type: "Texto"
 explorer:
   failed_loading_content: "Error al cargar el contenido"
   save_file_prompt: "Nombre:"
@@ -415,3 +422,7 @@ syntax_manual_page:
   bool_expression_logical_operators_description: "Hay dos operadores lógicos disponibles.\n\n"
   bool_expression_logical_operators_syntax_1: "[expresión booleana] and [expresión booleana]\n\n"
   bool_expression_logical_operators_syntax_2: "[expresión booleana] or [expresión booleana]\n\n"
+file_chooser:
+  open: "Abrir"
+  save: "Guardar"
+  location: "Ubicación"
