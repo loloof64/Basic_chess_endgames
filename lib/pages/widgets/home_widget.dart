@@ -60,6 +60,13 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       _currentAddedExercisesDirectory = directory;
       _customExercisesItems = await _getAddedExercisesFolderItems();
       _computeCustomExercisesLeadingIcons().then((value) => null);
+      /* TODO remove */
+      if (Platform.isLinux | Platform.isWindows) {
+        setState(() {
+          _savingScriptPath = directory;
+        });
+      }
+      /* end of todo */
       setState(() {});
     }).catchError((error) {
       setState(() {
@@ -75,6 +82,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         });
       });
     }
+
     super.initState();
   }
 
@@ -525,7 +533,9 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                     t.home.contextual_menu_file_delete,
                   ),
                 ),
-                //TODO set back if (Platform.isAndroid)
+                /*TODO uncomment
+                 if (Platform.isAndroid)
+                 */
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -852,11 +862,16 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     if (_currentAddedExercisesDirectory == null) {
       throw "custom exercises folder is not ready";
     }
+    /* TODO uncomment
     if (!Platform.isAndroid) {
       throw "exporting is only supported on Android";
     }
+    */
     if (_savingScriptPath == null) {
       throw "current value of _savingScriptPath is null";
+    }
+    if (_rootDirectory == null) {
+      throw "current value _rootDirectory is null";
     }
 
     final currentPath = _currentAddedExercisesDirectory!.path;
@@ -867,7 +882,11 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     final String? fileLocation = await showDialog(
         context: context,
         builder: (context) {
-          return const FileChooser(mode: FileChooserMode.save);
+          return FileChooser(
+            mode: FileChooserMode.save,
+            topDirectory: _rootDirectory!,
+            startDirectory: _currentAddedExercisesDirectory!,
+          );
         });
     if (fileLocation == null) {
       if (!mounted) return;

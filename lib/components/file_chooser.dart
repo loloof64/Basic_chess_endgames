@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
 
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 
@@ -21,12 +22,22 @@ class _PathEntry extends Equatable {
 }
 
 class FileChooser extends StatefulWidget {
-  const FileChooser({
+  FileChooser({
     super.key,
     required this.mode,
-  });
+    required this.topDirectory,
+    required this.startDirectory,
+  }) {
+    if (!startDirectory.path.contains(topDirectory.path)) {
+      throw "currentDirectory must be a child of topDirectory";
+    }
+  }
 
   final FileChooserMode mode;
+  // The topmost directory that user can navigate into.
+  final Directory topDirectory;
+  // The start directory : must be a child of topDirectory or the topDirectory itself.
+  final Directory startDirectory;
 
   @override
   State<FileChooser> createState() => _FileChooserState();
@@ -34,9 +45,10 @@ class FileChooser extends StatefulWidget {
 
 class _FileChooserState extends State<FileChooser> {
   String _title = t.file_chooser.open;
-  final List<String> _pathItems = [];
+  List<String> _pathItems = [];
   _PathEntry? _selectedPath;
   String? _selectedItemName;
+  Directory? _currentDirectory;
 
   String _buildTitle() {
     return widget.mode == FileChooserMode.open
@@ -44,10 +56,28 @@ class _FileChooserState extends State<FileChooser> {
         : t.file_chooser.save;
   }
 
+  List<String> _getPathItemsFromCurrentDirectory() {
+    if (_currentDirectory == null) return [];
+    final topDirectoryName = widget.topDirectory.path.split(p.separator).last;
+    final simplifiedCurrentDirectoryPath = _currentDirectory!.path.replaceAll(
+      widget.topDirectory.path,
+      topDirectoryName,
+    );
+    return simplifiedCurrentDirectoryPath.split(p.separator);
+  }
+
+  void _updateSelectedPath(_PathEntry selectedPathEntry) {
+    setState(() {
+      _pathItems = _getPathItemsFromCurrentDirectory();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _title = _buildTitle();
+    _currentDirectory = widget.startDirectory;
+    _pathItems = _getPathItemsFromCurrentDirectory();
   }
 
   @override
@@ -64,8 +94,13 @@ class _FileChooserState extends State<FileChooser> {
           _FileChooserHeader(
             title: _title,
             pathItems: _pathItems,
+            topDirectory: widget.topDirectory,
+            updateSelectedPath: _updateSelectedPath,
           ),
-          const _FileChooserMainZone(),
+          if (_currentDirectory != null)
+            _FileChooserMainZone(
+              currentDirectory: _currentDirectory!,
+            ),
           if (widget.mode == FileChooserMode.save)
             _FileChooserValidationZone(
               confirmEnabled: _selectedPath != null,
@@ -86,78 +121,98 @@ class _FileChooserState extends State<FileChooser> {
   }
 }
 
-class _FileChooserHeader extends StatefulWidget {
+class _FileChooserHeader extends StatelessWidget {
   const _FileChooserHeader({
     required this.title,
     required this.pathItems,
+    required this.topDirectory,
+    required this.updateSelectedPath,
   });
 
   final String title;
   final List<String> pathItems;
+  final Directory topDirectory;
+  final void Function(_PathEntry selectedPathEntry) updateSelectedPath;
 
-  @override
-  State<_FileChooserHeader> createState() => _FileChooserHeaderState();
-}
-
-class _FileChooserHeaderState extends State<_FileChooserHeader> {
-  _PathEntry? _selectedEntry;
+  List<DropdownMenuItem<_PathEntry>> _getDropdownItems() {
+    return pathItems.asMap().entries.map((entry) {
+      return DropdownMenuItem<_PathEntry>(
+        value: _PathEntry(caption: entry.value, index: entry.key + 1),
+        child: Text(
+          entry.value,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      );
+    }).toList();
+  }
 
   void _dropdownCallback(_PathEntry? selectedValue) {
-    setState(() {
-      _selectedEntry = selectedValue;
-    });
+    if (selectedValue != null) updateSelectedPath(selectedValue);
   }
 
   @override
   Widget build(BuildContext context) {
-    final dropdownItems = widget.pathItems.asMap().entries.map((entry) {
-      return DropdownMenuItem<_PathEntry>(
-        value: _PathEntry(caption: entry.value, index: entry.key),
-        child: Text(entry.value),
-      );
-    }).toList();
+    final dropdownItems = _getDropdownItems();
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          color: Colors.green,
-          child: Text(
-            widget.title,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
+    return LayoutBuilder(builder: (context, constraints) {
+      final commonWidth = constraints.maxWidth;
+      return Container(
+        width: commonWidth,
+        color: Colors.lightBlue,
+        margin: const EdgeInsets.symmetric(
+          vertical: 10,
         ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(t.file_chooser.location),
-            DropdownButton<_PathEntry>(
-              items: dropdownItems,
-              onChanged: _dropdownCallback,
-              value: _selectedEntry,
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Text(t.file_chooser.location),
+                ),
+                DropdownButton<_PathEntry>(
+                  items: dropdownItems,
+                  onChanged: _dropdownCallback,
+                  value: dropdownItems.last.value!,
+                  dropdownColor: Colors.lightBlue,
+                ),
+              ],
+            )
           ],
-        )
-      ],
-    );
+        ),
+      );
+    });
   }
 }
 
 class _FileChooserMainZone extends StatelessWidget {
-  const _FileChooserMainZone();
+  const _FileChooserMainZone({
+    required this.currentDirectory,
+  });
+
+  final Directory currentDirectory;
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox.expand(
-      child: Text("Hello, explorer !"),
-    );
+    return Text(currentDirectory.path);
   }
 }
 
