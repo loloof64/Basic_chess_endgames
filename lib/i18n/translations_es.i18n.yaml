@@ -426,3 +426,5 @@ file_chooser:
   open: "Abrir"
   save: "Guardar"
   location: "Ubicación"
+  overwrite_dialog_title: "¿Sobrescribir el archivo?"
+  overwrite_dialog_message: "¿Quieres sobrescribir el archivo '$name'?"

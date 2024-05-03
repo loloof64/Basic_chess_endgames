@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 750 (250 per locale)
+/// Strings: 756 (252 per locale)
 ///
-/// Built on 2024-05-02 at 12:34 UTC
+/// Built on 2024-05-03 at 09:15 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -545,6 +545,8 @@ class _TranslationsFileChooserEn {
 	String get open => 'Open';
 	String get save => 'Save';
 	String get location => 'Location';
+	String get overwrite_dialog_title => 'Overwrite file ?';
+	String overwrite_dialog_message({required Object Name}) => 'Do you want to overwrite file \'${Name}\' ?';
 }
 
 // Path: <root>
@@ -957,6 +959,8 @@ class _TranslationsFileChooserEs extends _TranslationsFileChooserEn {
 	@override String get open => 'Abrir';
 	@override String get save => 'Guardar';
 	@override String get location => 'Ubicación';
+	@override String get overwrite_dialog_title => '¿Sobrescribir el archivo?';
+	@override String overwrite_dialog_message({required Object Name}) => '¿Quieres sobrescribir el archivo \'${Name}\'?';
 }
 
 // Path: <root>
@@ -1369,4 +1373,6 @@ class _TranslationsFileChooserFr extends _TranslationsFileChooserEn {
 	@override String get open => 'Ouvrir';
 	@override String get save => 'Sauvegarder';
 	@override String get location => 'Emplacement';
+	@override String get overwrite_dialog_title => 'Écraser le fichier ?';
+	@override String overwrite_dialog_message({required Object Name}) => 'Souhaitez-vous écraser le fichier \'${Name}\' ?';
 }

@@ -12,7 +12,7 @@ import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_con
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:basicchessendgamestrainer/pages/game_page.dart';
-import 'package:basicchessendgamestrainer/components/file_chooser.dart';
+import 'package:basicchessendgamestrainer/pages/file_chooser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -879,15 +879,14 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     final script = await fileInstance.readAsString();
 
     if (!mounted) return;
-    final String? fileLocation = await showDialog(
-        context: context,
-        builder: (context) {
-          return FileChooser(
-            mode: FileChooserMode.save,
-            topDirectory: _rootDirectory!,
-            startDirectory: _currentAddedExercisesDirectory!,
-          );
-        });
+    final String? fileLocation =
+        await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return FileChooser(
+        mode: FileChooserMode.save,
+        topDirectory: _rootDirectory!,
+        startDirectory: _currentAddedExercisesDirectory!,
+      );
+    }));
     if (fileLocation == null) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

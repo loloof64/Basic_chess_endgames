@@ -13,7 +13,7 @@ const folderItemIconSize = 45.0;
 const folderItemTextSize = 20.0;
 const folderPathFontSize = 22.0;
 
-class FolderItem with FastEquatable{
+class FolderItem with FastEquatable {
   final String name;
   final bool isFolder;
   bool? hasWinningGoal;
@@ -115,7 +115,7 @@ class FolderItemWidget extends StatelessWidget {
 }
 
 class FileItemWidget extends StatelessWidget {
-  final bool isSelected; 
+  final bool isSelected;
   final FolderItem item;
 
   final void Function({required FolderItem fileItem}) onClic;

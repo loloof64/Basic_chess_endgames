@@ -408,3 +408,5 @@ file_chooser:
   open: "Open"
   save: "Save"
   location: "Location"
+  overwrite_dialog_title: "Overwrite file ?"
+  overwrite_dialog_message: "Do you want to overwrite file '$name' ?"
