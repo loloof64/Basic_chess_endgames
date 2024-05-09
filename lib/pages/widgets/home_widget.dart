@@ -885,6 +885,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         mode: FileChooserMode.save,
         topDirectory: _rootDirectory!,
         startDirectory: _currentAddedExercisesDirectory!,
+        initialName: fileName,
       );
     }));
     if (fileLocation == null) {
@@ -909,6 +910,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       setState(() {
         _savingScriptPath = Directory(path);
       });
+      _reloadCurrentFolder();
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

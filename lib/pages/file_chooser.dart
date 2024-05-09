@@ -15,6 +15,7 @@ class FileChooser extends StatefulWidget {
     required this.mode,
     required this.topDirectory,
     required this.startDirectory,
+    required this.initialName,
   }) {
     if (!startDirectory.path.contains(topDirectory.path)) {
       throw "currentDirectory must be a child of topDirectory";
@@ -27,6 +28,9 @@ class FileChooser extends StatefulWidget {
   // The start directory : must be a child of topDirectory or the topDirectory itself.
   final Directory startDirectory;
 
+  // The initial name : used in the name text field (in save file mode only).
+  final String? initialName;
+
   @override
   State<FileChooser> createState() => _FileChooserState();
 }
@@ -36,6 +40,8 @@ class _FileChooserState extends State<FileChooser> {
   Directory? _currentDirectory;
   bool _failedLoadingContent = false;
   List<FolderItem>? _folderItems;
+  FolderItem? _selectedItem;
+  String? _fileToCreateName;
 
   String _buildTitle() {
     return widget.mode == FileChooserMode.open
@@ -72,66 +78,92 @@ class _FileChooserState extends State<FileChooser> {
     }
   }
 
-  void _handleCustomFileClic({required FolderItem fileItem}) async {
+  void _validateSelectedItem() async {
     if (_currentDirectory == null) {
       throw "current folder is not ready";
     }
 
+    if (_selectedItem?.isFolder == true) return;
+
     final currentPath = _currentDirectory!.path;
-    final selectedFilePath = "$currentPath${p.separator}${fileItem.name}";
+    String selectedFilePath;
+
+    if (_selectedItem != null) {
+      selectedFilePath = "$currentPath${p.separator}${_selectedItem!.name}";
+    } else {
+      if (_fileToCreateName == null || _fileToCreateName!.isEmpty) return;
+      selectedFilePath =
+          selectedFilePath = "$currentPath${p.separator}${_fileToCreateName!}";
+    }
 
     if (widget.mode == FileChooserMode.open) {
       Navigator.of(context).pop(selectedFilePath);
     } else {
-      final confirmed = await showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text(t.file_chooser.overwrite_dialog_title),
-              content: Text(
-                t.file_chooser.overwrite_dialog_message(Name: fileItem.name),
-              ),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      Theme.of(context).colorScheme.onTertiary,
-                    ),
-                  ),
-                  child: Text(
-                    t.misc.button_cancel,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.tertiary,
-                    ),
-                  ),
+      final alreadyExist = await File(selectedFilePath).exists();
+      if (alreadyExist) {
+        if (!mounted) return;
+        final confirmed = await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(t.file_chooser.overwrite_dialog_title),
+                content: Text(
+                  t.file_chooser
+                      .overwrite_dialog_message(Name: _selectedItem!.name),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      Theme.of(context).colorScheme.onSecondary,
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).colorScheme.onTertiary,
+                      ),
+                    ),
+                    child: Text(
+                      t.misc.button_cancel,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
                     ),
                   ),
-                  child: Text(
-                    t.misc.button_ok,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).colorScheme.onSecondary,
+                      ),
+                    ),
+                    child: Text(
+                      t.misc.button_ok,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            );
-          });
-      if (confirmed) {
+                ],
+              );
+            });
+        if (confirmed) {
+          if (!mounted) return;
+          Navigator.of(context).pop(selectedFilePath);
+        }
+      } else {
         if (!mounted) return;
         Navigator.of(context).pop(selectedFilePath);
       }
     }
+  }
+
+  void _handleCustomFileClic({required FolderItem fileItem}) async {
+    final newSelection = (_selectedItem == fileItem) ? null : fileItem;
+    setState(() {
+      _selectedItem = newSelection;
+      if (newSelection != null) _fileToCreateName = fileItem.name;
+    });
   }
 
   void _handleCustomFolderClic({required FolderItem folderItem}) async {
@@ -141,6 +173,7 @@ class _FileChooserState extends State<FileChooser> {
 
     if (folderItem.name == '..') {
       setState(() {
+        _selectedItem = null;
         _currentDirectory = _currentDirectory?.parent;
       });
       _reloadCurrentFolder();
@@ -153,14 +186,23 @@ class _FileChooserState extends State<FileChooser> {
     if (!await folderInstance.exists()) return;
 
     setState(() {
+      _selectedItem = null;
       _currentDirectory = folderInstance;
     });
     _reloadCurrentFolder();
   }
 
+  void _handleFileNameChanged(String? newName) {
+    setState(() {
+      _selectedItem = null;
+      _fileToCreateName = newName;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _fileToCreateName = widget.initialName;
     _title = _buildTitle();
     _currentDirectory = widget.startDirectory;
     _reloadCurrentFolder();
@@ -180,6 +222,7 @@ class _FileChooserState extends State<FileChooser> {
           if (_currentDirectory != null)
             Expanded(
               child: _FileChooserContentWidget(
+                selectedItem: _selectedItem,
                 failedLoadingContent: _failedLoadingContent,
                 rootDirectory: widget.topDirectory,
                 currentDirectory: _currentDirectory,
@@ -191,16 +234,56 @@ class _FileChooserState extends State<FileChooser> {
               ),
             ),
           if (widget.mode == FileChooserMode.save)
+            _FileChooserNameSelectionZone(
+              initialValue: _fileToCreateName,
+              onChanged: _handleFileNameChanged,
+            ),
+          if (widget.mode == FileChooserMode.save)
             _FileChooserValidationZone(
-              confirmEnabled: _currentDirectory != null,
-              onValidationCallback: () {
-                if (_currentDirectory != null) {
-                  Navigator.of(context).pop(_currentDirectory!.path);
-                }
-              },
+              confirmEnabled: _currentDirectory != null &&
+                  _fileToCreateName != null &&
+                  _fileToCreateName?.isEmpty != true,
+              onValidationCallback: _validateSelectedItem,
             )
         ],
       ),
+    );
+  }
+}
+
+class _FileChooserNameSelectionZone extends StatelessWidget {
+  const _FileChooserNameSelectionZone({
+    required this.initialValue,
+    required this.onChanged,
+  });
+
+  final String? initialValue;
+  final void Function(String? value) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            t.file_chooser.exported_file_name,
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: TextFormField(
+              key: Key(initialValue ?? ""),
+              initialValue: initialValue ?? "",
+              onChanged: onChanged,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -264,6 +347,8 @@ class _FileChooserContentWidget extends StatelessWidget {
   */
   final List<FolderItem>? folderItems;
 
+  final FolderItem? selectedItem;
+
   final Directory? rootDirectory;
   final Directory? currentDirectory;
 
@@ -274,6 +359,7 @@ class _FileChooserContentWidget extends StatelessWidget {
   final void Function({required FolderItem folderItem}) onFolderLongClic;
 
   const _FileChooserContentWidget({
+    required this.selectedItem,
     required this.failedLoadingContent,
     required this.rootDirectory,
     required this.currentDirectory,
@@ -320,6 +406,7 @@ class _FileChooserContentWidget extends StatelessWidget {
             : folderItems!.isEmpty
                 ? emptyFolderWidget
                 : FolderContentWidget(
+                    selectedItem: selectedItem,
                     rootDirectory: rootDirectory,
                     currentDirectory: currentDirectory,
                     elements: folderItems!,

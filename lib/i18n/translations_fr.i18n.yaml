@@ -434,3 +434,4 @@ file_chooser:
   location: "Emplacement"
   overwrite_dialog_title: "Écraser le fichier ?"
   overwrite_dialog_message: "Souhaitez-vous écraser le fichier '$name' ?"
+  exported_file_name: "Nom :"

@@ -169,6 +169,7 @@ class FolderContentWidget extends StatelessWidget {
   final Directory? rootDirectory;
   final Directory? currentDirectory;
   final List<FolderItem> elements;
+  final FolderItem? selectedItem;
 
   final void Function({required FolderItem fileItem}) onFileClic;
   final void Function({required FolderItem fileItem}) onFileLongClic;
@@ -178,6 +179,7 @@ class FolderContentWidget extends StatelessWidget {
 
   const FolderContentWidget({
     super.key,
+    this.selectedItem,
     required this.rootDirectory,
     required this.currentDirectory,
     required this.elements,
@@ -212,7 +214,7 @@ class FolderContentWidget extends StatelessWidget {
                       onLongClic: onFolderLongClic,
                     )
                   : FileItemWidget(
-                      isSelected: false,
+                      isSelected: item == selectedItem,
                       item: item,
                       onClic: onFileClic,
                       onLongClic: onFileLongClic,

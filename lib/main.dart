@@ -40,6 +40,7 @@ class AppMobile extends StatelessWidget {
         canPop: false,
         onPopInvoked: _handleExit,
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           onGenerateTitle: (context) => t.misc.app_title,
           locale: TranslationProvider.of(context).flutterLocale,
           supportedLocales: AppLocaleUtils.supportedLocales,
@@ -93,6 +94,7 @@ class _AppDesktopState extends State<AppDesktop> with WindowListener {
         canPop: false,
         onPopInvoked: _handleExit,
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           onGenerateTitle: (context) => t.misc.app_title,
           locale: TranslationProvider.of(context).flutterLocale,
           supportedLocales: AppLocaleUtils.supportedLocales,
