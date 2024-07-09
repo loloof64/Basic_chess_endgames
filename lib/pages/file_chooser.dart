@@ -117,7 +117,7 @@ class _FileChooserState extends State<FileChooser> {
                       Navigator.of(context).pop(false);
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                         Theme.of(context).colorScheme.onTertiary,
                       ),
                     ),
@@ -133,7 +133,7 @@ class _FileChooserState extends State<FileChooser> {
                       Navigator.of(context).pop(true);
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                         Theme.of(context).colorScheme.onSecondary,
                       ),
                     ),

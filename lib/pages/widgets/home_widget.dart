@@ -536,6 +536,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                 /*TODO uncomment
                  if (Platform.isAndroid)
                  */
+                /* TODO implement
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -543,6 +544,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                   },
                   child: Text(t.home.contextual_menu_file_export),
                 )
+                */
               ],
             ),
           );
@@ -1218,11 +1220,13 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                     onPressed: _purposeCreateFolder,
                     child: const FaIcon(FontAwesomeIcons.solidFolder),
                   ),
+                  /* TODO implement
                   FloatingActionButton.small(
                     heroTag: null,
                     onPressed: _purposeImportElement,
                     child: const FaIcon(FontAwesomeIcons.arrowUp),
                   ),
+                  */
                 ],
               )
             : null,

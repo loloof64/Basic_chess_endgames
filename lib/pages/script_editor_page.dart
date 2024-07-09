@@ -446,7 +446,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                   Navigator.of(context).pop();
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
+                  backgroundColor: WidgetStateProperty.all(
                     Theme.of(context).colorScheme.onTertiary,
                   ),
                 ),
@@ -463,7 +463,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                   Navigator.of(context).pop();
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
+                  backgroundColor: WidgetStateProperty.all(
                     Theme.of(context).colorScheme.onSecondary,
                   ),
                 ),

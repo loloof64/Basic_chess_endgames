@@ -626,7 +626,7 @@ class _GamePageState extends ConsumerState<GamePage> {
                   Navigator.of(context).pop();
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
+                  backgroundColor: WidgetStateProperty.all(
                     Theme.of(context).colorScheme.onTertiary,
                   ),
                 ),
@@ -643,7 +643,7 @@ class _GamePageState extends ConsumerState<GamePage> {
                   Navigator.of(context).pop();
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
+                  backgroundColor: WidgetStateProperty.all(
                     Theme.of(context).colorScheme.onSecondary,
                   ),
                 ),

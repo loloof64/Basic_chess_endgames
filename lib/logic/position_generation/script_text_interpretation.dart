@@ -491,7 +491,7 @@ Future<void> showGenerationErrorsPopups({
                   ElevatedButton(
                     onPressed: () => Navigator.of(context).pop(),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                         Theme.of(
                           context,
                         ).colorScheme.primary,

@@ -106,7 +106,7 @@ class RgpdModalBottomSheetContent extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(
                   Theme.of(context).colorScheme.tertiary,
                 ),
               ),
