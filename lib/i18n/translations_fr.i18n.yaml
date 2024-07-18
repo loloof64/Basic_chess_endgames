@@ -18,60 +18,11 @@ home:
     contraintes ne sont pas trop restrictives.\n\nÉgalement, veuillez vérifier que vos \
     variables soient déclarées avant utilisation."
   failedGeneratingPosition: "Échec de génération de la position."
-  samples_help_message:
-    "Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer.\n\
-    Une ligne dont l'icône est un trophée générera une position où vous devrez gagner.\n\
-    Sinon si la ligne commence par une poignée de main, vous devrez sauver la \
-    partie et faire partie nulle.\n\n\
-    Vous pouvez aussi voir le code d'un exemple, ou même le cloner dans le dossier courant de la \
-    section exercices personnels, en faisant un appui-long dessus."
-  custom_scripts_help_message:
-    "Ici vous pouvez créér et exécuter vos exercices personnalisés \
-    (par un simple appui dessus).\n\n
-    Vous pouvez aussi éditer/renommer/supprimer un unique exercice par \
-    un appui long dessus.\n\n
-    Vous pouvez aussi ajouter/renommer/supprimer des dossiers."
-  tab_integrated: "Intégrés"
-  tab_added: "Ajoutés"
-  no_game_yet: "Aucun élément"
-  failed_loading_added_exercises: "Échec de chargement des exercises personnalisés"
   misc_generating_error: "Erreur de génération de la position pour une erreur diverse."
-  contextual_menu_file_delete: "Supprimer"
-  contextual_menu_file_rename: "Renommer"
-  contextual_menu_file_edit: "Éditer"
-  contextual_menu_rename_folder: "Renommer"
-  contextual_menu_folder_delete: "Supprimer"
-  contextual_menu_see_sample_code: "Voir le code"
-  contextual_menu_clone_sample_code: "Cloner dans les exercices ajoutés"
-  confirm_delete_file_title: "Supprimer le fichier ?"
-  confirm_delete_file_msg: "Souhaitez-vous supprimer le fichier '$name'?"
-  confirm_delete_folder_title: "Supprimer le dossier ?"
-  confirm_delete_folder_msg: "Souhaitez-vous supprimer le dossier '$name'?"
-  file_name_already_taken: "Ce nom est déjà utilisé."
-  new_folder_prompt: "Nom : "
-  rename_folder_prompt: "Nouveau nom : "
-  loading_content: "Chargement ..."
-  root_directory: "'Racine'"
-  protected_folder: "Dossier protégé"
-  cloned_sample_exercise: "Exemple cloné sous le nom $name."
-  contextual_menu_file_export: "Exporter"
-  export_script_title: "Exporter"
-  documents_directory: "Documents"
-  external_storage: "Stockage externe"
-  script_exported: "Le script a été exporté."
-  import_file_menu: "Importer un fichier"
-  import_folder_menu: "Importer un dossier"
-  no_external_storage: "Aucune carte SD"
-  script_exported_to: "Script exporté sous le nom $name"
-  failed_exporting_script: "Échec de l'exportation du script"
-  text_file_type: "Texte"
-explorer:
-  failed_loading_content: "Échec de chargement du contenu"
-  save_file_prompt: "Nom : "
-  empty_item_name: "Vous devez spécifier un nom de fichier."
-  new_folder_title: "Ajouter un nouveau dossier"
-  new_folder_prompt: "Nom : "
-  folder_already_exists: "Ce nom est déjà utilisé."
+  menu_buttons:
+    samples: "Exemples"
+    load_script: "Charger un script"
+    new_script: "Nouveau script"
 gamePage:
   title: "Page de jeu"
   goalWin: "Objectif: victoire"

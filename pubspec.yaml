@@ -57,8 +57,6 @@ dependencies:
   path_provider: ^2.1.1
   path: ^1.8.3
   window_manager: ^0.3.7
-  flutter_expandable_fab: ^2.0.0
-  gap: ^3.0.1
   external_path: ^1.0.3
   equatable: ^2.0.5
 

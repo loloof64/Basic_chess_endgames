@@ -17,56 +17,11 @@ home:
     "Impossible to generate a position from these scripts : \
     maximum generation attempts surpassed.\n\nPlease check that your constraints \
     aren't too restrictive.\n\nAlso, please check that all of your variables are declared before use."
-  samples_help_message:
-    "Here you can select the type of position you want to play with.\n\
-    A line which leading icon is a trophy will generate a position in which you should win.\n\
-    Otherwise, with a handshake leading icon, your goal will be to save the game and make draw.\n\n\
-    You can also see the code of an example, or even clone it into current folder of customs exercises section, \
-    by making a long press on it."
-  custom_scripts_help_message: "Here you can create and run your custom exercises (with a single press on it).\n\n\
-    You can also edit/rename/delete a single exercise with a long press on it.\n\n\
-    You can also add/rename/delete folders."
-  tab_integrated: "Integrated"
-  tab_added: "Added"
-  no_game_yet: "No element"
-  failed_loading_added_exercises: "Failed to load custom exercises list"
   misc_generating_error: "Failed to generate the position for a miscellaneous error."
-  contextual_menu_file_delete: "Delete"
-  contextual_menu_file_rename: "Rename"
-  contextual_menu_file_edit: "Edit"
-  contextual_menu_rename_folder: "Rename"
-  contextual_menu_folder_delete: "Delete"
-  contextual_menu_see_sample_code: "See code"
-  contextual_menu_clone_sample_code: "Cloner dans les exercices ajoutés"
-  confirm_delete_file_title: "Delete file ?"
-  confirm_delete_file_msg: "Do you want to delete the file '$name' ?"
-  confirm_delete_folder_title: "Delete folder ?"
-  confirm_delete_folder_msg: "Do you want to delete the folder '$name' ?"
-  file_name_already_taken: "This name is already in use."
-  new_folder_prompt: "Name : "
-  rename_folder_prompt: "New name : "
-  loading_content: "Loading ..."
-  root_directory: "'Root'"
-  protected_folder: "Protected folder"
-  cloned_sample_exercise: "Cloned sample under name $name."
-  contextual_menu_file_export: "Export"
-  export_script_title: "Export"
-  documents_directory: "Documents"
-  external_storage: "External storage"
-  script_exported: "Script has been exported"
-  import_file_menu: "Import file"
-  import_folder_menu: "Import folder"
-  no_external_storage: "No SD card found"
-  script_exported_to: "Script has been exported to $name"
-  failed_exporting_script: "Failed to export script"
-  text_file_type: "Text"
-explorer:
-  failed_loading_content: "Failed to load content"
-  save_file_prompt: "Name : "
-  empty_item_name: "You must specify a name."
-  new_folder_title: "Add a new folder"
-  new_folder_prompt: "Name : "
-  folder_already_exists: "This name is already in use."
+  menu_buttons:
+    samples: "Examples"
+    load_script: "Load script"
+    new_script: "New script"
 gamePage:
   title: "Game page"
   goalWin: "Goal: win"

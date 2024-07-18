@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 732 (244 per locale)
+/// Strings: 618 (206 per locale)
 ///
-/// Built on 2024-07-18 at 13:25 UTC
+/// Built on 2024-07-18 at 14:21 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -158,7 +158,6 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsMiscEn misc = _TranslationsMiscEn._(_root);
 	late final _TranslationsPickersEn pickers = _TranslationsPickersEn._(_root);
 	late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
-	late final _TranslationsExplorerEn explorer = _TranslationsExplorerEn._(_root);
 	late final _TranslationsGamePageEn game_page = _TranslationsGamePageEn._(_root);
 	late final _TranslationsScriptParserEn script_parser = _TranslationsScriptParserEn._(_root);
 	late final _TranslationsScriptTypeEn script_type = _TranslationsScriptTypeEn._(_root);
@@ -206,57 +205,8 @@ class _TranslationsHomeEn {
 	String get failed_loading_exercise => 'Failed to load exercise : the chess position is not valid.';
 	String get failed_generating_position => 'Failed to generate the position.';
 	String get max_generation_attempts_achieved => 'Impossible to generate a position from these scripts : maximum generation attempts surpassed.\n\nPlease check that your constraints aren\'t too restrictive.\n\nAlso, please check that all of your variables are declared before use.';
-	String get samples_help_message => 'Here you can select the type of position you want to play with.\nA line which leading icon is a trophy will generate a position in which you should win.\nOtherwise, with a handshake leading icon, your goal will be to save the game and make draw.\n\nYou can also see the code of an example, or even clone it into current folder of customs exercises section, by making a long press on it.';
-	String get custom_scripts_help_message => 'Here you can create and run your custom exercises (with a single press on it).\n\nYou can also edit/rename/delete a single exercise with a long press on it.\n\nYou can also add/rename/delete folders.';
-	String get tab_integrated => 'Integrated';
-	String get tab_added => 'Added';
-	String get no_game_yet => 'No element';
-	String get failed_loading_added_exercises => 'Failed to load custom exercises list';
 	String get misc_generating_error => 'Failed to generate the position for a miscellaneous error.';
-	String get contextual_menu_file_delete => 'Delete';
-	String get contextual_menu_file_rename => 'Rename';
-	String get contextual_menu_file_edit => 'Edit';
-	String get contextual_menu_rename_folder => 'Rename';
-	String get contextual_menu_folder_delete => 'Delete';
-	String get contextual_menu_see_sample_code => 'See code';
-	String get contextual_menu_clone_sample_code => 'Cloner dans les exercices ajoutés';
-	String get confirm_delete_file_title => 'Delete file ?';
-	String confirm_delete_file_msg({required Object Name}) => 'Do you want to delete the file \'${Name}\' ?';
-	String get confirm_delete_folder_title => 'Delete folder ?';
-	String confirm_delete_folder_msg({required Object Name}) => 'Do you want to delete the folder \'${Name}\' ?';
-	String get file_name_already_taken => 'This name is already in use.';
-	String get new_folder_prompt => 'Name : ';
-	String get rename_folder_prompt => 'New name : ';
-	String get loading_content => 'Loading ...';
-	String get root_directory => '\'Root\'';
-	String get protected_folder => 'Protected folder';
-	String cloned_sample_exercise({required Object Name}) => 'Cloned sample under name ${Name}.';
-	String get contextual_menu_file_export => 'Export';
-	String get export_script_title => 'Export';
-	String get documents_directory => 'Documents';
-	String get external_storage => 'External storage';
-	String get script_exported => 'Script has been exported';
-	String get import_file_menu => 'Import file';
-	String get import_folder_menu => 'Import folder';
-	String get no_external_storage => 'No SD card found';
-	String script_exported_to({required Object Name}) => 'Script has been exported to ${Name}';
-	String get failed_exporting_script => 'Failed to export script';
-	String get text_file_type => 'Text';
-}
-
-// Path: explorer
-class _TranslationsExplorerEn {
-	_TranslationsExplorerEn._(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get failed_loading_content => 'Failed to load content';
-	String get save_file_prompt => 'Name : ';
-	String get empty_item_name => 'You must specify a name.';
-	String get new_folder_title => 'Add a new folder';
-	String get new_folder_prompt => 'Name : ';
-	String get folder_already_exists => 'This name is already in use.';
+	late final _TranslationsHomeMenuButtonsEn menu_buttons = _TranslationsHomeMenuButtonsEn._(_root);
 }
 
 // Path: game_page
@@ -511,6 +461,18 @@ class _TranslationsFileChooserEn {
 	String get exported_file_name => 'Name :';
 }
 
+// Path: home.menu_buttons
+class _TranslationsHomeMenuButtonsEn {
+	_TranslationsHomeMenuButtonsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get samples => 'Examples';
+	String get load_script => 'Load script';
+	String get new_script => 'New script';
+}
+
 // Path: <root>
 class _TranslationsEs extends Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
@@ -534,7 +496,6 @@ class _TranslationsEs extends Translations {
 	@override late final _TranslationsMiscEs misc = _TranslationsMiscEs._(_root);
 	@override late final _TranslationsPickersEs pickers = _TranslationsPickersEs._(_root);
 	@override late final _TranslationsHomeEs home = _TranslationsHomeEs._(_root);
-	@override late final _TranslationsExplorerEs explorer = _TranslationsExplorerEs._(_root);
 	@override late final _TranslationsGamePageEs game_page = _TranslationsGamePageEs._(_root);
 	@override late final _TranslationsScriptParserEs script_parser = _TranslationsScriptParserEs._(_root);
 	@override late final _TranslationsScriptTypeEs script_type = _TranslationsScriptTypeEs._(_root);
@@ -582,57 +543,8 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get failed_loading_exercise => 'No se pudo cargar el ejercicio: la posición de ajedrez no es válida.';
 	@override String get max_generation_attempts_achieved => 'Es imposible generar una posición a partir de estos guiones: se han superado los intentos máximos de generación.\n\nComprueba que tus restricciones no sean demasiado restrictivas.\n\nAdemás, por favor, asegúrate de que todas tus variables estén declaradas antes de usarlas.';
 	@override String get failed_generating_position => 'Falló al generar la posición.';
-	@override String get samples_help_message => 'Aquí puedes seleccionar el tipo de posición con la que quieres jugar.\nUna línea cuyo icono principal es un trofeo generará una posición en la que deberías ganar.\nDe lo contrario, con un icono principal de un apretón de manos, tu objetivo será salvar la partida y hacer empate.\n\nTambién puedes ver el código de un ejemplo, o incluso clonarlo en la carpeta actual de la sección de ejercicios de aduanas, presionándolo durante unos segundos.';
-	@override String get custom_scripts_help_message => 'Aquí puedes crear y ejecutar tus ejercicios personalizados (con una sola pulsación en ello).\n\n También puedes editar/renombrar/eliminar un ejercicio individual con una pulsación larga sobre él.\n\n También puedes añadir/renombrar/eliminar carpetas.';
-	@override String get tab_integrated => 'Integrados';
-	@override String get tab_added => 'Añadidos';
-	@override String get no_game_yet => 'No hay elemento';
-	@override String get failed_loading_added_exercises => 'Error al cargar la lista de ejercicios personalizados';
 	@override String get misc_generating_error => 'Error al generar la posición para un error misceláneo.';
-	@override String get contextual_menu_file_delete => 'Borrar';
-	@override String get contextual_menu_file_rename => 'Renombrar';
-	@override String get contextual_menu_file_edit => 'Editar';
-	@override String get contextual_menu_rename_folder => 'Renombrar';
-	@override String get contextual_menu_folder_delete => 'Borrar';
-	@override String get contextual_menu_see_sample_code => 'Ver código';
-	@override String get contextual_menu_clone_sample_code => 'Clonar en los ejercicios añadidos';
-	@override String get confirm_delete_file_title => 'Borrar el archivo ?';
-	@override String confirm_delete_file_msg({required Object Name}) => '¿Quieres borrar el archivo \'${Name}\'?';
-	@override String get confirm_delete_folder_title => '¿Borrar la carpeta?';
-	@override String confirm_delete_folder_msg({required Object Name}) => '¿Quieres borrar la carpeta \'${Name}\'?';
-	@override String get file_name_already_taken => 'Este nombre ya está en uso.';
-	@override String get new_folder_prompt => 'Nombre :';
-	@override String get rename_folder_prompt => 'Nuevo nombre : ';
-	@override String get loading_content => 'Cargando ...';
-	@override String get root_directory => '\'Raíz\'';
-	@override String get protected_folder => 'Carpeta protegida';
-	@override String cloned_sample_exercise({required Object Name}) => 'Muestra clonada con el nombre ${Name}.';
-	@override String get contextual_menu_file_export => 'Exportar';
-	@override String get export_script_title => 'Exportar';
-	@override String get documents_directory => 'Documentos';
-	@override String get external_storage => 'Almacenamiento externo';
-	@override String get script_exported => 'El script se ha exportado';
-	@override String get import_file_menu => 'Importar archivo';
-	@override String get import_folder_menu => 'Importar carpeta';
-	@override String get no_external_storage => 'No hay tarjetas SD';
-	@override String script_exported_to({required Object Name}) => 'Script exportado en el nombre ${Name}';
-	@override String get failed_exporting_script => 'Error al exportar el script';
-	@override String get text_file_type => 'Texto';
-}
-
-// Path: explorer
-class _TranslationsExplorerEs extends _TranslationsExplorerEn {
-	_TranslationsExplorerEs._(_TranslationsEs root) : this._root = root, super._(root);
-
-	@override final _TranslationsEs _root; // ignore: unused_field
-
-	// Translations
-	@override String get failed_loading_content => 'Error al cargar el contenido';
-	@override String get save_file_prompt => 'Nombre:';
-	@override String get empty_item_name => 'Debe especificar un nombre.';
-	@override String get new_folder_title => 'Añadir una nueva carpeta';
-	@override String get new_folder_prompt => 'Nombre:';
-	@override String get folder_already_exists => 'Este nombre ya está en uso.';
+	@override late final _TranslationsHomeMenuButtonsEs menu_buttons = _TranslationsHomeMenuButtonsEs._(_root);
 }
 
 // Path: game_page
@@ -887,6 +799,18 @@ class _TranslationsFileChooserEs extends _TranslationsFileChooserEn {
 	@override String get exported_file_name => 'Nombre :';
 }
 
+// Path: home.menu_buttons
+class _TranslationsHomeMenuButtonsEs extends _TranslationsHomeMenuButtonsEn {
+	_TranslationsHomeMenuButtonsEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get samples => 'Ejemplos';
+	@override String get load_script => 'Cargar archivo de código';
+	@override String get new_script => 'Nuevo archivo de código';
+}
+
 // Path: <root>
 class _TranslationsFr extends Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
@@ -910,7 +834,6 @@ class _TranslationsFr extends Translations {
 	@override late final _TranslationsMiscFr misc = _TranslationsMiscFr._(_root);
 	@override late final _TranslationsPickersFr pickers = _TranslationsPickersFr._(_root);
 	@override late final _TranslationsHomeFr home = _TranslationsHomeFr._(_root);
-	@override late final _TranslationsExplorerFr explorer = _TranslationsExplorerFr._(_root);
 	@override late final _TranslationsGamePageFr game_page = _TranslationsGamePageFr._(_root);
 	@override late final _TranslationsScriptParserFr script_parser = _TranslationsScriptParserFr._(_root);
 	@override late final _TranslationsScriptTypeFr script_type = _TranslationsScriptTypeFr._(_root);
@@ -958,57 +881,8 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get failed_loading_exercise => 'Échec de chargement de l\'exerice : la position d\'échecs est invalide.';
 	@override String get max_generation_attempts_achieved => 'Impossible de générer une position à partir de ces scripts : nombre de tentatives maximum dépassés.\n\nVeuillez vérifier que vos contraintes ne sont pas trop restrictives.\n\nÉgalement, veuillez vérifier que vos variables soient déclarées avant utilisation.';
 	@override String get failed_generating_position => 'Échec de génération de la position.';
-	@override String get samples_help_message => 'Ici vous pouvez choisir le type de position avec laquelle vous voulez jouer.\nUne ligne dont l\'icône est un trophée générera une position où vous devrez gagner.\nSinon si la ligne commence par une poignée de main, vous devrez sauver la partie et faire partie nulle.\n\nVous pouvez aussi voir le code d\'un exemple, ou même le cloner dans le dossier courant de la section exercices personnels, en faisant un appui-long dessus.';
-	@override String get custom_scripts_help_message => 'Ici vous pouvez créér et exécuter vos exercices personnalisés (par un simple appui dessus).\n\n Vous pouvez aussi éditer/renommer/supprimer un unique exercice par un appui long dessus.\n\n Vous pouvez aussi ajouter/renommer/supprimer des dossiers.';
-	@override String get tab_integrated => 'Intégrés';
-	@override String get tab_added => 'Ajoutés';
-	@override String get no_game_yet => 'Aucun élément';
-	@override String get failed_loading_added_exercises => 'Échec de chargement des exercises personnalisés';
 	@override String get misc_generating_error => 'Erreur de génération de la position pour une erreur diverse.';
-	@override String get contextual_menu_file_delete => 'Supprimer';
-	@override String get contextual_menu_file_rename => 'Renommer';
-	@override String get contextual_menu_file_edit => 'Éditer';
-	@override String get contextual_menu_rename_folder => 'Renommer';
-	@override String get contextual_menu_folder_delete => 'Supprimer';
-	@override String get contextual_menu_see_sample_code => 'Voir le code';
-	@override String get contextual_menu_clone_sample_code => 'Cloner dans les exercices ajoutés';
-	@override String get confirm_delete_file_title => 'Supprimer le fichier ?';
-	@override String confirm_delete_file_msg({required Object Name}) => 'Souhaitez-vous supprimer le fichier \'${Name}\'?';
-	@override String get confirm_delete_folder_title => 'Supprimer le dossier ?';
-	@override String confirm_delete_folder_msg({required Object Name}) => 'Souhaitez-vous supprimer le dossier \'${Name}\'?';
-	@override String get file_name_already_taken => 'Ce nom est déjà utilisé.';
-	@override String get new_folder_prompt => 'Nom : ';
-	@override String get rename_folder_prompt => 'Nouveau nom : ';
-	@override String get loading_content => 'Chargement ...';
-	@override String get root_directory => '\'Racine\'';
-	@override String get protected_folder => 'Dossier protégé';
-	@override String cloned_sample_exercise({required Object Name}) => 'Exemple cloné sous le nom ${Name}.';
-	@override String get contextual_menu_file_export => 'Exporter';
-	@override String get export_script_title => 'Exporter';
-	@override String get documents_directory => 'Documents';
-	@override String get external_storage => 'Stockage externe';
-	@override String get script_exported => 'Le script a été exporté.';
-	@override String get import_file_menu => 'Importer un fichier';
-	@override String get import_folder_menu => 'Importer un dossier';
-	@override String get no_external_storage => 'Aucune carte SD';
-	@override String script_exported_to({required Object Name}) => 'Script exporté sous le nom ${Name}';
-	@override String get failed_exporting_script => 'Échec de l\'exportation du script';
-	@override String get text_file_type => 'Texte';
-}
-
-// Path: explorer
-class _TranslationsExplorerFr extends _TranslationsExplorerEn {
-	_TranslationsExplorerFr._(_TranslationsFr root) : this._root = root, super._(root);
-
-	@override final _TranslationsFr _root; // ignore: unused_field
-
-	// Translations
-	@override String get failed_loading_content => 'Échec de chargement du contenu';
-	@override String get save_file_prompt => 'Nom : ';
-	@override String get empty_item_name => 'Vous devez spécifier un nom de fichier.';
-	@override String get new_folder_title => 'Ajouter un nouveau dossier';
-	@override String get new_folder_prompt => 'Nom : ';
-	@override String get folder_already_exists => 'Ce nom est déjà utilisé.';
+	@override late final _TranslationsHomeMenuButtonsFr menu_buttons = _TranslationsHomeMenuButtonsFr._(_root);
 }
 
 // Path: game_page
@@ -1261,4 +1135,16 @@ class _TranslationsFileChooserFr extends _TranslationsFileChooserEn {
 	@override String get overwrite_dialog_title => 'Écraser le fichier ?';
 	@override String overwrite_dialog_message({required Object Name}) => 'Souhaitez-vous écraser le fichier \'${Name}\' ?';
 	@override String get exported_file_name => 'Nom :';
+}
+
+// Path: home.menu_buttons
+class _TranslationsHomeMenuButtonsFr extends _TranslationsHomeMenuButtonsEn {
+	_TranslationsHomeMenuButtonsFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get samples => 'Exemples';
+	@override String get load_script => 'Charger un script';
+	@override String get new_script => 'Nouveau script';
 }

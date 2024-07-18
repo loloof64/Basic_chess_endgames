@@ -18,60 +18,11 @@ home:
     restricciones no sean demasiado restrictivas.\n\nAdemás, por favor, asegúrate \
     de que todas tus variables estén declaradas antes de usarlas."
   failedGeneratingPosition: "Falló al generar la posición."
-  samples_help_message:
-    "Aquí puedes seleccionar el tipo de posición con la que quieres jugar.\n\
-    Una línea cuyo icono principal es un trofeo generará una posición en la que deberías ganar.\n\
-    De lo contrario, con un icono principal de un apretón de manos, tu objetivo será salvar la \
-    partida y hacer empate.\n\n\
-    También puedes ver el código de un ejemplo, o incluso clonarlo en la carpeta actual de la sección \
-    de ejercicios de aduanas, presionándolo durante unos segundos."
-  custom_scripts_help_message:
-    "Aquí puedes crear y ejecutar tus ejercicios personalizados \
-    (con una sola pulsación en ello).\n\n
-    También puedes editar/renombrar/eliminar un ejercicio individual con una \
-    pulsación larga sobre él.\n\n
-    También puedes añadir/renombrar/eliminar carpetas."
-  tab_integrated: "Integrados"
-  tab_added: "Añadidos"
-  no_game_yet: "No hay elemento"
-  failed_loading_added_exercises: "Error al cargar la lista de ejercicios personalizados"
   misc_generating_error: "Error al generar la posición para un error misceláneo."
-  contextual_menu_file_delete: "Borrar"
-  contextual_menu_file_rename: "Renombrar"
-  contextual_menu_file_edit: "Editar"
-  contextual_menu_rename_folder: "Renombrar"
-  contextual_menu_folder_delete: "Borrar"
-  contextual_menu_see_sample_code: "Ver código"
-  contextual_menu_clone_sample_code: "Clonar en los ejercicios añadidos"
-  confirm_delete_file_title: "Borrar el archivo ?"
-  confirm_delete_file_msg: "¿Quieres borrar el archivo '$name'?"
-  confirm_delete_folder_title: "¿Borrar la carpeta?"
-  confirm_delete_folder_msg: "¿Quieres borrar la carpeta '$name'?"
-  file_name_already_taken: "Este nombre ya está en uso."
-  new_folder_prompt: "Nombre :"
-  rename_folder_prompt: "Nuevo nombre : "
-  loading_content: "Cargando ..."
-  root_directory: "'Raíz'"
-  protected_folder: "Carpeta protegida"
-  cloned_sample_exercise: "Muestra clonada con el nombre $name."
-  contextual_menu_file_export: "Exportar"
-  export_script_title: "Exportar"
-  documents_directory: "Documentos"
-  external_storage: "Almacenamiento externo"
-  script_exported: "El script se ha exportado"
-  import_file_menu: "Importar archivo"
-  import_folder_menu: "Importar carpeta"
-  no_external_storage: "No hay tarjetas SD"
-  script_exported_to: "Script exportado en el nombre $name"
-  failed_exporting_script: "Error al exportar el script"
-  text_file_type: "Texto"
-explorer:
-  failed_loading_content: "Error al cargar el contenido"
-  save_file_prompt: "Nombre:"
-  empty_item_name: "Debe especificar un nombre."
-  new_folder_title: "Añadir una nueva carpeta"
-  new_folder_prompt: "Nombre:"
-  folder_already_exists: "Este nombre ya está en uso."
+  menu_buttons:
+    samples: "Ejemplos"
+    load_script: "Cargar archivo de código"
+    new_script: "Nuevo archivo de código"
 gamePage:
   title: "Página del juego"
   goalWin: "Objetivo: ganar"
