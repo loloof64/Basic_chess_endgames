@@ -25,10 +25,12 @@ class HomeWidget extends ConsumerStatefulWidget {
 class _HomeWidgetState extends ConsumerState<HomeWidget> {
   Isolate? _positionGenerationIsolate;
   bool _isBusy = false;
+  List<AssetGame> _sampleGames = [];
 
   @override
   void initState() {
     FlutterNativeSplash.remove();
+    _sampleGames = getAssetGames(context);
     super.initState();
   }
 
@@ -269,18 +271,13 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
   void _doStartCustomExercice() {}
 
   void _purposeLoadSample() async {
-    setState(() {
-      _isBusy = true;
-    });
-    final games = getAssetGames(context);
-
     final fontSize = Platform.isAndroid ? 14.0 : 25.0;
     final iconSize = Platform.isAndroid ? 18.0 : 30.0;
 
     final elementsGap = Platform.isAndroid ? 4.0 : 13.0;
 
     final dialogChoicesWidget = <Widget>[];
-    for (final currentGame in games) {
+    for (final currentGame in _sampleGames) {
       final widget = Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -354,11 +351,6 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         ),
       ],
     );
-
-    setState(() {
-      _isBusy = false;
-    });
-
     await showDialog(
         context: context,
         builder: (ctx) {
@@ -405,9 +397,6 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     final progressBarSize = MediaQuery.of(context).size.shortestSide * 0.80;
-    ////////////////////////
-    print("rebuild");
-    //////////////////////////
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
