@@ -67,10 +67,6 @@ explorer:
   new_folder_title: "Add a new folder"
   new_folder_prompt: "Name : "
   folder_already_exists: "This name is already in use."
-rgpd:
-  text: "By using this app, you agree with :"
-  privacy: "the Privacy Policy"
-  useConditions: "the Use Conditions"
 gamePage:
   title: "Game page"
   goalWin: "Goal: win"
@@ -125,23 +121,6 @@ sampleScript:
   kpppKppp: "King + 3 Pawns Vs King + 3 Pawns"
   rookEndingLucena: "Lucena rook ending"
   rookEndingPhilidor: "Philidor rook ending"
-privacy:
-  title: "Privacy policy"
-  content1:
-    "This page is used to inform you regarding the policies with the collection, use and \
-    disclosure of personal information for the app, Basic Chess Endgames. I respect the \
-    privacy of users and I am committed to protect the user's information, be it yours or your children's. I \
-    believe that you have a right to know my practices regarding the information I may collect and use when you \
-    use my app."
-  content2:
-    "Privacy of my product users is important to me. I do not collect any identifiable \
-    information about my users. I do not store or transmit any personal information."
-  content3: "If you have any questions about this Privacy Policy please contact me at laurent.bernabe@gmail.com."
-useConditions:
-  title: "Use conditions"
-  content: "No particular use condition is required for Basic Chess Endgames \
-    This application is only targeted to help chess players to improve their play, and do not include any content that could be \
-    harmful, violent or shocking."
 script_editor_page:
   title: "Script editor page"
   player_king_constraint: "Player's king's constraints"

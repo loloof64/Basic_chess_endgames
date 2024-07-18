@@ -8,7 +8,6 @@ import 'package:basicchessendgamestrainer/pages/script_editor_page.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/home_page_widget.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/explorer_widgets.dart';
 import 'package:chess/chess.dart' as chess;
-import 'package:basicchessendgamestrainer/components/rgpd_modal_bottom_sheet_content.dart';
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
 import 'package:basicchessendgamestrainer/pages/game_page.dart';
@@ -52,7 +51,6 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
   @override
   void initState() {
     FlutterNativeSplash.remove();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _showRgpdWarning());
     _sampleGames = getAssetGames(context).toFolderItemsList();
     _computeSampleExercisesLeadingIcons().then((value) => null);
     getApplicationDocumentsDirectory().then((directory) async {
@@ -159,25 +157,6 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                 child: Text(t.misc.button_ok),
               ),
             ],
-          );
-        });
-  }
-
-  void _showRgpdWarning() {
-    showModalBottomSheet(
-        isDismissible: false,
-        enableDrag: false,
-        context: context,
-        builder: (ctx2) {
-          return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.25,
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: RgpdModalBottomSheetContent(
-                context: ctx2,
-                height: rgpdWarningHeight,
-              ),
-            ),
           );
         });
   }

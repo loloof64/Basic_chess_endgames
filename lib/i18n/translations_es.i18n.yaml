@@ -72,10 +72,6 @@ explorer:
   new_folder_title: "Añadir una nueva carpeta"
   new_folder_prompt: "Nombre:"
   folder_already_exists: "Este nombre ya está en uso."
-rgpd:
-  text: "Al utilizar esta aplicación, estás de acuerdo con:"
-  privacy: "la Política de Privacidad"
-  useConditions: "las Condiciones de Uso"
 gamePage:
   title: "Página del juego"
   goalWin: "Objetivo: ganar"
@@ -132,26 +128,6 @@ sampleScript:
   kpppKppp: "Rey + 3 Peones Vs Rey + 3 Peones"
   rookEndingLucena: "Finale de torre de Lucena"
   rookEndingPhilidor: "Finale de torre de Philidor"
-privacy:
-  title: "Politica de privacidad"
-  content1:
-    "Esta página se utiliza para informarle sobre las políticas con el recopilación, uso y \
-    divulgación de información personal para la aplicación, Finales Básicos de Ajedrez. Yo respeto \
-    la privacidad de usuarios y me comprometo a proteger la información del usuario, ya sea el tuyo o el de tus \
-    hijos. Creo que tienes derecho a conocer mi prácticas con respecto a la información que puedo recopilar y \
-    usar cuando usted usa mi aplicación."
-  content2:
-    "La privacidad de los usuarios de mis productos es importante para mí. No colecciono \
-    ninguna información identificable sobre mis usuarios. No almaceno ni transmito cualquier \
-    información personal."
-  content3:
-    "Si tiene alguna pregunta sobre esta Política de privacidad, comuníquese con yo en \
-    laurent.bernabe@gmail.com."
-useConditions:
-  title: "Condiciones de uso"
-  content:
-    "No se requiere una condición de uso particular para Finales Básicos de Ajedrez. Esta aplicación solo está destinada a \
-    ayudar a los jugadores de ajedrez para mejorar su juego y no incluir ningún contenido que pueda ser dañino, violento o impactante."
 script_editor_page:
   title: "Página del editor de guiones"
   player_king_constraint: "Restricciones rey del jugador"

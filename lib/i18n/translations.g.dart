@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 759 (253 per locale)
+/// Strings: 732 (244 per locale)
 ///
-/// Built on 2024-05-09 at 14:19 UTC
+/// Built on 2024-07-18 at 13:25 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -159,13 +159,10 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsPickersEn pickers = _TranslationsPickersEn._(_root);
 	late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
 	late final _TranslationsExplorerEn explorer = _TranslationsExplorerEn._(_root);
-	late final _TranslationsRgpdEn rgpd = _TranslationsRgpdEn._(_root);
 	late final _TranslationsGamePageEn game_page = _TranslationsGamePageEn._(_root);
 	late final _TranslationsScriptParserEn script_parser = _TranslationsScriptParserEn._(_root);
 	late final _TranslationsScriptTypeEn script_type = _TranslationsScriptTypeEn._(_root);
 	late final _TranslationsSampleScriptEn sample_script = _TranslationsSampleScriptEn._(_root);
-	late final _TranslationsPrivacyEn privacy = _TranslationsPrivacyEn._(_root);
-	late final _TranslationsUseConditionsEn use_conditions = _TranslationsUseConditionsEn._(_root);
 	late final _TranslationsScriptEditorPageEn script_editor_page = _TranslationsScriptEditorPageEn._(_root);
 	late final _TranslationsSyntaxManualPageEn syntax_manual_page = _TranslationsSyntaxManualPageEn._(_root);
 	late final _TranslationsFileChooserEn file_chooser = _TranslationsFileChooserEn._(_root);
@@ -262,18 +259,6 @@ class _TranslationsExplorerEn {
 	String get folder_already_exists => 'This name is already in use.';
 }
 
-// Path: rgpd
-class _TranslationsRgpdEn {
-	_TranslationsRgpdEn._(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get text => 'By using this app, you agree with :';
-	String get privacy => 'the Privacy Policy';
-	String get use_conditions => 'the Use Conditions';
-}
-
 // Path: game_page
 class _TranslationsGamePageEn {
 	_TranslationsGamePageEn._(this._root);
@@ -355,30 +340,6 @@ class _TranslationsSampleScriptEn {
 	String get kppp_kppp => 'King + 3 Pawns Vs King + 3 Pawns';
 	String get rook_ending_lucena => 'Lucena rook ending';
 	String get rook_ending_philidor => 'Philidor rook ending';
-}
-
-// Path: privacy
-class _TranslationsPrivacyEn {
-	_TranslationsPrivacyEn._(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get title => 'Privacy policy';
-	String get content1 => 'This page is used to inform you regarding the policies with the collection, use and disclosure of personal information for the app, Basic Chess Endgames. I respect the privacy of users and I am committed to protect the user\'s information, be it yours or your children\'s. I believe that you have a right to know my practices regarding the information I may collect and use when you use my app.';
-	String get content2 => 'Privacy of my product users is important to me. I do not collect any identifiable information about my users. I do not store or transmit any personal information.';
-	String get content3 => 'If you have any questions about this Privacy Policy please contact me at laurent.bernabe@gmail.com.';
-}
-
-// Path: use_conditions
-class _TranslationsUseConditionsEn {
-	_TranslationsUseConditionsEn._(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get title => 'Use conditions';
-	String get content => 'No particular use condition is required for Basic Chess Endgames This application is only targeted to help chess players to improve their play, and do not include any content that could be harmful, violent or shocking.';
 }
 
 // Path: script_editor_page
@@ -574,13 +535,10 @@ class _TranslationsEs extends Translations {
 	@override late final _TranslationsPickersEs pickers = _TranslationsPickersEs._(_root);
 	@override late final _TranslationsHomeEs home = _TranslationsHomeEs._(_root);
 	@override late final _TranslationsExplorerEs explorer = _TranslationsExplorerEs._(_root);
-	@override late final _TranslationsRgpdEs rgpd = _TranslationsRgpdEs._(_root);
 	@override late final _TranslationsGamePageEs game_page = _TranslationsGamePageEs._(_root);
 	@override late final _TranslationsScriptParserEs script_parser = _TranslationsScriptParserEs._(_root);
 	@override late final _TranslationsScriptTypeEs script_type = _TranslationsScriptTypeEs._(_root);
 	@override late final _TranslationsSampleScriptEs sample_script = _TranslationsSampleScriptEs._(_root);
-	@override late final _TranslationsPrivacyEs privacy = _TranslationsPrivacyEs._(_root);
-	@override late final _TranslationsUseConditionsEs use_conditions = _TranslationsUseConditionsEs._(_root);
 	@override late final _TranslationsScriptEditorPageEs script_editor_page = _TranslationsScriptEditorPageEs._(_root);
 	@override late final _TranslationsSyntaxManualPageEs syntax_manual_page = _TranslationsSyntaxManualPageEs._(_root);
 	@override late final _TranslationsFileChooserEs file_chooser = _TranslationsFileChooserEs._(_root);
@@ -677,18 +635,6 @@ class _TranslationsExplorerEs extends _TranslationsExplorerEn {
 	@override String get folder_already_exists => 'Este nombre ya está en uso.';
 }
 
-// Path: rgpd
-class _TranslationsRgpdEs extends _TranslationsRgpdEn {
-	_TranslationsRgpdEs._(_TranslationsEs root) : this._root = root, super._(root);
-
-	@override final _TranslationsEs _root; // ignore: unused_field
-
-	// Translations
-	@override String get text => 'Al utilizar esta aplicación, estás de acuerdo con:';
-	@override String get privacy => 'la Política de Privacidad';
-	@override String get use_conditions => 'las Condiciones de Uso';
-}
-
 // Path: game_page
 class _TranslationsGamePageEs extends _TranslationsGamePageEn {
 	_TranslationsGamePageEs._(_TranslationsEs root) : this._root = root, super._(root);
@@ -770,30 +716,6 @@ class _TranslationsSampleScriptEs extends _TranslationsSampleScriptEn {
 	@override String get kppp_kppp => 'Rey + 3 Peones Vs Rey + 3 Peones';
 	@override String get rook_ending_lucena => 'Finale de torre de Lucena';
 	@override String get rook_ending_philidor => 'Finale de torre de Philidor';
-}
-
-// Path: privacy
-class _TranslationsPrivacyEs extends _TranslationsPrivacyEn {
-	_TranslationsPrivacyEs._(_TranslationsEs root) : this._root = root, super._(root);
-
-	@override final _TranslationsEs _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Politica de privacidad';
-	@override String get content1 => 'Esta página se utiliza para informarle sobre las políticas con el recopilación, uso y divulgación de información personal para la aplicación, Finales Básicos de Ajedrez. Yo respeto la privacidad de usuarios y me comprometo a proteger la información del usuario, ya sea el tuyo o el de tus hijos. Creo que tienes derecho a conocer mi prácticas con respecto a la información que puedo recopilar y usar cuando usted usa mi aplicación.';
-	@override String get content2 => 'La privacidad de los usuarios de mis productos es importante para mí. No colecciono ninguna información identificable sobre mis usuarios. No almaceno ni transmito cualquier información personal.';
-	@override String get content3 => 'Si tiene alguna pregunta sobre esta Política de privacidad, comuníquese con yo en laurent.bernabe@gmail.com.';
-}
-
-// Path: use_conditions
-class _TranslationsUseConditionsEs extends _TranslationsUseConditionsEn {
-	_TranslationsUseConditionsEs._(_TranslationsEs root) : this._root = root, super._(root);
-
-	@override final _TranslationsEs _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Condiciones de uso';
-	@override String get content => 'No se requiere una condición de uso particular para Finales Básicos de Ajedrez. Esta aplicación solo está destinada a ayudar a los jugadores de ajedrez para mejorar su juego y no incluir ningún contenido que pueda ser dañino, violento o impactante.';
 }
 
 // Path: script_editor_page
@@ -989,13 +911,10 @@ class _TranslationsFr extends Translations {
 	@override late final _TranslationsPickersFr pickers = _TranslationsPickersFr._(_root);
 	@override late final _TranslationsHomeFr home = _TranslationsHomeFr._(_root);
 	@override late final _TranslationsExplorerFr explorer = _TranslationsExplorerFr._(_root);
-	@override late final _TranslationsRgpdFr rgpd = _TranslationsRgpdFr._(_root);
 	@override late final _TranslationsGamePageFr game_page = _TranslationsGamePageFr._(_root);
 	@override late final _TranslationsScriptParserFr script_parser = _TranslationsScriptParserFr._(_root);
 	@override late final _TranslationsScriptTypeFr script_type = _TranslationsScriptTypeFr._(_root);
 	@override late final _TranslationsSampleScriptFr sample_script = _TranslationsSampleScriptFr._(_root);
-	@override late final _TranslationsPrivacyFr privacy = _TranslationsPrivacyFr._(_root);
-	@override late final _TranslationsUseConditionsFr use_conditions = _TranslationsUseConditionsFr._(_root);
 	@override late final _TranslationsScriptEditorPageFr script_editor_page = _TranslationsScriptEditorPageFr._(_root);
 	@override late final _TranslationsSyntaxManualPageFr syntax_manual_page = _TranslationsSyntaxManualPageFr._(_root);
 	@override late final _TranslationsFileChooserFr file_chooser = _TranslationsFileChooserFr._(_root);
@@ -1092,18 +1011,6 @@ class _TranslationsExplorerFr extends _TranslationsExplorerEn {
 	@override String get folder_already_exists => 'Ce nom est déjà utilisé.';
 }
 
-// Path: rgpd
-class _TranslationsRgpdFr extends _TranslationsRgpdEn {
-	_TranslationsRgpdFr._(_TranslationsFr root) : this._root = root, super._(root);
-
-	@override final _TranslationsFr _root; // ignore: unused_field
-
-	// Translations
-	@override String get text => 'En utilisant cette application, vous vous conformez à :';
-	@override String get privacy => 'la Politique de Confidentialité';
-	@override String get use_conditions => 'les Conditions d\'Utilisation';
-}
-
 // Path: game_page
 class _TranslationsGamePageFr extends _TranslationsGamePageEn {
 	_TranslationsGamePageFr._(_TranslationsFr root) : this._root = root, super._(root);
@@ -1185,30 +1092,6 @@ class _TranslationsSampleScriptFr extends _TranslationsSampleScriptEn {
 	@override String get kppp_kppp => 'Roi + 3 Pions Contre Roi + 3 Pions';
 	@override String get rook_ending_lucena => 'Finale de tour de Lucena';
 	@override String get rook_ending_philidor => 'Finale de tour de Philidor';
-}
-
-// Path: privacy
-class _TranslationsPrivacyFr extends _TranslationsPrivacyEn {
-	_TranslationsPrivacyFr._(_TranslationsFr root) : this._root = root, super._(root);
-
-	@override final _TranslationsFr _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Politique de confidentialité';
-	@override String get content1 => 'Cette page est utilisée pour vous informer sur les politiques de collecte, d\'utilisation et divulgation d\'informations personnelles pour l\'application, Finales d\'Echecs Basiques. Je respecte la vie privée de utilisateurs et je m\'engage à protéger les informations de l\'utilisateur, que ce soit la vôtre ou celle de vos enfants. Je crois que vous avez le droit de connaître mes pratiques concernant les informations que je peux collecter et utiliser lorsque vous utilisez mon application.';
-	@override String get content2 => 'La confidentialité des utilisateurs de mes applications est importante pour moi. Je ne collecte aucune information identifiable sur mes utilisateurs. Je ne stocke ni ne transmets aucune information personnelle.';
-	@override String get content3 => 'Si vous avez quelque question que ce soit à propos de cette politique de confidentialité, veuillez me contacter à laurent.bernabe@gmail.com.';
-}
-
-// Path: use_conditions
-class _TranslationsUseConditionsFr extends _TranslationsUseConditionsEn {
-	_TranslationsUseConditionsFr._(_TranslationsFr root) : this._root = root, super._(root);
-
-	@override final _TranslationsFr _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Conditions d\'utilisation';
-	@override String get content => 'Aucune condition d\'utilisation particulière n\'est requise pour Finales d\'Echecs Basiques. Cette application est uniquement destinée à aider les joueurs d\'échecs pour améliorer leur jeu, et n\'inclut aucun contenu qui pourrait être nuisible, violent ou choquant.';
 }
 
 // Path: script_editor_page

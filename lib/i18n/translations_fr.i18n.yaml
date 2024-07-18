@@ -72,10 +72,6 @@ explorer:
   new_folder_title: "Ajouter un nouveau dossier"
   new_folder_prompt: "Nom : "
   folder_already_exists: "Ce nom est déjà utilisé."
-rgpd:
-  text: "En utilisant cette application, vous vous conformez à :"
-  privacy: "la Politique de Confidentialité"
-  useConditions: "les Conditions d'Utilisation"
 gamePage:
   title: "Page de jeu"
   goalWin: "Objectif: victoire"
@@ -136,27 +132,6 @@ sampleScript:
   kpppKppp: "Roi + 3 Pions Contre Roi + 3 Pions"
   rookEndingLucena: "Finale de tour de Lucena"
   rookEndingPhilidor: "Finale de tour de Philidor"
-privacy:
-  title: "Politique de confidentialité"
-  content1:
-    "Cette page est utilisée pour vous informer sur les politiques de collecte, d'utilisation et \
-    divulgation d'informations personnelles pour l'application, Finales d'Echecs Basiques. Je \
-    respecte la vie privée de utilisateurs et je m'engage à protéger les informations de l'utilisateur, que ce soit \
-    la vôtre ou celle de vos enfants. Je crois que vous avez le droit de connaître mes pratiques concernant les \
-    informations que je peux collecter et utiliser lorsque vous utilisez mon application."
-  content2:
-    "La confidentialité des utilisateurs de mes applications est importante pour moi. Je ne \
-    collecte aucune information identifiable sur mes utilisateurs. Je ne stocke ni ne transmets aucune \
-    information personnelle."
-  content3:
-    "Si vous avez quelque question que ce soit à propos de cette politique de confidentialité, veuillez \
-    me contacter à laurent.bernabe@gmail.com."
-useConditions:
-  title: "Conditions d'utilisation"
-  content:
-    "Aucune condition d'utilisation particulière n'est requise pour Finales d'Echecs Basiques. Cette application est \
-    uniquement destinée à aider les joueurs d'échecs pour améliorer leur jeu, et n'inclut aucun contenu qui pourrait être nuisible, \
-    violent ou choquant."
 script_editor_page:
   title: "Page d'édition de script"
   player_king_constraint: "Contraintes roi du joueur"
