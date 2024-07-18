@@ -277,6 +277,8 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     final fontSize = Platform.isAndroid ? 14.0 : 25.0;
     final iconSize = Platform.isAndroid ? 18.0 : 30.0;
 
+    final elementsGap = Platform.isAndroid ? 4.0 : 13.0;
+
     final dialogChoicesWidget = <Widget>[];
     for (final currentGame in games) {
       final widget = Row(
@@ -284,7 +286,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 4.0, right: 2.0),
+            padding: EdgeInsets.only(left: elementsGap, right: 2.0),
             child: SvgPicture.asset(
               currentGame.hasWinningGoal
                   ? 'assets/images/trophy.svg'
@@ -295,7 +297,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 4.0, left: 2.0),
+            padding: EdgeInsets.only(right: elementsGap, left: 2.0),
             child: Text(
               currentGame.label,
               style: TextStyle(fontSize: fontSize),
@@ -312,7 +314,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 4.0),
+          padding: EdgeInsets.only(left: elementsGap),
           child: Text(
             t.home.goal_label,
             style: TextStyle(fontSize: fontSize),
@@ -344,7 +346,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 4.0),
+          padding: EdgeInsets.only(right: elementsGap),
           child: Text(
             t.home.draw_label,
             style: TextStyle(fontSize: fontSize),
@@ -403,6 +405,9 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     final progressBarSize = MediaQuery.of(context).size.shortestSide * 0.80;
+    ////////////////////////
+    print("rebuild");
+    //////////////////////////
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
