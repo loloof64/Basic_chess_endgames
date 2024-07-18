@@ -12,9 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logger/logger.dart';
-
-const mainListItemsGap = 8.0;
 
 class HomeWidget extends ConsumerStatefulWidget {
   const HomeWidget({super.key});
@@ -25,7 +24,7 @@ class HomeWidget extends ConsumerStatefulWidget {
 
 class _HomeWidgetState extends ConsumerState<HomeWidget> {
   Isolate? _positionGenerationIsolate;
-  bool _isGeneratingPosition = false;
+  bool _isBusy = false;
 
   @override
   void initState() {
@@ -39,15 +38,6 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       priority: Isolate.immediate,
     );
     super.dispose();
-  }
-
-  bool? _getWinningGoalFromScript(String script) {
-    final lastLine = script.trim().split('\n').last;
-    return lastLine == winningString
-        ? true
-        : lastLine == drawingString
-            ? false
-            : null;
   }
 
   Future<InitialScriptsSet> _getInitialScriptSetFor(File file) async {
@@ -130,7 +120,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     if (!mounted) return;
 
     setState(() {
-      _isGeneratingPosition = true;
+      _isBusy = true;
     });
 
     _positionGenerationIsolate = await Isolate.spawn(
@@ -190,7 +180,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
           });
 
       setState(() {
-        _isGeneratingPosition = false;
+        _isBusy = false;
       });
     });
 
@@ -201,7 +191,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       );
 
       setState(() {
-        _isGeneratingPosition = false;
+        _isBusy = false;
       });
 
       final (newPosition, errors) =
@@ -276,17 +266,139 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     );
   }
 
-  void _purposeLoadSample() {
+  void _doStartCustomExercice() {}
 
+  void _purposeLoadSample() async {
+    setState(() {
+      _isBusy = true;
+    });
+    final games = getAssetGames(context);
+
+    final fontSize = Platform.isAndroid ? 14.0 : 25.0;
+    final iconSize = Platform.isAndroid ? 18.0 : 30.0;
+
+    final dialogChoicesWidget = <Widget>[];
+    for (final currentGame in games) {
+      final widget = Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 4.0, right: 2.0),
+            child: SvgPicture.asset(
+              currentGame.hasWinningGoal
+                  ? 'assets/images/trophy.svg'
+                  : 'assets/images/handshake.svg',
+              fit: BoxFit.cover,
+              width: iconSize,
+              height: iconSize,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 4.0, left: 2.0),
+            child: Text(
+              currentGame.label,
+              style: TextStyle(fontSize: fontSize),
+            ),
+          ),
+        ],
+      );
+      dialogChoicesWidget.add(widget);
+    }
+
+    final titleDialog = Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4.0),
+          child: Text(
+            t.home.goal_label,
+            style: TextStyle(fontSize: fontSize),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 1.0, left: 8.0),
+          child: SvgPicture.asset(
+            'assets/images/trophy.svg',
+            fit: BoxFit.cover,
+            width: iconSize,
+            height: iconSize,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: Text(
+            t.home.win_label,
+            style: TextStyle(fontSize: fontSize),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 1.0),
+          child: SvgPicture.asset(
+            'assets/images/handshake.svg',
+            fit: BoxFit.cover,
+            width: iconSize,
+            height: iconSize,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 4.0),
+          child: Text(
+            t.home.draw_label,
+            style: TextStyle(fontSize: fontSize),
+          ),
+        ),
+      ],
+    );
+
+    setState(() {
+      _isBusy = false;
+    });
+
+    await showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: titleDialog,
+            content: SingleChildScrollView(
+              child: Column(
+                children: dialogChoicesWidget,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  t.misc.button_cancel,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _doStartCustomExercice();
+                },
+                child: Text(
+                  t.misc.button_ok,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
-  void _purposeLoadScript() {
+  void _purposeLoadScript() {}
 
-  }
-
-  void _openNewScriptEditor() {
-    
-  }
+  void _openNewScriptEditor() {}
 
   @override
   Widget build(BuildContext context) {
@@ -296,7 +408,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(t.home.title),
         ),
-        body: _isGeneratingPosition
+        body: _isBusy
             ? Center(
                 child: SizedBox(
                   width: progressBarSize,
@@ -305,16 +417,22 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                 ),
               )
             : Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(onPressed: _purposeLoadSample, child: Text(t.home.menu_buttons.samples)),
-                    ElevatedButton(onPressed: _purposeLoadScript, child: Text(t.home.menu_buttons.load_script)),
-                    ElevatedButton(onPressed: _openNewScriptEditor, child: Text(t.home.menu_buttons.new_script)),
+                    ElevatedButton(
+                        onPressed: _purposeLoadSample,
+                        child: Text(t.home.menu_buttons.samples)),
+                    ElevatedButton(
+                        onPressed: _purposeLoadScript,
+                        child: Text(t.home.menu_buttons.load_script)),
+                    ElevatedButton(
+                        onPressed: _openNewScriptEditor,
+                        child: Text(t.home.menu_buttons.new_script)),
                   ],
                 ),
-            ));
+              ));
   }
 }

@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 618 (206 per locale)
+/// Strings: 627 (209 per locale)
 ///
-/// Built on 2024-07-18 at 14:21 UTC
+/// Built on 2024-07-18 at 15:36 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -207,6 +207,9 @@ class _TranslationsHomeEn {
 	String get max_generation_attempts_achieved => 'Impossible to generate a position from these scripts : maximum generation attempts surpassed.\n\nPlease check that your constraints aren\'t too restrictive.\n\nAlso, please check that all of your variables are declared before use.';
 	String get misc_generating_error => 'Failed to generate the position for a miscellaneous error.';
 	late final _TranslationsHomeMenuButtonsEn menu_buttons = _TranslationsHomeMenuButtonsEn._(_root);
+	String get goal_label => 'Goal';
+	String get win_label => 'Win';
+	String get draw_label => 'Draw';
 }
 
 // Path: game_page
@@ -281,13 +284,13 @@ class _TranslationsSampleScriptEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get kq_k => 'King + Queen Vs King';
-	String get kr_k => 'King + Rook Vs King';
-	String get krr_k => 'King + 2 Rooks Vs King';
-	String get kbb_k => 'King + Rook Vs King';
-	String get kp_k1 => 'King + Pawn Vs King (1)';
-	String get kp_k2 => 'King + Pawn Vs King (2)';
-	String get kppp_kppp => 'King + 3 Pawns Vs King + 3 Pawns';
+	String get kq_k => 'King+Queen | King';
+	String get kr_k => 'King+Rook | King';
+	String get krr_k => 'King+2 Rooks | King';
+	String get kbb_k => 'King+Rook | King';
+	String get kp_k1 => 'King+Pawn | King (1)';
+	String get kp_k2 => 'King+Pawn | King (2)';
+	String get kppp_kppp => 'King+3 Pawns | King+3 Pawns';
 	String get rook_ending_lucena => 'Lucena rook ending';
 	String get rook_ending_philidor => 'Philidor rook ending';
 }
@@ -468,7 +471,7 @@ class _TranslationsHomeMenuButtonsEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get samples => 'Examples';
+	String get samples => 'Load an example';
 	String get load_script => 'Load script';
 	String get new_script => 'New script';
 }
@@ -545,6 +548,9 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get failed_generating_position => 'Falló al generar la posición.';
 	@override String get misc_generating_error => 'Error al generar la posición para un error misceláneo.';
 	@override late final _TranslationsHomeMenuButtonsEs menu_buttons = _TranslationsHomeMenuButtonsEs._(_root);
+	@override String get goal_label => 'Objectivo';
+	@override String get win_label => 'Ganar';
+	@override String get draw_label => 'Empate';
 }
 
 // Path: game_page
@@ -619,13 +625,13 @@ class _TranslationsSampleScriptEs extends _TranslationsSampleScriptEn {
 	@override final _TranslationsEs _root; // ignore: unused_field
 
 	// Translations
-	@override String get kq_k => 'Rey + Reina Vs Rey';
-	@override String get kr_k => 'Rey + Torre Vs Rey';
-	@override String get krr_k => 'Rey + 2 Torres Vs Rey';
-	@override String get kbb_k => 'Rey + 2 Alfiles Vs Rey';
-	@override String get kp_k1 => 'Rey + Peón Vs Rey (1)';
-	@override String get kp_k2 => 'Rey + Peón Vs Rey (2)';
-	@override String get kppp_kppp => 'Rey + 3 Peones Vs Rey + 3 Peones';
+	@override String get kq_k => 'Rey+Reina | Rey';
+	@override String get kr_k => 'Rey+ Torre | Rey';
+	@override String get krr_k => 'Rey+2 Torres | Rey';
+	@override String get kbb_k => 'Rey+2 Alfiles | Rey';
+	@override String get kp_k1 => 'Rey+Peón | Rey (1)';
+	@override String get kp_k2 => 'Rey+Peón | Rey (2)';
+	@override String get kppp_kppp => 'Rey+3 Peones | Rey+3 Peones';
 	@override String get rook_ending_lucena => 'Finale de torre de Lucena';
 	@override String get rook_ending_philidor => 'Finale de torre de Philidor';
 }
@@ -806,7 +812,7 @@ class _TranslationsHomeMenuButtonsEs extends _TranslationsHomeMenuButtonsEn {
 	@override final _TranslationsEs _root; // ignore: unused_field
 
 	// Translations
-	@override String get samples => 'Ejemplos';
+	@override String get samples => 'Cargar un ejemplo';
 	@override String get load_script => 'Cargar archivo de código';
 	@override String get new_script => 'Nuevo archivo de código';
 }
@@ -883,6 +889,9 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get failed_generating_position => 'Échec de génération de la position.';
 	@override String get misc_generating_error => 'Erreur de génération de la position pour une erreur diverse.';
 	@override late final _TranslationsHomeMenuButtonsFr menu_buttons = _TranslationsHomeMenuButtonsFr._(_root);
+	@override String get goal_label => 'Objectif';
+	@override String get win_label => 'Gain';
+	@override String get draw_label => 'Nulle';
 }
 
 // Path: game_page
@@ -957,13 +966,13 @@ class _TranslationsSampleScriptFr extends _TranslationsSampleScriptEn {
 	@override final _TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String get kq_k => 'Roi + Dame Contre Roi';
-	@override String get kr_k => 'Roi + Tour Contre Roi';
-	@override String get krr_k => 'Roi + 2 Tours Contre Roi';
-	@override String get kbb_k => 'Roi + 2 Fous Contre Roi';
-	@override String get kp_k1 => 'Roi + Pion Contre Roi (1)';
-	@override String get kp_k2 => 'Roi + Pion Contre Roi (2)';
-	@override String get kppp_kppp => 'Roi + 3 Pions Contre Roi + 3 Pions';
+	@override String get kq_k => 'Roi+Dame | Roi';
+	@override String get kr_k => 'Roi+Tour | Roi';
+	@override String get krr_k => 'Roi+2 Tours | Roi';
+	@override String get kbb_k => 'Roi+2 Fous | Roi';
+	@override String get kp_k1 => 'Roi+Pion | Roi (1)';
+	@override String get kp_k2 => 'Roi+Pion | Roi (2)';
+	@override String get kppp_kppp => 'Roi+3 Pions | Roi+3 Pions';
 	@override String get rook_ending_lucena => 'Finale de tour de Lucena';
 	@override String get rook_ending_philidor => 'Finale de tour de Philidor';
 }
@@ -1144,7 +1153,7 @@ class _TranslationsHomeMenuButtonsFr extends _TranslationsHomeMenuButtonsEn {
 	@override final _TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String get samples => 'Exemples';
+	@override String get samples => 'Charger un exemple';
 	@override String get load_script => 'Charger un script';
 	@override String get new_script => 'Nouveau script';
 }
