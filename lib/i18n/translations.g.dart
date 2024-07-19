@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 627 (209 per locale)
+/// Strings: 630 (210 per locale)
 ///
-/// Built on 2024-07-18 at 15:36 UTC
+/// Built on 2024-07-19 at 10:24 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -158,6 +158,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsMiscEn misc = _TranslationsMiscEn._(_root);
 	late final _TranslationsPickersEn pickers = _TranslationsPickersEn._(_root);
 	late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
+	late final _TranslationsSampleChooserEn sample_chooser = _TranslationsSampleChooserEn._(_root);
 	late final _TranslationsGamePageEn game_page = _TranslationsGamePageEn._(_root);
 	late final _TranslationsScriptParserEn script_parser = _TranslationsScriptParserEn._(_root);
 	late final _TranslationsScriptTypeEn script_type = _TranslationsScriptTypeEn._(_root);
@@ -210,6 +211,16 @@ class _TranslationsHomeEn {
 	String get goal_label => 'Goal';
 	String get win_label => 'Win';
 	String get draw_label => 'Draw';
+}
+
+// Path: sample_chooser
+class _TranslationsSampleChooserEn {
+	_TranslationsSampleChooserEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Example chooser';
 }
 
 // Path: game_page
@@ -499,6 +510,7 @@ class _TranslationsEs extends Translations {
 	@override late final _TranslationsMiscEs misc = _TranslationsMiscEs._(_root);
 	@override late final _TranslationsPickersEs pickers = _TranslationsPickersEs._(_root);
 	@override late final _TranslationsHomeEs home = _TranslationsHomeEs._(_root);
+	@override late final _TranslationsSampleChooserEs sample_chooser = _TranslationsSampleChooserEs._(_root);
 	@override late final _TranslationsGamePageEs game_page = _TranslationsGamePageEs._(_root);
 	@override late final _TranslationsScriptParserEs script_parser = _TranslationsScriptParserEs._(_root);
 	@override late final _TranslationsScriptTypeEs script_type = _TranslationsScriptTypeEs._(_root);
@@ -551,6 +563,16 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get goal_label => 'Objectivo';
 	@override String get win_label => 'Ganar';
 	@override String get draw_label => 'Empate';
+}
+
+// Path: sample_chooser
+class _TranslationsSampleChooserEs extends _TranslationsSampleChooserEn {
+	_TranslationsSampleChooserEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Selector de ejemplo';
 }
 
 // Path: game_page
@@ -840,6 +862,7 @@ class _TranslationsFr extends Translations {
 	@override late final _TranslationsMiscFr misc = _TranslationsMiscFr._(_root);
 	@override late final _TranslationsPickersFr pickers = _TranslationsPickersFr._(_root);
 	@override late final _TranslationsHomeFr home = _TranslationsHomeFr._(_root);
+	@override late final _TranslationsSampleChooserFr sample_chooser = _TranslationsSampleChooserFr._(_root);
 	@override late final _TranslationsGamePageFr game_page = _TranslationsGamePageFr._(_root);
 	@override late final _TranslationsScriptParserFr script_parser = _TranslationsScriptParserFr._(_root);
 	@override late final _TranslationsScriptTypeFr script_type = _TranslationsScriptTypeFr._(_root);
@@ -892,6 +915,16 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get goal_label => 'Objectif';
 	@override String get win_label => 'Gain';
 	@override String get draw_label => 'Nulle';
+}
+
+// Path: sample_chooser
+class _TranslationsSampleChooserFr extends _TranslationsSampleChooserEn {
+	_TranslationsSampleChooserFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Sélecteur d\'exemple';
 }
 
 // Path: game_page

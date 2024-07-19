@@ -25,6 +25,8 @@ home:
   goal_label: "Goal"
   win_label: "Win"
   draw_label: "Draw"
+sample_chooser:
+  title: "Example chooser"
 gamePage:
   title: "Game page"
   goalWin: "Goal: win"

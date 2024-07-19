@@ -26,6 +26,8 @@ home:
   goal_label: "Objectivo"
   win_label: "Ganar"
   draw_label: "Empate"
+sample_chooser:
+  title: "Selector de ejemplo"
 gamePage:
   title: "Página del juego"
   goalWin: "Objetivo: ganar"

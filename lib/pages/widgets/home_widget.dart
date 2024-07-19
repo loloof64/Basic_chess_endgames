@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:basicchessendgamestrainer/pages/script_editor_page.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/sample_game_chooser.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
@@ -12,13 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
-
-final samplesDialogFontSize = Platform.isAndroid ? 14.0 : 25.0;
-final samplesDialogIconSize = Platform.isAndroid ? 18.0 : 30.0;
-final samplesDialogElementsGap = Platform.isAndroid ? 4.0 : 13.0;
 
 class HomeWidget extends ConsumerStatefulWidget {
   const HomeWidget({super.key});
@@ -284,96 +279,28 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
   }
 
   void _purposeLoadSample() async {
-    final titleDialog = Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: samplesDialogElementsGap),
-          child: Text(
-            t.home.goal_label,
-            style: TextStyle(fontSize: samplesDialogFontSize),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 1.0, left: 8.0),
-          child: SvgPicture.asset(
-            'assets/images/trophy.svg',
-            fit: BoxFit.cover,
-            width: samplesDialogIconSize,
-            height: samplesDialogIconSize,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: Text(
-            t.home.win_label,
-            style: TextStyle(fontSize: samplesDialogFontSize),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 1.0),
-          child: SvgPicture.asset(
-            'assets/images/handshake.svg',
-            fit: BoxFit.cover,
-            width: samplesDialogIconSize,
-            height: samplesDialogIconSize,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(right: samplesDialogElementsGap),
-          child: Text(
-            t.home.draw_label,
-            style: TextStyle(fontSize: samplesDialogFontSize),
-          ),
-        ),
-      ],
-    );
-    await showDialog(
-        context: context,
+    final selectedSample = await Navigator.push<AssetGame?>(
+      context,
+      MaterialPageRoute(
         builder: (ctx) {
-          return AlertDialog(
-            title: titleDialog,
-            content: SampleChooser(
-              onSelection: (sample) {
-                setState(() {
-                  _selectedSample = sample;
-                });
-              },
-            ),
-            actions: [
-              TextButton(
-                onPressed: () async {
-                  setState(() {
-                    _selectedSample = null;
-                  });
-                  await Future.delayed(Duration.zero);
-                  if (!mounted) return;
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  t.misc.button_cancel,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  _doStartCustomExercice();
-                },
-                child: Text(
-                  t.misc.button_ok,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-              ),
-            ],
-          );
-        });
+          return const SampleGameChooserPage();
+        },
+      ),
+    );
+    if (selectedSample == null) return;
+
+    try {
+      _tryGeneratingAndPlayingPositionFromSample(selectedSample);
+    } on Exception catch (ex) {
+      debugPrint(ex.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            t.home.failed_loading_exercise,
+          ),
+        ),
+      );
+    }
   }
 
   void _purposeLoadScript() {}
@@ -414,120 +341,5 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                   ],
                 ),
               ));
-  }
-}
-
-class SampleChooser extends StatefulWidget {
-  final void Function(AssetGame game) onSelection;
-
-  const SampleChooser({
-    super.key,
-    required this.onSelection,
-  });
-
-  @override
-  State<SampleChooser> createState() => _SampleChooserState();
-}
-
-class _SampleChooserState extends State<SampleChooser> {
-  final FocusNode _focusNode = FocusNode();
-  int? _selectedSampleIndex;
-  List<AssetGame> _sampleGames = <AssetGame>[];
-
-  @override
-  void initState() {
-    _sampleGames = getAssetGames(context);
-    _selectedSampleIndex = 0;
-    Future.delayed(Duration.zero).then((result) {
-      widget.onSelection(_sampleGames[0]);
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  void _tryGoingUp() async {
-    if (_selectedSampleIndex == null) return;
-    if (_selectedSampleIndex! > 0) {
-      setState(() {
-        _selectedSampleIndex = _selectedSampleIndex! - 1;
-      });
-      await Future.delayed(Duration.zero);
-      widget.onSelection(_sampleGames[_selectedSampleIndex!]);
-    }
-  }
-
-  void _tryGoingDown() async {
-    if (_selectedSampleIndex == null) return;
-    if (_selectedSampleIndex! < _sampleGames.length - 1) {
-      setState(() {
-        _selectedSampleIndex = _selectedSampleIndex! + 1;
-      });
-      await Future.delayed(Duration.zero);
-      widget.onSelection(_sampleGames[_selectedSampleIndex!]);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final dialogChoicesWidget = <Widget>[];
-    for (final (index, currentGame) in _sampleGames.indexed) {
-      final targetWidget = Container(
-        color: index == _selectedSampleIndex ? Colors.blue : Colors.transparent,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding:
-                  EdgeInsets.only(left: samplesDialogElementsGap, right: 2.0),
-              child: SvgPicture.asset(
-                currentGame.hasWinningGoal
-                    ? 'assets/images/trophy.svg'
-                    : 'assets/images/handshake.svg',
-                fit: BoxFit.cover,
-                width: samplesDialogIconSize,
-                height: samplesDialogIconSize,
-              ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.only(right: samplesDialogElementsGap, left: 2.0),
-              child: Text(
-                currentGame.label,
-                style: TextStyle(fontSize: samplesDialogFontSize),
-              ),
-            ),
-          ],
-        ),
-      );
-      dialogChoicesWidget.add(targetWidget);
-    }
-
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            IconButton(
-                onPressed: _tryGoingUp,
-                icon: const FaIcon(FontAwesomeIcons.arrowUp)),
-            IconButton(
-                onPressed: _tryGoingDown,
-                icon: const FaIcon(FontAwesomeIcons.arrowDown)),
-          ],
-        ),
-        SingleChildScrollView(
-          child: Column(
-            children: dialogChoicesWidget,
-          ),
-        ),
-      ],
-    );
   }
 }
