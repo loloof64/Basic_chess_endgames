@@ -134,6 +134,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         inGameMode: true,
         gameScript: script,
         translations: TranslationsWrapper(
+          missingReturnStatement: t.script_parser.no_return_statement,
           miscErrorDialogTitle: t.script_parser.misc_error_dialog_title,
           missingScriptType: t.script_parser.missing_script_type,
           miscParseError: t.script_parser.misc_parse_error,
@@ -161,6 +162,8 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
           otherPiecesMutualConstraint:
               t.script_type.other_pieces_mutual_constraint,
           unrecognizedScriptType: t.script_parser.unrecognized_script_type,
+          tooRestrictiveScriptTitle: t.script_parser.too_restrictive_script_title,
+          tooRestrictiveScriptMessage: t.script_parser.too_restrictive_script_message,
         ),
         sendPort: receivePort.sendPort,
       ),
@@ -296,6 +299,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       _tryGeneratingAndPlayingPositionFromSample(selectedSample);
     } on Exception catch (ex) {
       debugPrint(ex.toString());
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(

@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 621 (207 per locale)
+/// Strings: 630 (210 per locale)
 ///
-/// Built on 2024-07-19 at 13:14 UTC
+/// Built on 2024-07-19 at 20:06 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -270,6 +270,9 @@ class _TranslationsScriptParserEn {
 	String unrecognized_script_type({required Object Type}) => 'Unrecognized script type : ${Type}.';
 	String get misc_error_dialog_title => 'Global error';
 	String get misc_checking_error => 'The errors checking has failed for a miscellaneous error.';
+	String get no_return_statement => 'Missing return statement : also check that you return a boolean value.';
+	String get too_restrictive_script_title => 'Too restrictive script ?';
+	String get too_restrictive_script_message => 'Failed to generate a sample position from your script : is it too restrictive ?';
 }
 
 // Path: script_type
@@ -609,6 +612,9 @@ class _TranslationsScriptParserEs extends _TranslationsScriptParserEn {
 	@override String unrecognized_script_type({required Object Type}) => 'Tipo de escritura no reconocido: ${Type}.';
 	@override String get misc_error_dialog_title => 'Equivocado global';
 	@override String get misc_checking_error => 'La verificación de errores ha fallado debido a un error misceláneo.';
+	@override String get no_return_statement => 'Falta la declaración de \'return\': verifique también que devuelva un valor booleano.';
+	@override String get too_restrictive_script_title => '¿Código demasiado restrictivo?';
+	@override String get too_restrictive_script_message => 'No se pudo generar una posición de muestra a partir de su código: ¿es demasiado restrictivo?';
 }
 
 // Path: script_type
@@ -948,6 +954,9 @@ class _TranslationsScriptParserFr extends _TranslationsScriptParserEn {
 	@override String unrecognized_script_type({required Object Type}) => 'Type de script non reconnu : ${Type}.';
 	@override String get misc_error_dialog_title => 'Erreur globale';
 	@override String get misc_checking_error => 'La vérification d\'erreurs a échoué pour une raison diverse.';
+	@override String get no_return_statement => 'Il manque l\'instruction \'return\': vérifiez aussi que vous retournez une valeur booléenne.';
+	@override String get too_restrictive_script_title => 'Script trop restrictif ?';
+	@override String get too_restrictive_script_message => 'Échec de génération de position à partir de votre script: serait-il trop restrictif ?';
 }
 
 // Path: script_type

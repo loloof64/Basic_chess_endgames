@@ -68,6 +68,9 @@ scriptParser:
   unrecognized_script_type: "Tipo de escritura no reconocido: $type."
   miscErrorDialogTitle: "Equivocado global"
   misc_checking_error: "La verificación de errores ha fallado debido a un error misceláneo."
+  no_return_statement: "Falta la declaración de 'return': verifique también que devuelva un valor booleano."
+  too_restrictive_script_title: "¿Código demasiado restrictivo?"
+  too_restrictive_script_message : "No se pudo generar una posición de muestra a partir de su código: ¿es demasiado restrictivo?"
 scriptType:
   playerKingConstraint: "Restricción sobre rey del jugador"
   computerKingConstraint: "Restricción sobre rey de la computadora"

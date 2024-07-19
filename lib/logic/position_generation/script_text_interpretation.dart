@@ -44,6 +44,9 @@ class TranslationsWrapper {
   final String otherPiecesIndexedConstraint;
   final String otherPiecesMutualConstraint;
   final String otherPiecesCountConstraint;
+  final String tooRestrictiveScriptTitle;
+  final String tooRestrictiveScriptMessage;
+  final String missingReturnStatement;
   final String Function({required Object Symbol}) unrecognizedSymbol;
   final String Function({required Object Name}) variableNotAffected;
   final String Function({required Object Name}) overridingPredefinedVariable;
@@ -84,6 +87,9 @@ class TranslationsWrapper {
     required this.unrecognizedScriptType,
     required this.noViableAltException,
     required this.inputMismatch,
+    required this.tooRestrictiveScriptTitle,
+    required this.tooRestrictiveScriptMessage,
+    required this.missingReturnStatement,
   });
 
   String fromScriptType(ScriptType scriptType) {
@@ -296,6 +302,17 @@ class ScriptTextTransformer {
       final constraint =
           builder.buildExpressionObjectsFromScript(scriptContent);
       return (constraint, <PositionGenerationError>[]);
+    } on MissingReturnStatementException catch (ex) {
+      final scriptTypeLabel = translations.fromScriptType(scriptType);
+      final title = translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+      final message = translations.missingReturnStatement;
+      Logger().e(ex);
+      // Add the error to the errors we must show once all scripts for
+      // the position generation are built.
+      return (
+        null,
+        <PositionGenerationError>[PositionGenerationError(title, message)]
+      );
     } on VariableIsNotAffectedException catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
       final title = translations.parseErrorDialogTitle(Title: scriptTypeLabel);
@@ -438,7 +455,10 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
         }
         else {
           parameters.sendPort
-            .send(("", <PositionGenerationError>[]));
+            .send((null, <PositionGenerationError>[PositionGenerationError(
+                parameters.translations.tooRestrictiveScriptTitle,
+                parameters.translations.tooRestrictiveScriptMessage,
+              )]));
         }
       }
     }
