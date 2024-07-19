@@ -15,6 +15,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:logger/logger.dart';
 
+import 'package:open_save_file_dialogs/open_save_file_dialogs.dart';
+import 'package:file_picker/file_picker.dart';
+
+final _openSaveFileDialogsPlugin = OpenSaveFileDialogs();
+
 class HomeWidget extends ConsumerStatefulWidget {
   const HomeWidget({super.key});
 
@@ -41,9 +46,8 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     super.dispose();
   }
 
-  Future<InitialScriptsSet> _getInitialScriptSetFor(File file) async {
-    final script = await file.readAsString();
-    return _getInitialScriptSetFromScriptString(script);
+  Future<InitialScriptsSet> _getInitialScriptSetFor(String wholeScriptContent) async {
+    return _getInitialScriptSetFromScriptString(wholeScriptContent);
   }
 
   Future<InitialScriptsSet> _getInitialScriptSetFromAssetScript(
@@ -260,7 +264,6 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
             readOnly: true,
             originalFileName: null,
             initialScriptsSet: initialScriptsSet,
-            currentDirectory: null,
           );
         },
       ),
@@ -305,7 +308,68 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
 
   void _purposeLoadScript() {}
 
-  void _openNewScriptEditor() {}
+  void _purposeEditScript() async {
+    String script;
+
+    if (Platform.isAndroid) {
+      final loadedScript = await _openSaveFileDialogsPlugin.openFileDialog();
+      if (!mounted) return;
+      if (loadedScript == null) {
+        debugPrint("File loading cancellation.");
+        return;
+      }
+      script = loadedScript;
+    } else {
+      final loadedPath = await FilePicker.platform.pickFiles(
+        dialogTitle: t.pickers.open_script_title,
+        allowMultiple: false,
+      );
+      if (!mounted) return;
+      if (loadedPath == null) {
+        debugPrint("File loading cancellation.");
+        return;
+      }
+
+      try {
+        File file = File(loadedPath.files.single.path!);
+        script = await file.readAsString();
+      } on FileSystemException {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              t.home.failed_loading_exercise,
+            ),
+          ),
+        );
+        return;
+      }
+    }
+
+    final initialScriptSet = await _getInitialScriptSetFor(script);
+    if (!mounted) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) {
+          return ScriptEditorPage(
+            initialScriptsSet: initialScriptSet,
+          );
+        },
+      ),
+    );
+  }
+
+  void _openNewScriptEditor() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) {
+          return const ScriptEditorPage(
+            initialScriptsSet: InitialScriptsSet.empty(),
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -335,6 +399,9 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                     ElevatedButton(
                         onPressed: _purposeLoadScript,
                         child: Text(t.home.menu_buttons.load_script)),
+                    ElevatedButton(
+                        onPressed: _purposeEditScript,
+                        child: Text(t.home.menu_buttons.edit_script)),
                     ElevatedButton(
                         onPressed: _openNewScriptEditor,
                         child: Text(t.home.menu_buttons.new_script)),

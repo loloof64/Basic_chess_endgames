@@ -8,6 +8,7 @@ misc:
 pickers:
   documents_directory: "Documents"
   save_file_title: "Sauvegarde du script"
+  open_script_title: "Ouverture du script"
   cancelled: "Dialogue de sélection annulé"
 home:
   title: "Accueil"
@@ -23,6 +24,7 @@ home:
     samples: "Charger un exemple"
     load_script: "Charger un script"
     new_script: "Nouveau script"
+    edit_script: "Éditer un script"
   goal_label: "Objectif"
   win_label: "Gain"
   draw_label: "Nulle"
@@ -104,7 +106,8 @@ script_editor_page:
   should_draw: "Annuler"
   beforeExitTitle: "Annuler l'édition du script ?"
   beforeExitMessage: "Souhaitez-vous quitter la page et annuler l'édition du script ?"
-  exercise_creation_success: "Exercise sauvegardé sous le nom $name"
+  exercise_creation_success: "Exercise sauvegardé"
+  exercise_creation_error: "Échec de sauvegarde de l'exercice !"
 syntax_manual_page:
   title: "Syntaxe des scripts"
   table_header_variable_name: "Nom"
@@ -359,10 +362,3 @@ syntax_manual_page:
   bool_expression_logical_operators_description: "Il y a deux opérateurs logiques disponibles.\n\n"
   bool_expression_logical_operators_syntax_1: "[expression booléenne] and [expression booléenne]\n\n"
   bool_expression_logical_operators_syntax_2: "[expression booléenne] or [expression booléenne]\n\n"
-file_chooser:
-  open: "Ouvrir"
-  save: "Sauvegarder"
-  location: "Emplacement"
-  overwrite_dialog_title: "Écraser le fichier ?"
-  overwrite_dialog_message: "Souhaitez-vous écraser le fichier '$name' ?"
-  exported_file_name: "Nom :"

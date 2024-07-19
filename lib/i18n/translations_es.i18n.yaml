@@ -7,7 +7,8 @@ misc:
   buttonValidate: "Validar"
 pickers:
   documents_directory: "Documentos"
-  save_file_title: "Guardar el script"
+  save_file_title: "Guardar el código"
+  open_script_title: "Cargar el código"
   cancelled: "Diálogo de selección cancelado"
 home:
   title: "Inicio"
@@ -21,8 +22,9 @@ home:
   misc_generating_error: "Error al generar la posición para un error misceláneo."
   menu_buttons:
     samples: "Cargar un ejemplo"
-    load_script: "Cargar archivo de código"
+    load_script: "Cargar un archivo de código"
     new_script: "Nuevo archivo de código"
+    edit_script: "Editar un archivo de código"
   goal_label: "Objectivo"
   win_label: "Ganar"
   draw_label: "Empate"
@@ -100,7 +102,8 @@ script_editor_page:
   should_draw: "Empate"
   beforeExitTitle: "¿Cancelar la edición del guione?"
   beforeExitMessage: "¿Desea salir de esta página y cancelar la edición del guione?"
-  exercise_creation_success: "Ejercicio guardado bajo el nombre $name."
+  exercise_creation_success: "Ejercicio guardado"
+  exercise_creation_error: "¡No se pudo guardar el ejercicio!"
 syntax_manual_page:
   title: "Sintaxis de guiones"
   table_header_variable_name: "Nombre"
@@ -354,10 +357,3 @@ syntax_manual_page:
   bool_expression_logical_operators_description: "Hay dos operadores lógicos disponibles.\n\n"
   bool_expression_logical_operators_syntax_1: "[expresión booleana] and [expresión booleana]\n\n"
   bool_expression_logical_operators_syntax_2: "[expresión booleana] or [expresión booleana]\n\n"
-file_chooser:
-  open: "Abrir"
-  save: "Guardar"
-  location: "Ubicación"
-  overwrite_dialog_title: "¿Sobrescribir el archivo?"
-  overwrite_dialog_message: "¿Quieres sobrescribir el archivo '$name'?"
-  exported_file_name: "Nombre :"

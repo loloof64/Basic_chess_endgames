@@ -4,14 +4,17 @@ import 'dart:isolate';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
-import 'package:basicchessendgamestrainer/logic/utils.dart';
 import 'package:basicchessendgamestrainer/pages/syntax_manual.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/piece_count_widget.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/script_editor_common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
-import 'package:path/path.dart' as p;
+
+import 'package:open_save_file_dialogs/open_save_file_dialogs.dart';
+import 'package:file_picker/file_picker.dart';
+
+final _openSaveFileDialogsPlugin = OpenSaveFileDialogs();
 
 const winningString = "win";
 const drawingString = "draw";
@@ -85,14 +88,12 @@ class ScriptEditorPage extends StatefulWidget {
   final String? originalFileName;
   final bool readOnly;
   final InitialScriptsSet initialScriptsSet;
-  final Directory? currentDirectory;
 
   const ScriptEditorPage({
     super.key,
     this.originalFileName,
     this.readOnly = false,
     required this.initialScriptsSet,
-    required this.currentDirectory,
   });
 
   @override
@@ -167,7 +168,6 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
   }
 
   void _processUserScript() async {
-    if (widget.currentDirectory == null) return;
     if (_isCheckingPosition) return;
     if (_isSavingFile) return;
 
@@ -271,55 +271,87 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         setState(() {
           _isSavingFile = true;
         });
-        String newFileName;
 
-        if (widget.originalFileName == null) {
-          newFileName =
-              await getTempFileNameInDirectory(widget.currentDirectory!);
+        if (Platform.isAndroid) {
+          final filePath =
+              await _openSaveFileDialogsPlugin.saveFileDialog(content: script);
+          if (filePath == null) {
+            debugPrint("File saving cancellation.");
+            setState(() {
+              _isSavingFile = false;
+            });
+
+            if (!mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(t.script_editor_page.exercise_creation_success),
+              ),
+            );
+
+            Navigator.of(context).pop();
+            
+            return;
+          } else {
+            if (!mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  t.script_editor_page.exercise_creation_success,
+                ),
+              ),
+            );
+          }
         } else {
-          newFileName = widget.originalFileName!;
-        }
-
-        try {
-          String newFilePath =
-              "${widget.currentDirectory!.path}${p.separator}$newFileName";
-          File newFileInstance = File(newFilePath);
-          final newFile = await newFileInstance.create(recursive: false);
-          await newFile.writeAsString(
-            script,
-            mode: FileMode.writeOnly,
+          final filePath = await FilePicker.platform.saveFile(
+            dialogTitle: t.pickers.save_file_title,
           );
-          setState(() {
-            _isSavingFile = false;
-          });
+          if (filePath == null) {
+            debugPrint("File saving cancellation.");
+            setState(() {
+              _isSavingFile = false;
+            });
+            return;
+          }
 
-          // File has been saved
+          try {
+            final newFile = File(filePath);
 
-          if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(t.script_editor_page
-                  .exercise_creation_success(Name: newFileName)),
-            ),
-          );
-          Navigator.of(context).pop(FolderNeedsReload());
-        } on FileSystemException {
-          setState(() {
-            _isSavingFile = false;
-          });
-          if (!mounted) return;
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text(
-                    t.script_parser.misc_error_dialog_title,
-                  ),
-                  content: Text(
-                    t.script_parser.misc_checking_error,
-                  ),
-                );
-              });
+            await newFile.writeAsString(
+              script,
+              mode: FileMode.writeOnly,
+            );
+            setState(() {
+              _isSavingFile = false;
+            });
+
+            if (!mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(t.script_editor_page.exercise_creation_success),
+              ),
+            );
+
+            Navigator.of(context).pop();
+
+            return;
+          } on FileSystemException {
+            setState(() {
+              _isSavingFile = false;
+            });
+            if (!mounted) return;
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text(
+                      t.script_parser.misc_error_dialog_title,
+                    ),
+                    content: Text(
+                      t.script_editor_page.exercise_creation_error,
+                    ),
+                  );
+                });
+          }
         }
       }
     });

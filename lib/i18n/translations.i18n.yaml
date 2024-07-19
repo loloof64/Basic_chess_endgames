@@ -8,6 +8,7 @@ misc:
 pickers:
   documents_directory: "Documents"
   save_file_title: "Script's saving"
+  open_script_title: "Script's opening"
   cancelled: "Selection dialog cancelled"
 home:
   title: "Home"
@@ -22,6 +23,7 @@ home:
     samples: "Load an example"
     load_script: "Load script"
     new_script: "New script"
+    edit_script: "Edit script"
   goal_label: "Goal"
   win_label: "Win"
   draw_label: "Draw"
@@ -97,7 +99,8 @@ script_editor_page:
   should_draw: "Draw"
   beforeExitTitle: "Cancel script edition ?"
   beforeExitMessage: "Do you want to leave this page and cancel script edition ?"
-  exercise_creation_success: "Saved exercise under name $name."
+  exercise_creation_success: "Saved exercise"
+  exercise_creation_error: "Failed to save exercise !"
 syntax_manual_page:
   title: "Scripts' syntax"
   table_header_variable_name: "Name"
@@ -343,10 +346,3 @@ syntax_manual_page:
   bool_expression_logical_operators_description: "There are two available logical operators.\n\n"
   bool_expression_logical_operators_syntax_1: "[boolean expression] and [boolean expression]\n\n"
   bool_expression_logical_operators_syntax_2: "[boolean expression] or [boolean expression]\n\n"
-file_chooser:
-  open: "Open"
-  save: "Save"
-  location: "Location"
-  overwrite_dialog_title: "Overwrite file ?"
-  overwrite_dialog_message: "Do you want to overwrite file '$name' ?"
-  exported_file_name: "Name :"

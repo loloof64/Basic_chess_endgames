@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 630 (210 per locale)
+/// Strings: 621 (207 per locale)
 ///
-/// Built on 2024-07-19 at 10:24 UTC
+/// Built on 2024-07-19 at 13:14 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -165,7 +165,6 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsSampleScriptEn sample_script = _TranslationsSampleScriptEn._(_root);
 	late final _TranslationsScriptEditorPageEn script_editor_page = _TranslationsScriptEditorPageEn._(_root);
 	late final _TranslationsSyntaxManualPageEn syntax_manual_page = _TranslationsSyntaxManualPageEn._(_root);
-	late final _TranslationsFileChooserEn file_chooser = _TranslationsFileChooserEn._(_root);
 }
 
 // Path: misc
@@ -192,6 +191,7 @@ class _TranslationsPickersEn {
 	// Translations
 	String get documents_directory => 'Documents';
 	String get save_file_title => 'Script\'s saving';
+	String get open_script_title => 'Script\'s opening';
 	String get cancelled => 'Selection dialog cancelled';
 }
 
@@ -328,7 +328,8 @@ class _TranslationsScriptEditorPageEn {
 	String get should_draw => 'Draw';
 	String get before_exit_title => 'Cancel script edition ?';
 	String get before_exit_message => 'Do you want to leave this page and cancel script edition ?';
-	String exercise_creation_success({required Object Name}) => 'Saved exercise under name ${Name}.';
+	String get exercise_creation_success => 'Saved exercise';
+	String get exercise_creation_error => 'Failed to save exercise !';
 }
 
 // Path: syntax_manual_page
@@ -460,21 +461,6 @@ class _TranslationsSyntaxManualPageEn {
 	String get bool_expression_logical_operators_syntax_2 => '[boolean expression] or [boolean expression]\n\n';
 }
 
-// Path: file_chooser
-class _TranslationsFileChooserEn {
-	_TranslationsFileChooserEn._(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get open => 'Open';
-	String get save => 'Save';
-	String get location => 'Location';
-	String get overwrite_dialog_title => 'Overwrite file ?';
-	String overwrite_dialog_message({required Object Name}) => 'Do you want to overwrite file \'${Name}\' ?';
-	String get exported_file_name => 'Name :';
-}
-
 // Path: home.menu_buttons
 class _TranslationsHomeMenuButtonsEn {
 	_TranslationsHomeMenuButtonsEn._(this._root);
@@ -485,6 +471,7 @@ class _TranslationsHomeMenuButtonsEn {
 	String get samples => 'Load an example';
 	String get load_script => 'Load script';
 	String get new_script => 'New script';
+	String get edit_script => 'Edit script';
 }
 
 // Path: <root>
@@ -517,7 +504,6 @@ class _TranslationsEs extends Translations {
 	@override late final _TranslationsSampleScriptEs sample_script = _TranslationsSampleScriptEs._(_root);
 	@override late final _TranslationsScriptEditorPageEs script_editor_page = _TranslationsScriptEditorPageEs._(_root);
 	@override late final _TranslationsSyntaxManualPageEs syntax_manual_page = _TranslationsSyntaxManualPageEs._(_root);
-	@override late final _TranslationsFileChooserEs file_chooser = _TranslationsFileChooserEs._(_root);
 }
 
 // Path: misc
@@ -543,7 +529,8 @@ class _TranslationsPickersEs extends _TranslationsPickersEn {
 
 	// Translations
 	@override String get documents_directory => 'Documentos';
-	@override String get save_file_title => 'Guardar el script';
+	@override String get save_file_title => 'Guardar el código';
+	@override String get open_script_title => 'Cargar el código';
 	@override String get cancelled => 'Diálogo de selección cancelado';
 }
 
@@ -680,7 +667,8 @@ class _TranslationsScriptEditorPageEs extends _TranslationsScriptEditorPageEn {
 	@override String get should_draw => 'Empate';
 	@override String get before_exit_title => '¿Cancelar la edición del guione?';
 	@override String get before_exit_message => '¿Desea salir de esta página y cancelar la edición del guione?';
-	@override String exercise_creation_success({required Object Name}) => 'Ejercicio guardado bajo el nombre ${Name}.';
+	@override String get exercise_creation_success => 'Ejercicio guardado';
+	@override String get exercise_creation_error => '¡No se pudo guardar el ejercicio!';
 }
 
 // Path: syntax_manual_page
@@ -812,21 +800,6 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get bool_expression_logical_operators_syntax_2 => '[expresión booleana] or [expresión booleana]\n\n';
 }
 
-// Path: file_chooser
-class _TranslationsFileChooserEs extends _TranslationsFileChooserEn {
-	_TranslationsFileChooserEs._(_TranslationsEs root) : this._root = root, super._(root);
-
-	@override final _TranslationsEs _root; // ignore: unused_field
-
-	// Translations
-	@override String get open => 'Abrir';
-	@override String get save => 'Guardar';
-	@override String get location => 'Ubicación';
-	@override String get overwrite_dialog_title => '¿Sobrescribir el archivo?';
-	@override String overwrite_dialog_message({required Object Name}) => '¿Quieres sobrescribir el archivo \'${Name}\'?';
-	@override String get exported_file_name => 'Nombre :';
-}
-
 // Path: home.menu_buttons
 class _TranslationsHomeMenuButtonsEs extends _TranslationsHomeMenuButtonsEn {
 	_TranslationsHomeMenuButtonsEs._(_TranslationsEs root) : this._root = root, super._(root);
@@ -835,8 +808,9 @@ class _TranslationsHomeMenuButtonsEs extends _TranslationsHomeMenuButtonsEn {
 
 	// Translations
 	@override String get samples => 'Cargar un ejemplo';
-	@override String get load_script => 'Cargar archivo de código';
+	@override String get load_script => 'Cargar un archivo de código';
 	@override String get new_script => 'Nuevo archivo de código';
+	@override String get edit_script => 'Editar un archivo de código';
 }
 
 // Path: <root>
@@ -869,7 +843,6 @@ class _TranslationsFr extends Translations {
 	@override late final _TranslationsSampleScriptFr sample_script = _TranslationsSampleScriptFr._(_root);
 	@override late final _TranslationsScriptEditorPageFr script_editor_page = _TranslationsScriptEditorPageFr._(_root);
 	@override late final _TranslationsSyntaxManualPageFr syntax_manual_page = _TranslationsSyntaxManualPageFr._(_root);
-	@override late final _TranslationsFileChooserFr file_chooser = _TranslationsFileChooserFr._(_root);
 }
 
 // Path: misc
@@ -896,6 +869,7 @@ class _TranslationsPickersFr extends _TranslationsPickersEn {
 	// Translations
 	@override String get documents_directory => 'Documents';
 	@override String get save_file_title => 'Sauvegarde du script';
+	@override String get open_script_title => 'Ouverture du script';
 	@override String get cancelled => 'Dialogue de sélection annulé';
 }
 
@@ -1032,7 +1006,8 @@ class _TranslationsScriptEditorPageFr extends _TranslationsScriptEditorPageEn {
 	@override String get should_draw => 'Annuler';
 	@override String get before_exit_title => 'Annuler l\'édition du script ?';
 	@override String get before_exit_message => 'Souhaitez-vous quitter la page et annuler l\'édition du script ?';
-	@override String exercise_creation_success({required Object Name}) => 'Exercise sauvegardé sous le nom ${Name}';
+	@override String get exercise_creation_success => 'Exercise sauvegardé';
+	@override String get exercise_creation_error => 'Échec de sauvegarde de l\'exercice !';
 }
 
 // Path: syntax_manual_page
@@ -1164,21 +1139,6 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 	@override String get bool_expression_logical_operators_syntax_2 => '[expression booléenne] or [expression booléenne]\n\n';
 }
 
-// Path: file_chooser
-class _TranslationsFileChooserFr extends _TranslationsFileChooserEn {
-	_TranslationsFileChooserFr._(_TranslationsFr root) : this._root = root, super._(root);
-
-	@override final _TranslationsFr _root; // ignore: unused_field
-
-	// Translations
-	@override String get open => 'Ouvrir';
-	@override String get save => 'Sauvegarder';
-	@override String get location => 'Emplacement';
-	@override String get overwrite_dialog_title => 'Écraser le fichier ?';
-	@override String overwrite_dialog_message({required Object Name}) => 'Souhaitez-vous écraser le fichier \'${Name}\' ?';
-	@override String get exported_file_name => 'Nom :';
-}
-
 // Path: home.menu_buttons
 class _TranslationsHomeMenuButtonsFr extends _TranslationsHomeMenuButtonsEn {
 	_TranslationsHomeMenuButtonsFr._(_TranslationsFr root) : this._root = root, super._(root);
@@ -1189,4 +1149,5 @@ class _TranslationsHomeMenuButtonsFr extends _TranslationsHomeMenuButtonsEn {
 	@override String get samples => 'Charger un exemple';
 	@override String get load_script => 'Charger un script';
 	@override String get new_script => 'Nouveau script';
+	@override String get edit_script => 'Éditer un script';
 }
