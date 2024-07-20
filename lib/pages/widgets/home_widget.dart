@@ -195,11 +195,6 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     });
   }
 
-  void _loadExerciseScript({required File itemFile}) async {
-    final script = await itemFile.readAsString();
-    _tryGeneratingAndPlayingPositionFromString(script);
-  }
-
   void _tryPlayingGeneratedPosition(String position, Goal goal) {
     final validPositionStatus = chess.Chess.validate_fen(position);
     if (!validPositionStatus['valid']) {
@@ -244,17 +239,6 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     );
   }
 
-  void _doStartCustomExercice() {
-    if (_selectedSample == null) return;
-    try {
-      _tryGeneratingAndPlayingPositionFromSample(_selectedSample!);
-    } on Exception catch (ex) {
-      debugPrint(ex.toString());
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(t.home.failed_loading_exercise)));
-    }
-  }
-
   void _purposeLoadSample() async {
     final selectedSample = await Navigator.push<AssetGame?>(
       context,
@@ -281,7 +265,46 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     }
   }
 
-  void _purposeLoadScript() {}
+  void _purposeLoadScript() async {
+    String script;
+
+    if (Platform.isAndroid) {
+      final loadedScript = await _openSaveFileDialogsPlugin.openFileDialog();
+      if (!mounted) return;
+      if (loadedScript == null) {
+        debugPrint("File loading cancellation.");
+        return;
+      }
+      script = loadedScript;
+    } else {
+      final loadedPath = await FilePicker.platform.pickFiles(
+        dialogTitle: t.pickers.open_script_title,
+        allowMultiple: false,
+      );
+      if (!mounted) return;
+      if (loadedPath == null) {
+        debugPrint("File loading cancellation.");
+        return;
+      }
+
+      try {
+        File file = File(loadedPath.files.single.path!);
+        script = await file.readAsString();
+      } on FileSystemException {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              t.home.failed_loading_exercise,
+            ),
+          ),
+        );
+        return;
+      }
+    }
+
+    await _tryGeneratingAndPlayingPositionFromString(script);
+  }
 
   void _purposeEditScript() async {
     String script;
