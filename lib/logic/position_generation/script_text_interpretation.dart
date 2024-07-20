@@ -134,26 +134,26 @@ class TranslationsWrapper {
 
     switch (pieceKind.pieceType) {
       case PieceType.pawn:
-        side = pawn;
+        type = pawn;
         break;
       case PieceType.knight:
-        side = knight;
+        type = knight;
         break;
       case PieceType.bishop:
-        side = bishop;
+        type = bishop;
         break;
       case PieceType.rook:
-        side = rook;
+        type = rook;
         break;
       case PieceType.queen:
-        side = queen;
+        type = queen;
         break;
       case PieceType.king:
-        side = king;
+        type = king;
         break;
     }
 
-    return "($side $type)";
+    return "($side | $type)";
   }
 
   String fromScriptType(
@@ -491,7 +491,7 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
         parameters.sendPort
             .send((generatedPosition, <PositionGenerationError>[]));
       } on PositionGenerationError catch (ex) {
-        Logger().e(ex.message);
+        Logger().e("${ex.message} <= ${ex.title}");
         parameters.sendPort.send((null, <PositionGenerationError>[ex]));
       } on PositionGenerationLoopException catch (ex) {
         Logger().e(ex.message);

@@ -87,8 +87,8 @@ scriptType:
   otherPiecesIndexedConstraintSpecialized: "Contraintes par index pour les autres pièces $pieceKind"
   otherPiecesMutualConstraintSpecialized: "Contraintes sur le compte des autres pièces $pieceKind"
 side:
-  player: Joueur
-  computer: Ordinateur
+  player: joueur
+  computer: ordinateur
 type:
   pawn: pion
   knight: cavalier

@@ -80,8 +80,8 @@ scriptType:
   otherPiecesIndexedConstraintSpecialized: "Other pieces constraints by order $pieceKind"
   otherPiecesMutualConstraintSpecialized: "Other pieces mutual constraint $pieceKind"
 side:
-  player: Player
-  computer: Computer
+  player: player
+  computer: computer
 type:
   pawn: pawn
   knight: knight

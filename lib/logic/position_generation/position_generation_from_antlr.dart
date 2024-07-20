@@ -197,16 +197,16 @@ class PositionGeneratorFromAntlr {
             booleanValues,
           );
         } on MissingReturnStatementException catch (ex) {
-          final scriptTypeLabel =
-              translations.fromScriptType(scriptType: ScriptType.playerKingConstraint);
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.playerKingConstraint);
           final title =
               translations.parseErrorDialogTitle(Title: scriptTypeLabel);
           final message = translations.missingReturnStatement;
           Logger().e(ex);
           throw PositionGenerationError(title, message);
         } on VariableIsNotAffectedException catch (ex) {
-          final scriptTypeLabel =
-              translations.fromScriptType(scriptType: ScriptType.playerKingConstraint);
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.playerKingConstraint);
           final title =
               translations.parseErrorDialogTitle(Title: scriptTypeLabel);
           final message = translations.variableNotAffected(Name: ex.varName);
@@ -286,16 +286,16 @@ class PositionGeneratorFromAntlr {
             computerKingConstraintBooleanValues,
           );
         } on MissingReturnStatementException catch (ex) {
-          final scriptTypeLabel =
-              translations.fromScriptType(scriptType: ScriptType.computerKingConstraint);
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.computerKingConstraint);
           final title =
               translations.parseErrorDialogTitle(Title: scriptTypeLabel);
           final message = translations.missingReturnStatement;
           Logger().e(ex);
           throw PositionGenerationError(title, message);
         } on VariableIsNotAffectedException catch (ex) {
-          final scriptTypeLabel =
-              translations.fromScriptType(scriptType: ScriptType.computerKingConstraint);
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.computerKingConstraint);
           final title =
               translations.parseErrorDialogTitle(Title: scriptTypeLabel);
           final message = translations.variableNotAffected(Name: ex.varName);
@@ -323,16 +323,16 @@ class PositionGeneratorFromAntlr {
             kingsMutualConstraintBooleanValues,
           );
         } on MissingReturnStatementException catch (ex) {
-          final scriptTypeLabel =
-              translations.fromScriptType(scriptType: ScriptType.mutualKingConstraint);
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.mutualKingConstraint);
           final title =
               translations.parseErrorDialogTitle(Title: scriptTypeLabel);
           final message = translations.missingReturnStatement;
           Logger().e(ex);
           throw PositionGenerationError(title, message);
         } on VariableIsNotAffectedException catch (ex) {
-          final scriptTypeLabel =
-              translations.fromScriptType(scriptType: ScriptType.mutualKingConstraint);
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.mutualKingConstraint);
           final title =
               translations.parseErrorDialogTitle(Title: scriptTypeLabel);
           final message = translations.variableNotAffected(Name: ex.varName);
@@ -428,16 +428,20 @@ class PositionGeneratorFromAntlr {
                 commonOtherPiecesConstraintBooleanValues,
               );
             } on MissingReturnStatementException catch (ex) {
-              final scriptTypeLabel = translations
-                  .fromScriptType(scriptType: ScriptType.otherPiecesGlobalConstraint);
+              final scriptTypeLabel = translations.fromScriptType(
+                scriptType: ScriptType.otherPiecesGlobalConstraint,
+                pieceKind: pieceCountConstraint.pieceKind,
+              );
               final title =
                   translations.parseErrorDialogTitle(Title: scriptTypeLabel);
               final message = translations.missingReturnStatement;
               Logger().e(ex);
               throw PositionGenerationError(title, message);
             } on VariableIsNotAffectedException catch (ex) {
-              final scriptTypeLabel = translations
-                  .fromScriptType(scriptType: ScriptType.otherPiecesGlobalConstraint);
+              final scriptTypeLabel = translations.fromScriptType(
+                scriptType: ScriptType.otherPiecesGlobalConstraint,
+                pieceKind: pieceCountConstraint.pieceKind,
+              );
               final title =
                   translations.parseErrorDialogTitle(Title: scriptTypeLabel);
               final message =
@@ -462,16 +466,20 @@ class PositionGeneratorFromAntlr {
                 commonOtherPiecesConstraintBooleanValues,
               );
             } on MissingReturnStatementException catch (ex) {
-              final scriptTypeLabel = translations
-                  .fromScriptType(scriptType: ScriptType.otherPiecesIndexedConstraint);
+              final scriptTypeLabel = translations.fromScriptType(
+                scriptType: ScriptType.otherPiecesIndexedConstraint,
+                pieceKind: pieceCountConstraint.pieceKind,
+              );
               final title =
                   translations.parseErrorDialogTitle(Title: scriptTypeLabel);
               final message = translations.missingReturnStatement;
               Logger().e(ex);
               throw PositionGenerationError(title, message);
             } on VariableIsNotAffectedException catch (ex) {
-              final scriptTypeLabel = translations
-                  .fromScriptType(scriptType: ScriptType.otherPiecesIndexedConstraint);
+              final scriptTypeLabel = translations.fromScriptType(
+                scriptType: ScriptType.otherPiecesIndexedConstraint,
+                pieceKind: pieceCountConstraint.pieceKind,
+              );
               final title =
                   translations.parseErrorDialogTitle(Title: scriptTypeLabel);
               final message =
@@ -487,7 +495,8 @@ class PositionGeneratorFromAntlr {
         previous placed pieces of the same kind */
         if (currentPieceMutualConstraint != null) {
           cellsToTest = filterCoordinates(cellsToTest, (outerLoopCell) {
-            return checkConditionMetForEveryCell(savedCoordinatesForThisCountConstraint, (innerLoopCell) {
+            return savedCoordinatesForThisCountConstraint
+                .every((innerLoopCell) {
               final otherPieceMutualConstraintIntValues = <String, int>{
                 "firstPieceFile": innerLoopCell.file,
                 "firstPieceRank": innerLoopCell.rank,
@@ -502,16 +511,20 @@ class PositionGeneratorFromAntlr {
                   commonOtherPiecesConstraintBooleanValues,
                 );
               } on MissingReturnStatementException catch (ex) {
-                final scriptTypeLabel = translations
-                    .fromScriptType(scriptType: ScriptType.otherPiecesMutualConstraint);
+                final scriptTypeLabel = translations.fromScriptType(
+                  scriptType: ScriptType.otherPiecesMutualConstraint,
+                  pieceKind: pieceCountConstraint.pieceKind,
+                );
                 final title =
                     translations.parseErrorDialogTitle(Title: scriptTypeLabel);
                 final message = translations.missingReturnStatement;
                 Logger().e(ex);
                 throw PositionGenerationError(title, message);
               } on VariableIsNotAffectedException catch (ex) {
-                final scriptTypeLabel = translations
-                    .fromScriptType(scriptType: ScriptType.otherPiecesMutualConstraint);
+                final scriptTypeLabel = translations.fromScriptType(
+                  scriptType: ScriptType.otherPiecesMutualConstraint,
+                  pieceKind: pieceCountConstraint.pieceKind,
+                );
                 final title =
                     translations.parseErrorDialogTitle(Title: scriptTypeLabel);
                 final message =
@@ -598,12 +611,4 @@ List<BoardCoordinate> filterCoordinates(List<BoardCoordinate> originalList,
   }
 
   return result;
-}
-
-bool checkConditionMetForEveryCell(List<BoardCoordinate> originalList,
-    bool Function(BoardCoordinate) conditionFunc) {
-  for (final currentCell in originalList) {
-    if (!conditionFunc(currentCell)) return false;
-  }
-  return true;
 }

@@ -83,8 +83,8 @@ scriptType:
   otherPiecesIndexedConstraintSpecialized: "Restricción indexada de otras piezas $pieceKind"
   otherPiecesMutualConstraintSpecialized: "Restricción de recuento de tipos de piezas $pieceKind"
 side:
-  player: Jugador
-  computer: Computadora
+  player: jugador
+  computer: computadora
 type:
   pawn: peón
   knight: caballero

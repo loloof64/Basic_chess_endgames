@@ -6,7 +6,7 @@
 /// Locales: 3
 /// Strings: 663 (221 per locale)
 ///
-/// Built on 2024-07-20 at 17:34 UTC
+/// Built on 2024-07-20 at 21:28 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -291,9 +291,9 @@ class _TranslationsScriptTypeEn {
 	String get other_pieces_indexed_constraint => 'Other pieces constraints by order';
 	String get other_pieces_mutual_constraint => 'Other pieces mutual constraint';
 	String get piece_kind_count_constraint => 'Piece kinds counts constraint';
-	String other_pieces_global_constraint_specialized({required Object PieceKind}) => 'Other pieces global constraint [${PieceKind}]';
-	String other_pieces_indexed_constraint_specialized({required Object PieceKind}) => 'Other pieces constraints by order [${PieceKind}]';
-	String other_pieces_mutual_constraint_specialized({required Object PieceKind}) => 'Other pieces mutual constraint [${PieceKind}]';
+	String other_pieces_global_constraint_specialized({required Object PieceKind}) => 'Other pieces global constraint ${PieceKind}';
+	String other_pieces_indexed_constraint_specialized({required Object PieceKind}) => 'Other pieces constraints by order ${PieceKind}';
+	String other_pieces_mutual_constraint_specialized({required Object PieceKind}) => 'Other pieces mutual constraint ${PieceKind}';
 }
 
 // Path: side
@@ -303,8 +303,8 @@ class _TranslationsSideEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get player => 'Player';
-	String get computer => 'Computer';
+	String get player => 'player';
+	String get computer => 'computer';
 }
 
 // Path: type
@@ -664,9 +664,9 @@ class _TranslationsScriptTypeEs extends _TranslationsScriptTypeEn {
 	@override String get other_pieces_indexed_constraint => 'Restricción indexada de otras piezas';
 	@override String get other_pieces_mutual_constraint => 'Restricción mutua de otras piezas';
 	@override String get piece_kind_count_constraint => 'Restricción de recuento de tipos de piezas';
-	@override String other_pieces_global_constraint_specialized({required Object PieceKind}) => 'Restricción global de otras piezas [${PieceKind}]';
-	@override String other_pieces_indexed_constraint_specialized({required Object PieceKind}) => 'Restricción indexada de otras piezas [${PieceKind}]';
-	@override String other_pieces_mutual_constraint_specialized({required Object PieceKind}) => 'Restricción de recuento de tipos de piezas [${PieceKind}]';
+	@override String other_pieces_global_constraint_specialized({required Object PieceKind}) => 'Restricción global de otras piezas ${PieceKind}';
+	@override String other_pieces_indexed_constraint_specialized({required Object PieceKind}) => 'Restricción indexada de otras piezas ${PieceKind}';
+	@override String other_pieces_mutual_constraint_specialized({required Object PieceKind}) => 'Restricción de recuento de tipos de piezas ${PieceKind}';
 }
 
 // Path: side
@@ -676,8 +676,8 @@ class _TranslationsSideEs extends _TranslationsSideEn {
 	@override final _TranslationsEs _root; // ignore: unused_field
 
 	// Translations
-	@override String get player => 'Jugador';
-	@override String get computer => 'Computadora';
+	@override String get player => 'jugador';
+	@override String get computer => 'computadora';
 }
 
 // Path: type
@@ -1037,9 +1037,9 @@ class _TranslationsScriptTypeFr extends _TranslationsScriptTypeEn {
 	@override String get other_pieces_indexed_constraint => 'Contraintes par index pour les autres pièces';
 	@override String get other_pieces_mutual_constraint => 'Contraintes mutuelles pour les autres pièces';
 	@override String get piece_kind_count_constraint => 'Contraintes sur le compte des autres pièces';
-	@override String other_pieces_global_constraint_specialized({required Object PieceKind}) => 'Contraintes globales pour les autres pièces [${PieceKind}]';
-	@override String other_pieces_indexed_constraint_specialized({required Object PieceKind}) => 'Contraintes par index pour les autres pièces [${PieceKind}]';
-	@override String other_pieces_mutual_constraint_specialized({required Object PieceKind}) => 'Contraintes sur le compte des autres pièces [${PieceKind}]';
+	@override String other_pieces_global_constraint_specialized({required Object PieceKind}) => 'Contraintes globales pour les autres pièces ${PieceKind}';
+	@override String other_pieces_indexed_constraint_specialized({required Object PieceKind}) => 'Contraintes par index pour les autres pièces ${PieceKind}';
+	@override String other_pieces_mutual_constraint_specialized({required Object PieceKind}) => 'Contraintes sur le compte des autres pièces ${PieceKind}';
 }
 
 // Path: side
@@ -1049,8 +1049,8 @@ class _TranslationsSideFr extends _TranslationsSideEn {
 	@override final _TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String get player => 'Joueur';
-	@override String get computer => 'Ordinateur';
+	@override String get player => 'joueur';
+	@override String get computer => 'ordinateur';
 }
 
 // Path: type
