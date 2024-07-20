@@ -6,6 +6,7 @@ import 'dart:isolate';
 import 'package:antlr4/antlr4.dart';
 import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.dart';
 import 'package:basicchessendgamestrainer/antlr4/script_language_builder.dart';
+import 'package:basicchessendgamestrainer/commons.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
@@ -302,28 +303,6 @@ class ScriptTextTransformer {
       final constraint =
           builder.buildExpressionObjectsFromScript(scriptContent);
       return (constraint, <PositionGenerationError>[]);
-    } on MissingReturnStatementException catch (ex) {
-      final scriptTypeLabel = translations.fromScriptType(scriptType);
-      final title = translations.parseErrorDialogTitle(Title: scriptTypeLabel);
-      final message = translations.missingReturnStatement;
-      Logger().e(ex);
-      // Add the error to the errors we must show once all scripts for
-      // the position generation are built.
-      return (
-        null,
-        <PositionGenerationError>[PositionGenerationError(title, message)]
-      );
-    } on VariableIsNotAffectedException catch (ex) {
-      final scriptTypeLabel = translations.fromScriptType(scriptType);
-      final title = translations.parseErrorDialogTitle(Title: scriptTypeLabel);
-      final message = translations.variableNotAffected(Name: ex.varName);
-      Logger().e(ex);
-      // Add the error to the errors we must show once all scripts for
-      // the position generation are built.
-      return (
-        null,
-        <PositionGenerationError>[PositionGenerationError(title, message)]
-      );
     } on ParseCancellationException catch (ex) {
       final scriptTypeLabel = translations.fromScriptType(scriptType);
       final title = translations.parseErrorDialogTitle(Title: scriptTypeLabel);
@@ -397,7 +376,7 @@ class ScriptTextTransformer {
 
     for (var scriptDivision in parts) {
       if (scriptDivision.trim().isEmpty) continue;
-      
+
       final divisionParts =
           scriptDivision.split('\n').where((line) => line.trim().isNotEmpty);
       final firstLine = divisionParts.firstOrNull?.trim();
@@ -432,33 +411,40 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
     if (generationErrors.isNotEmpty) {
       parameters.sendPort.send((null, generationErrors));
     } else {
-      final positionGenerator = PositionGeneratorFromAntlr();
+      final positionGenerator =
+          PositionGeneratorFromAntlr(translations: parameters.translations);
       positionGenerator.setConstraints(constraintsExpr);
       try {
         final generatedPosition = positionGenerator.generatePosition();
         parameters.sendPort
             .send((generatedPosition, <PositionGenerationError>[]));
+      } on PositionGenerationError catch (ex) {
+        Logger().e(ex.message);
+        parameters.sendPort.send((null, <PositionGenerationError>[ex]));
       } on PositionGenerationLoopException catch (ex) {
         Logger().e(ex.message);
         if (parameters.inGameMode) {
           parameters.sendPort.send(
-          (
+            (
+              null,
+              <PositionGenerationError>[
+                PositionGenerationError(
+                  parameters.translations.miscErrorDialogTitle,
+                  parameters.translations.maxGenerationAttemptsAchieved,
+                )
+              ],
+            ),
+          );
+        } else {
+          parameters.sendPort.send((
             null,
             <PositionGenerationError>[
               PositionGenerationError(
-                parameters.translations.miscErrorDialogTitle,
-                parameters.translations.maxGenerationAttemptsAchieved,
-              )
-            ],
-          ),
-        );
-        }
-        else {
-          parameters.sendPort
-            .send((null, <PositionGenerationError>[PositionGenerationError(
                 parameters.translations.tooRestrictiveScriptTitle,
                 parameters.translations.tooRestrictiveScriptMessage,
-              )]));
+              )
+            ]
+          ));
         }
       }
     }

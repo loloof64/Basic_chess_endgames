@@ -3,16 +3,17 @@ import 'dart:math';
 
 import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
+import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:logger/logger.dart';
 
 class AlreadyAPieceThereException implements Exception {}
 
-class _BoardCoordinate {
+class BoardCoordinate {
   final int file;
   final int rank;
 
-  _BoardCoordinate(this.file, this.rank);
+  BoardCoordinate(this.file, this.rank);
 
   int toCellCode() => file + 8 * rank;
 
@@ -101,7 +102,7 @@ final noConstraint = PositionGeneratorConstraintsExpr(
   mustWin: true,
 );
 
-final defaultBoardCoordinate = _BoardCoordinate(0, 0);
+final defaultBoardCoordinate = BoardCoordinate(0, 0);
 
 chess.Piece _pieceKindToChessPiece(PieceKind kind, bool whitePiece) {
   return switch (kind.pieceType) {
@@ -133,6 +134,11 @@ chess.Piece _pieceKindToChessPiece(PieceKind kind, bool whitePiece) {
 }
 
 class PositionGeneratorFromAntlr {
+  PositionGeneratorFromAntlr({
+    required this.translations,
+  });
+
+  final TranslationsWrapper translations;
   final _randomNumberGenerator = Random();
 
   var _allConstraints = noConstraint;
@@ -168,16 +174,15 @@ class PositionGeneratorFromAntlr {
   }) {
     String? result;
     final kingConstraints = _allConstraints.playerKingConstraint;
-    List<_BoardCoordinate> cellsToTest = _getListWithAllCells();
+    List<BoardCoordinate> cellsToTest = _getListWithAllCells();
 
     final kingPiece = chess.Piece(
       chess.Chess.KING,
       playerHasWhite ? chess.Color.WHITE : chess.Color.BLACK,
     );
 
-    // reducing cells set if we can
     if (kingConstraints != null) {
-      cellsToTest = cellsToTest.where((currentCell) {
+      cellsToTest = filterCoordinates(cellsToTest, (currentCell) {
         final intValues = <String, int>{
           "file": currentCell.file,
           "rank": currentCell.rank,
@@ -191,11 +196,24 @@ class PositionGeneratorFromAntlr {
             intValues,
             booleanValues,
           );
-        } on Exception catch (ex) {
+        } on MissingReturnStatementException catch (ex) {
+          final scriptTypeLabel =
+              translations.fromScriptType(ScriptType.playerKingConstraint);
+          final title =
+              translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+          final message = translations.missingReturnStatement;
           Logger().e(ex);
-          return false;
+          throw PositionGenerationError(title, message);
+        } on VariableIsNotAffectedException catch (ex) {
+          final scriptTypeLabel =
+              translations.fromScriptType(ScriptType.playerKingConstraint);
+          final title =
+              translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+          final message = translations.variableNotAffected(Name: ex.varName);
+          Logger().e(ex);
+          throw PositionGenerationError(title, message);
         }
-      }).toList();
+      });
     }
     cellsToTest.shuffle();
 
@@ -227,12 +245,12 @@ class PositionGeneratorFromAntlr {
   String? _placePiecesStepComputerKing({
     required String startFen,
     required bool playerHasWhite,
-    required _BoardCoordinate playerKingCell,
+    required BoardCoordinate playerKingCell,
   }) {
     String? result;
     final computerKingConstraints = _allConstraints.computerKingConstraint;
     final kingsMutualConstraints = _allConstraints.kingsMutualConstraint;
-    List<_BoardCoordinate> cellsToTest = _getListWithAllCells();
+    List<BoardCoordinate> cellsToTest = _getListWithAllCells();
 
     final kingPiece = chess.Piece(
       chess.Chess.KING,
@@ -253,7 +271,7 @@ class PositionGeneratorFromAntlr {
     }).toList();
 
     if (computerKingConstraints != null) {
-      cellsToTest = cellsToTest.where((currentCell) {
+      cellsToTest = filterCoordinates(cellsToTest, (currentCell) {
         final computerKingConstraintIntValues = <String, int>{
           "file": currentCell.file,
           "rank": currentCell.rank,
@@ -267,15 +285,28 @@ class PositionGeneratorFromAntlr {
             computerKingConstraintIntValues,
             computerKingConstraintBooleanValues,
           );
-        } on Exception catch (ex) {
+        } on MissingReturnStatementException catch (ex) {
+          final scriptTypeLabel =
+              translations.fromScriptType(ScriptType.computerKingConstraint);
+          final title =
+              translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+          final message = translations.missingReturnStatement;
           Logger().e(ex);
-          return false;
+          throw PositionGenerationError(title, message);
+        } on VariableIsNotAffectedException catch (ex) {
+          final scriptTypeLabel =
+              translations.fromScriptType(ScriptType.computerKingConstraint);
+          final title =
+              translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+          final message = translations.variableNotAffected(Name: ex.varName);
+          Logger().e(ex);
+          throw PositionGenerationError(title, message);
         }
-      }).toList();
+      });
     }
 
     if (kingsMutualConstraints != null) {
-      cellsToTest = cellsToTest.where((currentCell) {
+      cellsToTest = filterCoordinates(cellsToTest, (currentCell) {
         final kingsMutualConstraintIntValues = <String, int>{
           "playerKingFile": playerKingCell.file,
           "playerKingRank": playerKingCell.rank,
@@ -291,11 +322,24 @@ class PositionGeneratorFromAntlr {
             kingsMutualConstraintIntValues,
             kingsMutualConstraintBooleanValues,
           );
-        } on Exception catch (ex) {
+        } on MissingReturnStatementException catch (ex) {
+          final scriptTypeLabel =
+              translations.fromScriptType(ScriptType.mutualKingConstraint);
+          final title =
+              translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+          final message = translations.missingReturnStatement;
           Logger().e(ex);
-          return false;
+          throw PositionGenerationError(title, message);
+        } on VariableIsNotAffectedException catch (ex) {
+          final scriptTypeLabel =
+              translations.fromScriptType(ScriptType.mutualKingConstraint);
+          final title =
+              translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+          final message = translations.variableNotAffected(Name: ex.varName);
+          Logger().e(ex);
+          throw PositionGenerationError(title, message);
         }
-      }).toList();
+      });
     }
     cellsToTest.shuffle();
 
@@ -328,8 +372,8 @@ class PositionGeneratorFromAntlr {
   String? _placePiecesStepOtherPieces({
     required String startFen,
     required bool playerHasWhite,
-    required _BoardCoordinate playerKingCell,
-    required _BoardCoordinate computerKingCell,
+    required BoardCoordinate playerKingCell,
+    required BoardCoordinate computerKingCell,
   }) {
     // we check for legality of position once all pieces are placed :
     // because we could miss interesting position where opponent king
@@ -342,12 +386,12 @@ class PositionGeneratorFromAntlr {
     }
 
     for (var pieceCountConstraint in piecesCountConstraints) {
-      final savedCoordinatesForThisCountConstraint = <_BoardCoordinate>[];
+      final savedCoordinatesForThisCountConstraint = <BoardCoordinate>[];
       for (var constraintIndex = 0;
           constraintIndex < pieceCountConstraint.count;
           constraintIndex++) {
         var successForCurrentIndex = false;
-        List<_BoardCoordinate> cellsToTest = _getListWithAllCells();
+        List<BoardCoordinate> cellsToTest = _getListWithAllCells();
 
         final isAPieceOfPlayer =
             pieceCountConstraint.pieceKind.side == Side.player;
@@ -368,7 +412,7 @@ class PositionGeneratorFromAntlr {
         };
 
         if (currentPieceGlobalConstraint != null) {
-          cellsToTest = cellsToTest.where((currentCell) {
+          cellsToTest = filterCoordinates(cellsToTest, (currentCell) {
             final otherPiecesGlobalConstraintIntValues = <String, int>{
               "file": currentCell.file,
               "rank": currentCell.rank,
@@ -383,15 +427,29 @@ class PositionGeneratorFromAntlr {
                 otherPiecesGlobalConstraintIntValues,
                 commonOtherPiecesConstraintBooleanValues,
               );
-            } on Exception catch (ex) {
+            } on MissingReturnStatementException catch (ex) {
+              final scriptTypeLabel = translations
+                  .fromScriptType(ScriptType.otherPiecesGlobalConstraint);
+              final title =
+                  translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+              final message = translations.missingReturnStatement;
               Logger().e(ex);
-              return false;
+              throw PositionGenerationError(title, message);
+            } on VariableIsNotAffectedException catch (ex) {
+              final scriptTypeLabel = translations
+                  .fromScriptType(ScriptType.otherPiecesGlobalConstraint);
+              final title =
+                  translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+              final message =
+                  translations.variableNotAffected(Name: ex.varName);
+              Logger().e(ex);
+              throw PositionGenerationError(title, message);
             }
-          }).toList();
+          });
         }
 
         if (currentPieceIndexedConstraint != null) {
-          cellsToTest = cellsToTest.where((currentCell) {
+          cellsToTest = filterCoordinates(cellsToTest, (currentCell) {
             final otherPieceIndexedConstraintIntValues = <String, int>{
               "file": currentCell.file,
               "rank": currentCell.rank,
@@ -403,24 +461,38 @@ class PositionGeneratorFromAntlr {
                 otherPieceIndexedConstraintIntValues,
                 commonOtherPiecesConstraintBooleanValues,
               );
-            } on Exception catch (ex) {
+            } on MissingReturnStatementException catch (ex) {
+              final scriptTypeLabel = translations
+                  .fromScriptType(ScriptType.otherPiecesIndexedConstraint);
+              final title =
+                  translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+              final message = translations.missingReturnStatement;
               Logger().e(ex);
-              return false;
+              throw PositionGenerationError(title, message);
+            } on VariableIsNotAffectedException catch (ex) {
+              final scriptTypeLabel = translations
+                  .fromScriptType(ScriptType.otherPiecesIndexedConstraint);
+              final title =
+                  translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+              final message =
+                  translations.variableNotAffected(Name: ex.varName);
+              Logger().e(ex);
+              throw PositionGenerationError(title, message);
             }
-          }).toList();
+          });
         }
 
         /*
         Checks for mutual constraints respect with
         previous placed pieces of the same kind */
         if (currentPieceMutualConstraint != null) {
-          cellsToTest = cellsToTest.where((currentCell) {
-            return savedCoordinatesForThisCountConstraint.every((coordinate) {
+          cellsToTest = filterCoordinates(cellsToTest, (outerLoopCell) {
+            return checkConditionMetForEveryCell(cellsToTest, (innerLoopCell) {
               final otherPieceMutualConstraintIntValues = <String, int>{
-                "firstPieceFile": coordinate.file,
-                "firstPieceRank": coordinate.rank,
-                "secondPieceFile": currentCell.file,
-                "secondPieceRank": currentCell.rank,
+                "firstPieceFile": innerLoopCell.file,
+                "firstPieceRank": innerLoopCell.rank,
+                "secondPieceFile": outerLoopCell.file,
+                "secondPieceRank": outerLoopCell.rank,
               };
 
               try {
@@ -429,12 +501,26 @@ class PositionGeneratorFromAntlr {
                   otherPieceMutualConstraintIntValues,
                   commonOtherPiecesConstraintBooleanValues,
                 );
-              } on Exception catch (ex) {
+              } on MissingReturnStatementException catch (ex) {
+                final scriptTypeLabel = translations
+                    .fromScriptType(ScriptType.otherPiecesMutualConstraint);
+                final title =
+                    translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+                final message = translations.missingReturnStatement;
                 Logger().e(ex);
-                return false;
+                throw PositionGenerationError(title, message);
+              } on VariableIsNotAffectedException catch (ex) {
+                final scriptTypeLabel = translations
+                    .fromScriptType(ScriptType.otherPiecesMutualConstraint);
+                final title =
+                    translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+                final message =
+                    translations.variableNotAffected(Name: ex.varName);
+                Logger().e(ex);
+                throw PositionGenerationError(title, message);
               }
             });
-          }).toList();
+          });
         }
         cellsToTest.shuffle();
 
@@ -473,11 +559,11 @@ class PositionGeneratorFromAntlr {
     return currentPosition.fen;
   }
 
-  List<_BoardCoordinate> _getListWithAllCells() {
-    List<_BoardCoordinate> result = [];
+  List<BoardCoordinate> _getListWithAllCells() {
+    List<BoardCoordinate> result = [];
     for (int rank = 0; rank < 8; rank++) {
       for (int file = 0; file < 8; file++) {
-        result.add(_BoardCoordinate(file, rank));
+        result.add(BoardCoordinate(file, rank));
       }
     }
     return result;
@@ -486,7 +572,7 @@ class PositionGeneratorFromAntlr {
   String _placePieceInPosition({
     required String currentPosition,
     required chess.Piece pieceToAdd,
-    required _BoardCoordinate targetCell,
+    required BoardCoordinate targetCell,
   }) {
     final builtPosition = chess.Chess.fromFEN(
       currentPosition,
@@ -499,4 +585,25 @@ class PositionGeneratorFromAntlr {
     builtPosition.put(pieceToAdd, targetCell.toUciString());
     return builtPosition.fen;
   }
+}
+
+List<BoardCoordinate> filterCoordinates(List<BoardCoordinate> originalList,
+    bool Function(BoardCoordinate) conditionFunc) {
+  var result = <BoardCoordinate>[];
+
+  for (final currentCell in originalList) {
+    if (conditionFunc(currentCell)) {
+      result.add(currentCell);
+    }
+  }
+
+  return result;
+}
+
+bool checkConditionMetForEveryCell(List<BoardCoordinate> originalList,
+    bool Function(BoardCoordinate) conditionFunc) {
+  for (final currentCell in originalList) {
+    if (!conditionFunc(currentCell)) return false;
+  }
+  return true;
 }

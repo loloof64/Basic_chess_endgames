@@ -210,8 +210,10 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           otherPiecesMutualConstraint:
               t.script_type.other_pieces_mutual_constraint,
           unrecognizedScriptType: t.script_parser.unrecognized_script_type,
-          tooRestrictiveScriptTitle: t.script_parser.too_restrictive_script_title,
-          tooRestrictiveScriptMessage: t.script_parser.too_restrictive_script_message,
+          tooRestrictiveScriptTitle:
+              t.script_parser.too_restrictive_script_title,
+          tooRestrictiveScriptMessage:
+              t.script_parser.too_restrictive_script_message,
         ),
         sendPort: receivePort.sendPort,
       ),
@@ -294,7 +296,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
             );
 
             Navigator.of(context).pop();
-            
+
             return;
           } else {
             if (!mounted) return;
