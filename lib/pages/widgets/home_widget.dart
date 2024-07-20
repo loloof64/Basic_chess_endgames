@@ -31,7 +31,6 @@ class HomeWidget extends ConsumerStatefulWidget {
 class _HomeWidgetState extends ConsumerState<HomeWidget> {
   Isolate? _positionGenerationIsolate;
   bool _isBusy = false;
-  AssetGame? _selectedSample;
 
   @override
   void initState() {

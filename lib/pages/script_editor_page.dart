@@ -252,10 +252,6 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         priority: Isolate.immediate,
       );
 
-      //////////////////////////////////TODO remove
-      print(message);
-      ///////////////////////////////////
-
       setState(() {
         _isCheckingPosition = false;
       });
@@ -307,6 +303,8 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                 ),
               ),
             );
+            Navigator.of(context).pop();
+            return;
           }
         } else {
           final filePath = await FilePicker.platform.saveFile(
