@@ -44,6 +44,12 @@ class TranslationsWrapper {
   final String otherPiecesIndexedConstraint;
   final String otherPiecesMutualConstraint;
   final String otherPiecesCountConstraint;
+  final String Function({required Object PieceKind})
+      otherPiecesGlobalConstraintSpecialized;
+  final String Function({required Object PieceKind})
+      otherPiecesIndexedConstraintSpecialized;
+  final String Function({required Object PieceKind})
+      otherPiecesMutualConstraintSpecialized;
   final String tooRestrictiveScriptTitle;
   final String tooRestrictiveScriptMessage;
   final String missingReturnStatement;
@@ -64,6 +70,16 @@ class TranslationsWrapper {
     required Object Received,
   }) inputMismatch;
 
+  final String player;
+  final String computer;
+
+  final String pawn;
+  final String knight;
+  final String bishop;
+  final String rook;
+  final String queen;
+  final String king;
+
   const TranslationsWrapper({
     required this.miscErrorDialogTitle,
     required this.missingScriptType,
@@ -81,6 +97,9 @@ class TranslationsWrapper {
     required this.otherPiecesIndexedConstraint,
     required this.otherPiecesMutualConstraint,
     required this.otherPiecesCountConstraint,
+    required this.otherPiecesGlobalConstraintSpecialized,
+    required this.otherPiecesIndexedConstraintSpecialized,
+    required this.otherPiecesMutualConstraintSpecialized,
     required this.variableNotAffected,
     required this.overridingPredefinedVariable,
     required this.parseErrorDialogTitle,
@@ -90,16 +109,66 @@ class TranslationsWrapper {
     required this.tooRestrictiveScriptTitle,
     required this.tooRestrictiveScriptMessage,
     required this.missingReturnStatement,
+    required this.player,
+    required this.computer,
+    required this.pawn,
+    required this.knight,
+    required this.bishop,
+    required this.rook,
+    required this.queen,
+    required this.king,
   });
 
-  String fromScriptType(ScriptType scriptType) {
+  String fromPieceKind(PieceKind pieceKind) {
+    String side = "";
+    String type = "";
+
+    switch (pieceKind.side) {
+      case Side.player:
+        side = player;
+        break;
+      case Side.computer:
+        side = computer;
+        break;
+    }
+
+    switch (pieceKind.pieceType) {
+      case PieceType.pawn:
+        side = pawn;
+        break;
+      case PieceType.knight:
+        side = knight;
+        break;
+      case PieceType.bishop:
+        side = bishop;
+        break;
+      case PieceType.rook:
+        side = rook;
+        break;
+      case PieceType.queen:
+        side = queen;
+        break;
+      case PieceType.king:
+        side = king;
+        break;
+    }
+
+    return "($side $type)";
+  }
+
+  String fromScriptType(
+      {required ScriptType scriptType, PieceKind? pieceKind}) {
+    final pieceKindString = pieceKind != null ? fromPieceKind(pieceKind) : "";
     return switch (scriptType) {
       ScriptType.playerKingConstraint => playerKingConstraint,
       ScriptType.computerKingConstraint => computerKingConstraint,
       ScriptType.mutualKingConstraint => kingsMutualConstraint,
-      ScriptType.otherPiecesGlobalConstraint => otherPiecesGlobalConstraint,
-      ScriptType.otherPiecesIndexedConstraint => otherPiecesIndexedConstraint,
-      ScriptType.otherPiecesMutualConstraint => otherPiecesMutualConstraint,
+      ScriptType.otherPiecesGlobalConstraint =>
+        otherPiecesGlobalConstraintSpecialized(PieceKind: pieceKindString),
+      ScriptType.otherPiecesIndexedConstraint =>
+        otherPiecesIndexedConstraintSpecialized(PieceKind: pieceKindString),
+      ScriptType.otherPiecesMutualConstraint =>
+        otherPiecesMutualConstraintSpecialized(PieceKind: pieceKindString),
       ScriptType.otherPiecesCount => otherPiecesCountConstraint,
       ScriptType.goal => "", // should not be met
     };
@@ -303,7 +372,8 @@ class ScriptTextTransformer {
           builder.buildExpressionObjectsFromScript(scriptContent);
       return (constraint, <PositionGenerationError>[]);
     } on ParseCancellationException catch (ex) {
-      final scriptTypeLabel = translations.fromScriptType(scriptType);
+      final scriptTypeLabel =
+          translations.fromScriptType(scriptType: scriptType, pieceKind: null);
       final title = translations.parseErrorDialogTitle(Title: scriptTypeLabel);
       final message = ex.message;
       Logger().e(ex);
@@ -314,7 +384,8 @@ class ScriptTextTransformer {
         <PositionGenerationError>[PositionGenerationError(title, message)]
       );
     } on TypeError catch (ex) {
-      final scriptTypeLabel = translations.fromScriptType(scriptType);
+      final scriptTypeLabel =
+          translations.fromScriptType(scriptType: scriptType, pieceKind: null);
       final title = translations.parseErrorDialogTitle(Title: scriptTypeLabel);
       final message = translations.typeError;
       Logger().e(ex);
@@ -325,7 +396,8 @@ class ScriptTextTransformer {
         <PositionGenerationError>[PositionGenerationError(title, message)]
       );
     } on Exception catch (ex) {
-      final scriptTypeLabel = translations.fromScriptType(scriptType);
+      final scriptTypeLabel =
+          translations.fromScriptType(scriptType: scriptType, pieceKind: null);
       final title = translations.parseErrorDialogTitle(Title: scriptTypeLabel);
       final message = translations.miscParseError;
       Logger().e(ex);
@@ -353,7 +425,8 @@ class ScriptTextTransformer {
         result.add(PieceKindCount(kind, count));
       } on Exception {
         error = PositionGenerationError(
-          translations.fromScriptType(ScriptType.otherPiecesCount),
+          translations.fromScriptType(
+              scriptType: ScriptType.otherPiecesCount, pieceKind: null),
           translations.miscParseError,
         );
       }

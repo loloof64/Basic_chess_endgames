@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 630 (210 per locale)
+/// Strings: 663 (221 per locale)
 ///
-/// Built on 2024-07-19 at 20:06 UTC
+/// Built on 2024-07-20 at 17:34 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -162,6 +162,8 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsGamePageEn game_page = _TranslationsGamePageEn._(_root);
 	late final _TranslationsScriptParserEn script_parser = _TranslationsScriptParserEn._(_root);
 	late final _TranslationsScriptTypeEn script_type = _TranslationsScriptTypeEn._(_root);
+	late final _TranslationsSideEn side = _TranslationsSideEn._(_root);
+	late final _TranslationsTypeEn type = _TranslationsTypeEn._(_root);
 	late final _TranslationsSampleScriptEn sample_script = _TranslationsSampleScriptEn._(_root);
 	late final _TranslationsScriptEditorPageEn script_editor_page = _TranslationsScriptEditorPageEn._(_root);
 	late final _TranslationsSyntaxManualPageEn syntax_manual_page = _TranslationsSyntaxManualPageEn._(_root);
@@ -289,6 +291,35 @@ class _TranslationsScriptTypeEn {
 	String get other_pieces_indexed_constraint => 'Other pieces constraints by order';
 	String get other_pieces_mutual_constraint => 'Other pieces mutual constraint';
 	String get piece_kind_count_constraint => 'Piece kinds counts constraint';
+	String other_pieces_global_constraint_specialized({required Object PieceKind}) => 'Other pieces global constraint [${PieceKind}]';
+	String other_pieces_indexed_constraint_specialized({required Object PieceKind}) => 'Other pieces constraints by order [${PieceKind}]';
+	String other_pieces_mutual_constraint_specialized({required Object PieceKind}) => 'Other pieces mutual constraint [${PieceKind}]';
+}
+
+// Path: side
+class _TranslationsSideEn {
+	_TranslationsSideEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get player => 'Player';
+	String get computer => 'Computer';
+}
+
+// Path: type
+class _TranslationsTypeEn {
+	_TranslationsTypeEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get pawn => 'pawn';
+	String get knight => 'knight';
+	String get bishop => 'bishop';
+	String get rook => 'rook';
+	String get queen => 'queen';
+	String get king => 'king';
 }
 
 // Path: sample_script
@@ -504,6 +535,8 @@ class _TranslationsEs extends Translations {
 	@override late final _TranslationsGamePageEs game_page = _TranslationsGamePageEs._(_root);
 	@override late final _TranslationsScriptParserEs script_parser = _TranslationsScriptParserEs._(_root);
 	@override late final _TranslationsScriptTypeEs script_type = _TranslationsScriptTypeEs._(_root);
+	@override late final _TranslationsSideEs side = _TranslationsSideEs._(_root);
+	@override late final _TranslationsTypeEs type = _TranslationsTypeEs._(_root);
 	@override late final _TranslationsSampleScriptEs sample_script = _TranslationsSampleScriptEs._(_root);
 	@override late final _TranslationsScriptEditorPageEs script_editor_page = _TranslationsScriptEditorPageEs._(_root);
 	@override late final _TranslationsSyntaxManualPageEs syntax_manual_page = _TranslationsSyntaxManualPageEs._(_root);
@@ -631,6 +664,35 @@ class _TranslationsScriptTypeEs extends _TranslationsScriptTypeEn {
 	@override String get other_pieces_indexed_constraint => 'Restricción indexada de otras piezas';
 	@override String get other_pieces_mutual_constraint => 'Restricción mutua de otras piezas';
 	@override String get piece_kind_count_constraint => 'Restricción de recuento de tipos de piezas';
+	@override String other_pieces_global_constraint_specialized({required Object PieceKind}) => 'Restricción global de otras piezas [${PieceKind}]';
+	@override String other_pieces_indexed_constraint_specialized({required Object PieceKind}) => 'Restricción indexada de otras piezas [${PieceKind}]';
+	@override String other_pieces_mutual_constraint_specialized({required Object PieceKind}) => 'Restricción de recuento de tipos de piezas [${PieceKind}]';
+}
+
+// Path: side
+class _TranslationsSideEs extends _TranslationsSideEn {
+	_TranslationsSideEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get player => 'Jugador';
+	@override String get computer => 'Computadora';
+}
+
+// Path: type
+class _TranslationsTypeEs extends _TranslationsTypeEn {
+	_TranslationsTypeEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get pawn => 'peón';
+	@override String get knight => 'caballero';
+	@override String get bishop => 'alfil';
+	@override String get rook => 'torre';
+	@override String get queen => 'reina';
+	@override String get king => 'rey';
 }
 
 // Path: sample_script
@@ -846,6 +908,8 @@ class _TranslationsFr extends Translations {
 	@override late final _TranslationsGamePageFr game_page = _TranslationsGamePageFr._(_root);
 	@override late final _TranslationsScriptParserFr script_parser = _TranslationsScriptParserFr._(_root);
 	@override late final _TranslationsScriptTypeFr script_type = _TranslationsScriptTypeFr._(_root);
+	@override late final _TranslationsSideFr side = _TranslationsSideFr._(_root);
+	@override late final _TranslationsTypeFr type = _TranslationsTypeFr._(_root);
 	@override late final _TranslationsSampleScriptFr sample_script = _TranslationsSampleScriptFr._(_root);
 	@override late final _TranslationsScriptEditorPageFr script_editor_page = _TranslationsScriptEditorPageFr._(_root);
 	@override late final _TranslationsSyntaxManualPageFr syntax_manual_page = _TranslationsSyntaxManualPageFr._(_root);
@@ -973,6 +1037,35 @@ class _TranslationsScriptTypeFr extends _TranslationsScriptTypeEn {
 	@override String get other_pieces_indexed_constraint => 'Contraintes par index pour les autres pièces';
 	@override String get other_pieces_mutual_constraint => 'Contraintes mutuelles pour les autres pièces';
 	@override String get piece_kind_count_constraint => 'Contraintes sur le compte des autres pièces';
+	@override String other_pieces_global_constraint_specialized({required Object PieceKind}) => 'Contraintes globales pour les autres pièces [${PieceKind}]';
+	@override String other_pieces_indexed_constraint_specialized({required Object PieceKind}) => 'Contraintes par index pour les autres pièces [${PieceKind}]';
+	@override String other_pieces_mutual_constraint_specialized({required Object PieceKind}) => 'Contraintes sur le compte des autres pièces [${PieceKind}]';
+}
+
+// Path: side
+class _TranslationsSideFr extends _TranslationsSideEn {
+	_TranslationsSideFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get player => 'Joueur';
+	@override String get computer => 'Ordinateur';
+}
+
+// Path: type
+class _TranslationsTypeFr extends _TranslationsTypeEn {
+	_TranslationsTypeFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get pawn => 'pion';
+	@override String get knight => 'cavalier';
+	@override String get bishop => 'fou';
+	@override String get rook => 'tour';
+	@override String get queen => 'dame';
+	@override String get king => 'roi';
 }
 
 // Path: sample_script

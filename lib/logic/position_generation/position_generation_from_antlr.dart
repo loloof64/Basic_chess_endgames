@@ -198,7 +198,7 @@ class PositionGeneratorFromAntlr {
           );
         } on MissingReturnStatementException catch (ex) {
           final scriptTypeLabel =
-              translations.fromScriptType(ScriptType.playerKingConstraint);
+              translations.fromScriptType(scriptType: ScriptType.playerKingConstraint);
           final title =
               translations.parseErrorDialogTitle(Title: scriptTypeLabel);
           final message = translations.missingReturnStatement;
@@ -206,7 +206,7 @@ class PositionGeneratorFromAntlr {
           throw PositionGenerationError(title, message);
         } on VariableIsNotAffectedException catch (ex) {
           final scriptTypeLabel =
-              translations.fromScriptType(ScriptType.playerKingConstraint);
+              translations.fromScriptType(scriptType: ScriptType.playerKingConstraint);
           final title =
               translations.parseErrorDialogTitle(Title: scriptTypeLabel);
           final message = translations.variableNotAffected(Name: ex.varName);
@@ -287,7 +287,7 @@ class PositionGeneratorFromAntlr {
           );
         } on MissingReturnStatementException catch (ex) {
           final scriptTypeLabel =
-              translations.fromScriptType(ScriptType.computerKingConstraint);
+              translations.fromScriptType(scriptType: ScriptType.computerKingConstraint);
           final title =
               translations.parseErrorDialogTitle(Title: scriptTypeLabel);
           final message = translations.missingReturnStatement;
@@ -295,7 +295,7 @@ class PositionGeneratorFromAntlr {
           throw PositionGenerationError(title, message);
         } on VariableIsNotAffectedException catch (ex) {
           final scriptTypeLabel =
-              translations.fromScriptType(ScriptType.computerKingConstraint);
+              translations.fromScriptType(scriptType: ScriptType.computerKingConstraint);
           final title =
               translations.parseErrorDialogTitle(Title: scriptTypeLabel);
           final message = translations.variableNotAffected(Name: ex.varName);
@@ -324,7 +324,7 @@ class PositionGeneratorFromAntlr {
           );
         } on MissingReturnStatementException catch (ex) {
           final scriptTypeLabel =
-              translations.fromScriptType(ScriptType.mutualKingConstraint);
+              translations.fromScriptType(scriptType: ScriptType.mutualKingConstraint);
           final title =
               translations.parseErrorDialogTitle(Title: scriptTypeLabel);
           final message = translations.missingReturnStatement;
@@ -332,7 +332,7 @@ class PositionGeneratorFromAntlr {
           throw PositionGenerationError(title, message);
         } on VariableIsNotAffectedException catch (ex) {
           final scriptTypeLabel =
-              translations.fromScriptType(ScriptType.mutualKingConstraint);
+              translations.fromScriptType(scriptType: ScriptType.mutualKingConstraint);
           final title =
               translations.parseErrorDialogTitle(Title: scriptTypeLabel);
           final message = translations.variableNotAffected(Name: ex.varName);
@@ -429,7 +429,7 @@ class PositionGeneratorFromAntlr {
               );
             } on MissingReturnStatementException catch (ex) {
               final scriptTypeLabel = translations
-                  .fromScriptType(ScriptType.otherPiecesGlobalConstraint);
+                  .fromScriptType(scriptType: ScriptType.otherPiecesGlobalConstraint);
               final title =
                   translations.parseErrorDialogTitle(Title: scriptTypeLabel);
               final message = translations.missingReturnStatement;
@@ -437,7 +437,7 @@ class PositionGeneratorFromAntlr {
               throw PositionGenerationError(title, message);
             } on VariableIsNotAffectedException catch (ex) {
               final scriptTypeLabel = translations
-                  .fromScriptType(ScriptType.otherPiecesGlobalConstraint);
+                  .fromScriptType(scriptType: ScriptType.otherPiecesGlobalConstraint);
               final title =
                   translations.parseErrorDialogTitle(Title: scriptTypeLabel);
               final message =
@@ -463,7 +463,7 @@ class PositionGeneratorFromAntlr {
               );
             } on MissingReturnStatementException catch (ex) {
               final scriptTypeLabel = translations
-                  .fromScriptType(ScriptType.otherPiecesIndexedConstraint);
+                  .fromScriptType(scriptType: ScriptType.otherPiecesIndexedConstraint);
               final title =
                   translations.parseErrorDialogTitle(Title: scriptTypeLabel);
               final message = translations.missingReturnStatement;
@@ -471,7 +471,7 @@ class PositionGeneratorFromAntlr {
               throw PositionGenerationError(title, message);
             } on VariableIsNotAffectedException catch (ex) {
               final scriptTypeLabel = translations
-                  .fromScriptType(ScriptType.otherPiecesIndexedConstraint);
+                  .fromScriptType(scriptType: ScriptType.otherPiecesIndexedConstraint);
               final title =
                   translations.parseErrorDialogTitle(Title: scriptTypeLabel);
               final message =
@@ -503,7 +503,7 @@ class PositionGeneratorFromAntlr {
                 );
               } on MissingReturnStatementException catch (ex) {
                 final scriptTypeLabel = translations
-                    .fromScriptType(ScriptType.otherPiecesMutualConstraint);
+                    .fromScriptType(scriptType: ScriptType.otherPiecesMutualConstraint);
                 final title =
                     translations.parseErrorDialogTitle(Title: scriptTypeLabel);
                 final message = translations.missingReturnStatement;
@@ -511,7 +511,7 @@ class PositionGeneratorFromAntlr {
                 throw PositionGenerationError(title, message);
               } on VariableIsNotAffectedException catch (ex) {
                 final scriptTypeLabel = translations
-                    .fromScriptType(ScriptType.otherPiecesMutualConstraint);
+                    .fromScriptType(scriptType: ScriptType.otherPiecesMutualConstraint);
                 final title =
                     translations.parseErrorDialogTitle(Title: scriptTypeLabel);
                 final message =

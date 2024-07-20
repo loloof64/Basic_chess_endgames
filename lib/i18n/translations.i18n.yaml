@@ -76,6 +76,19 @@ scriptType:
   otherPiecesIndexedConstraint: "Other pieces constraints by order"
   otherPiecesMutualConstraint: "Other pieces mutual constraint"
   pieceKindCountConstraint: "Piece kinds counts constraint"
+  otherPiecesGlobalConstraintSpecialized: "Other pieces global constraint $pieceKind"
+  otherPiecesIndexedConstraintSpecialized: "Other pieces constraints by order $pieceKind"
+  otherPiecesMutualConstraintSpecialized: "Other pieces mutual constraint $pieceKind"
+side:
+  player: Player
+  computer: Computer
+type:
+  pawn: pawn
+  knight: knight
+  bishop: bishop
+  rook: rook
+  queen: queen
+  king: king
 sampleScript:
   kqK: "King+Queen | King"
   krK: "King+Rook | King"

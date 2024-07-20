@@ -214,6 +214,20 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
               t.script_parser.too_restrictive_script_title,
           tooRestrictiveScriptMessage:
               t.script_parser.too_restrictive_script_message,
+          player: t.side.player,
+    computer: t.side.computer,
+    pawn: t.type.pawn,
+    knight: t.type.knight,
+    bishop: t.type.bishop,
+    rook: t.type.rook,
+    queen: t.type.queen,
+    king: t.type.king,
+    otherPiecesGlobalConstraintSpecialized:
+        t.script_type.other_pieces_global_constraint_specialized,
+    otherPiecesIndexedConstraintSpecialized:
+        t.script_type.other_pieces_indexed_constraint_specialized,
+    otherPiecesMutualConstraintSpecialized:
+        t.script_type.other_pieces_mutual_constraint_specialized,
         ),
         sendPort: receivePort.sendPort,
       ),

@@ -83,6 +83,19 @@ scriptType:
   otherPiecesIndexedConstraint: "Contraintes par index pour les autres pièces"
   otherPiecesMutualConstraint: "Contraintes mutuelles pour les autres pièces"
   pieceKindCountConstraint: "Contraintes sur le compte des autres pièces"
+  otherPiecesGlobalConstraintSpecialized: "Contraintes globales pour les autres pièces $pieceKind"
+  otherPiecesIndexedConstraintSpecialized: "Contraintes par index pour les autres pièces $pieceKind"
+  otherPiecesMutualConstraintSpecialized: "Contraintes sur le compte des autres pièces $pieceKind"
+side:
+  player: Joueur
+  computer: Ordinateur
+type:
+  pawn: pion
+  knight: cavalier
+  bishop: fou
+  rook: tour
+  queen: dame
+  king: roi
 sampleScript:
   kqK: "Roi+Dame | Roi"
   krK: "Roi+Tour | Roi"
