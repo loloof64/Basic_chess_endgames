@@ -6,7 +6,6 @@ import 'dart:isolate';
 import 'package:antlr4/antlr4.dart';
 import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.dart';
 import 'package:basicchessendgamestrainer/antlr4/script_language_builder.dart';
-import 'package:basicchessendgamestrainer/commons.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';

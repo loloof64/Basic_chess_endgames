@@ -487,7 +487,7 @@ class PositionGeneratorFromAntlr {
         previous placed pieces of the same kind */
         if (currentPieceMutualConstraint != null) {
           cellsToTest = filterCoordinates(cellsToTest, (outerLoopCell) {
-            return checkConditionMetForEveryCell(cellsToTest, (innerLoopCell) {
+            return checkConditionMetForEveryCell(savedCoordinatesForThisCountConstraint, (innerLoopCell) {
               final otherPieceMutualConstraintIntValues = <String, int>{
                 "firstPieceFile": innerLoopCell.file,
                 "firstPieceRank": innerLoopCell.rank,
