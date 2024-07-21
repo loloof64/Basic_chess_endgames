@@ -1,5 +1,7 @@
+import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/piece_kind_widget.dart';
+import 'package:basicchessendgamestrainer/components/textfield_with_caret_position.dart';
 import 'package:flutter/material.dart';
 
 class ComplexEditorWidget extends StatefulWidget {
@@ -70,14 +72,17 @@ class EditorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: TextField(
-        enabled: enabled,
-        minLines: 100,
-        maxLines: 100,
-        controller: controller,
-      ),
-    );
+    return enabled
+        ? SingleChildScrollView(
+            child: TextfieldWithPositionTracker(
+              controller: controller,
+            ),
+          )
+        : Center(
+            child: Text(
+              t.script_editor_page.no_content_yet,
+            ),
+          );
   }
 }
 

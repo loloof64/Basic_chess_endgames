@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 663 (221 per locale)
+/// Strings: 666 (222 per locale)
 ///
-/// Built on 2024-07-20 at 21:28 UTC
+/// Built on 2024-07-20 at 22:08 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -348,6 +348,7 @@ class _TranslationsScriptEditorPageEn {
 
 	// Translations
 	String get title => 'Script editor page';
+	String get no_content_yet => 'No content yet';
 	String get player_king_constraint => 'Player\'s king\'s constraints';
 	String get computer_king_constraint => 'Computer\'s king\'s constraints';
 	String get kings_mutual_constraint => 'Kings\'s mutual constraints';
@@ -721,6 +722,7 @@ class _TranslationsScriptEditorPageEs extends _TranslationsScriptEditorPageEn {
 
 	// Translations
 	@override String get title => 'Página del editor de guiones';
+	@override String get no_content_yet => 'Aún no hay contenido';
 	@override String get player_king_constraint => 'Restricciones rey del jugador';
 	@override String get computer_king_constraint => 'Restricciones rey de la computadora';
 	@override String get kings_mutual_constraint => 'Restricciones mutuas de los reyes';
@@ -1094,6 +1096,7 @@ class _TranslationsScriptEditorPageFr extends _TranslationsScriptEditorPageEn {
 
 	// Translations
 	@override String get title => 'Page d\'édition de script';
+	@override String get no_content_yet => 'Pas encore de contenu';
 	@override String get player_king_constraint => 'Contraintes roi du joueur';
 	@override String get computer_king_constraint => 'Contraintes roi de l\'ordinateur';
 	@override String get kings_mutual_constraint => 'Contraintes mutuelles entre rois';

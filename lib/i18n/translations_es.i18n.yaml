@@ -104,6 +104,7 @@ sampleScript:
   rookEndingPhilidor: "Finale de torre de Philidor"
 script_editor_page:
   title: "Página del editor de guiones"
+  no_content_yet : "Aún no hay contenido"
   player_king_constraint: "Restricciones rey del jugador"
   computer_king_constraint: "Restricciones rey de la computadora"
   kings_mutual_constraint: "Restricciones mutuas de los reyes"
