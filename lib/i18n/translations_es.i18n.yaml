@@ -23,8 +23,8 @@ home:
   failedGeneratingPosition: "Falló al generar la posición."
   misc_generating_error: "Error al generar la posición para un error misceláneo."
   menu_buttons:
-    samples: "Cargar un ejemplo"
-    load_script: "Cargar un archivo de código"
+    samples: "Jugar un ejemplo"
+    load_script: "Jugar un archivo de código"
     new_script: "Nuevo archivo de código"
     edit_script: "Editar un archivo de código"
     show_sample_code: "Mostrar el código de un ejemplo"

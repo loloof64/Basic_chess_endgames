@@ -6,7 +6,7 @@
 /// Locales: 3
 /// Strings: 678 (226 per locale)
 ///
-/// Built on 2024-07-21 at 09:59 UTC
+/// Built on 2024-07-21 at 10:14 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -505,8 +505,8 @@ class _TranslationsHomeMenuButtonsEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get samples => 'Load an example';
-	String get load_script => 'Load script';
+	String get samples => 'Play an example';
+	String get load_script => 'Play a script';
 	String get new_script => 'New script';
 	String get edit_script => 'Edit script';
 	String get show_sample_code => 'Show the code of an example';
@@ -883,8 +883,8 @@ class _TranslationsHomeMenuButtonsEs extends _TranslationsHomeMenuButtonsEn {
 	@override final _TranslationsEs _root; // ignore: unused_field
 
 	// Translations
-	@override String get samples => 'Cargar un ejemplo';
-	@override String get load_script => 'Cargar un archivo de código';
+	@override String get samples => 'Jugar un ejemplo';
+	@override String get load_script => 'Jugar un archivo de código';
 	@override String get new_script => 'Nuevo archivo de código';
 	@override String get edit_script => 'Editar un archivo de código';
 	@override String get show_sample_code => 'Mostrar el código de un ejemplo';
@@ -1261,8 +1261,8 @@ class _TranslationsHomeMenuButtonsFr extends _TranslationsHomeMenuButtonsEn {
 	@override final _TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String get samples => 'Charger un exemple';
-	@override String get load_script => 'Charger un script';
+	@override String get samples => 'Jouer un exemple';
+	@override String get load_script => 'Jouer un script';
 	@override String get new_script => 'Nouveau script';
 	@override String get edit_script => 'Éditer un script';
 	@override String get show_sample_code => 'Montrer le code d\'un exemple';

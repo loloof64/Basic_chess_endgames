@@ -22,8 +22,8 @@ home:
     aren't too restrictive.\n\nAlso, please check that all of your variables are declared before use."
   misc_generating_error: "Failed to generate the position for a miscellaneous error."
   menu_buttons:
-    samples: "Load an example"
-    load_script: "Load script"
+    samples: "Play an example"
+    load_script: "Play a script"
     new_script: "New script"
     edit_script: "Edit script"
     show_sample_code: "Show the code of an example"
