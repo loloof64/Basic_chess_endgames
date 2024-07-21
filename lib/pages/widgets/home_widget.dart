@@ -5,7 +5,7 @@ import 'package:basicchessendgamestrainer/commons.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:basicchessendgamestrainer/pages/script_editor_page.dart';
-import 'package:basicchessendgamestrainer/pages/widgets/sample_game_chooser.dart';
+import 'package:basicchessendgamestrainer/pages/sample_game_chooser_page.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
@@ -368,6 +368,20 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     );
   }
 
+  void _purposeShowSampleCode() async {
+    final selectedSample = await Navigator.push<AssetGame?>(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) {
+          return const SampleGameChooserPage();
+        },
+      ),
+    );
+    if (selectedSample == null) return;
+
+    _readSampleCodeInEditor(selectedSample);
+  }
+
   @override
   Widget build(BuildContext context) {
     final progressBarSize = MediaQuery.of(context).size.shortestSide * 0.80;
@@ -393,6 +407,11 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                     ElevatedButton(
                         onPressed: _purposeLoadSample,
                         child: Text(t.home.menu_buttons.samples)),
+                    ElevatedButton(
+                        onPressed: _purposeShowSampleCode,
+                        child: Text(
+                          t.home.menu_buttons.show_sample_code,
+                        )),
                     ElevatedButton(
                         onPressed: _purposeLoadScript,
                         child: Text(t.home.menu_buttons.load_script)),

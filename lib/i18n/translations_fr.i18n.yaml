@@ -25,6 +25,7 @@ home:
     load_script: "Charger un script"
     new_script: "Nouveau script"
     edit_script: "Éditer un script"
+    show_sample_code: "Montrer le code d'un exemple"
   goal_label: "Objectif"
   win_label: "Gain"
   draw_label: "Nulle"

@@ -24,6 +24,7 @@ home:
     load_script: "Load script"
     new_script: "New script"
     edit_script: "Edit script"
+    show_sample_code: "Show the code of an example"
   goal_label: "Goal"
   win_label: "Win"
   draw_label: "Draw"

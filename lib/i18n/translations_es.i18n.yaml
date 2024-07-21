@@ -25,6 +25,7 @@ home:
     load_script: "Cargar un archivo de código"
     new_script: "Nuevo archivo de código"
     edit_script: "Editar un archivo de código"
+    show_sample_code: "Mostrar el código de un ejemplo"
   goal_label: "Objectivo"
   win_label: "Ganar"
   draw_label: "Empate"

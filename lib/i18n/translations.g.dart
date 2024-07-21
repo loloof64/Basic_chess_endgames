@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 666 (222 per locale)
+/// Strings: 669 (223 per locale)
 ///
-/// Built on 2024-07-21 at 08:41 UTC
+/// Built on 2024-07-21 at 08:56 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -507,6 +507,7 @@ class _TranslationsHomeMenuButtonsEn {
 	String get load_script => 'Load script';
 	String get new_script => 'New script';
 	String get edit_script => 'Edit script';
+	String get show_sample_code => 'Show the code of an example';
 }
 
 // Path: <root>
@@ -881,6 +882,7 @@ class _TranslationsHomeMenuButtonsEs extends _TranslationsHomeMenuButtonsEn {
 	@override String get load_script => 'Cargar un archivo de código';
 	@override String get new_script => 'Nuevo archivo de código';
 	@override String get edit_script => 'Editar un archivo de código';
+	@override String get show_sample_code => 'Mostrar el código de un ejemplo';
 }
 
 // Path: <root>
@@ -1255,4 +1257,5 @@ class _TranslationsHomeMenuButtonsFr extends _TranslationsHomeMenuButtonsEn {
 	@override String get load_script => 'Charger un script';
 	@override String get new_script => 'Nouveau script';
 	@override String get edit_script => 'Éditer un script';
+	@override String get show_sample_code => 'Montrer le code d\'un exemple';
 }
