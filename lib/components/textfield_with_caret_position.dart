@@ -53,6 +53,7 @@ class TextfieldWithPositionTrackerState
         Text(_cursorPosition),
         const SizedBox(height: 20),
         TextField(
+          autofocus: true,
           controller: widget.controller,
           minLines: 100,
           maxLines: 100,
