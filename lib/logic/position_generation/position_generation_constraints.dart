@@ -20,6 +20,11 @@ class PieceKind with FastEquatable {
   PieceKind(this.pieceType, this.side);
 
   @override
+  String toString() {
+    return "${side.name} ${pieceType.name}";
+  }
+
+  @override
   bool get cacheHash => true;
 
   @override

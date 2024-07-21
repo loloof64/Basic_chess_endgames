@@ -23,6 +23,10 @@ class _ComplexEditorWidgetState extends State<ComplexEditorWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = _selectedType == null
+        ? TextEditingController()
+        : widget.scriptsControllersByKinds[_selectedType!]!;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,10 +51,9 @@ class _ComplexEditorWidgetState extends State<ComplexEditorWidget> {
         Expanded(
           flex: 6,
           child: EditorWidget(
+            key: UniqueKey(),
             enabled: _selectedType != null,
-            controller: _selectedType == null
-                ? TextEditingController()
-                : widget.scriptsControllersByKinds[_selectedType!]!,
+            controller: controller,
           ),
         ),
       ],
