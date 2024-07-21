@@ -441,67 +441,83 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     final progressBarSize = MediaQuery.of(context).size.shortestSide * 0.80;
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(t.home.title),
+    const fontSize = 10.0;
+    final buttons = [
+      ElevatedButton(
+        onPressed: _purposeLoadSample,
+        child: Text(
+          t.home.menu_buttons.samples,
+          style: const TextStyle(fontSize: fontSize),
         ),
-        body: _isBusy
-            ? Center(
-                child: SizedBox(
-                  width: progressBarSize,
-                  height: progressBarSize,
-                  child: const CircularProgressIndicator(),
-                ),
-              )
-            : Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                            onPressed: _purposeLoadSample,
-                            child: Text(t.home.menu_buttons.samples)),
+      ),
+      ElevatedButton(
+        onPressed: _purposeShowSampleCode,
+        child: Text(
+          t.home.menu_buttons.show_sample_code,
+          style: const TextStyle(fontSize: fontSize),
+        ),
+      ),
+      ElevatedButton(
+        onPressed: _purposeCloneSampleCode,
+        child: Text(
+          t.home.menu_buttons.clone_sample,
+          style: const TextStyle(fontSize: fontSize),
+        ),
+      ),
+      ElevatedButton(
+        onPressed: _purposeLoadScript,
+        child: Text(
+          t.home.menu_buttons.load_script,
+          style: const TextStyle(fontSize: fontSize),
+        ),
+      ),
+      ElevatedButton(
+        onPressed: _purposeEditScript,
+        child: Text(
+          t.home.menu_buttons.edit_script,
+          style: const TextStyle(fontSize: fontSize),
+        ),
+      ),
+      ElevatedButton(
+        onPressed: _openNewScriptEditor,
+        child: Text(
+          t.home.menu_buttons.new_script,
+          style: const TextStyle(fontSize: fontSize),
+        ),
+      ),
+    ];
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(t.home.title),
+      ),
+      body: _isBusy
+          ? Center(
+              child: SizedBox(
+                width: progressBarSize,
+                height: progressBarSize,
+                child: const CircularProgressIndicator(),
+              ),
+            )
+          : Center(
+              child: ListView(
+                shrinkWrap: false,
+                padding: const EdgeInsets.all(16.0),
+                children: [
+                  for (final currentButton in buttons)
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: SizedBox(
+                          width: 220.0,
+                          height: 50.0,
+                          child: currentButton,
+                        ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                            onPressed: _purposeShowSampleCode,
-                            child: Text(
-                              t.home.menu_buttons.show_sample_code,
-                            )),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                            onPressed: _purposeCloneSampleCode,
-                            child: Text(t.home.menu_buttons.clone_sample)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                            onPressed: _purposeLoadScript,
-                            child: Text(t.home.menu_buttons.load_script)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                            onPressed: _purposeEditScript,
-                            child: Text(t.home.menu_buttons.edit_script)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                            onPressed: _openNewScriptEditor,
-                            child: Text(t.home.menu_buttons.new_script)),
-                      ),
-                    ],
-                  ),
-                ),
-              ));
+                    ),
+                ],
+              ),
+            ),
+    );
   }
 }
