@@ -101,7 +101,7 @@ sampleScript:
   rookEndingPhilidor: "Philidor rook ending"
 script_editor_page:
   title: "Script editor page"
-  no_content_yet : "No content yet"
+  no_content_yet : "Select a piece kind."
   player_king_constraint: "Player's king's constraints"
   computer_king_constraint: "Computer's king's constraints"
   kings_mutual_constraint: "Kings's mutual constraints"

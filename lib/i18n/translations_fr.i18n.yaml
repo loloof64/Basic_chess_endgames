@@ -108,7 +108,7 @@ sampleScript:
   rookEndingPhilidor: "Finale de tour de Philidor"
 script_editor_page:
   title: "Page d'édition de script"
-  no_content_yet : "Pas encore de contenu"
+  no_content_yet : "Choisissez un type de pièce."
   player_king_constraint: "Contraintes roi du joueur"
   computer_king_constraint: "Contraintes roi de l'ordinateur"
   kings_mutual_constraint: "Contraintes mutuelles entre rois"
