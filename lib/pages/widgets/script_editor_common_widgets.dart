@@ -20,6 +20,19 @@ class ComplexEditorWidget extends StatefulWidget {
 
 class _ComplexEditorWidgetState extends State<ComplexEditorWidget> {
   PieceKind? _selectedType;
+  late FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,17 +54,21 @@ class _ComplexEditorWidgetState extends State<ComplexEditorWidget> {
               ),
             );
           }).toList(),
-          onChanged: (newValue) {
+          onChanged: (newValue) async {
             if (newValue == null) return;
             setState(() {
               _selectedType = newValue;
             });
+            // waiting for the text field to be added to tree
+            await Future.delayed(const Duration(milliseconds: 50));
+            _focusNode.requestFocus();
           },
         ),
         Expanded(
           flex: 6,
           child: EditorWidget(
             key: UniqueKey(),
+            focusNode: _focusNode,
             enabled: _selectedType != null,
             controller: controller,
           ),
@@ -65,9 +82,11 @@ class EditorWidget extends StatelessWidget {
   final String initialContent;
   final TextEditingController controller;
   final bool enabled;
+  final FocusNode? focusNode;
 
   const EditorWidget({
     super.key,
+    this.focusNode,
     required this.controller,
     this.initialContent = "",
     this.enabled = true,
@@ -78,6 +97,7 @@ class EditorWidget extends StatelessWidget {
     return enabled
         ? SingleChildScrollView(
             child: TextfieldWithPositionTracker(
+              focusNode: focusNode,
               controller: controller,
             ),
           )

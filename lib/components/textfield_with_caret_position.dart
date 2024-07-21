@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class TextfieldWithPositionTracker extends StatefulWidget {
-  const TextfieldWithPositionTracker({super.key, required this.controller});
+  const TextfieldWithPositionTracker(
+      {super.key, required this.controller, this.focusNode});
   final TextEditingController controller;
+  final FocusNode? focusNode;
 
   @override
   TextfieldWithPositionTrackerState createState() =>
@@ -54,6 +56,7 @@ class TextfieldWithPositionTrackerState
         const SizedBox(height: 20),
         TextField(
           autofocus: true,
+          focusNode: widget.focusNode,
           controller: widget.controller,
           minLines: 100,
           maxLines: 100,
