@@ -13,6 +13,8 @@ pickers:
 home:
   title: "Inicio"
   failedLoadingExercise: "No se pudo cargar el ejercicio: la posición de ajedrez no es válida."
+  success_saving_exercice: "Ejercicio guardado."
+  failed_saving_exercise: "No se pudo guardar el ejercicio."
   maxGenerationAttemptsAchieved:
     "Es imposible generar una posición a partir de estos guiones: \
     se han superado los intentos máximos de generación.\n\nComprueba que tus \
@@ -26,6 +28,7 @@ home:
     new_script: "Nuevo archivo de código"
     edit_script: "Editar un archivo de código"
     show_sample_code: "Mostrar el código de un ejemplo"
+    clone_sample: "Clonar el código de un ejemplo"
   goal_label: "Objectivo"
   win_label: "Ganar"
   draw_label: "Empate"

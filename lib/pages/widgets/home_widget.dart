@@ -382,6 +382,62 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     _readSampleCodeInEditor(selectedSample);
   }
 
+  void _purposeCloneSampleCode() async {
+    final selectedSample = await Navigator.push<AssetGame?>(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) {
+          return const SampleGameChooserPage();
+        },
+      ),
+    );
+    if (selectedSample == null) return;
+
+    final gameScript = await rootBundle.loadString(selectedSample.assetPath);
+    if (Platform.isAndroid) {
+      final savedScript =
+          await _openSaveFileDialogsPlugin.saveFileDialog(content: gameScript);
+      if (!mounted) return;
+      if (savedScript == null) {
+        debugPrint("File saving cancellation.");
+        return;
+      }
+    } else {
+      final savedPath = await FilePicker.platform.saveFile(
+        dialogTitle: t.pickers.save_file_title,
+      );
+      if (!mounted) return;
+      if (savedPath == null) {
+        debugPrint("File saving cancellation.");
+        return;
+      }
+
+      try {
+        File file = File(savedPath);
+        await file.writeAsString(gameScript);
+      } on FileSystemException {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              t.home.failed_saving_exercise,
+            ),
+          ),
+        );
+        return;
+      }
+    }
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          t.home.success_saving_exercice,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final progressBarSize = MediaQuery.of(context).size.shortestSide * 0.80;
@@ -399,29 +455,34 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                 ),
               )
             : Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                        onPressed: _purposeLoadSample,
-                        child: Text(t.home.menu_buttons.samples)),
-                    ElevatedButton(
-                        onPressed: _purposeShowSampleCode,
-                        child: Text(
-                          t.home.menu_buttons.show_sample_code,
-                        )),
-                    ElevatedButton(
-                        onPressed: _purposeLoadScript,
-                        child: Text(t.home.menu_buttons.load_script)),
-                    ElevatedButton(
-                        onPressed: _purposeEditScript,
-                        child: Text(t.home.menu_buttons.edit_script)),
-                    ElevatedButton(
-                        onPressed: _openNewScriptEditor,
-                        child: Text(t.home.menu_buttons.new_script)),
-                  ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                          onPressed: _purposeLoadSample,
+                          child: Text(t.home.menu_buttons.samples)),
+                      ElevatedButton(
+                          onPressed: _purposeShowSampleCode,
+                          child: Text(
+                            t.home.menu_buttons.show_sample_code,
+                          )),
+                      ElevatedButton(
+                          onPressed: _purposeCloneSampleCode,
+                          child: Text(t.home.menu_buttons.clone_sample)),
+                      ElevatedButton(
+                          onPressed: _purposeLoadScript,
+                          child: Text(t.home.menu_buttons.load_script)),
+                      ElevatedButton(
+                          onPressed: _purposeEditScript,
+                          child: Text(t.home.menu_buttons.edit_script)),
+                      ElevatedButton(
+                          onPressed: _openNewScriptEditor,
+                          child: Text(t.home.menu_buttons.new_script)),
+                    ],
+                  ),
                 ),
               ));
   }

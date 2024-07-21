@@ -14,6 +14,8 @@ home:
   title: "Home"
   failedLoadingExercise: "Failed to load exercise : the chess position is not valid."
   failedGeneratingPosition: "Failed to generate the position."
+  success_saving_exercice: "Exercice saved."
+  failed_saving_exercise: "Failed to save the exercice."
   maxGenerationAttemptsAchieved:
     "Impossible to generate a position from these scripts : \
     maximum generation attempts surpassed.\n\nPlease check that your constraints \
@@ -25,6 +27,7 @@ home:
     new_script: "New script"
     edit_script: "Edit script"
     show_sample_code: "Show the code of an example"
+    clone_sample: "Clone the code of an example"
   goal_label: "Goal"
   win_label: "Win"
   draw_label: "Draw"

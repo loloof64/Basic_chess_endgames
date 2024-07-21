@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 669 (223 per locale)
+/// Strings: 678 (226 per locale)
 ///
-/// Built on 2024-07-21 at 08:56 UTC
+/// Built on 2024-07-21 at 09:59 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -207,6 +207,8 @@ class _TranslationsHomeEn {
 	String get title => 'Home';
 	String get failed_loading_exercise => 'Failed to load exercise : the chess position is not valid.';
 	String get failed_generating_position => 'Failed to generate the position.';
+	String get success_saving_exercice => 'Exercice saved.';
+	String get failed_saving_exercise => 'Failed to save the exercice.';
 	String get max_generation_attempts_achieved => 'Impossible to generate a position from these scripts : maximum generation attempts surpassed.\n\nPlease check that your constraints aren\'t too restrictive.\n\nAlso, please check that all of your variables are declared before use.';
 	String get misc_generating_error => 'Failed to generate the position for a miscellaneous error.';
 	late final _TranslationsHomeMenuButtonsEn menu_buttons = _TranslationsHomeMenuButtonsEn._(_root);
@@ -508,6 +510,7 @@ class _TranslationsHomeMenuButtonsEn {
 	String get new_script => 'New script';
 	String get edit_script => 'Edit script';
 	String get show_sample_code => 'Show the code of an example';
+	String get clone_sample => 'Clone the code of an example';
 }
 
 // Path: <root>
@@ -581,6 +584,8 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	// Translations
 	@override String get title => 'Inicio';
 	@override String get failed_loading_exercise => 'No se pudo cargar el ejercicio: la posición de ajedrez no es válida.';
+	@override String get success_saving_exercice => 'Ejercicio guardado.';
+	@override String get failed_saving_exercise => 'No se pudo guardar el ejercicio.';
 	@override String get max_generation_attempts_achieved => 'Es imposible generar una posición a partir de estos guiones: se han superado los intentos máximos de generación.\n\nComprueba que tus restricciones no sean demasiado restrictivas.\n\nAdemás, por favor, asegúrate de que todas tus variables estén declaradas antes de usarlas.';
 	@override String get failed_generating_position => 'Falló al generar la posición.';
 	@override String get misc_generating_error => 'Error al generar la posición para un error misceláneo.';
@@ -883,6 +888,7 @@ class _TranslationsHomeMenuButtonsEs extends _TranslationsHomeMenuButtonsEn {
 	@override String get new_script => 'Nuevo archivo de código';
 	@override String get edit_script => 'Editar un archivo de código';
 	@override String get show_sample_code => 'Mostrar el código de un ejemplo';
+	@override String get clone_sample => 'Clonar el código de un ejemplo';
 }
 
 // Path: <root>
@@ -956,6 +962,8 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	// Translations
 	@override String get title => 'Accueil';
 	@override String get failed_loading_exercise => 'Échec de chargement de l\'exerice : la position d\'échecs est invalide.';
+	@override String get success_saving_exercice => 'Exercice enregistré.';
+	@override String get failed_saving_exercise => 'Échec de sauvegarde de l\'exercice.';
 	@override String get max_generation_attempts_achieved => 'Impossible de générer une position à partir de ces scripts : nombre de tentatives maximum dépassés.\n\nVeuillez vérifier que vos contraintes ne sont pas trop restrictives.\n\nÉgalement, veuillez vérifier que vos variables soient déclarées avant utilisation.';
 	@override String get failed_generating_position => 'Échec de génération de la position.';
 	@override String get misc_generating_error => 'Erreur de génération de la position pour une erreur diverse.';
@@ -1258,4 +1266,5 @@ class _TranslationsHomeMenuButtonsFr extends _TranslationsHomeMenuButtonsEn {
 	@override String get new_script => 'Nouveau script';
 	@override String get edit_script => 'Éditer un script';
 	@override String get show_sample_code => 'Montrer le code d\'un exemple';
+	@override String get clone_sample => 'Cloner le code d\'un exemple';
 }

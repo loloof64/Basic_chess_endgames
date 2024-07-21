@@ -13,6 +13,8 @@ pickers:
 home:
   title: "Accueil"
   failedLoadingExercise: "Échec de chargement de l'exerice : la position d'échecs est invalide."
+  success_saving_exercice: "Exercice enregistré."
+  failed_saving_exercise: "Échec de sauvegarde de l'exercice."
   maxGenerationAttemptsAchieved:
     "Impossible de générer une position à partir de ces scripts : \
     nombre de tentatives maximum dépassés.\n\nVeuillez vérifier que vos \
@@ -26,6 +28,7 @@ home:
     new_script: "Nouveau script"
     edit_script: "Éditer un script"
     show_sample_code: "Montrer le code d'un exemple"
+    clone_sample: "Cloner le code d'un exemple"
   goal_label: "Objectif"
   win_label: "Gain"
   draw_label: "Nulle"
