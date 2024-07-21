@@ -461,26 +461,44 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ElevatedButton(
-                          onPressed: _purposeLoadSample,
-                          child: Text(t.home.menu_buttons.samples)),
-                      ElevatedButton(
-                          onPressed: _purposeShowSampleCode,
-                          child: Text(
-                            t.home.menu_buttons.show_sample_code,
-                          )),
-                      ElevatedButton(
-                          onPressed: _purposeCloneSampleCode,
-                          child: Text(t.home.menu_buttons.clone_sample)),
-                      ElevatedButton(
-                          onPressed: _purposeLoadScript,
-                          child: Text(t.home.menu_buttons.load_script)),
-                      ElevatedButton(
-                          onPressed: _purposeEditScript,
-                          child: Text(t.home.menu_buttons.edit_script)),
-                      ElevatedButton(
-                          onPressed: _openNewScriptEditor,
-                          child: Text(t.home.menu_buttons.new_script)),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            onPressed: _purposeLoadSample,
+                            child: Text(t.home.menu_buttons.samples)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            onPressed: _purposeShowSampleCode,
+                            child: Text(
+                              t.home.menu_buttons.show_sample_code,
+                            )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            onPressed: _purposeCloneSampleCode,
+                            child: Text(t.home.menu_buttons.clone_sample)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            onPressed: _purposeLoadScript,
+                            child: Text(t.home.menu_buttons.load_script)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            onPressed: _purposeEditScript,
+                            child: Text(t.home.menu_buttons.edit_script)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            onPressed: _openNewScriptEditor,
+                            child: Text(t.home.menu_buttons.new_script)),
+                      ),
                     ],
                   ),
                 ),
