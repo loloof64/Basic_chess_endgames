@@ -21,12 +21,14 @@ final allSelectableTypes = [
 class PieceCountWidget extends StatefulWidget {
   final PieceKind kind;
   final int initialCount;
+  final bool readOnly;
   final void Function(int newValue) onChanged;
   final void Function(PieceKind kind) onRemove;
 
   const PieceCountWidget({
     super.key,
     required this.kind,
+    required this.readOnly,
     required this.onChanged,
     required this.onRemove,
     this.initialCount = 0,
@@ -58,23 +60,30 @@ class _PieceCountWidgetState extends State<PieceCountWidget> {
   Widget build(BuildContext context) {
     final maxCount = _maxCountForPieceKind(widget.kind);
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: widget.readOnly
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         PieceKingWidget(kind: widget.kind),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 2.0),
-          child: Slider(
-            value: _count.toDouble(),
-            divisions: maxCount,
-            min: 1,
-            max: maxCount.toDouble(),
-            label: "$_count",
-            onChanged: (newValue) => setState(() {
-              _count = newValue.round();
-            }),
-            onChangeEnd: (newValue) => widget.onChanged(newValue.round()),
+        if (!widget.readOnly)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            child: Slider(
+              value: _count.toDouble(),
+              divisions: maxCount,
+              min: 1,
+              max: maxCount.toDouble(),
+              label: "$_count",
+              onChanged: (newValue) => setState(() {
+                _count = newValue.round();
+              }),
+              onChangeEnd: (newValue) => widget.onChanged(newValue.round()),
+            ),
           ),
+        if (widget.readOnly) const Padding(
+          padding: EdgeInsets.only(left: 2.0),
+          child: Text('x'),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -85,17 +94,18 @@ class _PieceCountWidgetState extends State<PieceCountWidget> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 4, right: 2),
-          child: IconButton(
-            icon: const FaIcon(
-              FontAwesomeIcons.xmark,
-              color: Colors.red,
-              size: chessImagesSize,
+        if (!widget.readOnly)
+          Padding(
+            padding: const EdgeInsets.only(left: 4, right: 2),
+            child: IconButton(
+              icon: const FaIcon(
+                FontAwesomeIcons.xmark,
+                color: Colors.red,
+                size: chessImagesSize,
+              ),
+              onPressed: () => widget.onRemove(widget.kind),
             ),
-            onPressed: () => widget.onRemove(widget.kind),
           ),
-        ),
       ],
     );
   }

@@ -215,19 +215,19 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           tooRestrictiveScriptMessage:
               t.script_parser.too_restrictive_script_message,
           player: t.side.player,
-    computer: t.side.computer,
-    pawn: t.type.pawn,
-    knight: t.type.knight,
-    bishop: t.type.bishop,
-    rook: t.type.rook,
-    queen: t.type.queen,
-    king: t.type.king,
-    otherPiecesGlobalConstraintSpecialized:
-        t.script_type.other_pieces_global_constraint_specialized,
-    otherPiecesIndexedConstraintSpecialized:
-        t.script_type.other_pieces_indexed_constraint_specialized,
-    otherPiecesMutualConstraintSpecialized:
-        t.script_type.other_pieces_mutual_constraint_specialized,
+          computer: t.side.computer,
+          pawn: t.type.pawn,
+          knight: t.type.knight,
+          bishop: t.type.bishop,
+          rook: t.type.rook,
+          queen: t.type.queen,
+          king: t.type.king,
+          otherPiecesGlobalConstraintSpecialized:
+              t.script_type.other_pieces_global_constraint_specialized,
+          otherPiecesIndexedConstraintSpecialized:
+              t.script_type.other_pieces_indexed_constraint_specialized,
+          otherPiecesMutualConstraintSpecialized:
+              t.script_type.other_pieces_mutual_constraint_specialized,
         ),
         sendPort: receivePort.sendPort,
       ),
@@ -576,14 +576,18 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
             TabBarView(children: [
               PlayerKingConstraintsEditorWidget(
                 controller: _playerKingConstraintsScriptController,
+                readOnly: widget.readOnly,
               ),
               ComputerKingContraintsEditorWidget(
+                readOnly: widget.readOnly,
                 controller: _computerKingConstraintsScriptController,
               ),
               KingsMutualConstraintEditorWidget(
+                readOnly: widget.readOnly,
                 controller: _kingsMutualConstraintsScriptController,
               ),
               OtherPiecesCountConstraintsEditorWidget(
+                readOnly: widget.readOnly,
                 onScriptUpdate: (counts) {
                   _updateOtherPiecesCountConstraintsScript(counts);
                 },
@@ -607,18 +611,22 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                 currentScript: _otherPiecesCountConstraintsScript,
               ),
               OtherPiecesGlobalConstraintEditorWidget(
+                readOnly: widget.readOnly,
                 availablePiecesKinds: otherPiecesKinds,
                 controllers: _otherPiecesGlobalConstraintsScripts,
               ),
               OtherPiecesMutualConstraintEditorWidget(
+                readOnly: widget.readOnly,
                 availablePiecesKinds: otherPiecesKinds,
                 controllers: _otherPiecesMutualConstraintsScripts,
               ),
               OtherPiecesIndexedConstraintEditorWidget(
+                readOnly: widget.readOnly,
                 availablePiecesKinds: otherPiecesKinds,
                 controllers: _otherPiecesIndexedConstraintsScripts,
               ),
               GameGoalEditorWidget(
+                  readOnly: widget.readOnly,
                   script: _goalScript,
                   onChanged: (newValue) {
                     _updateGoalScript(newValue);
@@ -647,10 +655,12 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
 
 class PlayerKingConstraintsEditorWidget extends StatelessWidget {
   final TextEditingController controller;
+  final bool readOnly;
 
   const PlayerKingConstraintsEditorWidget({
     super.key,
     required this.controller,
+    this.readOnly = false,
   });
 
   @override
@@ -664,6 +674,7 @@ class PlayerKingConstraintsEditorWidget extends StatelessWidget {
         ),
         Flexible(
           child: EditorWidget(
+            readOnly: readOnly,
             controller: controller,
           ),
         ),
@@ -674,10 +685,12 @@ class PlayerKingConstraintsEditorWidget extends StatelessWidget {
 
 class ComputerKingContraintsEditorWidget extends StatelessWidget {
   final TextEditingController controller;
+  final bool readOnly;
 
   const ComputerKingContraintsEditorWidget({
     super.key,
     required this.controller,
+    required this.readOnly,
   });
 
   @override
@@ -691,6 +704,7 @@ class ComputerKingContraintsEditorWidget extends StatelessWidget {
         ),
         Flexible(
           child: EditorWidget(
+            readOnly: readOnly,
             controller: controller,
           ),
         ),
@@ -701,10 +715,12 @@ class ComputerKingContraintsEditorWidget extends StatelessWidget {
 
 class KingsMutualConstraintEditorWidget extends StatelessWidget {
   final TextEditingController controller;
+  final bool readOnly;
 
   const KingsMutualConstraintEditorWidget({
     super.key,
     required this.controller,
+    required this.readOnly,
   });
 
   @override
@@ -719,6 +735,7 @@ class KingsMutualConstraintEditorWidget extends StatelessWidget {
         Flexible(
           child: EditorWidget(
             controller: controller,
+            readOnly: readOnly,
           ),
         ),
       ],
@@ -728,12 +745,14 @@ class KingsMutualConstraintEditorWidget extends StatelessWidget {
 
 class OtherPiecesCountConstraintsEditorWidget extends StatefulWidget {
   final String currentScript;
+  final bool readOnly;
   final void Function(Map<PieceKind, int> counts) onScriptUpdate;
   final void Function(PieceKind kind) onKindAdded;
   final void Function(PieceKind kind) onKindRemoved;
 
   const OtherPiecesCountConstraintsEditorWidget({
     super.key,
+    required this.readOnly,
     required this.onScriptUpdate,
     required this.onKindAdded,
     required this.onKindRemoved,
@@ -798,6 +817,7 @@ class _OtherPiecesCountConstraintsEditorWidgetState
         Padding(
           padding: const EdgeInsets.all(10),
           child: PieceCountWidget(
+            readOnly: widget.readOnly,
             kind: entry.key,
             initialCount: entry.value,
             onChanged: (newValue) {
@@ -826,16 +846,17 @@ class _OtherPiecesCountConstraintsEditorWidgetState
         SectionHeader(
           title: t.script_editor_page.other_pieces_count_constraint,
         ),
-        PieceCountAdderWidget(
-          selectedType: _selectedType,
-          onSelectionChanged: (newValue) {
-            if (newValue == null) return;
-            setState(() {
-              _selectedType = newValue;
-            });
-          },
-          onValidate: _addCurrentCount,
-        ),
+        if (!widget.readOnly)
+          PieceCountAdderWidget(
+            selectedType: _selectedType,
+            onSelectionChanged: (newValue) {
+              if (newValue == null) return;
+              setState(() {
+                _selectedType = newValue;
+              });
+            },
+            onValidate: _addCurrentCount,
+          ),
         Expanded(
           flex: 6,
           child: SingleChildScrollView(
@@ -855,11 +876,13 @@ class _OtherPiecesCountConstraintsEditorWidgetState
 class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
   final List<PieceKind> availablePiecesKinds;
   final Map<PieceKind, TextEditingController> controllers;
+  final bool readOnly;
 
   const OtherPiecesGlobalConstraintEditorWidget({
     super.key,
     required this.availablePiecesKinds,
     required this.controllers,
+    required this.readOnly,
   });
 
   @override
@@ -873,6 +896,7 @@ class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
         ),
         Flexible(
           child: ComplexEditorWidget(
+            readOnly: readOnly,
             availablePiecesKinds: availablePiecesKinds,
             scriptsControllersByKinds: controllers,
           ),
@@ -885,11 +909,13 @@ class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
 class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
   final List<PieceKind> availablePiecesKinds;
   final Map<PieceKind, TextEditingController> controllers;
+  final bool readOnly;
 
   const OtherPiecesMutualConstraintEditorWidget({
     super.key,
     required this.availablePiecesKinds,
     required this.controllers,
+    required this.readOnly,
   });
 
   @override
@@ -903,6 +929,7 @@ class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
         ),
         Flexible(
           child: ComplexEditorWidget(
+            readOnly: readOnly,
             availablePiecesKinds: availablePiecesKinds,
             scriptsControllersByKinds: controllers,
           ),
@@ -915,11 +942,13 @@ class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
 class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
   final List<PieceKind> availablePiecesKinds;
   final Map<PieceKind, TextEditingController> controllers;
+  final bool readOnly;
 
   const OtherPiecesIndexedConstraintEditorWidget({
     super.key,
     required this.availablePiecesKinds,
     required this.controllers,
+    required this.readOnly,
   });
 
   @override
@@ -933,6 +962,7 @@ class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
         ),
         Flexible(
           child: ComplexEditorWidget(
+            readOnly: readOnly,
             availablePiecesKinds: availablePiecesKinds,
             scriptsControllersByKinds: controllers,
           ),
@@ -944,10 +974,12 @@ class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
 
 class GameGoalEditorWidget extends StatefulWidget {
   final String script;
+  final bool readOnly;
   final void Function(bool) onChanged;
 
   const GameGoalEditorWidget({
     super.key,
+    required this.readOnly,
     required this.script,
     required this.onChanged,
   });
@@ -974,40 +1006,53 @@ class _GameGoalEditorWidgetState extends State<GameGoalEditorWidget> {
         SectionHeader(
           title: t.script_editor_page.game_goal,
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              title: Text(t.script_editor_page.should_win),
-              leading: Radio<bool>(
-                groupValue: _shouldWin,
-                value: true,
-                onChanged: (newValue) {
-                  if (newValue == null) return;
-                  setState(() {
-                    _shouldWin = newValue;
-                    widget.onChanged(newValue);
-                  });
-                },
+        widget.readOnly
+            ? Flexible(
+                flex: 1,
+                child: Center(
+                  child: Text(
+                    _shouldWin
+                        ? t.script_editor_page.should_win
+                        : t.script_editor_page.should_draw,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 30.0),
+                  ),
+                ),
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListTile(
+                    title: Text(t.script_editor_page.should_win),
+                    leading: Radio<bool>(
+                      groupValue: _shouldWin,
+                      value: true,
+                      onChanged: (newValue) {
+                        if (newValue == null) return;
+                        setState(() {
+                          _shouldWin = newValue;
+                          widget.onChanged(newValue);
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(t.script_editor_page.should_draw),
+                    leading: Radio<bool>(
+                      groupValue: _shouldWin,
+                      value: false,
+                      onChanged: (newValue) {
+                        if (newValue == null) return;
+                        setState(() {
+                          _shouldWin = newValue;
+                          widget.onChanged(newValue);
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ),
-            ListTile(
-              title: Text(t.script_editor_page.should_draw),
-              leading: Radio<bool>(
-                groupValue: _shouldWin,
-                value: false,
-                onChanged: (newValue) {
-                  if (newValue == null) return;
-                  setState(() {
-                    _shouldWin = newValue;
-                    widget.onChanged(newValue);
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
       ],
     );
   }

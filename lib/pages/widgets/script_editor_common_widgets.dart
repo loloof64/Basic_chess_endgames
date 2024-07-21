@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 class ComplexEditorWidget extends StatefulWidget {
   final List<PieceKind> availablePiecesKinds;
   final Map<PieceKind, TextEditingController> scriptsControllersByKinds;
+  final bool readOnly;
 
   const ComplexEditorWidget({
     super.key,
     required this.availablePiecesKinds,
     required this.scriptsControllersByKinds,
+    required this.readOnly,
   });
 
   @override
@@ -68,6 +70,7 @@ class _ComplexEditorWidgetState extends State<ComplexEditorWidget> {
           flex: 6,
           child: EditorWidget(
             key: UniqueKey(),
+            readOnly: widget.readOnly,
             focusNode: _focusNode,
             enabled: _selectedType != null,
             controller: controller,
@@ -82,11 +85,13 @@ class EditorWidget extends StatelessWidget {
   final String initialContent;
   final TextEditingController controller;
   final bool enabled;
+  final bool readOnly;
   final FocusNode? focusNode;
 
   const EditorWidget({
     super.key,
     this.focusNode,
+    required this.readOnly,
     required this.controller,
     this.initialContent = "",
     this.enabled = true,
@@ -97,6 +102,7 @@ class EditorWidget extends StatelessWidget {
     return enabled
         ? SingleChildScrollView(
             child: TextfieldWithPositionTracker(
+              readOnly: readOnly,
               focusNode: focusNode,
               controller: controller,
             ),
