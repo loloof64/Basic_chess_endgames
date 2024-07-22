@@ -1,139 +1,119 @@
-// Generated from ScriptLanguage.g4 by ANTLR 4.13.0
-// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes, file_names
+// Generated from Lua.g4 by ANTLR 4.13.1
+// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes
 import 'package:antlr4/antlr4.dart';
 
-import 'ScriptLanguageParser.dart';
-import 'ScriptLanguageVisitor.dart';
+import 'LuaParser.dart';
+import 'LuaVisitor.dart';
 
-/// This class provides an empty implementation of [ScriptLanguageVisitor],
+/// This class provides an empty implementation of [LuaVisitor],
 /// which can be extended to create a visitor which only needs to handle
 /// a subset of the available methods.
 ///
 /// [T] is the return type of the visit operation. Use `void` for
 /// operations with no return type.
-class ScriptLanguageBaseVisitor<T> extends ParseTreeVisitor<T>
-    implements ScriptLanguageVisitor<T> {
+class LuaBaseVisitor<T> extends ParseTreeVisitor<T> implements LuaVisitor<T> {
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitScriptLanguage(ScriptLanguageContext ctx) => visitChildren(ctx);
-
+  T? visitStart_(Start_Context ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitNumericAssign(NumericAssignContext ctx) => visitChildren(ctx);
-
+  T? visitChunk(ChunkContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitBooleanAssign(BooleanAssignContext ctx) => visitChildren(ctx);
-
+  T? visitBlock(BlockContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitTerminalExpr(TerminalExprContext ctx) => visitChildren(ctx);
-
+  T? visitReturnStat(ReturnStatContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitBooleanEquality(BooleanEqualityContext ctx) => visitChildren(ctx);
-
+  T? visitSemiColumnExec(SemiColumnExecContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitNumericEquality(NumericEqualityContext ctx) => visitChildren(ctx);
-
+  T? visitAssignExec(AssignExecContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitOrComparison(OrComparisonContext ctx) => visitChildren(ctx);
-
+  T? visitIfExec(IfExecContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitConditionalBooleanExpr(ConditionalBooleanExprContext ctx) =>
-      visitChildren(ctx);
-
+  T? visitAssign(AssignContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitBooleanVariable(BooleanVariableContext ctx) => visitChildren(ctx);
-
+  T? visitIfstat(IfstatContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitParenthesisBooleanExpr(ParenthesisBooleanExprContext ctx) =>
-      visitChildren(ctx);
-
+  T? visitNamelist(NamelistContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitAndComparison(AndComparisonContext ctx) => visitChildren(ctx);
-
+  T? visitExplist(ExplistContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitNumericRelational(NumericRelationalContext ctx) => visitChildren(ctx);
-
+  T? visitPrefixExpr(PrefixExprContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitFileConstant(FileConstantContext ctx) => visitChildren(ctx);
-
+  T? visitUnaryExpr(UnaryExprContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitRankConstant(RankConstantContext ctx) => visitChildren(ctx);
-
+  T? visitExponentExpr(ExponentExprContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitAbsoluteNumericExpr(AbsoluteNumericExprContext ctx) =>
-      visitChildren(ctx);
-
+  T? visitTrueExpr(TrueExprContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitParenthesisNumericExpr(ParenthesisNumericExprContext ctx) =>
-      visitChildren(ctx);
-
+  T? visitNumberExpr(NumberExprContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitConditionalNumericExpr(ConditionalNumericExprContext ctx) =>
-      visitChildren(ctx);
-
+  T? visitPlusMinusExpr(PlusMinusExprContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitNumericVariable(NumericVariableContext ctx) => visitChildren(ctx);
-
+  T? visitBooleanAndExpr(BooleanAndExprContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitPlusMinusNumericExpr(PlusMinusNumericExprContext ctx) =>
-      visitChildren(ctx);
-
+  T? visitBooleanOrExpr(BooleanOrExprContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitLitteralNumericExpr(LitteralNumericExprContext ctx) =>
-      visitChildren(ctx);
-
+  T? visitMulDivModuloExpr(MulDivModuloExprContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitRankConstantNumericExpr(RankConstantNumericExprContext ctx) =>
-      visitChildren(ctx);
-
+  T? visitIntBinaryLogicalExpr(IntBinaryLogicalExprContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitFileConstantNumericExpr(FileConstantNumericExprContext ctx) =>
-      visitChildren(ctx);
-
+  T? visitFalseExpr(FalseExprContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitModuloNumericExpr(ModuloNumericExprContext ctx) => visitChildren(ctx);
+  T? visitBooleanBinaryLogicalExpr(BooleanBinaryLogicalExprContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitVariablePrefix(VariablePrefixContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitParenthesisPrefix(ParenthesisPrefixContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitIntegerValue(IntegerValueContext ctx) => visitChildren(ctx);
 }

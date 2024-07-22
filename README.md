@@ -6,10 +6,10 @@ Generate a chess position from your criterias and play it against your device.
 
 ### Antlr4
 
-If you want to generate Antlr4 base from the ScriptLanguage.g4, simply go into the lib/antlr4 folder, and run :
+If you want to generate Antlr4 base from the Lua.g4, simply go into the lib/antlr4 folder, and run :
 
 ```
-antlr4 -o generated -no-listener -visitor -Dlanguage=Dart ScriptLanguage.g4
+antlr4 -o generated -no-listener -visitor -Dlanguage=Dart Lua.g4
 
 ```
 

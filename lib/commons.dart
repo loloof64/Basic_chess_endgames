@@ -6,6 +6,7 @@ TranslationsWrapper getTranslations(BuildContext context) {
   final t = Translations.of(context);
   return TranslationsWrapper(
     missingReturnStatement: t.script_parser.no_return_statement,
+    returnStatementNotABoolean: t.script_parser.return_statement_not_boolean,
     miscErrorDialogTitle: t.script_parser.misc_error_dialog_title,
     missingScriptType: t.script_parser.missing_script_type,
     miscParseError: t.script_parser.misc_parse_error,

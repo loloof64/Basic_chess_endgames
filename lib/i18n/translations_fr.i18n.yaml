@@ -77,6 +77,7 @@ scriptParser:
   miscErrorDialogTitle: "Erreur globale"
   misc_checking_error: "La vérification d'erreurs a échoué pour une raison diverse."
   no_return_statement: "Il manque l'instruction 'return': vérifiez aussi que vous retournez une valeur booléenne."
+  return_statement_not_boolean: "L'instruction 'return' ne retourne pas un booléen."
   too_restrictive_script_title: "Script trop restrictif ?"
   too_restrictive_script_message : "Échec de génération de position à partir de votre script: serait-il trop restrictif ?"
 scriptType:

@@ -1,13 +1,28 @@
-import 'dart:collection';
 import 'dart:math';
 
-import 'package:basicchessendgamestrainer/antlr4/script_language_boolean_expr.dart';
+import 'package:basicchessendgamestrainer/antlr4/script_interpreter.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:logger/logger.dart';
 
 class AlreadyAPieceThereException implements Exception {}
+
+class ReturnedValueNotABooleanException implements Exception {}
+
+bool evaluateScript({
+  required TranslationsWrapper translations,
+  required String script,
+  required Map<String, dynamic> predefinedValues,
+}) {
+  final interpreter = ScriptInterpreter(translations: translations);
+  final values = interpreter.interpretScript(script, predefinedValues);
+  final returnedValue = values['return'];
+  if (returnedValue == null) throw MissingReturnStatementException();
+  if (returnedValue is! bool) throw ReturnedValueNotABooleanException();
+
+  return returnedValue;
+}
 
 class BoardCoordinate {
   final int file;
@@ -37,16 +52,13 @@ class PositionGenerationLoopException implements Exception {
 }
 
 class PositionGeneratorConstraintsExpr {
-  LinkedHashMap<String, ScriptLanguageGenericExpr>? playerKingConstraint;
-  LinkedHashMap<String, ScriptLanguageGenericExpr>? computerKingConstraint;
-  LinkedHashMap<String, ScriptLanguageGenericExpr>? kingsMutualConstraint;
+  String? playerKingConstraint;
+  String? computerKingConstraint;
+  String? kingsMutualConstraint;
   List<PieceKindCount> otherPiecesCountConstraint;
-  Map<PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>
-      otherPiecesGlobalConstraints;
-  Map<PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>
-      otherPiecesMutualConstraints;
-  Map<PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>
-      otherPiecesIndexedConstraints;
+  Map<PieceKind, String> otherPiecesGlobalConstraints;
+  Map<PieceKind, String> otherPiecesMutualConstraints;
+  Map<PieceKind, String> otherPiecesIndexedConstraints;
   bool mustWin;
 
   PositionGeneratorConstraintsExpr({
@@ -54,12 +66,9 @@ class PositionGeneratorConstraintsExpr {
     this.computerKingConstraint,
     this.kingsMutualConstraint,
     this.otherPiecesCountConstraint = const <PieceKindCount>[],
-    this.otherPiecesGlobalConstraints =
-        const <PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>{},
-    this.otherPiecesMutualConstraints =
-        const <PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>{},
-    this.otherPiecesIndexedConstraints =
-        const <PieceKind, LinkedHashMap<String, ScriptLanguageGenericExpr>?>{},
+    this.otherPiecesGlobalConstraints = const <PieceKind, String>{},
+    this.otherPiecesMutualConstraints = const <PieceKind, String>{},
+    this.otherPiecesIndexedConstraints = const <PieceKind, String>{},
     this.mustWin = true,
   });
 }
@@ -93,12 +102,9 @@ final noConstraint = PositionGeneratorConstraintsExpr(
   computerKingConstraint: null,
   kingsMutualConstraint: null,
   otherPiecesCountConstraint: <PieceKindCount>[],
-  otherPiecesGlobalConstraints: <PieceKind,
-      LinkedHashMap<String, ScriptLanguageGenericExpr>?>{},
-  otherPiecesMutualConstraints: <PieceKind,
-      LinkedHashMap<String, ScriptLanguageGenericExpr>?>{},
-  otherPiecesIndexedConstraints: <PieceKind,
-      LinkedHashMap<String, ScriptLanguageGenericExpr>?>{},
+  otherPiecesGlobalConstraints: <PieceKind, String>{},
+  otherPiecesMutualConstraints: <PieceKind, String>{},
+  otherPiecesIndexedConstraints: <PieceKind, String>{},
   mustWin: true,
 );
 
@@ -183,18 +189,16 @@ class PositionGeneratorFromAntlr {
 
     if (kingConstraints != null) {
       cellsToTest = filterCoordinates(cellsToTest, (currentCell) {
-        final intValues = <String, int>{
+        final predefinedValues = <String, dynamic>{
           "file": currentCell.file,
           "rank": currentCell.rank,
-        };
-        final booleanValues = <String, bool>{
           "playerHasWhite": playerHasWhite,
         };
         try {
-          return evaluateExpressionsSet(
-            _allConstraints.playerKingConstraint!,
-            intValues,
-            booleanValues,
+          return evaluateScript(
+            script: _allConstraints.playerKingConstraint!,
+            predefinedValues: predefinedValues,
+            translations: translations,
           );
         } on MissingReturnStatementException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
@@ -210,6 +214,15 @@ class PositionGeneratorFromAntlr {
           final title =
               translations.parseErrorDialogTitle(Title: scriptTypeLabel);
           final message = translations.variableNotAffected(Name: ex.varName);
+          Logger().e(ex);
+          throw PositionGenerationError(title, message);
+        }
+        on ReturnedValueNotABooleanException catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.playerKingConstraint);
+          final title =
+              translations.parseErrorDialogTitle(Title: scriptTypeLabel);
+          final message = translations.returnStatementNotABoolean;
           Logger().e(ex);
           throw PositionGenerationError(title, message);
         }
@@ -272,18 +285,16 @@ class PositionGeneratorFromAntlr {
 
     if (computerKingConstraints != null) {
       cellsToTest = filterCoordinates(cellsToTest, (currentCell) {
-        final computerKingConstraintIntValues = <String, int>{
+        final computerKingConstraintPredefinedValues = <String, dynamic>{
           "file": currentCell.file,
           "rank": currentCell.rank,
-        };
-        final computerKingConstraintBooleanValues = <String, bool>{
           "playerHasWhite": playerHasWhite,
         };
         try {
-          return evaluateExpressionsSet(
-            _allConstraints.computerKingConstraint!,
-            computerKingConstraintIntValues,
-            computerKingConstraintBooleanValues,
+          return evaluateScript(
+            script: _allConstraints.computerKingConstraint!,
+            predefinedValues: computerKingConstraintPredefinedValues,
+            translations: translations,
           );
         } on MissingReturnStatementException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
@@ -307,20 +318,18 @@ class PositionGeneratorFromAntlr {
 
     if (kingsMutualConstraints != null) {
       cellsToTest = filterCoordinates(cellsToTest, (currentCell) {
-        final kingsMutualConstraintIntValues = <String, int>{
+        final kingsMutualConstraintPredefinedValues = <String, dynamic>{
           "playerKingFile": playerKingCell.file,
           "playerKingRank": playerKingCell.rank,
           "computerKingFile": currentCell.file,
           "computerKingRank": currentCell.rank,
-        };
-        final kingsMutualConstraintBooleanValues = <String, bool>{
           "playerHasWhite": playerHasWhite,
         };
         try {
-          return evaluateExpressionsSet(
-            _allConstraints.kingsMutualConstraint!,
-            kingsMutualConstraintIntValues,
-            kingsMutualConstraintBooleanValues,
+          return evaluateScript(
+            script: _allConstraints.kingsMutualConstraint!,
+            predefinedValues: kingsMutualConstraintPredefinedValues,
+            translations: translations,
           );
         } on MissingReturnStatementException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
@@ -413,19 +422,21 @@ class PositionGeneratorFromAntlr {
 
         if (currentPieceGlobalConstraint != null) {
           cellsToTest = filterCoordinates(cellsToTest, (currentCell) {
-            final otherPiecesGlobalConstraintIntValues = <String, int>{
+            final otherPiecesGlobalConstraintPredefinedValues =
+                <String, dynamic>{
               "file": currentCell.file,
               "rank": currentCell.rank,
               "playerKingFile": playerKingCell.file,
               "playerKingRank": playerKingCell.rank,
               "computerKingFile": computerKingCell.file,
               "computerKingRank": computerKingCell.rank,
+              ...commonOtherPiecesConstraintBooleanValues,
             };
             try {
-              return evaluateExpressionsSet(
-                currentPieceGlobalConstraint,
-                otherPiecesGlobalConstraintIntValues,
-                commonOtherPiecesConstraintBooleanValues,
+              return evaluateScript(
+                script: currentPieceGlobalConstraint,
+                predefinedValues: otherPiecesGlobalConstraintPredefinedValues,
+                translations: translations,
               );
             } on MissingReturnStatementException catch (ex) {
               final scriptTypeLabel = translations.fromScriptType(
@@ -454,16 +465,18 @@ class PositionGeneratorFromAntlr {
 
         if (currentPieceIndexedConstraint != null) {
           cellsToTest = filterCoordinates(cellsToTest, (currentCell) {
-            final otherPieceIndexedConstraintIntValues = <String, int>{
+            final otherPieceIndexedConstraintPredefinedValues =
+                <String, dynamic>{
               "file": currentCell.file,
               "rank": currentCell.rank,
               "apparitionIndex": constraintIndex,
+              ...commonOtherPiecesConstraintBooleanValues,
             };
             try {
-              return evaluateExpressionsSet(
-                currentPieceIndexedConstraint,
-                otherPieceIndexedConstraintIntValues,
-                commonOtherPiecesConstraintBooleanValues,
+              return evaluateScript(
+                script: currentPieceIndexedConstraint,
+                predefinedValues: otherPieceIndexedConstraintPredefinedValues,
+                translations: translations,
               );
             } on MissingReturnStatementException catch (ex) {
               final scriptTypeLabel = translations.fromScriptType(
@@ -497,18 +510,19 @@ class PositionGeneratorFromAntlr {
           cellsToTest = filterCoordinates(cellsToTest, (outerLoopCell) {
             return savedCoordinatesForThisCountConstraint
                 .every((innerLoopCell) {
-              final otherPieceMutualConstraintIntValues = <String, int>{
+              final otherPieceMutualConstraintIntValues = <String, dynamic>{
                 "firstPieceFile": innerLoopCell.file,
                 "firstPieceRank": innerLoopCell.rank,
                 "secondPieceFile": outerLoopCell.file,
                 "secondPieceRank": outerLoopCell.rank,
+                ...commonOtherPiecesConstraintBooleanValues,
               };
 
               try {
-                return evaluateExpressionsSet(
-                  currentPieceMutualConstraint,
-                  otherPieceMutualConstraintIntValues,
-                  commonOtherPiecesConstraintBooleanValues,
+                return evaluateScript(
+                  script: currentPieceMutualConstraint,
+                  predefinedValues: otherPieceMutualConstraintIntValues,
+                  translations: translations,
                 );
               } on MissingReturnStatementException catch (ex) {
                 final scriptTypeLabel = translations.fromScriptType(
