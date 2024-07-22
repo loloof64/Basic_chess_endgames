@@ -29,7 +29,7 @@ class CustomErrorListener extends BaseErrorListener {
     if (recognizer is Parser) {
       onError(
         message: msg,
-        token: (offendingSymbol == null || !(offendingSymbol is Token))
+        token: (offendingSymbol == null || offendingSymbol is! Token)
             ? "#Unknown token#"
             : offendingSymbol.text!,
         line: line ?? -1,

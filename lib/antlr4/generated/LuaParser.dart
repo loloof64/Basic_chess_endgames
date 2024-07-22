@@ -1,5 +1,5 @@
 // Generated from Lua.g4 by ANTLR 4.13.1
-// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes
+// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes, file_names, constant_identifier_names, prefer_function_declarations_over_variables, non_constant_identifier_names, no_leading_underscores_for_local_identifiers, avoid_renaming_method_parameters, camel_case_types, unnecessary_overrides
 import 'package:antlr4/antlr4.dart';
 
 import 'LuaVisitor.dart';
@@ -64,7 +64,7 @@ class LuaParser extends Parser {
    return _ATN;
   }
 
-  LuaParser(TokenStream input) : super(input) {
+  LuaParser(super.input) {
     interpreter = ParserATNSimulator(this, _ATN, _decisionToDFA, _sharedContextCache);
   }
 
@@ -399,7 +399,7 @@ class LuaParser extends Parser {
           errorHandler.sync(this);
           switch (interpreter!.adaptivePredict(tokenStream, 7, context)) {
           case 1:
-            _localctx = ExponentExprContext(new ExpContext(_parentctx, _parentState));
+            _localctx = ExponentExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
             state = 94;
             if (!(precpred(context, 8))) {
@@ -412,7 +412,7 @@ class LuaParser extends Parser {
             exp(8);
             break;
           case 2:
-            _localctx = MulDivModuloExprContext(new ExpContext(_parentctx, _parentState));
+            _localctx = MulDivModuloExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
             state = 97;
             if (!(precpred(context, 6))) {
@@ -432,7 +432,7 @@ class LuaParser extends Parser {
             exp(7);
             break;
           case 3:
-            _localctx = PlusMinusExprContext(new ExpContext(_parentctx, _parentState));
+            _localctx = PlusMinusExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
             state = 100;
             if (!(precpred(context, 5))) {
@@ -452,7 +452,7 @@ class LuaParser extends Parser {
             exp(6);
             break;
           case 4:
-            _localctx = BooleanBinaryLogicalExprContext(new ExpContext(_parentctx, _parentState));
+            _localctx = BooleanBinaryLogicalExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
             state = 103;
             if (!(precpred(context, 4))) {
@@ -472,7 +472,7 @@ class LuaParser extends Parser {
             exp(5);
             break;
           case 5:
-            _localctx = BooleanAndExprContext(new ExpContext(_parentctx, _parentState));
+            _localctx = BooleanAndExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
             state = 106;
             if (!(precpred(context, 3))) {
@@ -485,7 +485,7 @@ class LuaParser extends Parser {
             exp(4);
             break;
           case 6:
-            _localctx = BooleanOrExprContext(new ExpContext(_parentctx, _parentState));
+            _localctx = BooleanOrExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
             state = 109;
             if (!(precpred(context, 2))) {
@@ -498,7 +498,7 @@ class LuaParser extends Parser {
             exp(3);
             break;
           case 7:
-            _localctx = IntBinaryLogicalExprContext(new ExpContext(_parentctx, _parentState));
+            _localctx = IntBinaryLogicalExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
             state = 112;
             if (!(precpred(context, 1))) {
@@ -659,7 +659,7 @@ class LuaParser extends Parser {
 class Start_Context extends ParserRuleContext {
   ChunkContext? chunk() => getRuleContext<ChunkContext>(0);
   TerminalNode? EOF() => getToken(LuaParser.TOKEN_EOF, 0);
-  Start_Context([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
+  Start_Context([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_start_;
   @override
@@ -674,7 +674,7 @@ class Start_Context extends ParserRuleContext {
 
 class ChunkContext extends ParserRuleContext {
   BlockContext? block() => getRuleContext<BlockContext>(0);
-  ChunkContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
+  ChunkContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_chunk;
   @override
@@ -691,7 +691,7 @@ class BlockContext extends ParserRuleContext {
   ReturnStatContext? returnStat() => getRuleContext<ReturnStatContext>(0);
   List<StatContext> stats() => getRuleContexts<StatContext>();
   StatContext? stat(int i) => getRuleContext<StatContext>(i);
-  BlockContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
+  BlockContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_block;
   @override
@@ -707,7 +707,7 @@ class BlockContext extends ParserRuleContext {
 class ReturnStatContext extends ParserRuleContext {
   TerminalNode? RETURN() => getToken(LuaParser.TOKEN_RETURN, 0);
   ExpContext? exp() => getRuleContext<ExpContext>(0);
-  ReturnStatContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
+  ReturnStatContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_returnStat;
   @override
@@ -721,7 +721,7 @@ class ReturnStatContext extends ParserRuleContext {
 }
 
 class StatContext extends ParserRuleContext {
-  StatContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
+  StatContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_stat;
  
@@ -735,7 +735,7 @@ class AssignContext extends ParserRuleContext {
   NamelistContext? namelist() => getRuleContext<NamelistContext>(0);
   TerminalNode? EQ() => getToken(LuaParser.TOKEN_EQ, 0);
   ExplistContext? explist() => getRuleContext<ExplistContext>(0);
-  AssignContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
+  AssignContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_assign;
   @override
@@ -761,7 +761,7 @@ class IfstatContext extends ParserRuleContext {
   List<TerminalNode> ELSEIFs() => getTokens(LuaParser.TOKEN_ELSEIF);
   TerminalNode? ELSEIF(int i) => getToken(LuaParser.TOKEN_ELSEIF, i);
   TerminalNode? ELSE() => getToken(LuaParser.TOKEN_ELSE, 0);
-  IfstatContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
+  IfstatContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_ifstat;
   @override
@@ -779,7 +779,7 @@ class NamelistContext extends ParserRuleContext {
   TerminalNode? NAME(int i) => getToken(LuaParser.TOKEN_NAME, i);
   List<TerminalNode> COMMAs() => getTokens(LuaParser.TOKEN_COMMA);
   TerminalNode? COMMA(int i) => getToken(LuaParser.TOKEN_COMMA, i);
-  NamelistContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
+  NamelistContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_namelist;
   @override
@@ -797,7 +797,7 @@ class ExplistContext extends ParserRuleContext {
   ExpContext? exp(int i) => getRuleContext<ExpContext>(i);
   List<TerminalNode> COMMAs() => getTokens(LuaParser.TOKEN_COMMA);
   TerminalNode? COMMA(int i) => getToken(LuaParser.TOKEN_COMMA, i);
-  ExplistContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
+  ExplistContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_explist;
   @override
@@ -811,7 +811,7 @@ class ExplistContext extends ParserRuleContext {
 }
 
 class ExpContext extends ParserRuleContext {
-  ExpContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
+  ExpContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_exp;
  
@@ -822,7 +822,7 @@ class ExpContext extends ParserRuleContext {
 }
 
 class PrefixContext extends ParserRuleContext {
-  PrefixContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
+  PrefixContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_prefix;
  
@@ -833,7 +833,7 @@ class PrefixContext extends ParserRuleContext {
 }
 
 class NumberContext extends ParserRuleContext {
-  NumberContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
+  NumberContext([ParserRuleContext? super.parent, super.invokingState]);
   @override
   int get ruleIndex => RULE_number;
  

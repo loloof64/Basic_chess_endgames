@@ -1,5 +1,5 @@
 // Generated from Lua.g4 by ANTLR 4.13.1
-// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes
+// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes, file_names, prefer_function_declarations_over_variables, constant_identifier_names, annotate_overrides, non_constant_identifier_names, use_super_parameters, unnecessary_this, no_leading_underscores_for_local_identifiers
 import 'package:antlr4/antlr4.dart';
 import 'package:basicchessendgamestrainer/antlr4/LuaLexerBase.dart';
 

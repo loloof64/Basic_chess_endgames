@@ -1,5 +1,5 @@
 // Generated from Lua.g4 by ANTLR 4.13.1
-// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes
+// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes, file_names
 import 'package:antlr4/antlr4.dart';
 
 import 'LuaParser.dart';
