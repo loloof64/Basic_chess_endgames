@@ -14,6 +14,24 @@ const scriptsSeparator = '@@@@@@';
 const otherPiecesSingleScriptSeparator = '---';
 
 @immutable
+class PositionGenerationError {
+  final String scriptType;
+  final String message;
+  final String position;
+
+  const PositionGenerationError({
+    required this.message,
+    required this.scriptType,
+    required this.position,
+  });
+
+  PositionGenerationError.fromInterpretationError(InterpretationError ex)
+      : message = ex.message,
+        scriptType = ex.scriptType,
+        position = ex.position;
+}
+
+@immutable
 class TranslationsWrapper {
   final String missingScriptType;
   final String typeError;
@@ -408,20 +426,27 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
       try {
         final generatedPosition = positionGenerator.generatePosition();
         parameters.sendPort
-            .send((generatedPosition, <InterpretationError>[]));
+            .send((generatedPosition, <PositionGenerationError>[]));
       } on InterpretationError catch (ex) {
         Logger().e("${ex.message} (@${ex.position}) <= ${ex.scriptType}");
-        parameters.sendPort.send((null, <InterpretationError>[ex]));
+        parameters.sendPort.send((
+          null,
+          <PositionGenerationError>[
+            PositionGenerationError.fromInterpretationError(ex)
+          ]
+        ));
       } on PositionGenerationLoopException catch (ex) {
         Logger().e(ex.message);
         if (parameters.inGameMode) {
           parameters.sendPort.send(
             (
               null,
-              <InterpretationError>[
-                InterpretationError(
+              <PositionGenerationError>[
+                PositionGenerationError(
+                  scriptType: "",
                   message:
                       parameters.translations.maxGenerationAttemptsAchieved,
+                  position: "",
                 )
               ],
             ),
@@ -429,9 +454,11 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
         } else {
           parameters.sendPort.send((
             null,
-            <InterpretationError>[
-              InterpretationError(
+            <PositionGenerationError>[
+              PositionGenerationError(
+                scriptType: "",
                 message: parameters.translations.tooRestrictiveScriptMessage,
+                position: "",
               )
             ]
           ));
@@ -441,19 +468,23 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
   } on MissingOtherPieceScriptTypeException {
     parameters.sendPort.send((
       null,
-      <InterpretationError>[
-        InterpretationError(
+      <PositionGenerationError>[
+        PositionGenerationError(
+          scriptType: "",
           message: parameters.translations.missingScriptType,
+          position: "",
         )
       ]
     ));
   } on UnRecognizedScriptTypeException catch (ex) {
     parameters.sendPort.send((
       null,
-      <InterpretationError>[
-        InterpretationError(
+      <PositionGenerationError>[
+        PositionGenerationError(
+          scriptType: "",
           message:
               parameters.translations.unrecognizedScriptType(Type: ex.type),
+          position: "",
         )
       ]
     ));
@@ -461,7 +492,7 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
 }
 
 Future<void> showGenerationErrorsPopup({
-  required List<InterpretationError> errors,
+  required List<PositionGenerationError> errors,
   required BuildContext context,
 }) async {
   showDialog(

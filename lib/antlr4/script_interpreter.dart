@@ -222,9 +222,14 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
     } else if (message.contains("extraneous input")) {
       final messagePartsV1 = message.split("expecting '"); // for misc tokens
       final messagePartsV2 = message.split("expecting "); // for <EOF>
-      final expectedToken = (messagePartsV1.size > 1)
-          ? messagePartsV1.drop(1).first().dropLast(1)
-          : messagePartsV2.drop(1).first();
+      String expectedToken = "";
+      if (messagePartsV1.length > 1) {
+        final arr = messagePartsV1.sublist(1);
+        expectedToken = arr.sublist(0, arr.length - 1);
+      }
+      else {
+        expectedToken = messagePartsV2.sublist(1).first;
+      }
       description = translations.wrongTokenAlternatives(
         Symbol: token,
         ExpectedSymbols: expectedToken,
@@ -233,7 +238,7 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
       description = translations.invalidAssignment;
     } else if (message.contains("missing '")) {
       final messageParts = message.split("missing '");
-      final expectedToken = messageParts.drop(1).first().split("'").first();
+      final expectedToken = messageParts.sublist.first.split("'").first;
       description = translations.wrongTokenAlternatives(
         Symbol: token,
         ExpectedSymbols: expectedToken,
@@ -281,9 +286,11 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
       throw InvalidAssignementStatementException(context: ctx);
     }
     final names = visitNamelist(rawNamesList);
-    for (final (variableIndex, variableName) in names.indexed) {
+    final namesIndexes = Iterable<int>.generate(names.length).toList();
+    for (final variableIndex in  namesIndexes) {
+      final variableName = names[variableIndex];
       _builtVariables[variableName] =
-          variableIndex(values.size >= variableIndex + 1)
+          (values.length >= variableIndex + 1)
               ? values[variableIndex]
               : null;
     }
@@ -293,12 +300,12 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
 
   @override
   visitNamelist(NamelistContext ctx) {
-    return ctx.NAMEs().map((currentName) => currentName.text);
+    return ctx.NAMEs().map((currentName) => currentName.text).toList();
   }
 
   @override
   visitExplist(ExplistContext ctx) {
-    return ctx.exps().map((currentExpr) => visit(currentExpr));
+    return ctx.exps().map((currentExpr) => visit(currentExpr)).toList();
   }
 
   @override

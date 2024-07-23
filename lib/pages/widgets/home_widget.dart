@@ -1,7 +1,6 @@
 import 'dart:isolate';
 import 'dart:io';
 
-import 'package:basicchessendgamestrainer/antlr4/script_interpreter.dart';
 import 'package:basicchessendgamestrainer/commons.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
@@ -174,7 +173,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       });
 
       final (newPosition, errors) =
-          message as (String?, List<InterpretationError>);
+          message as (String?, List<PositionGenerationError>);
 
       if (newPosition == null) {
         await showGenerationErrorsPopup(errors: errors, context: context);

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:antlr4/antlr4.dart';
 import 'package:basicchessendgamestrainer/antlr4/script_interpreter.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
@@ -247,6 +248,14 @@ class PositionGeneratorFromAntlr {
             message: message,
             scriptType: scriptTypeLabel,
           );
+        } on ParseCancellationException catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.playerKingConstraint);
+          Logger().e(ex);
+          throw InterpretationError(
+            message: ex.message,
+            scriptType: scriptTypeLabel,
+          );
         }
       });
     }
@@ -353,6 +362,14 @@ class PositionGeneratorFromAntlr {
             message: message,
             scriptType: scriptTypeLabel,
           );
+        } on ParseCancellationException catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.computerKingConstraint);
+          Logger().e(ex);
+          throw InterpretationError(
+            message: ex.message,
+            scriptType: scriptTypeLabel,
+          );
         }
       });
     }
@@ -405,6 +422,14 @@ class PositionGeneratorFromAntlr {
           Logger().e(ex);
           throw InterpretationError(
             message: message,
+            scriptType: scriptTypeLabel,
+          );
+        } on ParseCancellationException catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.mutualKingConstraint);
+          Logger().e(ex);
+          throw InterpretationError(
+            message: ex.message,
             scriptType: scriptTypeLabel,
           );
         }
@@ -534,6 +559,14 @@ class PositionGeneratorFromAntlr {
                 message: message,
                 scriptType: scriptTypeLabel,
               );
+            } on ParseCancellationException catch (ex) {
+              final scriptTypeLabel = translations.fromScriptType(
+                  scriptType: ScriptType.otherPiecesGlobalConstraint);
+              Logger().e(ex);
+              throw InterpretationError(
+                message: ex.message,
+                scriptType: scriptTypeLabel,
+              );
             }
           });
         }
@@ -555,7 +588,7 @@ class PositionGeneratorFromAntlr {
               );
               if (errors2.isNotEmpty) {
                 final scriptTypeLabel = translations.fromScriptType(
-                    scriptType: ScriptType.otherPiecesGlobalConstraint);
+                    scriptType: ScriptType.otherPiecesIndexedConstraint);
                 for (final currentError in errors2) {
                   _errors.add(currentError.withScriptType(scriptTypeLabel));
                 }
@@ -589,6 +622,14 @@ class PositionGeneratorFromAntlr {
                 message: message,
                 scriptType: scriptTypeLabel,
               );
+            } on ParseCancellationException catch (ex) {
+              final scriptTypeLabel = translations.fromScriptType(
+                  scriptType: ScriptType.otherPiecesIndexedConstraint);
+              Logger().e(ex);
+              throw InterpretationError(
+                message: ex.message,
+                scriptType: scriptTypeLabel,
+              );
             }
           });
         }
@@ -615,42 +656,50 @@ class PositionGeneratorFromAntlr {
                   translations: translations,
                 );
                 if (errors3.isNotEmpty) {
-                final scriptTypeLabel = translations.fromScriptType(
-                    scriptType: ScriptType.otherPiecesGlobalConstraint);
-                for (final currentError in errors3) {
-                  _errors.add(currentError.withScriptType(scriptTypeLabel));
+                  final scriptTypeLabel = translations.fromScriptType(
+                      scriptType: ScriptType.otherPiecesMutualConstraint);
+                  for (final currentError in errors3) {
+                    _errors.add(currentError.withScriptType(scriptTypeLabel));
+                  }
                 }
-              }
-              return passedConditions3;
+                return passedConditions3;
               } on MissingReturnStatementException catch (ex) {
-              final scriptTypeLabel = translations.fromScriptType(
-                scriptType: ScriptType.otherPiecesMutualConstraint,
-                pieceKind: pieceCountConstraint.pieceKind,
-              );
-              final message = translations.missingReturnStatement;
-              Logger().e(ex);
-              throw InterpretationError(
-                  scriptType: scriptTypeLabel, message: message);
-            } on VariableIsNotAffectedException catch (ex) {
-              final scriptTypeLabel = translations.fromScriptType(
-                scriptType: ScriptType.otherPiecesMutualConstraint,
-                pieceKind: pieceCountConstraint.pieceKind,
-              );
-              final message =
-                  translations.variableNotAffected(Name: ex.varName);
-              Logger().e(ex);
-              throw InterpretationError(
-                  scriptType: scriptTypeLabel, message: message);
-            } on ReturnedValueNotABooleanException catch (ex) {
-              final scriptTypeLabel = translations.fromScriptType(
-                  scriptType: ScriptType.otherPiecesMutualConstraint);
-              final message = translations.returnStatementNotABoolean;
-              Logger().e(ex);
-              throw InterpretationError(
-                message: message,
-                scriptType: scriptTypeLabel,
-              );
-            }
+                final scriptTypeLabel = translations.fromScriptType(
+                  scriptType: ScriptType.otherPiecesMutualConstraint,
+                  pieceKind: pieceCountConstraint.pieceKind,
+                );
+                final message = translations.missingReturnStatement;
+                Logger().e(ex);
+                throw InterpretationError(
+                    scriptType: scriptTypeLabel, message: message);
+              } on VariableIsNotAffectedException catch (ex) {
+                final scriptTypeLabel = translations.fromScriptType(
+                  scriptType: ScriptType.otherPiecesMutualConstraint,
+                  pieceKind: pieceCountConstraint.pieceKind,
+                );
+                final message =
+                    translations.variableNotAffected(Name: ex.varName);
+                Logger().e(ex);
+                throw InterpretationError(
+                    scriptType: scriptTypeLabel, message: message);
+              } on ReturnedValueNotABooleanException catch (ex) {
+                final scriptTypeLabel = translations.fromScriptType(
+                    scriptType: ScriptType.otherPiecesMutualConstraint);
+                final message = translations.returnStatementNotABoolean;
+                Logger().e(ex);
+                throw InterpretationError(
+                  message: message,
+                  scriptType: scriptTypeLabel,
+                );
+              } on ParseCancellationException catch (ex) {
+                final scriptTypeLabel = translations.fromScriptType(
+                    scriptType: ScriptType.otherPiecesMutualConstraint);
+                Logger().e(ex);
+                throw InterpretationError(
+                  message: ex.message,
+                  scriptType: scriptTypeLabel,
+                );
+              }
             });
           });
         }
