@@ -7,19 +7,16 @@ TranslationsWrapper getTranslations(BuildContext context) {
   return TranslationsWrapper(
     missingReturnStatement: t.script_parser.no_return_statement,
     returnStatementNotABoolean: t.script_parser.return_statement_not_boolean,
-    miscErrorDialogTitle: t.script_parser.misc_error_dialog_title,
     missingScriptType: t.script_parser.missing_script_type,
-    miscParseError: t.script_parser.misc_parse_error,
     maxGenerationAttemptsAchieved: t.home.max_generation_attempts_achieved,
     failedGeneratingPosition: t.home.failed_generating_position,
-    unrecognizedSymbol: t.script_parser.unrecognized_symbol,
+    unrecognizedSymbol: t.script_parser.unrecognized_token,
     typeError: t.script_parser.type_error,
     noAntlr4Token: t.script_parser.no_antlr4_token,
     eof: t.script_parser.eof,
     variableNotAffected: t.script_parser.variable_not_affected,
     overridingPredefinedVariable:
         t.script_parser.overriding_predefined_variable,
-    parseErrorDialogTitle: t.script_parser.parse_error_dialog_title,
     noViableAltException: t.script_parser.no_viable_alt_exception,
     inputMismatch: t.script_parser.input_mismatch,
     playerKingConstraint: t.script_type.player_king_constraint,
@@ -46,5 +43,14 @@ TranslationsWrapper getTranslations(BuildContext context) {
         t.script_type.other_pieces_indexed_constraint_specialized,
     otherPiecesMutualConstraintSpecialized:
         t.script_type.other_pieces_mutual_constraint_specialized,
+    wrongTokenAlternatives: t.script_parser.wrong_token_alternatives,
+    invalidAssignment: t.script_parser.invalid_assignements,
+    miscSyntaxError: t.script_parser.misc_syntaxt_error,
+    miscSyntaxErrorUnknownToken: t.script_parser.misc_syntaxt_error_unknown_token,
+    errorIfStatementMissingBlock: t.script_parser.if_statement_missing_block,
+    errorSubstitutionEOF: t.script_parser.error_substitutions.eof,
+    errorSubstitutionInteger: t.script_parser.error_substitutions.integer,
+    errorSubstitutionVariableName:
+        t.script_parser.error_substitutions.variable_name,
   );
 }

@@ -1,6 +1,7 @@
 import 'dart:isolate';
 import 'dart:io';
 
+import 'package:basicchessendgamestrainer/antlr4/script_interpreter.dart';
 import 'package:basicchessendgamestrainer/commons.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
@@ -173,10 +174,10 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       });
 
       final (newPosition, errors) =
-          message as (String?, List<PositionGenerationError>);
+          message as (String?, List<InterpretationError>);
 
       if (newPosition == null) {
-        await showGenerationErrorsPopups(errors: errors, context: context);
+        await showGenerationErrorsPopup(errors: errors, context: context);
         if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(

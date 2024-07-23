@@ -57,16 +57,13 @@ gamePage:
     Una vez que la partida haya terminado, podrás revisar los movimientos desde el componente de historial."
 scriptParser:
   variableNotAffected: "La variable $name se ha utilizado antes de haber sido definida."
-  unrecognizedSymbol: "Símbolo no reconocido $symbol."
   inputMismatch: "Entrada incorrecta en la línea $line:\
     carácter número $index.\
     Deberías haber establecido $expected pero obtuve $received."
   noViableAltException: "La entrada $token no coincide con ninguna regla. (Línea $lineNumber, número de carácter $positionInLine)"
-  miscParseError: "Error de análisis variado."
   noAntlr4Token: "[Sin ocurrencia]"
   eof: "[FinDeArchivo]"
   overridingPredefinedVariable: "Intentas cambiar el valor de la variable predefinida $name."
-  parseErrorDialogTitle: "Error de guione para $title"
   typeError: "Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa."
   missingScriptType: "No se pudo generar la posición: compruebe que todas las secciones del guione declaran un tipo de guione correcto."
   unrecognized_script_type: "Tipo de escritura no reconocido: $type."
@@ -76,6 +73,16 @@ scriptParser:
   return_statement_not_boolean: "La declaración de 'return' no devuelve un valor booleano."
   too_restrictive_script_title: "¿Código demasiado restrictivo?"
   too_restrictive_script_message : "No se pudo generar una posición de muestra a partir de su código: ¿es demasiado restrictivo?"
+  wrong_token_alternatives: "¡Símbolo incorrecto ($symbol): se espera uno entre ($expectedSymbols)!"
+  invalid_assignements: "¡Declaración de asignación no válida!"
+  unrecognized_token: "¡Símbolo no reconocido ($symbol)!"
+  misc_syntaxt_error: "¡Error de sintaxis varios ($symbol)!"
+  misc_syntaxt_error_unknown_token: "¡Error de sintaxis varios!"
+  if_statement_missing_block: "¡La declaración 'if' le falta al menos un bloque de declaraciones o condición!"
+  error_substitutions:
+    eof: "#FinDelDocumento#"
+    variable_name:  "#NombreDeUnaVariable#"
+    integer: "#Entero#"
 scriptType:
   playerKingConstraint: "Restricción sobre rey del jugador"
   computerKingConstraint: "Restricción sobre rey de la computadora"

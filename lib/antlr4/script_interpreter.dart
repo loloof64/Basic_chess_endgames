@@ -6,7 +6,6 @@ import 'package:antlr4/antlr4.dart';
 import 'package:basicchessendgamestrainer/antlr4/generated/LuaBaseVisitor.dart';
 import 'package:basicchessendgamestrainer/antlr4/generated/LuaLexer.dart';
 import 'package:basicchessendgamestrainer/antlr4/generated/LuaParser.dart';
-import 'package:basicchessendgamestrainer/antlr4/position_constraint_bail_error_strategy.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 
 class CustomErrorListener extends BaseErrorListener {
@@ -133,29 +132,147 @@ class BuiltVariablesHolder {
   LinkedHashMap<String, dynamic> getVariables() => _builtVariables;
 }
 
+class InterpretationError implements Exception {
+  final String message;
+  final String position;
+  final String scriptType;
+
+  InterpretationError({
+    required this.message,
+    this.position = "",
+    this.scriptType = "",
+  });
+
+  InterpretationError withScriptType(String newScriptType) {
+    return InterpretationError(
+      message: message,
+      position: position,
+      scriptType: newScriptType,
+    );
+  }
+}
+
 class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
   final TranslationsWrapper translations;
   final BuiltVariablesHolder _builtVariables;
+  final List<InterpretationError> _errors = [];
 
   ScriptInterpreter({
     required this.translations,
   }) : _builtVariables = BuiltVariablesHolder(translations);
 
-  LinkedHashMap<String, dynamic> interpretScript(
+  List<InterpretationError> getErrors() => [..._errors];
+
+  LinkedHashMap<String, dynamic>? interpretScript(
     String scriptString,
     Map<String, dynamic> predefinedValues,
   ) {
-    final inputStream = InputStream.fromString(scriptString);
-    final lexer =
-        BailScriptLanguageLexer(translations: translations, input: inputStream);
-    final tokens = CommonTokenStream(lexer);
-    final parser = LuaParser(tokens);
-    parser.errorHandler = PositionConstraintBailErrorStrategy(translations);
-    final tree = parser.start_();
-    _builtVariables.clearVariables();
-    _builtVariables.addPredefinedValues(predefinedValues);
-    visit(tree);
-    return _builtVariables.getVariables();
+    _errors.clear();
+    try {
+      final inputStream = InputStream.fromString(scriptString);
+      final lexer = BailScriptLanguageLexer(
+          translations: translations, input: inputStream);
+      lexer.removeErrorListeners();
+      lexer.addErrorListener(
+        CustomErrorListener(onError: _handleSyntaxtError),
+      );
+      final tokens = CommonTokenStream(lexer);
+      final parser = LuaParser(tokens);
+      parser.removeErrorListeners();
+      parser.addErrorListener(
+        CustomErrorListener(onError: _handleSyntaxtError),
+      );
+      final tree = parser.start_();
+      _builtVariables.clearVariables();
+      _builtVariables.addPredefinedValues(predefinedValues);
+      visit(tree);
+      return _builtVariables.getVariables();
+    } on ParserError catch (e) {
+      _handleParserError(e);
+      return null;
+    } on Exception catch (e) {
+      _handleMiscError(e);
+      return null;
+    }
+  }
+
+  void _handleParserError(ParserError error) {
+    String description = switch (error) {
+      UndefinedVariableException() =>
+        translations.variableNotAffected(Name: error.getFaultySource()!),
+      MissingSomeStatementBlocksInIfExpressionException() =>
+        translations.errorIfStatementMissingBlock,
+      InvalidAssignementStatementException() => translations.invalidAssignment,
+      _ => throw Exception("Not a known Parser Error $error"),
+    };
+
+    description =
+        description.replaceAll("<EOF>", translations.errorSubstitutionEOF);
+    description = description.replaceAll(
+        "NAME", translations.errorSubstitutionVariableName);
+    description =
+        description.replaceAll("INT", translations.errorSubstitutionInteger);
+
+    final position = "${error.getStartLine()!}:${error.getStartColumn()! + 1}";
+    _errors.add(InterpretationError(
+        message: description, position: position, scriptType: ""));
+  }
+
+  void _handleMiscError(Exception error) {
+    const position = "";
+    final description = translations.miscSyntaxErrorUnknownToken;
+    _errors.add(InterpretationError(
+        message: description, position: position, scriptType: ""));
+  }
+
+  void _handleSyntaxtError({
+    required column,
+    required line,
+    required message,
+    required token,
+  }) {
+    String description = "";
+    if (message.contains("mismatched input")) {
+      final messageParts = message.split("expecting ");
+      final expectedToken = messageParts[1];
+      description = translations.wrongTokenAlternatives(
+        Symbol: token,
+        ExpectedSymbols: expectedToken,
+      );
+    } else if (message.contains("extraneous input")) {
+      final messagePartsV1 = message.split("expecting '"); // for misc tokens
+      final messagePartsV2 = message.split("expecting "); // for <EOF>
+      final expectedToken = (messagePartsV1.size > 1)
+          ? messagePartsV1.drop(1).first().dropLast(1)
+          : messagePartsV2.drop(1).first();
+      description = translations.wrongTokenAlternatives(
+        Symbol: token,
+        ExpectedSymbols: expectedToken,
+      );
+    } else if (message.contains("missing NAME at ")) {
+      description = translations.invalidAssignment;
+    } else if (message.contains("missing '")) {
+      final messageParts = message.split("missing '");
+      final expectedToken = messageParts.drop(1).first().split("'").first();
+      description = translations.wrongTokenAlternatives(
+        Symbol: token,
+        ExpectedSymbols: expectedToken,
+      );
+    } else if (message.contains("token recognition error at")) {
+      description = translations.unrecognizedSymbol(Symbol: token);
+    } else {
+      description = translations.miscSyntaxError(Symbol: token);
+    }
+    description =
+        description.replaceAll("<EOF>", translations.errorSubstitutionEOF);
+    description = description.replaceAll(
+        "NAME", translations.errorSubstitutionVariableName);
+    description =
+        description.replaceAll("INT", translations.errorSubstitutionInteger);
+
+    final position = "$line:$column";
+    _errors.add(InterpretationError(
+        message: description, position: position, scriptType: ""));
   }
 
   @override

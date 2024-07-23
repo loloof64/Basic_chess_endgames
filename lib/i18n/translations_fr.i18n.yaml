@@ -57,16 +57,13 @@ gamePage:
     Une fois la partie terminée, vous pourrez visualiser les coups joués grâce au composant historique."
 scriptParser:
   variableNotAffected: "La variable $name a été utilisée avant même d'avoir été définie."
-  unrecognizedSymbol: "Symbol non reconnu $symbol."
   inputMismatch: "Entrée incorrecte dans la ligne $line :\
     caractère à l'index $index. Vous auriez dû mettre $expected mais j'ai reçu $received."
   noViableAltException: "L'entrée $token ne correspond à aucune règle.\
     (Ligne $lineNumber, numéro de caractère $positionInLine)"
-  miscParseError: "Erreur d'interprétation diverse."
   noAntlr4Token: "[Aucune occurence]"
   eof: "[FinDeFichier]"
   overridingPredefinedVariable: "Vous essayez de modifier la valeur de la variable prédéfinie $name."
-  parseErrorDialogTitle: "Erreur de script pour $title"
   typeError:
     "Veuillez vérifier que vous n'utilisez pas de valeur entière à la place \
     de valeur booléenne, et vice versa."
@@ -80,6 +77,12 @@ scriptParser:
   return_statement_not_boolean: "L'instruction 'return' ne retourne pas un booléen."
   too_restrictive_script_title: "Script trop restrictif ?"
   too_restrictive_script_message : "Échec de génération de position à partir de votre script: serait-il trop restrictif ?"
+  wrong_token_alternatives: "Symbol non reconnu ($symbol): attendant un parmi ($expectedSymbols) !"
+  invalid_assignements: "Instruction d'assignement invalide !"
+  unrecognized_token: "Symbol non reconnu ($symbol) !"
+  misc_syntaxt_error: "Erreur de syntaxe diverse ($symbol) !"
+  misc_syntaxt_error_unknown_token: "Erreur de syntaxe diverse !"
+  if_statement_missing_block: "Il manque au moins un bloc d'instructions ou condition dans l'instruction 'if' !"
 scriptType:
   playerKingConstraint: "Contraintes du roi du joueur"
   computerKingConstraint: "Contraintes du roi de l'ordinateur"

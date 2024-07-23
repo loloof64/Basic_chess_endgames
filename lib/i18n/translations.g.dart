@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 681 (227 per locale)
+/// Strings: 696 (232 per locale)
 ///
-/// Built on 2024-07-22 at 12:01 UTC
+/// Built on 2024-07-23 at 11:47 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -261,14 +261,11 @@ class _TranslationsScriptParserEn {
 
 	// Translations
 	String variable_not_affected({required Object Name}) => 'The variable ${Name} has been used before having been defined.';
-	String unrecognized_symbol({required Object Symbol}) => 'Unrecognized symbol ${Symbol}.';
 	String input_mismatch({required Object Line, required Object Index, required Object Expected, required Object Received}) => 'Bad input at line ${Line}: character number ${Index}. You should have set ${Expected} but I got ${Received}.';
 	String no_viable_alt_exception({required Object Token, required Object LineNumber, required Object PositionInLine}) => 'The input ${Token} does not match any rule. (Line ${LineNumber}, character number ${PositionInLine})';
-	String get misc_parse_error => 'Miscellaneous parsing error.';
 	String get no_antlr4_token => '[No occurence]';
 	String get eof => '[EndOfFile]';
 	String overriding_predefined_variable({required Object Name}) => 'You try to change the value of predefined variable ${Name}.';
-	String parse_error_dialog_title({required Object Title}) => 'Script error for ${Title}';
 	String get type_error => 'Please check that you don\'t use int value instead of boolean value and vice versa.';
 	String get missing_script_type => 'Failed to generate position : please check that all of the script sections declares a correct script type.';
 	String unrecognized_script_type({required Object Type}) => 'Unrecognized script type : ${Type}.';
@@ -278,6 +275,13 @@ class _TranslationsScriptParserEn {
 	String get return_statement_not_boolean => 'Return statement does not return a boolean value.';
 	String get too_restrictive_script_title => 'Too restrictive script ?';
 	String get too_restrictive_script_message => 'Failed to generate a sample position from your script : is it too restrictive ?';
+	String wrong_token_alternatives({required Object Symbol, required Object ExpectedSymbols}) => 'Wrong symbol (${Symbol}) : expecting one among (${ExpectedSymbols}) !';
+	String get invalid_assignements => 'Invalid assignment statement !';
+	String unrecognized_token({required Object Symbol}) => 'Symbol not recognized (${Symbol}) !';
+	String misc_syntaxt_error({required Object Symbol}) => 'Miscellaneous syntax error (${Symbol}) !';
+	String get misc_syntaxt_error_unknown_token => 'Miscellaneous syntax error !';
+	String get if_statement_missing_block => 'The \'if\' statement is missing at least one statements block or condition !';
+	late final _TranslationsScriptParserErrorSubstitutionsEn error_substitutions = _TranslationsScriptParserErrorSubstitutionsEn._(_root);
 }
 
 // Path: script_type
@@ -514,6 +518,18 @@ class _TranslationsHomeMenuButtonsEn {
 	String get clone_sample => 'Clone the code of an example';
 }
 
+// Path: script_parser.error_substitutions
+class _TranslationsScriptParserErrorSubstitutionsEn {
+	_TranslationsScriptParserErrorSubstitutionsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get eof => '#EndOfFile#';
+	String get variable_name => '#VariableName#';
+	String get integer => '#Integer#';
+}
+
 // Path: <root>
 class _TranslationsEs extends Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
@@ -640,14 +656,11 @@ class _TranslationsScriptParserEs extends _TranslationsScriptParserEn {
 
 	// Translations
 	@override String variable_not_affected({required Object Name}) => 'La variable ${Name} se ha utilizado antes de haber sido definida.';
-	@override String unrecognized_symbol({required Object Symbol}) => 'Símbolo no reconocido ${Symbol}.';
 	@override String input_mismatch({required Object Line, required Object Index, required Object Expected, required Object Received}) => 'Entrada incorrecta en la línea ${Line}:carácter número ${Index}.Deberías haber establecido ${Expected} pero obtuve ${Received}.';
 	@override String no_viable_alt_exception({required Object Token, required Object LineNumber, required Object PositionInLine}) => 'La entrada ${Token} no coincide con ninguna regla. (Línea ${LineNumber}, número de carácter ${PositionInLine})';
-	@override String get misc_parse_error => 'Error de análisis variado.';
 	@override String get no_antlr4_token => '[Sin ocurrencia]';
 	@override String get eof => '[FinDeArchivo]';
 	@override String overriding_predefined_variable({required Object Name}) => 'Intentas cambiar el valor de la variable predefinida ${Name}.';
-	@override String parse_error_dialog_title({required Object Title}) => 'Error de guione para ${Title}';
 	@override String get type_error => 'Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa.';
 	@override String get missing_script_type => 'No se pudo generar la posición: compruebe que todas las secciones del guione declaran un tipo de guione correcto.';
 	@override String unrecognized_script_type({required Object Type}) => 'Tipo de escritura no reconocido: ${Type}.';
@@ -657,6 +670,13 @@ class _TranslationsScriptParserEs extends _TranslationsScriptParserEn {
 	@override String get return_statement_not_boolean => 'La declaración de \'return\' no devuelve un valor booleano.';
 	@override String get too_restrictive_script_title => '¿Código demasiado restrictivo?';
 	@override String get too_restrictive_script_message => 'No se pudo generar una posición de muestra a partir de su código: ¿es demasiado restrictivo?';
+	@override String wrong_token_alternatives({required Object Symbol, required Object ExpectedSymbols}) => '¡Símbolo incorrecto (${Symbol}): se espera uno entre (${ExpectedSymbols})!';
+	@override String get invalid_assignements => '¡Declaración de asignación no válida!';
+	@override String unrecognized_token({required Object Symbol}) => '¡Símbolo no reconocido (${Symbol})!';
+	@override String misc_syntaxt_error({required Object Symbol}) => '¡Error de sintaxis varios (${Symbol})!';
+	@override String get misc_syntaxt_error_unknown_token => '¡Error de sintaxis varios!';
+	@override String get if_statement_missing_block => '¡La declaración \'if\' le falta al menos un bloque de declaraciones o condición!';
+	@override late final _TranslationsScriptParserErrorSubstitutionsEs error_substitutions = _TranslationsScriptParserErrorSubstitutionsEs._(_root);
 }
 
 // Path: script_type
@@ -893,6 +913,18 @@ class _TranslationsHomeMenuButtonsEs extends _TranslationsHomeMenuButtonsEn {
 	@override String get clone_sample => 'Clonar el código de un ejemplo';
 }
 
+// Path: script_parser.error_substitutions
+class _TranslationsScriptParserErrorSubstitutionsEs extends _TranslationsScriptParserErrorSubstitutionsEn {
+	_TranslationsScriptParserErrorSubstitutionsEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get eof => '#FinDelDocumento#';
+	@override String get variable_name => '#NombreDeUnaVariable#';
+	@override String get integer => '#Entero#';
+}
+
 // Path: <root>
 class _TranslationsFr extends Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
@@ -1019,14 +1051,11 @@ class _TranslationsScriptParserFr extends _TranslationsScriptParserEn {
 
 	// Translations
 	@override String variable_not_affected({required Object Name}) => 'La variable ${Name} a été utilisée avant même d\'avoir été définie.';
-	@override String unrecognized_symbol({required Object Symbol}) => 'Symbol non reconnu ${Symbol}.';
 	@override String input_mismatch({required Object Line, required Object Index, required Object Expected, required Object Received}) => 'Entrée incorrecte dans la ligne ${Line} :caractère à l\'index ${Index}. Vous auriez dû mettre ${Expected} mais j\'ai reçu ${Received}.';
 	@override String no_viable_alt_exception({required Object Token, required Object LineNumber, required Object PositionInLine}) => 'L\'entrée ${Token} ne correspond à aucune règle.(Ligne ${LineNumber}, numéro de caractère ${PositionInLine})';
-	@override String get misc_parse_error => 'Erreur d\'interprétation diverse.';
 	@override String get no_antlr4_token => '[Aucune occurence]';
 	@override String get eof => '[FinDeFichier]';
 	@override String overriding_predefined_variable({required Object Name}) => 'Vous essayez de modifier la valeur de la variable prédéfinie ${Name}.';
-	@override String parse_error_dialog_title({required Object Title}) => 'Erreur de script pour ${Title}';
 	@override String get type_error => 'Veuillez vérifier que vous n\'utilisez pas de valeur entière à la place de valeur booléenne, et vice versa.';
 	@override String get missing_script_type => 'Échec de génération de la position: veuillez vérifier que toutes les sections du script déclarent un type de script correct.';
 	@override String unrecognized_script_type({required Object Type}) => 'Type de script non reconnu : ${Type}.';
@@ -1036,6 +1065,12 @@ class _TranslationsScriptParserFr extends _TranslationsScriptParserEn {
 	@override String get return_statement_not_boolean => 'L\'instruction \'return\' ne retourne pas un booléen.';
 	@override String get too_restrictive_script_title => 'Script trop restrictif ?';
 	@override String get too_restrictive_script_message => 'Échec de génération de position à partir de votre script: serait-il trop restrictif ?';
+	@override String wrong_token_alternatives({required Object Symbol, required Object ExpectedSymbols}) => 'Symbol non reconnu (${Symbol}): attendant un parmi (${ExpectedSymbols}) !';
+	@override String get invalid_assignements => 'Instruction d\'assignement invalide !';
+	@override String unrecognized_token({required Object Symbol}) => 'Symbol non reconnu (${Symbol}) !';
+	@override String misc_syntaxt_error({required Object Symbol}) => 'Erreur de syntaxe diverse (${Symbol}) !';
+	@override String get misc_syntaxt_error_unknown_token => 'Erreur de syntaxe diverse !';
+	@override String get if_statement_missing_block => 'Il manque au moins un bloc d\'instructions ou condition dans l\'instruction \'if\' !';
 }
 
 // Path: script_type

@@ -56,14 +56,11 @@ gamePage:
     Once the game is over you will be able to review moves from the history component."
 scriptParser:
   variableNotAffected: "The variable $name has been used before having been defined."
-  unrecognizedSymbol: "Unrecognized symbol $symbol."
   inputMismatch: "Bad input at line $line: character number $index. You should have set $expected but I got $received."
-  noViableAltException: "The input $token does not match any rule. (Line $lineNumber, character number $positionInLine)"
-  miscParseError: "Miscellaneous parsing error."
+  noViableAltException: "The input $token does not match any rule. (Line $lineNumber, character number $positionInLine)"j
   noAntlr4Token: "[No occurence]"
   eof: "[EndOfFile]"
   overridingPredefinedVariable: "You try to change the value of predefined variable $name."
-  parseErrorDialogTitle: "Script error for $title"
   typeError: "Please check that you don't use int value instead of boolean value and vice versa."
   missingScriptType: "Failed to generate position : please check that all of the script sections declares a correct script type."
   unrecognized_script_type: "Unrecognized script type : $type."
@@ -73,6 +70,16 @@ scriptParser:
   return_statement_not_boolean: "Return statement does not return a boolean value."
   too_restrictive_script_title: "Too restrictive script ?"
   too_restrictive_script_message : "Failed to generate a sample position from your script : is it too restrictive ?"
+  wrong_token_alternatives: "Wrong symbol ($symbol) : expecting one among ($expectedSymbols) !"
+  invalid_assignements: "Invalid assignment statement !"
+  unrecognized_token: "Symbol not recognized ($symbol) !"
+  misc_syntaxt_error: "Miscellaneous syntax error ($symbol) !"
+  misc_syntaxt_error_unknown_token: "Miscellaneous syntax error !"
+  if_statement_missing_block: "The 'if' statement is missing at least one statements block or condition !"
+  error_substitutions:
+    eof: "#EndOfFile#"
+    variable_name:  "#VariableName#"
+    integer: "#Integer#"
 scriptType:
   playerKingConstraint: "Player king constraint"
   computerKingConstraint: "Computer king constraint"
