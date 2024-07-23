@@ -206,10 +206,10 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
   }
 
   void _handleSyntaxtError({
-    required column,
-    required line,
-    required message,
-    required token,
+    required int column,
+    required int line,
+    required String message,
+    required String token,
   }) {
     String description = "";
     if (message.contains("mismatched input")) {
@@ -224,8 +224,8 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
       final messagePartsV2 = message.split("expecting "); // for <EOF>
       String expectedToken = "";
       if (messagePartsV1.length > 1) {
-        final arr = messagePartsV1.sublist(1);
-        expectedToken = arr.sublist(0, arr.length - 1);
+        final word = messagePartsV1.sublist(1).first;
+        expectedToken = word.split("").sublist(0, word.length - 1).join("");
       }
       else {
         expectedToken = messagePartsV2.sublist(1).first;
