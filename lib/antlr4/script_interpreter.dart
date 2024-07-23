@@ -51,25 +51,6 @@ class VariableIsNotAffectedException implements Exception {
 
 class MissingReturnStatementException implements Exception {}
 
-class BailScriptLanguageLexer extends LuaLexer {
-  final CharStream input;
-  final TranslationsWrapper translations;
-
-  BailScriptLanguageLexer({
-    required this.translations,
-    required this.input,
-  }) : super(input);
-
-  @override
-  void recover(RecognitionException<IntStream> re) {
-    final inputStream = re.inputStream as CharStream;
-    final offendingText = inputStream
-        .getText(Interval.of(tokenStartCharIndex, inputStream.index));
-    final message = translations.unrecognizedSymbol(Symbol: offendingText);
-    throw ParseCancellationException(message);
-  }
-}
-
 class ParserError implements Exception {
   final ParserRuleContext context;
 
@@ -170,8 +151,7 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
     _errors.clear();
     try {
       final inputStream = InputStream.fromString(scriptString);
-      final lexer = BailScriptLanguageLexer(
-          translations: translations, input: inputStream);
+      final lexer = LuaLexer(inputStream);
       lexer.removeErrorListeners();
       lexer.addErrorListener(
         CustomErrorListener(onError: _handleSyntaxtError),
