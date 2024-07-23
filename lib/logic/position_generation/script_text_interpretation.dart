@@ -470,43 +470,45 @@ Future<void> showGenerationErrorsPopup({
         return AlertDialog(
           content: Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: errors.map((singleError) {
-                return Row(children: [
-                  Flexible(
-                    flex: 2,
-                    child: Container(
-                      decoration: BoxDecoration(border: Border.all()),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(singleError.scriptType),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: errors.map((singleError) {
+                  return Row(children: [
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        decoration: BoxDecoration(border: Border.all()),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(singleError.scriptType),
+                        ),
                       ),
                     ),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(border: Border.all()),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(singleError.position),
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        decoration: BoxDecoration(border: Border.all()),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(singleError.position),
+                        ),
                       ),
                     ),
-                  ),
-                  Flexible(
-                    flex: 5,
-                    child: Container(
-                      decoration: BoxDecoration(border: Border.all()),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(singleError.message),
+                    Flexible(
+                      flex: 5,
+                      child: Container(
+                        decoration: BoxDecoration(border: Border.all()),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(singleError.message),
+                        ),
                       ),
                     ),
-                  ),
-                ]);
-              }).toList(),
+                  ]);
+                }).toList(),
+              ),
             ),
           ),
           actions: [
