@@ -176,7 +176,10 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
           message as (String?, List<PositionGenerationError>);
 
       if (newPosition == null) {
-        await showGenerationErrorsPopup(errors: errors, context: context);
+        await showGenerationErrorsPopup(
+          errors: errors,
+          context: context,
+        );
         if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(

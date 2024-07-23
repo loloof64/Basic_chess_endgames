@@ -418,7 +418,15 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
       translations: parameters.translations,
     ).transformTextIntoConstraints();
     if (generationErrors.isNotEmpty) {
-      parameters.sendPort.send((null, generationErrors));
+      parameters.sendPort.send(
+        (
+          null,
+          generationErrors.map(
+            (singleErr) =>
+                PositionGenerationError.fromInterpretationError(singleErr),
+          ).toList(),
+        ),
+      );
     } else {
       final positionGenerator =
           PositionGeneratorFromAntlr(translations: parameters.translations);
