@@ -238,7 +238,7 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
       description = translations.invalidAssignment;
     } else if (message.contains("missing '")) {
       final messageParts = message.split("missing '");
-      final expectedToken = messageParts.sublist.first.split("'").first;
+      final expectedToken = messageParts.sublist(1).first.split("'").first;
       description = translations.wrongTokenAlternatives(
         Symbol: token,
         ExpectedSymbols: expectedToken,

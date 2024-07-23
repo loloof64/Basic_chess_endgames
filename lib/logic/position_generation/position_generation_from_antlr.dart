@@ -11,6 +11,25 @@ class AlreadyAPieceThereException implements Exception {}
 
 class ReturnedValueNotABooleanException implements Exception {}
 
+const commonConstantsPredefinedValues = <String, dynamic>{
+  "FileA": 0,
+  "FileB": 1,
+  "FileC": 2,
+  "FileD": 3,
+  "FileE": 4,
+  "FileF": 5,
+  "FileG": 6,
+  "FileH": 7,
+  "Rank1": 0,
+  "Rank2": 1,
+  "Rank3": 2,
+  "Rank4": 3,
+  "Rank5": 4,
+  "Rank6": 5,
+  "Rank7": 6,
+  "Rank8": 7,
+};
+
 (bool, List<InterpretationError>) evaluateScript({
   required TranslationsWrapper translations,
   required String script,
@@ -206,6 +225,7 @@ class PositionGeneratorFromAntlr {
           "file": currentCell.file,
           "rank": currentCell.rank,
           "playerHasWhite": playerHasWhite,
+          ...commonConstantsPredefinedValues,
         };
         try {
           final (passedConditions, errors) = evaluateScript(
@@ -320,6 +340,7 @@ class PositionGeneratorFromAntlr {
           "file": currentCell.file,
           "rank": currentCell.rank,
           "playerHasWhite": playerHasWhite,
+          ...commonConstantsPredefinedValues,
         };
         try {
           final (passedConditions, errors) = evaluateScript(
@@ -382,6 +403,7 @@ class PositionGeneratorFromAntlr {
           "computerKingFile": currentCell.file,
           "computerKingRank": currentCell.rank,
           "playerHasWhite": playerHasWhite,
+          ...commonConstantsPredefinedValues,
         };
         try {
           final (passedConditions2, errors2) = evaluateScript(
@@ -516,6 +538,7 @@ class PositionGeneratorFromAntlr {
               "computerKingFile": computerKingCell.file,
               "computerKingRank": computerKingCell.rank,
               ...commonOtherPiecesConstraintBooleanValues,
+              ...commonConstantsPredefinedValues,
             };
             try {
               final (passedConditions1, errors1) = evaluateScript(
@@ -579,6 +602,7 @@ class PositionGeneratorFromAntlr {
               "rank": currentCell.rank,
               "apparitionIndex": constraintIndex,
               ...commonOtherPiecesConstraintBooleanValues,
+              ...commonConstantsPredefinedValues,
             };
             try {
               final (passedConditions2, errors2) = evaluateScript(
@@ -647,6 +671,7 @@ class PositionGeneratorFromAntlr {
                 "secondPieceFile": outerLoopCell.file,
                 "secondPieceRank": outerLoopCell.rank,
                 ...commonOtherPiecesConstraintBooleanValues,
+                ...commonConstantsPredefinedValues,
               };
 
               try {
