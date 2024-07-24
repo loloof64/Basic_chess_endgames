@@ -32,6 +32,10 @@ home:
   goal_label: "Objectivo"
   win_label: "Ganar"
   draw_label: "Empate"
+  errors_popup_labels:
+    script_type: "Tipo de código"
+    position: "Posición"
+    message: "Mensaje"
 sample_chooser:
   title: "Selector de ejemplo"
 gamePage:

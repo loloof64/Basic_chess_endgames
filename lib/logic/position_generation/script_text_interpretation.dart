@@ -421,10 +421,12 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
       parameters.sendPort.send(
         (
           null,
-          generationErrors.map(
-            (singleErr) =>
-                PositionGenerationError.fromInterpretationError(singleErr),
-          ).toList(),
+          generationErrors
+              .map(
+                (singleErr) =>
+                    PositionGenerationError.fromInterpretationError(singleErr),
+              )
+              .toList(),
         ),
       );
     } else {
@@ -507,47 +509,12 @@ Future<void> showGenerationErrorsPopup({
       context: context,
       builder: (ctx2) {
         return AlertDialog(
-          content: Padding(
+          content: Container(
+            width: double.maxFinite,
+            height: 200.0,
             padding: const EdgeInsets.all(20.0),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: errors.map((singleError) {
-                  return Row(children: [
-                    Flexible(
-                      flex: 2,
-                      child: Container(
-                        decoration: BoxDecoration(border: Border.all()),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(singleError.scriptType),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: Container(
-                        decoration: BoxDecoration(border: Border.all()),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(singleError.position),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 5,
-                      child: Container(
-                        decoration: BoxDecoration(border: Border.all()),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(singleError.message),
-                        ),
-                      ),
-                    ),
-                  ]);
-                }).toList(),
-              ),
+            child: ErrorsSummaryWidget(
+              items: errors,
             ),
           ),
           actions: [
@@ -586,4 +553,120 @@ class SampleScriptGenerationParameters {
     required this.sendPort,
     required this.translations,
   });
+}
+
+class ErrorsSummaryWidget extends StatelessWidget {
+  final List<PositionGenerationError> items;
+
+  const ErrorsSummaryWidget({
+    super.key,
+    required this.items,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Table(
+            columnWidths: const {
+              0: FractionColumnWidth(2 / 8),
+              1: FractionColumnWidth(1 / 8),
+              2: FractionColumnWidth(5 / 8),
+            },
+            children: [
+              // Contenu fixe
+              TableRow(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      t.home.errors_popup_labels.script_type,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      t.home.errors_popup_labels.position,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      t.home.errors_popup_labels.message,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          // Contenu défilable
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              return Table(
+                columnWidths: const {
+                  0: FractionColumnWidth(2 / 8),
+                  1: FractionColumnWidth(1 / 8),
+                  2: FractionColumnWidth(5 / 8),
+                },
+                children: [
+                  for (final currentItem in items)
+                    TableRow(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            currentItem.scriptType,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            currentItem.position,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            currentItem.message,
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }

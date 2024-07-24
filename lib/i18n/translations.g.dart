@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 696 (232 per locale)
+/// Strings: 705 (235 per locale)
 ///
-/// Built on 2024-07-23 at 11:47 UTC
+/// Built on 2024-07-23 at 15:21 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -215,6 +215,7 @@ class _TranslationsHomeEn {
 	String get goal_label => 'Goal';
 	String get win_label => 'Win';
 	String get draw_label => 'Draw';
+	late final _TranslationsHomeErrorsPopupLabelsEn errors_popup_labels = _TranslationsHomeErrorsPopupLabelsEn._(_root);
 }
 
 // Path: sample_chooser
@@ -518,6 +519,18 @@ class _TranslationsHomeMenuButtonsEn {
 	String get clone_sample => 'Clone the code of an example';
 }
 
+// Path: home.errors_popup_labels
+class _TranslationsHomeErrorsPopupLabelsEn {
+	_TranslationsHomeErrorsPopupLabelsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get script_type => 'Script type';
+	String get position => 'Position';
+	String get message => 'Message';
+}
+
 // Path: script_parser.error_substitutions
 class _TranslationsScriptParserErrorSubstitutionsEn {
 	_TranslationsScriptParserErrorSubstitutionsEn._(this._root);
@@ -610,6 +623,7 @@ class _TranslationsHomeEs extends _TranslationsHomeEn {
 	@override String get goal_label => 'Objectivo';
 	@override String get win_label => 'Ganar';
 	@override String get draw_label => 'Empate';
+	@override late final _TranslationsHomeErrorsPopupLabelsEs errors_popup_labels = _TranslationsHomeErrorsPopupLabelsEs._(_root);
 }
 
 // Path: sample_chooser
@@ -913,6 +927,18 @@ class _TranslationsHomeMenuButtonsEs extends _TranslationsHomeMenuButtonsEn {
 	@override String get clone_sample => 'Clonar el código de un ejemplo';
 }
 
+// Path: home.errors_popup_labels
+class _TranslationsHomeErrorsPopupLabelsEs extends _TranslationsHomeErrorsPopupLabelsEn {
+	_TranslationsHomeErrorsPopupLabelsEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get script_type => 'Tipo de código';
+	@override String get position => 'Posición';
+	@override String get message => 'Mensaje';
+}
+
 // Path: script_parser.error_substitutions
 class _TranslationsScriptParserErrorSubstitutionsEs extends _TranslationsScriptParserErrorSubstitutionsEn {
 	_TranslationsScriptParserErrorSubstitutionsEs._(_TranslationsEs root) : this._root = root, super._(root);
@@ -1005,6 +1031,7 @@ class _TranslationsHomeFr extends _TranslationsHomeEn {
 	@override String get goal_label => 'Objectif';
 	@override String get win_label => 'Gain';
 	@override String get draw_label => 'Nulle';
+	@override late final _TranslationsHomeErrorsPopupLabelsFr errors_popup_labels = _TranslationsHomeErrorsPopupLabelsFr._(_root);
 }
 
 // Path: sample_chooser
@@ -1305,4 +1332,16 @@ class _TranslationsHomeMenuButtonsFr extends _TranslationsHomeMenuButtonsEn {
 	@override String get edit_script => 'Éditer un script';
 	@override String get show_sample_code => 'Montrer le code d\'un exemple';
 	@override String get clone_sample => 'Cloner le code d\'un exemple';
+}
+
+// Path: home.errors_popup_labels
+class _TranslationsHomeErrorsPopupLabelsFr extends _TranslationsHomeErrorsPopupLabelsEn {
+	_TranslationsHomeErrorsPopupLabelsFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get script_type => 'Type de script';
+	@override String get position => 'Position';
+	@override String get message => 'Message';
 }
