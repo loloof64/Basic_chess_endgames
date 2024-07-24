@@ -1,14 +1,16 @@
 # player king constraints
 
-isRightRank := rank == numIf playerHasWhite then Rank1 else Rank8;
-return isRightRank;
+if playerHasWhite then expectedRank = Rank1 else expectedRank = Rank8
+isRightRank = rank == expectedRank
+return isRightRank
 
 @@@@@@
 
 # computer king constraints
 
-isRightRank := rank == numIf playerHasWhite then Rank1 else Rank8;
-return isRightRank;
+if playerHasWhite then expectedRank = Rank1 else expectedRank = Rank8
+isRightRank = rank == expectedRank
+return isRightRank
 
 @@@@@@
 
@@ -23,15 +25,17 @@ computer pawn : 3
 
 [player pawn]
 
-isRightRank := rank == numIf playerHasWhite then Rank5 else Rank4;
-return isRightRank;
+if playerHasWhite then expectedRank = Rank5 else expectedRank = Rank4
+isRightRank = rank == expectedRank
+return isRightRank
 
 ---
 
 [computer pawn]
 
-isRightRank := rank == numIf playerHasWhite then Rank7 else Rank2;
-return isRightRank;
+if playerHasWhite then expectedRank = Rank7 else expectedRank = Rank2
+isRightRank = rank == expectedRank
+return isRightRank
 
 @@@@@@
 
@@ -39,13 +43,13 @@ return isRightRank;
 
 [player pawn]
 
-return file == apparitionIndex;
+return file == apparitionIndex
 
 ---
 
 [computer pawn]
 
-return file == apparitionIndex;
+return file == apparitionIndex
 
 @@@@@@
 

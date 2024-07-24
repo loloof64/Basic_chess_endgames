@@ -42,8 +42,12 @@ const commonConstantsPredefinedValues = <String, dynamic>{
     return (false, errors);
   } else {
     final returnedValue = values?['return'];
-    if (returnedValue == null) throw MissingReturnStatementException();
-    if (returnedValue is! bool) throw ReturnedValueNotABooleanException();
+    if (returnedValue == null) {
+      throw MissingReturnStatementException();
+    }
+    if (returnedValue is! bool) {
+      throw ReturnedValueNotABooleanException();
+    }
 
     return (returnedValue, []);
   }

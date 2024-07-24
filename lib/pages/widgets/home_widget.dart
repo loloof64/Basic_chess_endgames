@@ -175,6 +175,11 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       final (newPosition, errors) =
           message as (String?, List<PositionGenerationError>);
 
+      ///////////////////////////////////////////////////////TODO remove
+      print("new position : $newPosition");
+      print("errors: $errors");
+      ///////////////////////////////////////////////////////
+
       if (newPosition == null) {
         await showGenerationErrorsPopup(
           errors: errors,

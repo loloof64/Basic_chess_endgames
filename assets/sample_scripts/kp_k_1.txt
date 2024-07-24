@@ -1,25 +1,27 @@
 # player king constraints
 
-/* player king rank must be in the computer third's rank */
-isRightRank := rank == (numIf playerHasWhite then Rank6 else Rank3);
+-- player king rank must be in the computer third's rank
+if playerHasWhite then expectedRank = Rank6 else expectedRank = Rank3
+isRightRank = rank == expectedRank
 
-/* file must not be in a rook column */
-fileInRightColumn := (file >= FileB) and (file <= FileG);
+-- file must not be in a rook column
+fileInRightColumn = (file >= FileB) and (file <= FileG)
 
-return isRightRank and fileInRightColumn;
+return isRightRank and fileInRightColumn
 
 @@@@@@
 
 # computer king constraints
 
-/* computer king must be the player's eight rank */
-return rank == (numIf playerHasWhite then Rank8 else Rank1);
+-- computer king must be the player's eight rank
+if playerHasWhite then expectedRank = Rank8 else expectedRank = Rank1
+return rank == expectedRank
 
 @@@@@@
 
 # kings mutual constraints
 
-return playerKingFile == computerKingFile;
+return playerKingFile == computerKingFile
 
 @@@@@@
 
@@ -33,11 +35,12 @@ player pawn : 1
 
 [player pawn]
 
-/* pawn must be on the player's fifth rank */
-isRightRank := rank == numIf playerHasWhite then Rank5 else Rank4;
-isRightFile := file == playerKingFile;
+-- pawn must be on the player's fifth rank
+if playerHasWhite then expectedRank = Rank5 else expectedRank = Rank4
+isRightRank = rank == expectedRank
+isRightFile = file == playerKingFile
 
-return isRightFile and isRightRank;
+return isRightFile and isRightRank
 
 @@@@@@
 

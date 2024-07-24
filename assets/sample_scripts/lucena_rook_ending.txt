@@ -1,22 +1,27 @@
 # player king constraints
 
-isOnRightFile := (file >= FileB) and (file <= FileG);
-isOnRightRank := rank == (numIf playerHasWhite then Rank8 else Rank1);
-return isOnRightFile and isOnRightRank;
+isOnRightFile = (file >= FileB) and (file <= FileG)
+
+if playerHasWhite then expectedRank = Rank8 else expectedRank = Rank1
+isOnRightRank = rank == expectedRank
+
+return isOnRightFile and isOnRightRank
 
 @@@@@@
 
 # computer king constraints
 
-kingOnComputerSecondRank := boolIf playerHasWhite then (rank == Rank7) else (rank == Rank2);
-return kingOnComputerSecondRank;
+if playerHasWhite then computerSecondRank = Rank7 else computerSecondRank = Rank2
+kingOnComputerSecondRank = rank == computerSecondRank
+return kingOnComputerSecondRank
 
 @@@@@@
 
 # kings mutual constraints
 
-kingOnLongSide := boolIf (playerKingFile <= FileD) then (computerKingFile == (playerKingFile + 2)) else (computerKingFile == (playerKingFile - 2));
-return kingOnLongSide;
+if (playerKingFile <= FileD) then expectedComputerKingFile = playerKingFile + 2 else expectedComputerKingFile = computerKingFile - 2
+kingOnLongSide = computerKingFile == expectedComputerKingFile
+return kingOnLongSide
 
 @@@@@@
 
@@ -32,23 +37,30 @@ computer rook : 1
 
 [player pawn]
 
-return (file == playerKingFile) and (rank == (numIf playerHasWhite then Rank7 else Rank2));
+if playerHasWhite then expectedRank = Rank7 else expectedRank = Rank2
+return (file == playerKingFile) and (rank == expectedRank)
 
 ---
 
 [player rook]
 
-isRightFile := file == (numIf (playerKingFile <= FileD) then (playerKingFile + 1) else (playerKingFile - 1));
-isRightRank := rank == (numIf playerHasWhite then Rank1 else Rank8);
-return isRightFile and isRightRank;
+if (playerKingFile <= FileD) then expectedFile = (playerKingFile + 1) else expectedFile = (playerKingFile - 1)
+isRightFile = file == expectedFile
+
+if (playerHasWhite) then expectedRank = Rank1 else expectedRank = Rank8
+isRightRank = rank == expectedRank
+
+
+return isRightFile and isRightRank
 
 ---
 
 [computer rook]
 
-isOnShortSide := boolIf (playerKingFile <= FileD) then (file < playerKingFile) else (file > playerKingFile);
-isOnComputerSeventhRank := boolIf playerHasWhite then (rank == Rank2) else (rank == Rank7);
-return isOnShortSide and isOnComputerSeventhRank;
+if (playerKingFile <= FileD) then isOnShortSide = (file < playerKingFile) else isOnShortSide = (file > playerKingFile)
+if playerHasWhite then isOnComputerSeventhRank = (rank == Rank2) else isOnComputerSeventhRank = (rank == Rank7)
+
+return isOnShortSide and isOnComputerSeventhRank
 
 @@@@@@
 
