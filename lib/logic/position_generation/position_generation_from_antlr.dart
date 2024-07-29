@@ -185,7 +185,7 @@ class PositionGeneratorFromAntlr {
 
   // can throw
   // PositionGenerationLoopException
-  String? generatePosition() {
+  (String?, List<InterpretationError>) generatePosition() {
     String? finalPosition;
 
     _errors.clear();
@@ -199,7 +199,7 @@ class PositionGeneratorFromAntlr {
     );
 
     if (_errors.isNotEmpty) {
-      return null;
+      return (null, [..._errors]);
     }
 
     if (finalPosition == null) {
@@ -207,7 +207,7 @@ class PositionGeneratorFromAntlr {
           message: "Failed to place pieces !");
     }
 
-    return finalPosition;
+    return (finalPosition, []);
   }
 
   String? _placePiecesStepPlayerKing({

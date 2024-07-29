@@ -434,9 +434,23 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
           PositionGeneratorFromAntlr(translations: parameters.translations);
       positionGenerator.setConstraints(constraintsExpr);
       try {
-        final generatedPosition = positionGenerator.generatePosition();
-        parameters.sendPort
-            .send((generatedPosition, <PositionGenerationError>[]));
+        final (generatedPosition, errors) =
+            positionGenerator.generatePosition();
+        if (errors.isNotEmpty) {
+          // We can only send one error
+          final error = errors.first;
+          Logger().e(
+              "${error.message} (@${error.position}) <= ${error.scriptType}");
+          parameters.sendPort.send((
+            null,
+            <PositionGenerationError>[
+              PositionGenerationError.fromInterpretationError(error)
+            ]
+          ));
+        } else {
+          parameters.sendPort
+              .send((generatedPosition, <PositionGenerationError>[]));
+        }
       } on InterpretationError catch (ex) {
         Logger().e("${ex.message} (@${ex.position}) <= ${ex.scriptType}");
         parameters.sendPort.send((
