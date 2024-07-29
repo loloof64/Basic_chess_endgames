@@ -46,3 +46,24 @@ extension FanConverter on String {
     return result;
   }
 }
+
+List<String> splitTextLinesKeepingDelimiters(String text) {
+  List<String> result = [];
+  int start = 0;
+
+  for (int i = 0; i < text.length; i++) {
+    if (text[i] == '\n') {
+      if (i > start) {
+        result.add(text.substring(start, i));
+      }
+      result.add('\n');
+      start = i + 1;
+    }
+  }
+
+  if (start < text.length) {
+    result.add(text.substring(start));
+  }
+
+  return result;
+}

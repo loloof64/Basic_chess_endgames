@@ -1,3 +1,4 @@
+import 'package:basicchessendgamestrainer/logic/utils.dart';
 import 'package:flutter/material.dart';
 
 class TextfieldWithPositionTracker extends StatefulWidget {
@@ -35,10 +36,27 @@ class TextfieldWithPositionTrackerState
     }
 
     final beforeCursor = text.substring(0, selection.baseOffset);
-    final lines = beforeCursor.split('\n');
+    var lines = splitTextLinesKeepingDelimiters(beforeCursor)
+        .where((currentLine) => currentLine.isNotEmpty);
 
-    final lineNumber = lines.length;
-    final columnNumber = lines.last.length + 1;
+    final lastLineEndedWithCarriageReturn = lines.lastOrNull == '\n';
+    lines = lines.where((elt) => elt != '\n');
+
+    if (lines.isEmpty) {
+      setState(() {
+        _cursorPosition = "1:1";
+      });
+      return;
+    }
+
+    var lineNumber = lines.length;
+    var columnNumber = lines.last.length + 1;
+
+    // A tiny fix for start of lines.
+    if (lastLineEndedWithCarriageReturn) {
+      lineNumber = lineNumber + 1;
+      columnNumber = 1;
+    }
 
     setState(() {
       _cursorPosition = '$lineNumber:$columnNumber';
