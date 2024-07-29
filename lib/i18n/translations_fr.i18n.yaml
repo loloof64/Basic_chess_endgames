@@ -87,6 +87,10 @@ scriptParser:
   misc_syntaxt_error: "Erreur de syntaxe diverse ($symbol) !"
   misc_syntaxt_error_unknown_token: "Erreur de syntaxe diverse !"
   if_statement_missing_block: "Il manque au moins un bloc d'instructions ou condition dans l'instruction 'if' !"
+  error_substitutions:
+    eof: "#FinDeFichier#"
+    variable_name:  "#NomDeVariable#"
+    integer: "#Entier#"
 scriptType:
   playerKingConstraint: "Contraintes du roi du joueur"
   computerKingConstraint: "Contraintes du roi de l'ordinateur"

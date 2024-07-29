@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 705 (235 per locale)
+/// Strings: 708 (236 per locale)
 ///
-/// Built on 2024-07-29 at 08:39 UTC
+/// Built on 2024-07-29 at 08:48 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -1098,6 +1098,7 @@ class _TranslationsScriptParserFr extends _TranslationsScriptParserEn {
 	@override String misc_syntaxt_error({required Object Symbol}) => 'Erreur de syntaxe diverse (${Symbol}) !';
 	@override String get misc_syntaxt_error_unknown_token => 'Erreur de syntaxe diverse !';
 	@override String get if_statement_missing_block => 'Il manque au moins un bloc d\'instructions ou condition dans l\'instruction \'if\' !';
+	@override late final _TranslationsScriptParserErrorSubstitutionsFr error_substitutions = _TranslationsScriptParserErrorSubstitutionsFr._(_root);
 }
 
 // Path: script_type
@@ -1344,4 +1345,16 @@ class _TranslationsHomeErrorsPopupLabelsFr extends _TranslationsHomeErrorsPopupL
 	@override String get script_type => 'Type de script';
 	@override String get position => 'Position';
 	@override String get message => 'Message';
+}
+
+// Path: script_parser.error_substitutions
+class _TranslationsScriptParserErrorSubstitutionsFr extends _TranslationsScriptParserErrorSubstitutionsEn {
+	_TranslationsScriptParserErrorSubstitutionsFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get eof => '#FinDeFichier#';
+	@override String get variable_name => '#NomDeVariable#';
+	@override String get integer => '#Entier#';
 }
