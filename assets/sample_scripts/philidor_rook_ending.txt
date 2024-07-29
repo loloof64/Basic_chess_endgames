@@ -43,7 +43,7 @@ return fileOnPlayerKingFile and pawnOnPlayerFourthRank
 
 [player rook]
 
-if (playerKingFile <= FileD) then isRightFile = (file == FileH) else isRightFile (file == FileA) end
+if (playerKingFile <= FileD) then isRightFile = (file == FileH) else isRightFile = (file == FileA) end
 if playerHasWhite then isRightRank = (rank == Rank8) else isRightRank = (rank == Rank1) end
 return isRightFile and isRightRank
 
