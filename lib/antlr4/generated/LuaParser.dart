@@ -1,5 +1,5 @@
 // Generated from Lua.g4 by ANTLR 4.13.1
-// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes, file_names, constant_identifier_names, prefer_function_declarations_over_variables, non_constant_identifier_names, no_leading_underscores_for_local_identifiers, avoid_renaming_method_parameters, camel_case_types, unnecessary_overrides
+// ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes, file_names, constant_identifier_names, prefer_function_declarations_over_variables, non_constant_identifier_names, no_leading_underscores_for_local_identifiers, avoid_renaming_method_parameters, camel_case_types, use_super_parameters
 import 'package:antlr4/antlr4.dart';
 
 import 'LuaVisitor.dart';
@@ -76,6 +76,8 @@ class LuaParser extends Parser {
       state = 24;
       chunk();
       state = 25;
+      returnStat();
+      state = 26;
       match(TOKEN_EOF);
     } on RecognitionException catch (re) {
       _localctx.exception = re;
@@ -92,7 +94,7 @@ class LuaParser extends Parser {
     enterRule(_localctx, 2, RULE_chunk);
     try {
       enterOuterAlt(_localctx, 1);
-      state = 27;
+      state = 28;
       block();
     } on RecognitionException catch (re) {
       _localctx.exception = re;
@@ -110,18 +112,16 @@ class LuaParser extends Parser {
     int _la;
     try {
       enterOuterAlt(_localctx, 1);
-      state = 32;
+      state = 33;
       errorHandler.sync(this);
       _la = tokenStream.LA(1)!;
       while ((((_la) & ~0x3f) == 0 && ((1 << _la) & 68719476754) != 0)) {
-        state = 29;
+        state = 30;
         stat();
-        state = 34;
+        state = 35;
         errorHandler.sync(this);
         _la = tokenStream.LA(1)!;
       }
-      state = 35;
-      returnStat();
     } on RecognitionException catch (re) {
       _localctx.exception = re;
       errorHandler.reportError(this, re);
@@ -137,9 +137,9 @@ class LuaParser extends Parser {
     enterRule(_localctx, 6, RULE_returnStat);
     try {
       enterOuterAlt(_localctx, 1);
-      state = 37;
+      state = 36;
       match(TOKEN_RETURN);
-      state = 38;
+      state = 37;
       exp(0);
     } on RecognitionException catch (re) {
       _localctx.exception = re;
@@ -155,25 +155,25 @@ class LuaParser extends Parser {
     dynamic _localctx = StatContext(context, state);
     enterRule(_localctx, 8, RULE_stat);
     try {
-      state = 43;
+      state = 42;
       errorHandler.sync(this);
       switch (tokenStream.LA(1)!) {
       case TOKEN_SEMI:
         _localctx = SemiColumnExecContext(_localctx);
         enterOuterAlt(_localctx, 1);
-        state = 40;
+        state = 39;
         match(TOKEN_SEMI);
         break;
       case TOKEN_NAME:
         _localctx = AssignExecContext(_localctx);
         enterOuterAlt(_localctx, 2);
-        state = 41;
+        state = 40;
         assign();
         break;
       case TOKEN_IF:
         _localctx = IfExecContext(_localctx);
         enterOuterAlt(_localctx, 3);
-        state = 42;
+        state = 41;
         ifstat();
         break;
       default:
@@ -194,11 +194,11 @@ class LuaParser extends Parser {
     enterRule(_localctx, 10, RULE_assign);
     try {
       enterOuterAlt(_localctx, 1);
-      state = 45;
+      state = 44;
       namelist();
-      state = 46;
+      state = 45;
       match(TOKEN_EQ);
-      state = 47;
+      state = 46;
       explist();
     } on RecognitionException catch (re) {
       _localctx.exception = re;
@@ -216,41 +216,41 @@ class LuaParser extends Parser {
     int _la;
     try {
       enterOuterAlt(_localctx, 1);
-      state = 49;
+      state = 48;
       match(TOKEN_IF);
-      state = 50;
+      state = 49;
       exp(0);
-      state = 51;
+      state = 50;
       match(TOKEN_THEN);
-      state = 52;
+      state = 51;
       block();
-      state = 60;
+      state = 59;
       errorHandler.sync(this);
       _la = tokenStream.LA(1)!;
       while (_la == TOKEN_ELSEIF) {
-        state = 53;
+        state = 52;
         match(TOKEN_ELSEIF);
-        state = 54;
+        state = 53;
         exp(0);
-        state = 55;
+        state = 54;
         match(TOKEN_THEN);
-        state = 56;
+        state = 55;
         block();
-        state = 62;
+        state = 61;
         errorHandler.sync(this);
         _la = tokenStream.LA(1)!;
       }
-      state = 65;
+      state = 64;
       errorHandler.sync(this);
       _la = tokenStream.LA(1)!;
       if (_la == TOKEN_ELSE) {
-        state = 63;
+        state = 62;
         match(TOKEN_ELSE);
-        state = 64;
+        state = 63;
         _localctx.endExec = block();
       }
 
-      state = 67;
+      state = 66;
       match(TOKEN_END);
     } on RecognitionException catch (re) {
       _localctx.exception = re;
@@ -268,17 +268,17 @@ class LuaParser extends Parser {
     int _la;
     try {
       enterOuterAlt(_localctx, 1);
-      state = 69;
+      state = 68;
       match(TOKEN_NAME);
-      state = 74;
+      state = 73;
       errorHandler.sync(this);
       _la = tokenStream.LA(1)!;
       while (_la == TOKEN_COMMA) {
-        state = 70;
+        state = 69;
         match(TOKEN_COMMA);
-        state = 71;
+        state = 70;
         match(TOKEN_NAME);
-        state = 76;
+        state = 75;
         errorHandler.sync(this);
         _la = tokenStream.LA(1)!;
       }
@@ -298,17 +298,17 @@ class LuaParser extends Parser {
     int _la;
     try {
       enterOuterAlt(_localctx, 1);
-      state = 77;
+      state = 76;
       exp(0);
-      state = 82;
+      state = 81;
       errorHandler.sync(this);
       _la = tokenStream.LA(1)!;
       while (_la == TOKEN_COMMA) {
-        state = 78;
+        state = 77;
         match(TOKEN_COMMA);
-        state = 79;
+        state = 78;
         exp(0);
-        state = 84;
+        state = 83;
         errorHandler.sync(this);
         _la = tokenStream.LA(1)!;
       }
@@ -333,7 +333,7 @@ class LuaParser extends Parser {
     try {
       int _alt;
       enterOuterAlt(_localctx, 1);
-      state = 92;
+      state = 91;
       errorHandler.sync(this);
       switch (tokenStream.LA(1)!) {
       case TOKEN_FALSE:
@@ -341,21 +341,21 @@ class LuaParser extends Parser {
         context = _localctx;
         _prevctx = _localctx;
 
-        state = 86;
+        state = 85;
         match(TOKEN_FALSE);
         break;
       case TOKEN_TRUE:
         _localctx = TrueExprContext(_localctx);
         context = _localctx;
         _prevctx = _localctx;
-        state = 87;
+        state = 86;
         match(TOKEN_TRUE);
         break;
       case TOKEN_INT:
         _localctx = NumberExprContext(_localctx);
         context = _localctx;
         _prevctx = _localctx;
-        state = 88;
+        state = 87;
         number();
         break;
       case TOKEN_OP:
@@ -363,7 +363,7 @@ class LuaParser extends Parser {
         _localctx = PrefixExprContext(_localctx);
         context = _localctx;
         _prevctx = _localctx;
-        state = 89;
+        state = 88;
         prefix();
         break;
       case TOKEN_MINUS:
@@ -371,7 +371,7 @@ class LuaParser extends Parser {
         _localctx = UnaryExprContext(_localctx);
         context = _localctx;
         _prevctx = _localctx;
-        state = 90;
+        state = 89;
         _localctx.op = tokenStream.LT(1);
         _la = tokenStream.LA(1)!;
         if (!(_la == TOKEN_MINUS || _la == TOKEN_NOT)) {
@@ -381,44 +381,44 @@ class LuaParser extends Parser {
           errorHandler.reportMatch(this);
           consume();
         }
-        state = 91;
+        state = 90;
         exp(7);
         break;
       default:
         throw NoViableAltException(this);
       }
       context!.stop = tokenStream.LT(-1);
-      state = 117;
+      state = 116;
       errorHandler.sync(this);
       _alt = interpreter!.adaptivePredict(tokenStream, 8, context);
       while (_alt != 2 && _alt != ATN.INVALID_ALT_NUMBER) {
         if (_alt == 1) {
           if (parseListeners != null) triggerExitRuleEvent();
           _prevctx = _localctx;
-          state = 115;
+          state = 114;
           errorHandler.sync(this);
           switch (interpreter!.adaptivePredict(tokenStream, 7, context)) {
           case 1:
             _localctx = ExponentExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
-            state = 94;
+            state = 93;
             if (!(precpred(context, 8))) {
               throw FailedPredicateException(this, "precpred(context, 8)");
             }
 
-            state = 95;
+            state = 94;
             match(TOKEN_CARET);
-            state = 96;
+            state = 95;
             exp(8);
             break;
           case 2:
             _localctx = MulDivModuloExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
-            state = 97;
+            state = 96;
             if (!(precpred(context, 6))) {
               throw FailedPredicateException(this, "precpred(context, 6)");
             }
-            state = 98;
+            state = 97;
             _localctx.op = tokenStream.LT(1);
             _la = tokenStream.LA(1)!;
             if (!((((_la) & ~0x3f) == 0 && ((1 << _la) & 18278776832) != 0))) {
@@ -428,17 +428,17 @@ class LuaParser extends Parser {
               errorHandler.reportMatch(this);
               consume();
             }
-            state = 99;
+            state = 98;
             exp(7);
             break;
           case 3:
             _localctx = PlusMinusExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
-            state = 100;
+            state = 99;
             if (!(precpred(context, 5))) {
               throw FailedPredicateException(this, "precpred(context, 5)");
             }
-            state = 101;
+            state = 100;
             _localctx.op = tokenStream.LT(1);
             _la = tokenStream.LA(1)!;
             if (!(_la == TOKEN_MINUS || _la == TOKEN_PLUS)) {
@@ -448,17 +448,17 @@ class LuaParser extends Parser {
               errorHandler.reportMatch(this);
               consume();
             }
-            state = 102;
+            state = 101;
             exp(6);
             break;
           case 4:
             _localctx = BooleanBinaryLogicalExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
-            state = 103;
+            state = 102;
             if (!(precpred(context, 4))) {
               throw FailedPredicateException(this, "precpred(context, 4)");
             }
-            state = 104;
+            state = 103;
             _localctx.op = tokenStream.LT(1);
             _la = tokenStream.LA(1)!;
             if (!((((_la) & ~0x3f) == 0 && ((1 << _la) & 36607886848) != 0))) {
@@ -468,43 +468,43 @@ class LuaParser extends Parser {
               errorHandler.reportMatch(this);
               consume();
             }
-            state = 105;
+            state = 104;
             exp(5);
             break;
           case 5:
             _localctx = BooleanAndExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
-            state = 106;
+            state = 105;
             if (!(precpred(context, 3))) {
               throw FailedPredicateException(this, "precpred(context, 3)");
             }
 
-            state = 107;
+            state = 106;
             match(TOKEN_AND);
-            state = 108;
+            state = 107;
             exp(4);
             break;
           case 6:
             _localctx = BooleanOrExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
-            state = 109;
+            state = 108;
             if (!(precpred(context, 2))) {
               throw FailedPredicateException(this, "precpred(context, 2)");
             }
 
-            state = 110;
+            state = 109;
             match(TOKEN_OR);
-            state = 111;
+            state = 110;
             exp(3);
             break;
           case 7:
             _localctx = IntBinaryLogicalExprContext(ExpContext(_parentctx, _parentState));
             pushNewRecursionContext(_localctx, _startState, RULE_exp);
-            state = 112;
+            state = 111;
             if (!(precpred(context, 1))) {
               throw FailedPredicateException(this, "precpred(context, 1)");
             }
-            state = 113;
+            state = 112;
             _localctx.op = tokenStream.LT(1);
             _la = tokenStream.LA(1)!;
             if (!((((_la) & ~0x3f) == 0 && ((1 << _la) & 4302340096) != 0))) {
@@ -514,12 +514,12 @@ class LuaParser extends Parser {
               errorHandler.reportMatch(this);
               consume();
             }
-            state = 114;
+            state = 113;
             exp(2);
             break;
           } 
         }
-        state = 119;
+        state = 118;
         errorHandler.sync(this);
         _alt = interpreter!.adaptivePredict(tokenStream, 8, context);
       }
@@ -537,23 +537,23 @@ class LuaParser extends Parser {
     dynamic _localctx = PrefixContext(context, state);
     enterRule(_localctx, 20, RULE_prefix);
     try {
-      state = 125;
+      state = 124;
       errorHandler.sync(this);
       switch (tokenStream.LA(1)!) {
       case TOKEN_NAME:
         _localctx = VariablePrefixContext(_localctx);
         enterOuterAlt(_localctx, 1);
-        state = 120;
+        state = 119;
         match(TOKEN_NAME);
         break;
       case TOKEN_OP:
         _localctx = ParenthesisPrefixContext(_localctx);
         enterOuterAlt(_localctx, 2);
-        state = 121;
+        state = 120;
         match(TOKEN_OP);
-        state = 122;
+        state = 121;
         exp(0);
-        state = 123;
+        state = 122;
         match(TOKEN_CP);
         break;
       default:
@@ -575,7 +575,7 @@ class LuaParser extends Parser {
     try {
       _localctx = IntegerValueContext(_localctx);
       enterOuterAlt(_localctx, 1);
-      state = 127;
+      state = 126;
       match(TOKEN_INT);
     } on RecognitionException catch (re) {
       _localctx.exception = re;
@@ -609,48 +609,48 @@ class LuaParser extends Parser {
   }
 
   static const List<int> _serializedATN = [
-      4,1,40,130,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,
-      2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,1,0,1,0,1,0,1,1,1,1,1,
-      2,5,2,31,8,2,10,2,12,2,34,9,2,1,2,1,2,1,3,1,3,1,3,1,4,1,4,1,4,3,4,
-      44,8,4,1,5,1,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,5,6,59,
-      8,6,10,6,12,6,62,9,6,1,6,1,6,3,6,66,8,6,1,6,1,6,1,7,1,7,1,7,5,7,73,
-      8,7,10,7,12,7,76,9,7,1,8,1,8,1,8,5,8,81,8,8,10,8,12,8,84,9,8,1,9,1,
-      9,1,9,1,9,1,9,1,9,1,9,3,9,93,8,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,
-      9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,5,9,116,8,9,10,9,
-      12,9,119,9,9,1,10,1,10,1,10,1,10,1,10,3,10,126,8,10,1,11,1,11,1,11,
-      0,1,18,12,0,2,4,6,8,10,12,14,16,18,20,22,0,5,2,0,16,16,19,19,3,0,23,
-      24,30,30,34,34,2,0,16,16,29,29,4,0,9,10,25,26,31,31,35,35,3,0,15,15,
-      20,22,32,32,136,0,24,1,0,0,0,2,27,1,0,0,0,4,32,1,0,0,0,6,37,1,0,0,
-      0,8,43,1,0,0,0,10,45,1,0,0,0,12,49,1,0,0,0,14,69,1,0,0,0,16,77,1,0,
-      0,0,18,92,1,0,0,0,20,125,1,0,0,0,22,127,1,0,0,0,24,25,3,2,1,0,25,26,
-      5,0,0,1,26,1,1,0,0,0,27,28,3,4,2,0,28,3,1,0,0,0,29,31,3,8,4,0,30,29,
-      1,0,0,0,31,34,1,0,0,0,32,30,1,0,0,0,32,33,1,0,0,0,33,35,1,0,0,0,34,
-      32,1,0,0,0,35,36,3,6,3,0,36,5,1,0,0,0,37,38,5,11,0,0,38,39,3,18,9,
-      0,39,7,1,0,0,0,40,44,5,1,0,0,41,44,3,10,5,0,42,44,3,12,6,0,43,40,1,
-      0,0,0,43,41,1,0,0,0,43,42,1,0,0,0,44,9,1,0,0,0,45,46,3,14,7,0,46,47,
-      5,2,0,0,47,48,3,16,8,0,48,11,1,0,0,0,49,50,5,4,0,0,50,51,3,18,9,0,
-      51,52,5,5,0,0,52,60,3,4,2,0,53,54,5,6,0,0,54,55,3,18,9,0,55,56,5,5,
-      0,0,56,57,3,4,2,0,57,59,1,0,0,0,58,53,1,0,0,0,59,62,1,0,0,0,60,58,
-      1,0,0,0,60,61,1,0,0,0,61,65,1,0,0,0,62,60,1,0,0,0,63,64,5,7,0,0,64,
-      66,3,4,2,0,65,63,1,0,0,0,65,66,1,0,0,0,66,67,1,0,0,0,67,68,5,3,0,0,
-      68,13,1,0,0,0,69,74,5,36,0,0,70,71,5,8,0,0,71,73,5,36,0,0,72,70,1,
-      0,0,0,73,76,1,0,0,0,74,72,1,0,0,0,74,75,1,0,0,0,75,15,1,0,0,0,76,74,
-      1,0,0,0,77,82,3,18,9,0,78,79,5,8,0,0,79,81,3,18,9,0,80,78,1,0,0,0,
-      81,84,1,0,0,0,82,80,1,0,0,0,82,83,1,0,0,0,83,17,1,0,0,0,84,82,1,0,
-      0,0,85,86,6,9,-1,0,86,93,5,12,0,0,87,93,5,13,0,0,88,93,3,22,11,0,89,
-      93,3,20,10,0,90,91,7,0,0,0,91,93,3,18,9,7,92,85,1,0,0,0,92,87,1,0,
-      0,0,92,88,1,0,0,0,92,89,1,0,0,0,92,90,1,0,0,0,93,117,1,0,0,0,94,95,
-      10,8,0,0,95,96,5,33,0,0,96,116,3,18,9,8,97,98,10,6,0,0,98,99,7,1,0,
-      0,99,116,3,18,9,7,100,101,10,5,0,0,101,102,7,2,0,0,102,116,3,18,9,
-      6,103,104,10,4,0,0,104,105,7,3,0,0,105,116,3,18,9,5,106,107,10,3,0,
-      0,107,108,5,27,0,0,108,116,3,18,9,4,109,110,10,2,0,0,110,111,5,28,
-      0,0,111,116,3,18,9,3,112,113,10,1,0,0,113,114,7,4,0,0,114,116,3,18,
-      9,2,115,94,1,0,0,0,115,97,1,0,0,0,115,100,1,0,0,0,115,103,1,0,0,0,
-      115,106,1,0,0,0,115,109,1,0,0,0,115,112,1,0,0,0,116,119,1,0,0,0,117,
-      115,1,0,0,0,117,118,1,0,0,0,118,19,1,0,0,0,119,117,1,0,0,0,120,126,
-      5,36,0,0,121,122,5,17,0,0,122,123,3,18,9,0,123,124,5,18,0,0,124,126,
-      1,0,0,0,125,120,1,0,0,0,125,121,1,0,0,0,126,21,1,0,0,0,127,128,5,37,
-      0,0,128,23,1,0,0,0,10,32,43,60,65,74,82,92,115,117,125
+      4,1,40,129,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,
+      2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,1,0,1,0,1,0,1,0,1,1,1,
+      1,1,2,5,2,32,8,2,10,2,12,2,35,9,2,1,3,1,3,1,3,1,4,1,4,1,4,3,4,43,8,
+      4,1,5,1,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,5,6,58,8,6,10,
+      6,12,6,61,9,6,1,6,1,6,3,6,65,8,6,1,6,1,6,1,7,1,7,1,7,5,7,72,8,7,10,
+      7,12,7,75,9,7,1,8,1,8,1,8,5,8,80,8,8,10,8,12,8,83,9,8,1,9,1,9,1,9,
+      1,9,1,9,1,9,1,9,3,9,92,8,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,
+      1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,5,9,115,8,9,10,9,12,9,
+      118,9,9,1,10,1,10,1,10,1,10,1,10,3,10,125,8,10,1,11,1,11,1,11,0,1,
+      18,12,0,2,4,6,8,10,12,14,16,18,20,22,0,5,2,0,16,16,19,19,3,0,23,24,
+      30,30,34,34,2,0,16,16,29,29,4,0,9,10,25,26,31,31,35,35,3,0,15,15,20,
+      22,32,32,135,0,24,1,0,0,0,2,28,1,0,0,0,4,33,1,0,0,0,6,36,1,0,0,0,8,
+      42,1,0,0,0,10,44,1,0,0,0,12,48,1,0,0,0,14,68,1,0,0,0,16,76,1,0,0,0,
+      18,91,1,0,0,0,20,124,1,0,0,0,22,126,1,0,0,0,24,25,3,2,1,0,25,26,3,
+      6,3,0,26,27,5,0,0,1,27,1,1,0,0,0,28,29,3,4,2,0,29,3,1,0,0,0,30,32,
+      3,8,4,0,31,30,1,0,0,0,32,35,1,0,0,0,33,31,1,0,0,0,33,34,1,0,0,0,34,
+      5,1,0,0,0,35,33,1,0,0,0,36,37,5,11,0,0,37,38,3,18,9,0,38,7,1,0,0,0,
+      39,43,5,1,0,0,40,43,3,10,5,0,41,43,3,12,6,0,42,39,1,0,0,0,42,40,1,
+      0,0,0,42,41,1,0,0,0,43,9,1,0,0,0,44,45,3,14,7,0,45,46,5,2,0,0,46,47,
+      3,16,8,0,47,11,1,0,0,0,48,49,5,4,0,0,49,50,3,18,9,0,50,51,5,5,0,0,
+      51,59,3,4,2,0,52,53,5,6,0,0,53,54,3,18,9,0,54,55,5,5,0,0,55,56,3,4,
+      2,0,56,58,1,0,0,0,57,52,1,0,0,0,58,61,1,0,0,0,59,57,1,0,0,0,59,60,
+      1,0,0,0,60,64,1,0,0,0,61,59,1,0,0,0,62,63,5,7,0,0,63,65,3,4,2,0,64,
+      62,1,0,0,0,64,65,1,0,0,0,65,66,1,0,0,0,66,67,5,3,0,0,67,13,1,0,0,0,
+      68,73,5,36,0,0,69,70,5,8,0,0,70,72,5,36,0,0,71,69,1,0,0,0,72,75,1,
+      0,0,0,73,71,1,0,0,0,73,74,1,0,0,0,74,15,1,0,0,0,75,73,1,0,0,0,76,81,
+      3,18,9,0,77,78,5,8,0,0,78,80,3,18,9,0,79,77,1,0,0,0,80,83,1,0,0,0,
+      81,79,1,0,0,0,81,82,1,0,0,0,82,17,1,0,0,0,83,81,1,0,0,0,84,85,6,9,
+      -1,0,85,92,5,12,0,0,86,92,5,13,0,0,87,92,3,22,11,0,88,92,3,20,10,0,
+      89,90,7,0,0,0,90,92,3,18,9,7,91,84,1,0,0,0,91,86,1,0,0,0,91,87,1,0,
+      0,0,91,88,1,0,0,0,91,89,1,0,0,0,92,116,1,0,0,0,93,94,10,8,0,0,94,95,
+      5,33,0,0,95,115,3,18,9,8,96,97,10,6,0,0,97,98,7,1,0,0,98,115,3,18,
+      9,7,99,100,10,5,0,0,100,101,7,2,0,0,101,115,3,18,9,6,102,103,10,4,
+      0,0,103,104,7,3,0,0,104,115,3,18,9,5,105,106,10,3,0,0,106,107,5,27,
+      0,0,107,115,3,18,9,4,108,109,10,2,0,0,109,110,5,28,0,0,110,115,3,18,
+      9,3,111,112,10,1,0,0,112,113,7,4,0,0,113,115,3,18,9,2,114,93,1,0,0,
+      0,114,96,1,0,0,0,114,99,1,0,0,0,114,102,1,0,0,0,114,105,1,0,0,0,114,
+      108,1,0,0,0,114,111,1,0,0,0,115,118,1,0,0,0,116,114,1,0,0,0,116,117,
+      1,0,0,0,117,19,1,0,0,0,118,116,1,0,0,0,119,125,5,36,0,0,120,121,5,
+      17,0,0,121,122,3,18,9,0,122,123,5,18,0,0,123,125,1,0,0,0,124,119,1,
+      0,0,0,124,120,1,0,0,0,125,21,1,0,0,0,126,127,5,37,0,0,127,23,1,0,0,
+      0,10,33,42,59,64,73,81,91,114,116,124
   ];
 
   static final ATN _ATN =
@@ -658,8 +658,9 @@ class LuaParser extends Parser {
 }
 class Start_Context extends ParserRuleContext {
   ChunkContext? chunk() => getRuleContext<ChunkContext>(0);
+  ReturnStatContext? returnStat() => getRuleContext<ReturnStatContext>(0);
   TerminalNode? EOF() => getToken(LuaParser.TOKEN_EOF, 0);
-  Start_Context([ParserRuleContext? super.parent, super.invokingState]);
+  Start_Context([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_start_;
   @override
@@ -674,7 +675,7 @@ class Start_Context extends ParserRuleContext {
 
 class ChunkContext extends ParserRuleContext {
   BlockContext? block() => getRuleContext<BlockContext>(0);
-  ChunkContext([ParserRuleContext? super.parent, super.invokingState]);
+  ChunkContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_chunk;
   @override
@@ -688,10 +689,9 @@ class ChunkContext extends ParserRuleContext {
 }
 
 class BlockContext extends ParserRuleContext {
-  ReturnStatContext? returnStat() => getRuleContext<ReturnStatContext>(0);
   List<StatContext> stats() => getRuleContexts<StatContext>();
   StatContext? stat(int i) => getRuleContext<StatContext>(i);
-  BlockContext([ParserRuleContext? super.parent, super.invokingState]);
+  BlockContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_block;
   @override
@@ -707,7 +707,7 @@ class BlockContext extends ParserRuleContext {
 class ReturnStatContext extends ParserRuleContext {
   TerminalNode? RETURN() => getToken(LuaParser.TOKEN_RETURN, 0);
   ExpContext? exp() => getRuleContext<ExpContext>(0);
-  ReturnStatContext([ParserRuleContext? super.parent, super.invokingState]);
+  ReturnStatContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_returnStat;
   @override
@@ -721,21 +721,16 @@ class ReturnStatContext extends ParserRuleContext {
 }
 
 class StatContext extends ParserRuleContext {
-  StatContext([ParserRuleContext? super.parent, super.invokingState]);
+  StatContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_stat;
- 
-  @override
-  void copyFrom(ParserRuleContext ctx) {
-    super.copyFrom(ctx);
-  }
 }
 
 class AssignContext extends ParserRuleContext {
   NamelistContext? namelist() => getRuleContext<NamelistContext>(0);
   TerminalNode? EQ() => getToken(LuaParser.TOKEN_EQ, 0);
   ExplistContext? explist() => getRuleContext<ExplistContext>(0);
-  AssignContext([ParserRuleContext? super.parent, super.invokingState]);
+  AssignContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_assign;
   @override
@@ -761,7 +756,7 @@ class IfstatContext extends ParserRuleContext {
   List<TerminalNode> ELSEIFs() => getTokens(LuaParser.TOKEN_ELSEIF);
   TerminalNode? ELSEIF(int i) => getToken(LuaParser.TOKEN_ELSEIF, i);
   TerminalNode? ELSE() => getToken(LuaParser.TOKEN_ELSE, 0);
-  IfstatContext([ParserRuleContext? super.parent, super.invokingState]);
+  IfstatContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_ifstat;
   @override
@@ -779,7 +774,7 @@ class NamelistContext extends ParserRuleContext {
   TerminalNode? NAME(int i) => getToken(LuaParser.TOKEN_NAME, i);
   List<TerminalNode> COMMAs() => getTokens(LuaParser.TOKEN_COMMA);
   TerminalNode? COMMA(int i) => getToken(LuaParser.TOKEN_COMMA, i);
-  NamelistContext([ParserRuleContext? super.parent, super.invokingState]);
+  NamelistContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_namelist;
   @override
@@ -797,7 +792,7 @@ class ExplistContext extends ParserRuleContext {
   ExpContext? exp(int i) => getRuleContext<ExpContext>(i);
   List<TerminalNode> COMMAs() => getTokens(LuaParser.TOKEN_COMMA);
   TerminalNode? COMMA(int i) => getToken(LuaParser.TOKEN_COMMA, i);
-  ExplistContext([ParserRuleContext? super.parent, super.invokingState]);
+  ExplistContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_explist;
   @override
@@ -811,36 +806,21 @@ class ExplistContext extends ParserRuleContext {
 }
 
 class ExpContext extends ParserRuleContext {
-  ExpContext([ParserRuleContext? super.parent, super.invokingState]);
+  ExpContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_exp;
- 
-  @override
-  void copyFrom(ParserRuleContext ctx) {
-    super.copyFrom(ctx);
-  }
 }
 
 class PrefixContext extends ParserRuleContext {
-  PrefixContext([ParserRuleContext? super.parent, super.invokingState]);
+  PrefixContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_prefix;
- 
-  @override
-  void copyFrom(ParserRuleContext ctx) {
-    super.copyFrom(ctx);
-  }
 }
 
 class NumberContext extends ParserRuleContext {
-  NumberContext([ParserRuleContext? super.parent, super.invokingState]);
+  NumberContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_number;
- 
-  @override
-  void copyFrom(ParserRuleContext ctx) {
-    super.copyFrom(ctx);
-  }
 }
 
 class SemiColumnExecContext extends StatContext {

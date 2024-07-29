@@ -3,7 +3,7 @@
 kingInCenterColumn = (file >= FileC) and (file <= FileF)
 kingInCenterRank = (rank >= Rank3) and (rank <= Rank6)
 
-return kingInCenterColumn and kingInCenterRank;
+return kingInCenterColumn and kingInCenterRank
 
 @@@@@@
 

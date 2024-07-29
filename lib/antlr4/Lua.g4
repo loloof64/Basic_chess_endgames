@@ -27,7 +27,7 @@ Based on previous work of: Kazunori Sakamoto, Alexander Alexeev
 grammar Lua;
 
 start_
-    : chunk EOF
+    : chunk returnStat EOF
     ;
 
 chunk
@@ -35,7 +35,7 @@ chunk
     ;
 
 block
-    : stat* returnStat
+    : stat*
     ;
     
 returnStat
@@ -53,10 +53,7 @@ assign
 	;
 	
 ifstat
-	:	'if' exp 'then' block 
-		('elseif' exp 'then' block)* 
-		('else' endExec=block)? 
-		'end'
+	:	'if' exp 'then' block ('elseif' exp 'then' block)* ('else' endExec=block)? 'end'
 	;
 
 namelist

@@ -1,6 +1,6 @@
 # player king constraints
 
-if playerHasWhite then expectedRank = Rank1 else expectedRank = Rank8
+if playerHasWhite then expectedRank = Rank1 else expectedRank = Rank8 end
 isRightRank = rank == expectedRank
 return isRightRank
 
@@ -8,7 +8,7 @@ return isRightRank
 
 # computer king constraints
 
-if playerHasWhite then expectedRank = Rank1 else expectedRank = Rank8
+if playerHasWhite then expectedRank = Rank1 else expectedRank = Rank8 end
 isRightRank = rank == expectedRank
 return isRightRank
 
@@ -25,7 +25,7 @@ computer pawn : 3
 
 [player pawn]
 
-if playerHasWhite then expectedRank = Rank5 else expectedRank = Rank4
+if playerHasWhite then expectedRank = Rank5 else expectedRank = Rank4 end
 isRightRank = rank == expectedRank
 return isRightRank
 
@@ -33,7 +33,7 @@ return isRightRank
 
 [computer pawn]
 
-if playerHasWhite then expectedRank = Rank7 else expectedRank = Rank2
+if playerHasWhite then expectedRank = Rank7 else expectedRank = Rank2 end
 isRightRank = rank == expectedRank
 return isRightRank
 
