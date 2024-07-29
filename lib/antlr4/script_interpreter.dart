@@ -6,6 +6,7 @@ import 'package:antlr4/antlr4.dart';
 import 'package:basicchessendgamestrainer/antlr4/generated/LuaBaseVisitor.dart';
 import 'package:basicchessendgamestrainer/antlr4/generated/LuaLexer.dart';
 import 'package:basicchessendgamestrainer/antlr4/generated/LuaParser.dart';
+import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 
 class CustomErrorListener extends BaseErrorListener {
@@ -262,7 +263,11 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
 
   @override
   visitReturnStat(ReturnStatContext ctx) {
-    final value = ctx.exp();
+    final rawValue = ctx.exp();
+    if (rawValue == null) {
+      throw ReturnedValueNotABooleanException();
+    }
+    final value = visit(rawValue);
     _builtVariables['return'] = value;
   }
 
