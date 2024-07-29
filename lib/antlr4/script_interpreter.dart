@@ -6,6 +6,7 @@ import 'package:antlr4/antlr4.dart';
 import 'package:basicchessendgamestrainer/antlr4/generated/LuaBaseVisitor.dart';
 import 'package:basicchessendgamestrainer/antlr4/generated/LuaLexer.dart';
 import 'package:basicchessendgamestrainer/antlr4/generated/LuaParser.dart';
+import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 
@@ -132,6 +133,20 @@ class InterpretationError implements Exception {
       scriptType: newScriptType,
     );
   }
+
+  InterpretationError withComplexScriptType({
+    required String type,
+    required PieceKind pieceKind,
+    required TranslationsWrapper translations,
+  }) {
+    return InterpretationError(
+      message: message,
+      position: position,
+      scriptType: "$type [${pieceKind.toLocalizedEasyString(
+        translations: translations,
+      )}]",
+    );
+  }
 }
 
 class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
@@ -227,8 +242,7 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
       if (messagePartsV1.length > 1) {
         final word = messagePartsV1.sublist(1).first;
         expectedToken = word.split("").sublist(0, word.length - 1).join("");
-      }
-      else {
+      } else {
         expectedToken = messagePartsV2.sublist(1).first;
       }
       description = translations.wrongTokenAlternatives(
@@ -292,12 +306,10 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
     }
     final names = visitNamelist(rawNamesList);
     final namesIndexes = Iterable<int>.generate(names.length).toList();
-    for (final variableIndex in  namesIndexes) {
+    for (final variableIndex in namesIndexes) {
       final variableName = names[variableIndex];
       _builtVariables[variableName] =
-          (values.length >= variableIndex + 1)
-              ? values[variableIndex]
-              : null;
+          (values.length >= variableIndex + 1) ? values[variableIndex] : null;
     }
 
     return null;

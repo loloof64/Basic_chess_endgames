@@ -554,7 +554,13 @@ class PositionGeneratorFromAntlr {
                 final scriptTypeLabel = translations.fromScriptType(
                     scriptType: ScriptType.otherPiecesGlobalConstraint);
                 for (final currentError in errors1) {
-                  _errors.add(currentError.withScriptType(scriptTypeLabel));
+                  _errors.add(
+                    currentError.withComplexScriptType(
+                      type: scriptTypeLabel,
+                      pieceKind: pieceCountConstraint.pieceKind,
+                      translations: translations,
+                    ),
+                  );
                 }
               }
               return passedConditions1;
@@ -618,7 +624,13 @@ class PositionGeneratorFromAntlr {
                 final scriptTypeLabel = translations.fromScriptType(
                     scriptType: ScriptType.otherPiecesIndexedConstraint);
                 for (final currentError in errors2) {
-                  _errors.add(currentError.withScriptType(scriptTypeLabel));
+                  _errors.add(
+                    currentError.withComplexScriptType(
+                      type: scriptTypeLabel,
+                      pieceKind: pieceCountConstraint.pieceKind,
+                      translations: translations,
+                    ),
+                  );
                 }
               }
               return passedConditions2;
@@ -688,7 +700,13 @@ class PositionGeneratorFromAntlr {
                   final scriptTypeLabel = translations.fromScriptType(
                       scriptType: ScriptType.otherPiecesMutualConstraint);
                   for (final currentError in errors3) {
-                    _errors.add(currentError.withScriptType(scriptTypeLabel));
+                    _errors.add(
+                      currentError.withComplexScriptType(
+                        type: scriptTypeLabel,
+                        pieceKind: pieceCountConstraint.pieceKind,
+                        translations: translations,
+                      ),
+                    );
                   }
                 }
                 return passedConditions3;

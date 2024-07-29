@@ -1,3 +1,4 @@
+import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:fast_equatable/fast_equatable.dart';
 
 enum PieceType {
@@ -50,6 +51,24 @@ class PieceKind with FastEquatable {
 
   String toEasyString() {
     return "${side.toString().split('.').last} ${pieceType.toString().split('.').last}";
+  }
+
+  String toLocalizedEasyString({required TranslationsWrapper translations}) {
+    final sideString = switch(side) {
+      Side.player => translations.player,
+      Side.computer => translations.computer
+    };
+
+    final typeString = switch(pieceType) {
+      PieceType.pawn => translations.pawn,
+      PieceType.knight => translations.knight,
+      PieceType.bishop => translations.bishop,
+      PieceType.rook => translations.rook,
+      PieceType.queen => translations.queen,
+      PieceType.king => translations.king,
+    };
+
+    return "$sideString | $typeString";
   }
 }
 
