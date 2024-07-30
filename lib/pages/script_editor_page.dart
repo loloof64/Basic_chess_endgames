@@ -1254,7 +1254,7 @@ class _OtherPiecesCountConstraintsEditorWidgetState
               });
               _updateAvailableTypes();
               widget.onScriptUpdate(_content);
-              widget.onKindRemoved(_selectedType!);
+              widget.onKindRemoved(valueToRemove);
             },
           ),
         )
