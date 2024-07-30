@@ -1,6 +1,7 @@
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 TranslationsWrapper getTranslations(BuildContext context) {
   final t = Translations.of(context);
@@ -46,11 +47,34 @@ TranslationsWrapper getTranslations(BuildContext context) {
     wrongTokenAlternatives: t.script_parser.wrong_token_alternatives,
     invalidAssignment: t.script_parser.invalid_assignements,
     miscSyntaxError: t.script_parser.misc_syntaxt_error,
-    miscSyntaxErrorUnknownToken: t.script_parser.misc_syntaxt_error_unknown_token,
+    miscSyntaxErrorUnknownToken:
+        t.script_parser.misc_syntaxt_error_unknown_token,
     errorIfStatementMissingBlock: t.script_parser.if_statement_missing_block,
     errorSubstitutionEOF: t.script_parser.error_substitutions.eof,
     errorSubstitutionInteger: t.script_parser.error_substitutions.integer,
     errorSubstitutionVariableName:
         t.script_parser.error_substitutions.variable_name,
+    variablesTableHeaderName: t.variables_table.headers.variable_name,
+    variablesTableHeaderDescription:
+        t.variables_table.headers.variable_description,
+    variablesTableHeaderType: t.variables_table.headers.variable_type,
+  );
+}
+
+void insertTextAtCursor({
+  required String textToInsert,
+  required TextEditingController controller,
+}) {
+  final text = controller.text;
+  final selection = controller.selection;
+  final newText =
+      text.replaceRange(selection.start, selection.end, textToInsert);
+  final newSelection = TextSelection.collapsed(
+    offset: selection.start + textToInsert.length,
+  );
+
+  controller.value = TextEditingValue(
+    text: newText,
+    selection: newSelection,
   );
 }

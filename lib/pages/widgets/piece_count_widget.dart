@@ -65,7 +65,7 @@ class _PieceCountWidgetState extends State<PieceCountWidget> {
           : MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        PieceKingWidget(kind: widget.kind),
+        PieceKindWidget(kind: widget.kind),
         if (!widget.readOnly)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -134,7 +134,7 @@ class PieceCountAdderWidget extends StatelessWidget {
             items: allSelectableTypes.map((elt) {
               return DropdownMenuItem(
                 value: elt,
-                child: PieceKingWidget(
+                child: PieceKindWidget(
                   kind: elt,
                 ),
               );

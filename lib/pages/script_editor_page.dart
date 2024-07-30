@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:basicchessendgamestrainer/commons.dart';
+import 'package:basicchessendgamestrainer/components/variable_insertor.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
-import 'package:basicchessendgamestrainer/pages/syntax_manual.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/piece_count_widget.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/script_editor_common_widgets.dart';
 import 'package:flutter/material.dart';
@@ -121,6 +122,16 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
   String _otherPiecesCountConstraintsScript = "";
   String _goalScript = winningString;
 
+  final FocusNode _otherPiecesGlobalConstraintsFocusNode = FocusNode();
+  final FocusNode _otherPiecesIndexedConstraintsFocusNode = FocusNode();
+  final FocusNode _otherPiecesMutualConstraintsFocusNode = FocusNode();
+
+  PieceKind? _otherPiecesGlobalConstraintsSelectedPieceKind;
+  PieceKind? _otherPiecesIndexedConstraintsSelectedPieceKind;
+  PieceKind? _otherPiecesMutualConstraintsSelectedPieceKind;
+
+  int _selectedTabIndex = 0;
+
   @override
   void initState() {
     _playerKingConstraintsScriptController.text =
@@ -150,6 +161,9 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     _scriptCheckerIsolate?.kill(
       priority: Isolate.immediate,
     );
+    _otherPiecesGlobalConstraintsFocusNode.dispose();
+    _otherPiecesIndexedConstraintsFocusNode.dispose();
+    _otherPiecesMutualConstraintsFocusNode.dispose();
     _playerKingConstraintsScriptController.dispose();
     _computerKingConstraintsScriptController.dispose();
     _kingsMutualConstraintsScriptController.dispose();
@@ -163,6 +177,231 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
       controller.dispose();
     }
     super.dispose();
+  }
+
+  List<List<String>> _getCommonVariablesData() {
+    return <List<String>>[
+      <String>[
+        "FileA",
+        t.variables_table.rows.file_a.description,
+        t.variables_table.rows.file_a.type,
+      ],
+      <String>[
+        "FileB",
+        t.variables_table.rows.file_b.description,
+        t.variables_table.rows.file_b.type,
+      ],
+      <String>[
+        "FileC",
+        t.variables_table.rows.file_c.description,
+        t.variables_table.rows.file_c.type,
+      ],
+      <String>[
+        "FileD",
+        t.variables_table.rows.file_d.description,
+        t.variables_table.rows.file_d.type,
+      ],
+      <String>[
+        "FileE",
+        t.variables_table.rows.file_e.description,
+        t.variables_table.rows.file_e.type,
+      ],
+      <String>[
+        "FileF",
+        t.variables_table.rows.file_g.description,
+        t.variables_table.rows.file_g.type,
+      ],
+      <String>[
+        "FileG",
+        t.variables_table.rows.file_h.description,
+        t.variables_table.rows.file_h.type,
+      ],
+      <String>[
+        "FileH",
+        t.variables_table.rows.file_a.description,
+        t.variables_table.rows.file_a.type,
+      ],
+      <String>[
+        "Rank1",
+        t.variables_table.rows.rank_1.description,
+        t.variables_table.rows.rank_1.type,
+      ],
+      <String>[
+        "Rank2",
+        t.variables_table.rows.rank_2.description,
+        t.variables_table.rows.rank_2.type,
+      ],
+      <String>[
+        "Rank3",
+        t.variables_table.rows.rank_3.description,
+        t.variables_table.rows.rank_3.type,
+      ],
+      <String>[
+        "Rank4",
+        t.variables_table.rows.rank_4.description,
+        t.variables_table.rows.rank_4.type,
+      ],
+      <String>[
+        "Rank5",
+        t.variables_table.rows.rank_5.description,
+        t.variables_table.rows.rank_5.type,
+      ],
+      <String>[
+        "Rank6",
+        t.variables_table.rows.rank_6.description,
+        t.variables_table.rows.rank_6.type,
+      ],
+      <String>[
+        "Rank7",
+        t.variables_table.rows.rank_7.description,
+        t.variables_table.rows.rank_7.type,
+      ],
+      <String>[
+        "Rank8",
+        t.variables_table.rows.rank_8.description,
+        t.variables_table.rows.rank_8.type,
+      ],
+    ];
+  }
+
+  List<List<String>> _getPlayerKingConstraintsVariablesData() {
+    return <List<String>>[
+      <String>[
+        "file",
+        t.variables_table.rows.king_file.description,
+        t.variables_table.rows.king_file.type,
+      ],
+      <String>[
+        "rank",
+        t.variables_table.rows.king_rank.description,
+        t.variables_table.rows.king_rank.type,
+      ],
+      <String>[
+        "playerHasWhite",
+        t.variables_table.rows.player_has_white.description,
+        t.variables_table.rows.player_has_white.type,
+      ],
+    ];
+  }
+
+  List<List<String>> _getKingsMutualConstraintsVariablesData() {
+    return <List<String>>[
+      <String>[
+        "playerKingFile",
+        t.variables_table.rows.player_king_file.description,
+        t.variables_table.rows.player_king_file.type,
+      ],
+      <String>[
+        "playerKingRank",
+        t.variables_table.rows.player_king_rank.description,
+        t.variables_table.rows.player_king_rank.type,
+      ],
+      <String>[
+        "computerKingFile",
+        t.variables_table.rows.computer_king_file.description,
+        t.variables_table.rows.computer_king_file.type,
+      ],
+      <String>[
+        "computerKingRank",
+        t.variables_table.rows.computer_king_rank.description,
+        t.variables_table.rows.computer_king_rank.type,
+      ],
+    ];
+  }
+
+  List<List<String>> _getOtherPiecesGlobalConstraintsVariablesData() {
+    return <List<String>>[
+      <String>[
+        "file",
+        t.variables_table.rows.piece_file.description,
+        t.variables_table.rows.piece_file.type,
+      ],
+      <String>[
+        "rank",
+        t.variables_table.rows.piece_file.description,
+        t.variables_table.rows.piece_file.type,
+      ],
+      <String>[
+        "playerKingFile",
+        t.variables_table.rows.player_king_file.description,
+        t.variables_table.rows.player_king_file.type,
+      ],
+      <String>[
+        "playerKingRank",
+        t.variables_table.rows.player_king_rank.description,
+        t.variables_table.rows.player_king_rank.type,
+      ],
+      <String>[
+        "computerKingFile",
+        t.variables_table.rows.computer_king_file.description,
+        t.variables_table.rows.computer_king_file.type,
+      ],
+      <String>[
+        "computerKingRank",
+        t.variables_table.rows.computer_king_rank.description,
+        t.variables_table.rows.computer_king_rank.type,
+      ],
+      <String>[
+        "playerHasWhite",
+        t.variables_table.rows.player_has_white.description,
+        t.variables_table.rows.player_has_white.type,
+      ],
+    ];
+  }
+
+  List<List<String>> _getOtherPiecesIndexedConstraintsVariablesData() {
+    return <List<String>>[
+      <String>[
+        "file",
+        t.variables_table.rows.piece_file.description,
+        t.variables_table.rows.piece_file.type,
+      ],
+      <String>[
+        "rank",
+        t.variables_table.rows.piece_file.description,
+        t.variables_table.rows.piece_file.type,
+      ],
+      <String>[
+        "apparitionIndex",
+        t.variables_table.rows.apparition_index.description,
+        t.variables_table.rows.apparition_index.type,
+      ],
+      <String>[
+        "playerHasWhite",
+        t.variables_table.rows.player_has_white.description,
+        t.variables_table.rows.player_has_white.type,
+      ],
+    ];
+  }
+
+  List<List<String>> _getOtherPiecesMutualConstraintsVariablesData() {
+    return <List<String>>[
+      <String>[
+        "firstPieceFile",
+        t.variables_table.rows.first_piece_file.description,
+        t.variables_table.rows.first_piece_file.type,
+      ],
+      <String>[
+        "firstPieceRank",
+        t.variables_table.rows.first_piece_rank.description,
+        t.variables_table.rows.first_piece_rank.type,
+      ],
+      <String>[
+        "secondPieceFile",
+        t.variables_table.rows.second_piece_file.description,
+        t.variables_table.rows.second_piece_file.type,
+      ],
+      <String>[
+        "secondPieceRank",
+        t.variables_table.rows.second_piece_rank.description,
+        t.variables_table.rows.second_piece_rank.type,
+      ],
+      <String>[
+        "playerHasWhite",
+        t.variables_table.rows.player_has_white.description,
+        t.variables_table.rows.player_has_white.type,
+      ],
+    ];
   }
 
   void _processUserScript() async {
@@ -181,62 +420,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
       SampleScriptGenerationParameters(
         inGameMode: false,
         gameScript: script,
-        translations: TranslationsWrapper(
-          missingReturnStatement: t.script_parser.no_return_statement,
-          returnStatementNotABoolean:
-              t.script_parser.return_statement_not_boolean,
-          missingScriptType: t.script_parser.missing_script_type,
-          maxGenerationAttemptsAchieved:
-              t.home.max_generation_attempts_achieved,
-          failedGeneratingPosition: t.home.failed_generating_position,
-          unrecognizedSymbol: t.script_parser.unrecognized_token,
-          typeError: t.script_parser.type_error,
-          noAntlr4Token: t.script_parser.no_antlr4_token,
-          eof: t.script_parser.eof,
-          variableNotAffected: t.script_parser.variable_not_affected,
-          overridingPredefinedVariable:
-              t.script_parser.overriding_predefined_variable,
-          noViableAltException: t.script_parser.no_viable_alt_exception,
-          inputMismatch: t.script_parser.input_mismatch,
-          playerKingConstraint: t.script_type.player_king_constraint,
-          computerKingConstraint: t.script_type.computer_king_constraint,
-          kingsMutualConstraint: t.script_type.kings_mutual_constraint,
-          otherPiecesCountConstraint: t.script_type.piece_kind_count_constraint,
-          otherPiecesGlobalConstraint:
-              t.script_type.other_pieces_global_constraint,
-          otherPiecesIndexedConstraint:
-              t.script_type.other_pieces_indexed_constraint,
-          otherPiecesMutualConstraint:
-              t.script_type.other_pieces_mutual_constraint,
-          unrecognizedScriptType: t.script_parser.unrecognized_script_type,
-          tooRestrictiveScriptTitle:
-              t.script_parser.too_restrictive_script_title,
-          tooRestrictiveScriptMessage:
-              t.script_parser.too_restrictive_script_message,
-          player: t.side.player,
-          computer: t.side.computer,
-          pawn: t.type.pawn,
-          knight: t.type.knight,
-          bishop: t.type.bishop,
-          rook: t.type.rook,
-          queen: t.type.queen,
-          king: t.type.king,
-          otherPiecesGlobalConstraintSpecialized:
-              t.script_type.other_pieces_global_constraint_specialized,
-          otherPiecesIndexedConstraintSpecialized:
-              t.script_type.other_pieces_indexed_constraint_specialized,
-          otherPiecesMutualConstraintSpecialized:
-              t.script_type.other_pieces_mutual_constraint_specialized,
-          wrongTokenAlternatives: t.script_parser.wrong_token_alternatives,
-          invalidAssignment: t.script_parser.invalid_assignements,
-          miscSyntaxError: t.script_parser.misc_syntaxt_error,
-          miscSyntaxErrorUnknownToken: t.script_parser.misc_syntaxt_error_unknown_token,
-          errorIfStatementMissingBlock: t.script_parser.if_statement_missing_block,
-          errorSubstitutionEOF: t.script_parser.error_substitutions.eof,
-          errorSubstitutionInteger: t.script_parser.error_substitutions.integer,
-          errorSubstitutionVariableName:
-              t.script_parser.error_substitutions.variable_name,
-        ),
+        translations: getTranslations(context),
         sendPort: receivePort.sendPort,
       ),
     );
@@ -538,6 +722,179 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         });
   }
 
+  TextEditingController? _getControllerForCurrentScript() {
+    TextEditingController? controller;
+
+    if (_selectedTabIndex == 0) {
+      controller = _playerKingConstraintsScriptController;
+    } else if (_selectedTabIndex == 1) {
+      controller = _computerKingConstraintsScriptController;
+    } else if (_selectedTabIndex == 2) {
+      controller = _kingsMutualConstraintsScriptController;
+    } else if (_selectedTabIndex == 4) {
+      if (_otherPiecesGlobalConstraintsSelectedPieceKind == null) {
+        return null;
+      }
+      controller = _otherPiecesGlobalConstraintsScripts[
+          _otherPiecesGlobalConstraintsSelectedPieceKind];
+    } else if (_selectedTabIndex == 5) {
+      if (_otherPiecesIndexedConstraintsSelectedPieceKind == null) {
+        return null;
+      }
+      controller = _otherPiecesIndexedConstraintsScripts[
+          _otherPiecesIndexedConstraintsSelectedPieceKind];
+    } else if (_selectedTabIndex == 6) {
+      if (_otherPiecesMutualConstraintsSelectedPieceKind == null) {
+        return null;
+      }
+      controller = _otherPiecesMutualConstraintsScripts[
+          _otherPiecesMutualConstraintsSelectedPieceKind];
+    }
+
+    return controller;
+  }
+
+  List<List<String>> _getInsertVariableForCurrentScript() {
+    return switch (_selectedTabIndex) {
+      0 || 1 => _getPlayerKingConstraintsVariablesData(),
+      2 => _getKingsMutualConstraintsVariablesData(),
+      4 => _getOtherPiecesGlobalConstraintsVariablesData(),
+      5 => _getOtherPiecesIndexedConstraintsVariablesData(),
+      6 => _getOtherPiecesMutualConstraintsVariablesData(),
+      _ => throw Exception(
+          "Cannot insert variable for this kind of selected tab index : $_selectedTabIndex")
+    };
+  }
+
+  Future<void> _showInsertVariableDialog({
+    required List<List<String>> data,
+    required TextEditingController controller,
+  }) async {
+    return await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(t.script_editor_page.insert_variable_title),
+            content: VariableInsertor(
+              translations: getTranslations(context),
+              data: data,
+              controller: controller,
+              onDone: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(
+                    Theme.of(context).colorScheme.onTertiary,
+                  ),
+                ),
+                child: Text(
+                  t.misc.button_cancel,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _purposeInsertCommonConstant() async {
+    if (widget.readOnly) {
+      return;
+    }
+
+    final isInPiecesCountTabOrInGoalTab =
+        (_selectedTabIndex == 3) || (_selectedTabIndex == 7);
+    if (isInPiecesCountTabOrInGoalTab) {
+      return;
+    }
+
+    final controller = _getControllerForCurrentScript();
+    final noTextFieldActive = controller == null;
+    if (noTextFieldActive) {
+      return;
+    }
+
+    final data = _getCommonVariablesData();
+    return await _showInsertVariableDialog(
+      data: data,
+      controller: controller,
+    );
+  }
+
+  Future<void> _purposeInsertScriptVariable() async {
+    if (widget.readOnly) {
+      return;
+    }
+
+    final isInPiecesCountTabOrInGoalTab =
+        (_selectedTabIndex == 3) || (_selectedTabIndex == 7);
+    if (isInPiecesCountTabOrInGoalTab) {
+      return;
+    }
+
+    final controller = _getControllerForCurrentScript();
+    final noTextFieldActive = controller == null;
+    if (noTextFieldActive) {
+      return;
+    }
+
+    final data = _getInsertVariableForCurrentScript();
+
+    return await _showInsertVariableDialog(
+      data: data,
+      controller: controller,
+    );
+  }
+
+  void _purposeInsertVariable() async {
+    await showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              t.script_editor_page.insert_variable_title,
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: _purposeInsertScriptVariable,
+                    child: Text(
+                      t.script_editor_page.choice_script_variables,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: _purposeInsertCommonConstant,
+                    child: Text(
+                      t.script_editor_page.choice_common_constants,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final otherPiecesKinds = _getOtherPiecesKindsFromPiecesCountScript(
@@ -548,114 +905,171 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
       onPopInvoked: _handleExitPage,
       child: DefaultTabController(
         length: 8,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              t.script_editor_page.title,
+        child: Builder(builder: (context) {
+          final TabController tabController = DefaultTabController.of(context);
+          tabController.addListener(() {
+            if (!tabController.indexIsChanging) {
+              final index = tabController.index;
+              setState(() {
+                _selectedTabIndex = index;
+              });
+            }
+          });
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                t.script_editor_page.title,
+              ),
+              actions: [
+                if (!widget.readOnly)
+                  IconButton(
+                    onPressed: _purposeInsertVariable,
+                    icon: const FaIcon(
+                      FontAwesomeIcons.penToSquare,
+                    ),
+                  )
+                /* TODO adapt
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) {
+                          return const SyntaxManualPage();
+                        }),
+                      );
+                    },
+                    icon: const FaIcon(
+                      FontAwesomeIcons.book,
+                    ),
+                  )
+                */
+              ],
+              bottom: const TabBar(
+                tabs: [
+                  Tab(icon: FaIcon(FontAwesomeIcons.chessKing)),
+                  Tab(icon: FaIcon(FontAwesomeIcons.solidChessKing)),
+                  Tab(icon: FaIcon(FontAwesomeIcons.arrowsUpDown)),
+                  Tab(icon: FaIcon(FontAwesomeIcons.calculator)),
+                  Tab(icon: FaIcon(FontAwesomeIcons.globe)),
+                  Tab(icon: FaIcon(FontAwesomeIcons.arrowRightArrowLeft)),
+                  Tab(icon: FaIcon(FontAwesomeIcons.arrowDown19)),
+                  Tab(icon: FaIcon(FontAwesomeIcons.futbol)),
+                ],
+              ),
             ),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) {
-                      return const SyntaxManualPage();
-                    }),
-                  );
-                },
-                icon: const FaIcon(
-                  FontAwesomeIcons.book,
-                ),
-              )
-            ],
-            bottom: const TabBar(tabs: [
-              Tab(
-                icon: FaIcon(FontAwesomeIcons.chessKing),
-              ),
-              Tab(icon: FaIcon(FontAwesomeIcons.solidChessKing)),
-              Tab(icon: FaIcon(FontAwesomeIcons.arrowsUpDown)),
-              Tab(icon: FaIcon(FontAwesomeIcons.calculator)),
-              Tab(icon: FaIcon(FontAwesomeIcons.globe)),
-              Tab(icon: FaIcon(FontAwesomeIcons.arrowRightArrowLeft)),
-              Tab(icon: FaIcon(FontAwesomeIcons.arrowDown19)),
-              Tab(icon: FaIcon(FontAwesomeIcons.futbol)),
-            ]),
-          ),
-          body: Stack(children: [
-            TabBarView(children: [
-              PlayerKingConstraintsEditorWidget(
-                controller: _playerKingConstraintsScriptController,
-                readOnly: widget.readOnly,
-              ),
-              ComputerKingContraintsEditorWidget(
-                readOnly: widget.readOnly,
-                controller: _computerKingConstraintsScriptController,
-              ),
-              KingsMutualConstraintEditorWidget(
-                readOnly: widget.readOnly,
-                controller: _kingsMutualConstraintsScriptController,
-              ),
-              OtherPiecesCountConstraintsEditorWidget(
-                readOnly: widget.readOnly,
-                onScriptUpdate: (counts) {
-                  _updateOtherPiecesCountConstraintsScript(counts);
-                },
-                onKindAdded: (kind) {
-                  setState(() {
-                    _otherPiecesGlobalConstraintsScripts[kind] =
-                        TextEditingController();
-                    _otherPiecesMutualConstraintsScripts[kind] =
-                        TextEditingController();
-                    _otherPiecesIndexedConstraintsScripts[kind] =
-                        TextEditingController();
-                  });
-                },
-                onKindRemoved: (kind) {
-                  setState(() {
-                    _otherPiecesGlobalConstraintsScripts.remove(kind);
-                    _otherPiecesMutualConstraintsScripts.remove(kind);
-                    _otherPiecesIndexedConstraintsScripts.remove(kind);
-                  });
-                },
-                currentScript: _otherPiecesCountConstraintsScript,
-              ),
-              OtherPiecesGlobalConstraintEditorWidget(
-                readOnly: widget.readOnly,
-                availablePiecesKinds: otherPiecesKinds,
-                controllers: _otherPiecesGlobalConstraintsScripts,
-              ),
-              OtherPiecesMutualConstraintEditorWidget(
-                readOnly: widget.readOnly,
-                availablePiecesKinds: otherPiecesKinds,
-                controllers: _otherPiecesMutualConstraintsScripts,
-              ),
-              OtherPiecesIndexedConstraintEditorWidget(
-                readOnly: widget.readOnly,
-                availablePiecesKinds: otherPiecesKinds,
-                controllers: _otherPiecesIndexedConstraintsScripts,
-              ),
-              GameGoalEditorWidget(
+            body: Stack(children: [
+              TabBarView(children: [
+                PlayerKingConstraintsEditorWidget(
+                  controller: _playerKingConstraintsScriptController,
                   readOnly: widget.readOnly,
-                  script: _goalScript,
-                  onChanged: (newValue) {
-                    _updateGoalScript(newValue);
-                  }),
+                ),
+                ComputerKingContraintsEditorWidget(
+                  readOnly: widget.readOnly,
+                  controller: _computerKingConstraintsScriptController,
+                ),
+                KingsMutualConstraintEditorWidget(
+                  readOnly: widget.readOnly,
+                  controller: _kingsMutualConstraintsScriptController,
+                ),
+                OtherPiecesCountConstraintsEditorWidget(
+                  readOnly: widget.readOnly,
+                  onScriptUpdate: (counts) {
+                    _updateOtherPiecesCountConstraintsScript(counts);
+                  },
+                  onKindAdded: (kind) {
+                    setState(() {
+                      _otherPiecesGlobalConstraintsScripts[kind] =
+                          TextEditingController();
+                      _otherPiecesMutualConstraintsScripts[kind] =
+                          TextEditingController();
+                      _otherPiecesIndexedConstraintsScripts[kind] =
+                          TextEditingController();
+                    });
+                  },
+                  onKindRemoved: (kind) {
+                    setState(() {
+                      // Security cleaning
+                      if (_otherPiecesGlobalConstraintsSelectedPieceKind ==
+                          kind) {
+                        _otherPiecesGlobalConstraintsSelectedPieceKind = null;
+                      }
+                      if (_otherPiecesIndexedConstraintsSelectedPieceKind ==
+                          kind) {
+                        _otherPiecesIndexedConstraintsSelectedPieceKind = null;
+                      }
+                      if (_otherPiecesMutualConstraintsSelectedPieceKind ==
+                          kind) {
+                        _otherPiecesMutualConstraintsSelectedPieceKind = null;
+                      }
+
+                      _otherPiecesGlobalConstraintsScripts.remove(kind);
+                      _otherPiecesMutualConstraintsScripts.remove(kind);
+                      _otherPiecesIndexedConstraintsScripts.remove(kind);
+                    });
+                  },
+                  currentScript: _otherPiecesCountConstraintsScript,
+                ),
+                OtherPiecesGlobalConstraintEditorWidget(
+                  readOnly: widget.readOnly,
+                  availablePiecesKinds: otherPiecesKinds,
+                  controllers: _otherPiecesGlobalConstraintsScripts,
+                  focusNode: _otherPiecesGlobalConstraintsFocusNode,
+                  selectedPieceKind:
+                      _otherPiecesGlobalConstraintsSelectedPieceKind,
+                  onPieceKindSelection: (kind) {
+                    setState(() {
+                      _otherPiecesGlobalConstraintsSelectedPieceKind = kind;
+                    });
+                  },
+                ),
+                OtherPiecesMutualConstraintEditorWidget(
+                  readOnly: widget.readOnly,
+                  availablePiecesKinds: otherPiecesKinds,
+                  controllers: _otherPiecesMutualConstraintsScripts,
+                  focusNode: _otherPiecesIndexedConstraintsFocusNode,
+                  selectedPieceKind:
+                      _otherPiecesIndexedConstraintsSelectedPieceKind,
+                  onPieceKindSelection: (kind) {
+                    setState(() {
+                      _otherPiecesIndexedConstraintsSelectedPieceKind = kind;
+                    });
+                  },
+                ),
+                OtherPiecesIndexedConstraintEditorWidget(
+                  readOnly: widget.readOnly,
+                  availablePiecesKinds: otherPiecesKinds,
+                  controllers: _otherPiecesIndexedConstraintsScripts,
+                  focusNode: _otherPiecesMutualConstraintsFocusNode,
+                  selectedType: _otherPiecesMutualConstraintsSelectedPieceKind,
+                  onPieceKindSelection: (kind) {
+                    setState(() {
+                      _otherPiecesMutualConstraintsSelectedPieceKind = kind;
+                    });
+                  },
+                ),
+                GameGoalEditorWidget(
+                    readOnly: widget.readOnly,
+                    script: _goalScript,
+                    onChanged: (newValue) {
+                      _updateGoalScript(newValue);
+                    }),
+              ]),
+              if (_isCheckingPosition || _isSavingFile)
+                const Center(
+                  child: SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: CircularProgressIndicator(),
+                  ),
+                )
             ]),
-            if (_isCheckingPosition || _isSavingFile)
-              const Center(
-                child: SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: CircularProgressIndicator(),
-                ),
-              )
-          ]),
-          floatingActionButton: widget.readOnly
-              ? null
-              : FloatingActionButton(
-                  onPressed: _processUserScript,
-                  child: const FaIcon(FontAwesomeIcons.solidFloppyDisk),
-                ),
-        ),
+            floatingActionButton: widget.readOnly
+                ? null
+                : FloatingActionButton(
+                    onPressed: _processUserScript,
+                    child: const FaIcon(FontAwesomeIcons.solidFloppyDisk),
+                  ),
+          );
+        }),
       ),
     );
   }
@@ -885,12 +1299,18 @@ class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
   final List<PieceKind> availablePiecesKinds;
   final Map<PieceKind, TextEditingController> controllers;
   final bool readOnly;
+  final PieceKind? selectedPieceKind;
+  final FocusNode focusNode;
+  final void Function(PieceKind) onPieceKindSelection;
 
   const OtherPiecesGlobalConstraintEditorWidget({
     super.key,
     required this.availablePiecesKinds,
     required this.controllers,
     required this.readOnly,
+    required this.selectedPieceKind,
+    required this.focusNode,
+    required this.onPieceKindSelection,
   });
 
   @override
@@ -907,6 +1327,9 @@ class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
             readOnly: readOnly,
             availablePiecesKinds: availablePiecesKinds,
             scriptsControllersByKinds: controllers,
+            selectedType: selectedPieceKind,
+            focusNode: focusNode,
+            onPieceKindSelection: onPieceKindSelection,
           ),
         ),
       ],
@@ -918,12 +1341,18 @@ class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
   final List<PieceKind> availablePiecesKinds;
   final Map<PieceKind, TextEditingController> controllers;
   final bool readOnly;
+  final PieceKind? selectedPieceKind;
+  final FocusNode focusNode;
+  final void Function(PieceKind) onPieceKindSelection;
 
   const OtherPiecesMutualConstraintEditorWidget({
     super.key,
     required this.availablePiecesKinds,
     required this.controllers,
     required this.readOnly,
+    required this.selectedPieceKind,
+    required this.focusNode,
+    required this.onPieceKindSelection,
   });
 
   @override
@@ -940,6 +1369,9 @@ class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
             readOnly: readOnly,
             availablePiecesKinds: availablePiecesKinds,
             scriptsControllersByKinds: controllers,
+            focusNode: focusNode,
+            selectedType: selectedPieceKind,
+            onPieceKindSelection: onPieceKindSelection,
           ),
         ),
       ],
@@ -951,12 +1383,18 @@ class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
   final List<PieceKind> availablePiecesKinds;
   final Map<PieceKind, TextEditingController> controllers;
   final bool readOnly;
+  final PieceKind? selectedType;
+  final FocusNode focusNode;
+  final void Function(PieceKind) onPieceKindSelection;
 
   const OtherPiecesIndexedConstraintEditorWidget({
     super.key,
     required this.availablePiecesKinds,
     required this.controllers,
     required this.readOnly,
+    required this.selectedType,
+    required this.focusNode,
+    required this.onPieceKindSelection,
   });
 
   @override
@@ -973,6 +1411,9 @@ class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
             readOnly: readOnly,
             availablePiecesKinds: availablePiecesKinds,
             scriptsControllersByKinds: controllers,
+            selectedType: selectedType,
+            focusNode: focusNode,
+            onPieceKindSelection: onPieceKindSelection,
           ),
         ),
       ],

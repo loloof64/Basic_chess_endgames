@@ -134,248 +134,102 @@ script_editor_page:
   beforeExitMessage: "Do you want to leave this page and cancel script edition ?"
   exercise_creation_success: "Saved exercise"
   exercise_creation_error: "Failed to save exercise !"
-syntax_manual_page:
-  title: "Scripts' syntax"
-  table_header_variable_name: "Name"
-  table_header_variable_type: "Type"
-  table_header_variable_use: "Use"
-  scripts_goal: "Scripts' goal"
-  scripts_kinds: "Scripts kinds"
-  scripts_format: "Scripts' format"
-  comments: "Comments"
-  variables: "Variables"
-  predefined_variables: "Predefined variables"
-  int_expressions: "Integer expressions"
-  bool_expressions: "Boolean expressions"
-  scripts_goal_description:
-    "A position generation script is split into several sub-scripts, \
-    each of its own kind and in a custom language, whose following sections will help you \
-    to understand.\n\nA sub-script's goal is to check that the generated position follow all of \
-    its constraints.\n\nIf at least one condition is not met, then the algorithm will try to 'fix' the \
-    position so that all conditions are met."
-  scripts_kinds_head_description:
-    "There are several types of sub-scripts, and all rules of all \
-    defined sub-scripts must be respected by the generated position.\n\nOf course, it must also respect \
-    standard chess rules (for example : king of side not in turn musn't be in chess).\n\n"
-  scripts_kinds_player_king_constraint_title: "Player's king's constraints\n\n"
-  scripts_kinds_player_king_constraint_description:
-    "Tells about the positioning constraints on \
-    the players's king (given that the player's color will be randomly choosen).\n\n"
-  scripts_kinds_computer_king_constraint_title: "Computer's king's constraints\n\n"
-  scripts_kinds_computer_king_constraint_description:
-    "Tells about the positioning constraints on \
-    the computer's king (given that the player's color will be randomly choosen).\n\n"
-  scripts_kinds_kings_mutual_constraints_title: "Kings's mutual constraints\n\n"
-  scripts_kinds_kings_mutual_constraints_description:
-    "Tells about the positioning constraints that \
-    both kings must respect between them.\n\n"
-  scripts_kinds_other_pieces_count_constraints_title: "Other pieces counts' constraints\n\n"
-  scripts_kinds_other_pieces_count_constraints_description:
-    "Tells about the counts' constraints \
-    on pieces other than kings.\n\n"
-  scripts_kinds_other_pieces_global_constraints_title: "Other pieces' global constraints\n\n"
-  scripts_kinds_other_pieces_global_constraints_description:
-    "Tells about the positioning \
-    constraints for pieces other by kings, for each couple [type of piece / is it a player piece ?].\n\n"
-  scripts_kinds_other_pieces_mutual_constraints_title: "Other pieces' mutual constraints\n\n"
-  scripts_kinds_other_pieces_mutual_constraints_description:
-    "Tells about the positioning constraints \
-    for pieces other by kings, that they must respect between each other, two by two, \
-    for each couple [type of piece / is it a player piece ?].\n\n"
-  scripts_kinds_other_pieces_indexed_constraints_title: "Other pieces constraints by order\n\n"
-  scripts_kinds_other_pieces_indexed_constraints_description:
-    "Tells about the positioning \
-    constraints for pieces other than kings, that they must respect given their apparition order \
-    on the chess board, for each couple [type of piece / is it a player piece ?].\n\n"
-  scripts_format_head_description:
-    "Each script may start with one or several variables creation \
-    statements.\n\nBut the final expression must be a statement that returns a boolean expression.\n\n\
-    This return expression will be used by the algorithm in order to check that the generated \
-    position is correct.\n\n\
-    Please take into account that a statement can expand on several lines : they end as soon as the character ';' is met.\n\n\
-    Also, beware of the case sensitivity : uppercase or lowercase can make the difference.\n\n
-    At last, in each sub-script, you should check that you don't use an undeclared variable : though your code will be accepted, it will always fail to generate the position.\n\n"
-  scripts_format_main_description_1: "This is the syntax for the return expression :\n\n"
-  scripts_format_code_section_1: "return [your boolean expression];\n\n"
-  scripts_format_main_description_2: "This is a simple script sample :\n\n"
-  scripts_comments_head_description:
-    "You can use two forms of comments, which are inspired \
-    by comments from the C language.\n\n"
-  scripts_comments_multiline_comments_title: "Multilines comments\n\n"
-  scripts_comments_multiline_comments_description:
-    "A multiline comment starts with '/*' and ends \
-    with '*/', and can expand on several lines.\n\n"
-  scripts_comments_multiline_comments_sample: "/* This is a\n \
-    multilines comment.\n\
-    \n\
-    And can expand on several lines.*/\n\n"
-  scripts_comments_single_line_comments_title: "Single line comments\n\n"
-  scripts_comments_single_line_comments_description_1:
-    "A single line comment can only be on a single \
-    line, and just starts by '//'.\n\nSo all following characters of the given line are parts of \
-    the comment.\n\n"
-  scripts_comments_single_line_comments_sample_1: "// This is a single line comment\n\n"
-  scripts_comments_single_line_comments_description_2:
-    "A single line comment can also follow a \
-    statement on the same line.\n\n"
-  scripts_comments_single_line_comments_sample_2:
-    "myIntVariable := FileF; // Sets to the value of \
-    the F file\n\n"
-  scripts_variables_head_description: "These are things to consider about variables :\n\n"
-  scripts_variables_name_rules_title: "Naming rules\n\n"
-  scripts_variables_name_rules_description:
-    "A variable name must start with a letter \
-    (either uppercase or lowercase).\n\nThen the following characters can be letters \
-    (uppercase and/or lowercase), digits or underscore ('_').\n\nAlso keep in mind that you \
-    can't use name of predifined value or of a predefined variable (given that each script \
-    type, as you'll see later, has its own set of predefined variables).\n\n"
-  scripts_variables_creation_title: "Variable creation statement\n\n"
-  scripts_variables_creation_description:
-    "This is the syntax for creating either an \
-    int variable or a boolean variable :\n\n"
-  scripts_variables_creation_format:
-    "[identifier] := [int expression | boolean \
-    expression];\n\n"
-  scripts_variables_creation_sample_head_text: "This is an example :\n\n"
-  scripts_variables_creation_sample_code: "myRank := boolIf(kingsInOpposition) \
-    then Rank4 else Rank1;\n\n"
-  scripts_predefined_variables_head_description:
-    "The predefined variables relies on the kind of \
-    sub-script we're editing.\n\nThese variables will be fed by the algorithm when checking for \
-    the generated position's correctness.\n\nOf course, you can't name a custom variable with one of \
-    those names.\n\nAlso, keep in mind that chess board's coordinates values take \
-    board's orientation into account.\n\n"
-  scripts_predefined_variables_single_king_constraints_title:
-    "Player's king's constraint / Computer \
-    king's constraint\n\n"
-  scripts_predefined_variables_single_king_constraints_variable_file:
-    "the file which has been set \
-    for the king"
-  scripts_predefined_variables_single_king_constraints_variable_rank:
-    "the rank which has been set \
-    for the king"
-  ? scripts_predefined_variables_single_king_constraints_variable_player_has_white
-  : "does the player \
-    have white pieces ?"
-  scripts_predefined_variables_mutual_kings_constraints_title: "\n\nMutual kings' constraints\n\n"
-  scripts_predefined_variables_single_king_constraints_variable_file_player:
-    "the file which has been set \
-    for the player's king"
-  scripts_predefined_variables_single_king_constraints_variable_rank_player:
-    "the rank which has been set \
-    for the player's king"
-  scripts_predefined_variables_single_king_constraints_variable_file_computer:
-    "the file which has been set \
-    for the computer's king"
-  scripts_predefined_variables_single_king_constraints_variable_rank_computer:
-    "the rank which has been set \
-    for the computer's king"
-  scripts_predefined_variables_other_pieces_global_constraints_title:
-    "\n\nOthers pieces globals \
-    contraints\n\n"
-  scripts_predefined_variables_other_pieces_global_constraints_file:
-    "the file which has been set \
-    for the piece"
-  scripts_predefined_variables_other_pieces_global_constraints_rank:
-    "the rank which has been set \
-    for the piece"
-  scripts_predefined_variables_other_pieces_mutual_constraints_title:
-    "\n\nOther pieces mutual \
-    constraints\n\n"
-  scripts_predefined_variables_other_pieces_mutual_constraints_file_first:
-    "the file which has been set \
-    for the first piece"
-  scripts_predefined_variables_other_pieces_mutual_constraints_rank_first:
-    "the file which has been set \
-    for the first piece"
-  scripts_predefined_variables_other_pieces_mutual_constraints_file_second:
-    "the file which has been set \
-    for the second piece"
-  scripts_predefined_variables_other_pieces_mutual_constraints_rank_second:
-    "the file which has been set \
-    for the second piece"
-  scripts_predefined_variables_other_pieces_indexed_constraints_title: "\n\nOthers pieces' constraints by order\n\n"
-  scripts_predefined_variables_other_pieces_indexed_constraints_apparition:
-    "the index (starting at \
-    0) of apparition on the board"
-  int_expressions_head_description:
-    "An integer expression is simply an expression whose \
-    final produced value is an integer.\n\n"
-  int_expression_parenthesis_title: "Parenthesis\n\n"
-  int_expression_parenthesis_description:
-    "Useful for isolating an integer expression, so that \
-    it will be computed in priority.\n\n"
-  int_expression_parenthesis_syntax: "([integer expression])\n\n"
-  int_expression_parenthesis_sample_text: "An example :\n\n"
-  int_expression_conditional_title: "Conditional expression\n\n"
-  int_expression_conditional_description:
-    "For producing expressions conditionnaly.\n\n\
-    Beware of the 'numIf' keyword.\n\n"
-  int_expression_conditional_syntax: "numIf([boolean expression]) then \
-    [integer expression] else [integer expression]\n\n"
-  int_expression_absolute_title: "Absolute value\n\n"
-  int_expression_absolute_description: "Produces the absolute value of the given expression.\n\n"
-  int_expression_absolute_syntax: "abs([integer expression])\n\n"
-  int_expression_modulo_title: "Modulo expression\n\n"
-  int_expression_modulo_description:
-    "Produces the modulo value of the given expression.\n\n \
-    It's the remainder of the division of the first operand by the second.\n\n"
-  int_expression_modulo_syntax: "[integer expression] % [integer expression]\n\n"
-  int_expression_modulo_sample_code: "myIntVariable % 2\n\n"
-  int_expression_arithmetic_title: "Arithmetic operators\n\n"
-  int_expression_arithmetic_description:
-    "There are two arithmetic operators available: \
-    '+' and '-'.\n\n"
-  int_expression_arithmetic_syntax_1: "[integer expression] + [integer expression]\n"
-  int_expression_arithmetic_syntax_or: "or\n"
-  int_expression_arithmetic_syntax_2: "[integer expression] - [integer expression]\n\n"
-  int_expression_literal_title: "Literals\n\n"
-  int_expression_literal_description: "You can use literal values (1, 25, 150 for example).\n\n"
-  int_expression_variable_title: "Variables\n\n"
-  int_expression_variable_description: "Integer variables are also expressions.\n\n"
-  int_expression_predefined_values_title: "Predefined values\n\n"
-  int_expression_predefined_values_description: "\
-    All sub-scripts have the same predefined \
-    integer values (you can't name a variable with one of those names).\n\nAll of these \
-    values takes the chess board's orientation into account.\n\n\
-    These are predefined integer values for the chess \
-    board files : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n\
-    These are predefined integer values for the chess \
-    board ranks : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n"
-  bool_expressions_head_description:
-    "An boolean expression is simply an expression whose \
-    final produced value is a boolean.\n\n\
-    Notice that there are no boolean litterals : you can't use true or false keywords.\n\n"
-  bool_expression_parenthesis_title: "Parenthesis\n\n"
-  bool_expression_parenthesis_description:
-    "Useful for isolating an boolean expression, so that \
-    it will be computed in priority.\n\n"
-  bool_expression_parenthesis_syntax: "([boolean expression])\n\n"
-  bool_expression_conditional_title: "Conditional expression\n\n"
-  bool_expression_conditional_description:
-    "For producing expressions conditionnaly.\n\n\
-    Beware of the 'boolIf' keyword.\n\n"
-  bool_expression_conditional_syntax: "boolIf([boolean expression]) then \
-    [boolean expression] else [boolean expression]\n\n"
-  bool_expression_variable_title: "Variables\n\n"
-  bool_expression_variable_description: "Boolean variables are also expressions.\n\n"
-  bool_expression_integer_comparation_title: "Integers comparation\n\n"
-  bool_expression_integer_comparation_description:
-    "You can compare two integer values.\n\n
-    '==' is for equality and '!=' is for difference.\n\n"
-  bool_expression_integer_comparation_syntax_1: "[integer expression] < [integer expression]\n\n"
-  bool_expression_integer_comparation_syntax_2: "[integer expression] > [integer expression]\n\n"
-  bool_expression_integer_comparation_syntax_3: "[integer expression] <= [integer expression]\n\n"
-  bool_expression_integer_comparation_syntax_4: "[integer expression] >= [integer expression]\n\n"
-  bool_expression_integer_comparation_syntax_5: "[integer expression] == [integer expression]\n\n"
-  bool_expression_integer_comparation_syntax_6: "[integer expression] != [integer expression]\n\n"
-  bool_expression_boolean_comparation_title: "Boolean comparation\n\n"
-  bool_expression_boolean_comparation_description:
-    "You can compare two boolean values.\n\n\
-    '<==>' is for equality and '<!=>' is for difference.\n\n"
-  bool_expression_boolean_comparation_syntax_1: "[boolean expression] <==> [boolean expression]\n\n"
-  bool_expression_boolean_comparation_syntax_2: "[boolean expression] <!=> [boolean expression]\n\n"
-  bool_expression_logical_operators_title: "Logical operators\n\n"
-  bool_expression_logical_operators_description: "There are two available logical operators.\n\n"
-  bool_expression_logical_operators_syntax_1: "[boolean expression] and [boolean expression]\n\n"
-  bool_expression_logical_operators_syntax_2: "[boolean expression] or [boolean expression]\n\n"
+  insert_variable_title: "Insert a predifined variable"
+  choice_common_constants: "Common constants"
+  choice_script_variables: "Variable for the script type"
+variables_table:
+  headers:
+    variable_name: "Name"
+    variable_description: "Description"
+    variable_type: "Type"
+  rows:
+    file_a:
+      description: "The 'A' file"
+      type: "Integer"
+    file_b:
+      description: "The 'B' file"
+      type: "Integer"
+    file_c:
+      description: "The 'C' file"
+      type: "Integer"
+    file_d:
+      description: "The 'D' file"
+      type: "Integer"
+    file_e:
+      description: "The 'E' file"
+      type: "Integer"
+    file_f:
+      description: "The 'F' file"
+      type: "Integer"
+    file_g:
+      description: "The 'G' file"
+      type: "Integer"
+    file_h:
+      description: "The 'H' file"
+      type: "Integer"
+    rank_1:
+      description: "The '1' rank"
+      type: "Integer"
+    rank_2:
+      description: "The '2' rank"
+      type: "Integer"
+    rank_3:
+      description: "The '3' rank"
+      type: "Integer"
+    rank_4:
+      description: "The '4' rank"
+      type: "Integer"
+    rank_5:
+      description: "The '5' rank"
+      type: "Integer"
+    rank_6:
+      description: "The '6' rank"
+      type: "Integer"
+    rank_7:
+      description: "The '7' rank"
+      type: "Integer"
+    rank_8:
+      description: "The '8' rank"
+      type: "Integer"
+    king_file:
+      description: "The king's file"
+      type: "Integer"
+    king_rank:
+      description: "The king's rank"
+      type: "Integer"
+    player_has_white:
+      description: "Does the player have white side ?"
+      type: "Boolean"
+    player_king_file:
+      description: "The player's king's file"
+      type: "Integer"
+    player_king_rank:
+      description: "The player's king's rank"
+      type: "Integer"
+    computer_king_file:
+      description: "The computer's king's file"
+      type: "Integer"
+    computer_king_rank:
+      description: "The computer's king's rank"
+      type: "Integer"
+    piece_file:
+      description: "The piece's file"
+      type: "Integer"
+    piece_rank:
+      description: "The piece's rank"
+      type: "Integer"
+    apparition_index:
+      description: "The index of order of apparition for the piece (starts at 0)"
+      type: "Integer"
+    first_piece_file:
+      description: "The first piece's file"
+      type: "Integer"
+    first_piece_rank:
+      description: "The first piece's rank"
+      type: "Integer"
+    second_piece_file:
+      description: "The second piece's file"
+      type: "Integer"
+    second_piece_rank:
+      description: "The second piece's rank"
+      type: "Integer"

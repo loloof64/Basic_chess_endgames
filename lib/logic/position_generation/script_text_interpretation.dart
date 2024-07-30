@@ -93,6 +93,10 @@ class TranslationsWrapper {
   final String queen;
   final String king;
 
+  final String variablesTableHeaderName;
+  final String variablesTableHeaderDescription;
+  final String variablesTableHeaderType;
+
   const TranslationsWrapper({
     required this.missingScriptType,
     required this.unrecognizedSymbol,
@@ -136,6 +140,9 @@ class TranslationsWrapper {
     required this.rook,
     required this.queen,
     required this.king,
+    required this.variablesTableHeaderName,
+    required this.variablesTableHeaderDescription,
+    required this.variablesTableHeaderType,
   });
 
   String fromPieceKind(PieceKind pieceKind) {

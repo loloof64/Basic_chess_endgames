@@ -1,78 +1,62 @@
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
-import 'package:basicchessendgamestrainer/pages/widgets/piece_kind_widget.dart';
 import 'package:basicchessendgamestrainer/components/textfield_with_caret_position.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/piece_kind_widget.dart';
 import 'package:flutter/material.dart';
 
-class ComplexEditorWidget extends StatefulWidget {
+class ComplexEditorWidget extends StatelessWidget {
   final List<PieceKind> availablePiecesKinds;
   final Map<PieceKind, TextEditingController> scriptsControllersByKinds;
   final bool readOnly;
+  final PieceKind? selectedType;
+  final FocusNode focusNode;
+  final void Function(PieceKind kind) onPieceKindSelection; 
 
   const ComplexEditorWidget({
     super.key,
     required this.availablePiecesKinds,
     required this.scriptsControllersByKinds,
     required this.readOnly,
+    required this.selectedType,
+    required this.focusNode,
+    required this.onPieceKindSelection,
   });
 
   @override
-  State<ComplexEditorWidget> createState() => _ComplexEditorWidgetState();
-}
-
-class _ComplexEditorWidgetState extends State<ComplexEditorWidget> {
-  PieceKind? _selectedType;
-  late FocusNode _focusNode;
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final controller = _selectedType == null
+    final controller = selectedType == null
         ? TextEditingController()
-        : widget.scriptsControllersByKinds[_selectedType!]!;
+        : scriptsControllersByKinds[selectedType!]!;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         DropdownButton<PieceKind>(
-          value: _selectedType,
-          items: widget.availablePiecesKinds.map((elt) {
+          value: selectedType,
+          items: availablePiecesKinds.map((elt) {
             return DropdownMenuItem(
               value: elt,
-              child: PieceKingWidget(
+              child: PieceKindWidget(
                 kind: elt,
               ),
             );
           }).toList(),
           onChanged: (newValue) async {
             if (newValue == null) return;
-            setState(() {
-              _selectedType = newValue;
-            });
+            onPieceKindSelection(newValue);
             // waiting for the text field to be added to tree
             await Future.delayed(const Duration(milliseconds: 50));
-            _focusNode.requestFocus();
+            focusNode.requestFocus();
           },
         ),
         Expanded(
           flex: 6,
           child: EditorWidget(
             key: UniqueKey(),
-            readOnly: widget.readOnly,
-            focusNode: _focusNode,
-            enabled: _selectedType != null,
+            readOnly: readOnly,
+            focusNode: focusNode,
+            enabled: selectedType != null,
             controller: controller,
           ),
         ),

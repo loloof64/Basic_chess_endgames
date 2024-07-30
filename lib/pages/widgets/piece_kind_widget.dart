@@ -4,9 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 const chessImagesSize = 20.0;
 
-class PieceKingWidget extends StatelessWidget {
+class PieceKindWidget extends StatelessWidget {
   final PieceKind kind;
-  const PieceKingWidget({
+  const PieceKindWidget({
     super.key,
     required this.kind,
   });

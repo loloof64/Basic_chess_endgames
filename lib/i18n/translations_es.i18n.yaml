@@ -137,256 +137,102 @@ script_editor_page:
   beforeExitMessage: "¿Desea salir de esta página y cancelar la edición del guione?"
   exercise_creation_success: "Ejercicio guardado"
   exercise_creation_error: "¡No se pudo guardar el ejercicio!"
-syntax_manual_page:
-  title: "Sintaxis de guiones"
-  table_header_variable_name: "Nombre"
-  table_header_variable_type: "Tipo"
-  table_header_variable_use: "Uso"
-  scripts_goal: "Objetivo de los guiones"
-  scripts_kinds: "Tipos de guiones"
-  scripts_format: "Formato de los guiones"
-  comments: "Comentarios"
-  variables: "Variables"
-  predefined_variables: "Variables predefinidas"
-  int_expressions: "Expresiones enteras"
-  bool_expressions: "Expresiones booleanas"
-  scripts_goal_description:
-    "Un guione de generación de posiciones se divide en varios subprogramas, \
-    cada uno de su propio tipo y en un lenguaje personalizado, cuyas siguientes \
-    secciones te ayudarán a comprender.\n\nEl objetivo de un subprograma es \
-    comprobar que la posición generada cumple con todas sus restricciones.\n\n\
-    Si al menos una condición no se cumple, el algoritmo intentará \
-    'arreglar' la posición para que se cumplan todas las condiciones."
-  scripts_kinds_head_description:
-    "Existen varios tipos de subprogramas, y la posición generada \
-    debe respetar todas las reglas de todos los subprogramas definidos.\n\n\
-    Por supuesto, también debe respetar las reglas estándar del ajedrez (por \
-    ejemplo, el rey del lado que no está en turno \
-    no puede estar en jaque).\n\n"
-  scripts_kinds_player_king_constraint_title: "Restricción sobre rey del jugador\n\n"
-  scripts_kinds_player_king_constraint_description:
-    "Indica las restricciones de posicionamiento del \
-    rey del jugador (dado que el color del jugador se elegirá al azar).\n\n"
-  scripts_kinds_computer_king_constraint_title: "Restricciones sobre rey de la computadora\n\n"
-  scripts_kinds_computer_king_constraint_description:
-    "Indica las restricciones de posicionamiento del \
-    rey de la computadora (dado que el color del jugador se elegirá al azar).\n\n"
-  scripts_kinds_kings_mutual_constraints_title: "Restricciones mutuas de los reyes\n\n"
-  scripts_kinds_kings_mutual_constraints_description:
-    "Indica las restricciones de posicionamiento \
-    que ambos reyes deben respetar entre sí.\n\n"
-  scripts_kinds_other_pieces_count_constraints_title: "Restricciones sobre número de otras piezas\n\n"
-  scripts_kinds_other_pieces_count_constraints_description:
-    "Indica las restricciones de conteo en \
-    piezas que no son reyes.\n\n"
-  scripts_kinds_other_pieces_global_constraints_title: "Restricciones globales sobre otras piezas\n\n"
-  scripts_kinds_other_pieces_global_constraints_description:
-    "Indica las restricciones de \
-    posicionamiento para las piezas que no son reyes, para cada par [tipo de pieza / \
-    ¿es una pieza de jugador?].\n\n"
-  scripts_kinds_other_pieces_mutual_constraints_title: "Restricciones mutuas sobre otras piezas\n\n"
-  scripts_kinds_other_pieces_mutual_constraints_description:
-    "Indica las restricciones de \
-    posicionamiento para las piezas que no son reyes, que deben respetar entre sí, dos a dos,\
-    para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n"
-  scripts_kinds_other_pieces_indexed_constraints_title: "Restricciones sobre otras piezas por orden\n\n"
-  scripts_kinds_other_pieces_indexed_constraints_description:
-    "Indica las restricciones de \
-    posicionamiento para las piezas que no son reyes, que deben respetar dado su orden de aparición en \
-    el tablero de ajedrez, para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n"
-  scripts_format_head_description:
-    "Cada guione puede comenzar con una o varias declaraciones de \
-    creación de variables.\n\nPero la expresión final debe ser una declaración que devuelva una \
-    expresión booleana.\n\nEsta expresión de retorno será utilizada por el algoritmo para comprobar \
-    que la posición generada es correcta.\n\n\
-    Por favor tenga en cuenta que una declaración puede extenderse en varias líneas: terminan tan pronto como se encuentra el carácter ';'.\n\n\
-    Además, tenga cuidado con la sensibilidad a las mayúsculas: las mayúsculas o minúsculas pueden marcar la diferencia.\n\n
-    Finalmente, en cada guión, debes comprobar que no utilizas ninguna variable no \
-    declarada: aunque tu código sea aceptado, siempre fallará a la hora de \
-    generar la posición.\n\n
-    "
-  scripts_format_main_description_1: "Esta es la sintaxis para la expresión de retorno:\n\n"
-  scripts_format_code_section_1: "return [su expresión booleana];\n\n"
-  scripts_format_main_description_2: "Este es un ejemplo de guione simple :\n\n"
-  scripts_comments_head_description:
-    "Puedes usar dos formas de comentarios, que están \
-    inspirados en los comentarios del lenguaje C.\n\n"
-  scripts_comments_multiline_comments_title: "Comentarios multilínea\n\n"
-  scripts_comments_multiline_comments_description:
-    "Un comentario multilínea comienza con '/*' y \
-    termina con '*/', y puede expandirse en varias líneas."
-  scripts_comments_multiline_comments_sample: "/* Este es un \n\
-    comentario multilínea. \n\
-    \n\
-    Y puede expandirse en varias líneas.*/\n\n"
-  scripts_comments_single_line_comments_title: "Comentarios de una sola línea\n\n"
-  scripts_comments_single_line_comments_description_1:
-    "Un comentario de una sola línea solo puede \
-    estar en una sola línea y comienza con '//'.\n\nPor lo tanto, todos los caracteres siguientes de \
-    la línea dada son parte del comentario.\n\n"
-  scripts_comments_single_line_comments_sample_1: "// Este es un comentario de una sola línea\n\n"
-  scripts_comments_single_line_comments_description_2:
-    "Un comentario de una sola línea también puede \
-    seguir a una declaración en la misma línea.\n\n"
-  scripts_comments_single_line_comments_sample_2:
-    "miVariableEntera := FileF; // Establece el valor \
-    de la columna F\n\n"
-  scripts_variables_head_description: "Estos son aspectos a considerar sobre las variables:\n\n"
-  scripts_variables_name_rules_title: "Reglas de nomenclatura\n\n"
-  scripts_variables_name_rules_description:
-    "Un nombre de variable debe comenzar con una \
-    letra (mayúscula o minúscula).\n\nLuego, los caracteres siguientes pueden ser letras \
-    (mayúsculas y/o minúsculas), dígitos o guiones bajos ('_').\n\nTen en cuenta también que no \
-    puedes usar el nombre de un valor predefinido o de una variable predefinida (ya que cada tipo \
-    de guione, como verás más adelante, tiene su propio conjunto de variables predefinidas).\n\n"
-  scripts_variables_creation_title: "Instrucción de creación de variable\n\n"
-  scripts_variables_creation_description:
-    "Esta es la sintaxis para crear una variable \
-    entera o una variable booleana:\n\n"
-  scripts_variables_creation_format:
-    "[identificador] := [expresión entera | expresión \
-    booleana];\n\n"
-  scripts_variables_creation_sample_head_text: "Este es un ejemplo:\n\n"
-  scripts_variables_creation_sample_code: "miFila :=  boolIf(reyesEnOposicion) \
-    then Rank4 else Rank1;\n\n"
-  scripts_predefined_variables_head_description:
-    "Las variables predefinidas dependen del tipo \
-    de la subrutina que estemos editando.\n\nEstas variables serán alimentadas por el algoritmo \
-    al comprobar la corrección de la posición generada.\n\nPor supuesto, no se puede nombrar \
-    una variable personal con uno de esos nombres.\n\nAdemás, ten en cuenta que los valores \
-    de las coordenadas del tablero de ajedrez tienen en cuenta la orientación del tablero.\n\n"
-  scripts_predefined_variables_single_king_constraints_title:
-    "Restricciones rey del jugador / \
-    Restricciones rey de la computadora\n\n"
-  scripts_predefined_variables_single_king_constraints_variable_file:
-    "la columna que ha sido \
-    preparado para el rey"
-  scripts_predefined_variables_single_king_constraints_variable_rank:
-    "el rango que ha sido \
-    preparado para el rey"
-  ? scripts_predefined_variables_single_king_constraints_variable_player_has_white
-  : "¿tiene el \
-    jugador las piezas blancas?"
-  scripts_predefined_variables_mutual_kings_constraints_title: "\n\nRestricciones mutuas de los reyes\n\n"
-  scripts_predefined_variables_single_king_constraints_variable_file_player:
-    "la columna que ha sido \
-    preparado para el rey del jugador"
-  scripts_predefined_variables_single_king_constraints_variable_rank_player:
-    "el rango que ha sido \
-    preparado para el rey del jugador"
-  scripts_predefined_variables_single_king_constraints_variable_file_computer:
-    "la columna que ha sido \
-    preparado para el rey de la computadora"
-  scripts_predefined_variables_single_king_constraints_variable_rank_computer:
-    "el rango que ha sido \
-    preparado para el rey de la computadora"
-  scripts_predefined_variables_other_pieces_global_constraints_title:
-    "\n\nRestricciones globales \
-    sobre otras piezas\n\n"
-  scripts_predefined_variables_other_pieces_global_constraints_file:
-    "la columna que ha sido \
-    preparado para la pieza"
-  scripts_predefined_variables_other_pieces_global_constraints_rank:
-    "el rango que ha sido \
-    preparado para la pieza"
-  scripts_predefined_variables_other_pieces_mutual_constraints_title:
-    "\n\nRestricciones mutuas \
-    sobre otras piezas\n\n"
-  scripts_predefined_variables_other_pieces_mutual_constraints_file_first:
-    "la columna que ha sido \
-    preparado para la primera pieza"
-  scripts_predefined_variables_other_pieces_mutual_constraints_rank_first:
-    "el rango que ha sido \
-    preparado para la primera pieza"
-  scripts_predefined_variables_other_pieces_mutual_constraints_file_second:
-    "la columna que ha sido \
-    preparado para la segunda pieza"
-  scripts_predefined_variables_other_pieces_mutual_constraints_rank_second:
-    "la columna que ha sido \
-    preparado para la segunda pieza"
-  scripts_predefined_variables_other_pieces_indexed_constraints_title:
-    "\n\nRestricciones sobre otras \
-    piezas por orden\n\n"
-  scripts_predefined_variables_other_pieces_indexed_constraints_apparition:
-    "el índice (empezando en \
-    0) de aparición en el tablero"
-  int_expressions_head_description:
-    "Una expresión entera es simplemente una expresión \
-    cuyo valor final producido es un entero.\n\n"
-  int_expression_parenthesis_title: "Paréntesis\n\n"
-  int_expression_parenthesis_description:
-    "Útil para aislar una expresión entera, de \
-    modo que se calcule con prioridad.\n\n"
-  int_expression_parenthesis_syntax: "([expresión entera])\n\n"
-  int_expression_parenthesis_sample_text: "Este es un ejemplo:\n\n"
-  int_expression_conditional_title: "Expresión condicional\n\n"
-  int_expression_conditional_description:
-    "Para producir expresiones condicionalmente.\n\n\
-    Cuidado con la palabra clave 'numIf'.\n\n"
-  int_expression_conditional_syntax: "numIf([expresión booleana]) then \
-    [expresión entera] else [expresión entera]\n\n"
-  int_expression_absolute_title: "Valor absoluto\n\n"
-  int_expression_absolute_description: "Produce el valor absoluto de la expresión dada.\n\n"
-  int_expression_absolute_syntax: "abs([expresión entera])\n\n"
-  int_expression_modulo_title: "Expresión modulo\n\n"
-  int_expression_modulo_description:
-    "Produce el valor modular de la expresión dada.\n\nEs el \
-    resto de la división del primer operando por el segundo.\n\n"
-  int_expression_modulo_syntax: "[expresión entera] % [expresión entera]\n\n"
-  int_expression_modulo_sample_code: "miVariableEntera % 2\n\n"
-  int_expression_arithmetic_title: "Operadores aritméticos\n\n"
-  int_expression_arithmetic_description: "Hay dos operadores aritméticos disponibles: '+' y '-'.\n\n"
-  int_expression_arithmetic_syntax_1: "[expresión entera] + [expresión entera]\n"
-  int_expression_arithmetic_syntax_or: "o\n"
-  int_expression_arithmetic_syntax_2: "[expresión entera] - [expresión entera]\n\n"
-  int_expression_literal_title: "Literales\n\n"
-  int_expression_literal_description: "Puedes usar valores literales (1, 25, 150 por ejemplo).\n\n"
-  int_expression_variable_title: "Variables\n\n"
-  int_expression_variable_description: "Las variables enteras también son expresiones.\n\n"
-  int_expression_predefined_values_title: "Valores predefinidos\n\n"
-  int_expression_predefined_values_description: "\
-    Todos las subrutinas tienen los mismos valores \
-    enteros predefinidos (no puedes nombrar una variable con uno de esos nombres).\n\nTodos estos \
-    valores tienen en cuenta la orientación del tablero de ajedrez.\n\n\
-    Estos son los valores enteros predefinidos para las \
-    columnas del tablero de ajedrez: FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\n\
-    Estos son los valores enteros predefinidos para los \
-    rangos del tablero de ajedrez: Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n
-    "
-  bool_expressions_head_description:
-    "Una expresión booleana es simplemente una expresión cuyo \
-    valor final producido es un valor booleano.\n\n\
-    Tenga en cuenta que no hay literales booleanos: no puede usar las palabras clave true o false.\n\n"
-  bool_expression_parenthesis_title: "Paréntesis\n\n"
-  bool_expression_parenthesis_description:
-    "Útil para aislar una expresión booleana, \
-    de modo que se calcule con prioridad.\n\n"
-  bool_expression_parenthesis_syntax: "([expresión booleana])\n\n"
-  bool_expression_conditional_title: "Expresión condicional\n\n"
-  bool_expression_conditional_description:
-    "Para producir expresiones condicionalmente.\n\n\
-    Cuidado con la palabra clave 'boolIf'.\n\n"
-  bool_expression_conditional_syntax: "boolIf([expresión booleana]) then \
-    [expresión booleana] else [expresión booleana]\n\n"
-  bool_expression_variable_title: "Variables\n\n"
-  bool_expression_variable_description: "Booleanas variables también son expresiones.\n\n"
-  bool_expression_integer_comparation_title: "Comparación de enteros\n\n"
-  bool_expression_integer_comparation_description:
-    "You can compare two integers values.\n\n\
-    '==' es para igualdad y '!=' es para diferencia.\n\n"
-  bool_expression_integer_comparation_syntax_1: "[expresión entera] < [expresión entera]\n\n"
-  bool_expression_integer_comparation_syntax_2: "[expresión entera] > [expresión entera]\n\n"
-  bool_expression_integer_comparation_syntax_3: "[expresión entera] <= [expresión entera]\n\n"
-  bool_expression_integer_comparation_syntax_4: "[expresión entera] >= [expresión entera]\n\n"
-  bool_expression_integer_comparation_syntax_5: "[expresión entera] == [expresión entera]\n\n"
-  bool_expression_integer_comparation_syntax_6: "[expresión entera] != [expresión entera]\n\n"
-  bool_expression_boolean_comparation_title: "Comparación de booleanos\n\n"
-  bool_expression_boolean_comparation_description:
-    "Puedes comparar dos valores booleanos.\n\n\
-    '<==>' es para la igualdad y '<!=>' es para la diferencia.\n\n"
-  bool_expression_boolean_comparation_syntax_1: "[expresión booleana] <==> [expresión booleana]\n\n"
-  bool_expression_boolean_comparation_syntax_2: "[expresión booleana] <!=> [expresión booleana]\n\n"
-  bool_expression_logical_operators_title: "Operadores lógicos\n\n"
-  bool_expression_logical_operators_description: "Hay dos operadores lógicos disponibles.\n\n"
-  bool_expression_logical_operators_syntax_1: "[expresión booleana] and [expresión booleana]\n\n"
-  bool_expression_logical_operators_syntax_2: "[expresión booleana] or [expresión booleana]\n\n"
+  insert_variable_title: "Insertar una predefinida variable"
+  choice_common_constants: "Constantes comunes"
+  choice_script_variables: "Variable para el tipo de código"
+variables_table:
+  headers:
+    variable_name: "Nombre"
+    variable_description: "Descripción"
+    variable_type: "Tipo"
+  rows:
+    file_a:
+      description: "La columna 'A'"
+      type: "Entero"
+    file_b:
+      description: "La columna 'B'"
+      type: "Entero"
+    file_c:
+      description: "La columna 'C'"
+      type: "Entero"
+    file_d:
+      description: "La columna 'D'"
+      type: "Entero"
+    file_e:
+      description: "La columna 'E'"
+      type: "Entero"
+    file_f:
+      description: "La columna 'F'"
+      type: "Entero"
+    file_g:
+      description: "La columna 'G'"
+      type: "Entero"
+    file_h:
+      description: "La columna 'H'"
+      type: "Entero"
+    rank_1:
+      description: "El rango '1'"
+      type: "Entero"
+    rank_2:
+      description: "El rango '2'"
+      type: "Entero"
+    rank_3:
+      description: "El rango '3'"
+      type: "Entero"
+    rank_4:
+      description: "El rango '4'"
+      type: "Entero"
+    rank_5:
+      description: "El rango '5'"
+      type: "Entero"
+    rank_6:
+      description: "El rango '6'"
+      type: "Entero"
+    rank_7:
+      description: "El rango '7'"
+      type: "Entero"
+    rank_8:
+      description: "El rango '8'"
+      type: "Entero"
+    king_file:
+      description: "La columna del rey"
+      type: "Entero"
+    king_rank:
+      description: "El rango del rey"
+      type: "Entero"
+    player_has_white:
+      description: "¿El jugador tiene lado blanco?"
+      type: "Booleano"
+    player_king_file:
+      description: "La columna del rey del jugador"
+      type: "Entero"
+    player_king_rank:
+      description: "El rango del rey del jugador"
+      type: "Entero"
+    computer_king_file:
+      description: "La columna del rey de la computadora"
+      type: "Entero"
+    computer_king_rank:
+      description: "El rango del rey de la computadora"
+      type: "Entero"
+    piece_file:
+      description: "La columna de la pieza"
+      type: "Entero"
+    piece_rank:
+      description: "El rango de la pieza"
+      type: "Entero"
+    apparition_index:
+      description: "El índice del orden de aparición de la pieza (comienza en 0)"
+      type: "Entero"
+    first_piece_file:
+      description: "La columna de la primera pieza"
+      type: "Entero"
+    first_piece_rank:
+      description: "El rango de la primera pieza"
+      type: "Entero"
+    second_piece_file:
+      description: "La columna de la segunda pieza"
+      type: "Entero"
+    second_piece_rank:
+      description: "El rango de la segunda pieza"
+      type: "Entero"

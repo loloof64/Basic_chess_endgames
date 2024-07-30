@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 708 (236 per locale)
+/// Strings: 546 (182 per locale)
 ///
-/// Built on 2024-07-29 at 08:48 UTC
+/// Built on 2024-07-30 at 12:00 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -166,7 +166,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsTypeEn type = _TranslationsTypeEn._(_root);
 	late final _TranslationsSampleScriptEn sample_script = _TranslationsSampleScriptEn._(_root);
 	late final _TranslationsScriptEditorPageEn script_editor_page = _TranslationsScriptEditorPageEn._(_root);
-	late final _TranslationsSyntaxManualPageEn syntax_manual_page = _TranslationsSyntaxManualPageEn._(_root);
+	late final _TranslationsVariablesTableEn variables_table = _TranslationsVariablesTableEn._(_root);
 }
 
 // Path: misc
@@ -373,135 +373,20 @@ class _TranslationsScriptEditorPageEn {
 	String get before_exit_message => 'Do you want to leave this page and cancel script edition ?';
 	String get exercise_creation_success => 'Saved exercise';
 	String get exercise_creation_error => 'Failed to save exercise !';
+	String get insert_variable_title => 'Insert a predifined variable';
+	String get choice_common_constants => 'Common constants';
+	String get choice_script_variables => 'Variable for the script type';
 }
 
-// Path: syntax_manual_page
-class _TranslationsSyntaxManualPageEn {
-	_TranslationsSyntaxManualPageEn._(this._root);
+// Path: variables_table
+class _TranslationsVariablesTableEn {
+	_TranslationsVariablesTableEn._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get title => 'Scripts\' syntax';
-	String get table_header_variable_name => 'Name';
-	String get table_header_variable_type => 'Type';
-	String get table_header_variable_use => 'Use';
-	String get scripts_goal => 'Scripts\' goal';
-	String get scripts_kinds => 'Scripts kinds';
-	String get scripts_format => 'Scripts\' format';
-	String get comments => 'Comments';
-	String get variables => 'Variables';
-	String get predefined_variables => 'Predefined variables';
-	String get int_expressions => 'Integer expressions';
-	String get bool_expressions => 'Boolean expressions';
-	String get scripts_goal_description => 'A position generation script is split into several sub-scripts, each of its own kind and in a custom language, whose following sections will help you to understand.\n\nA sub-script\'s goal is to check that the generated position follow all of its constraints.\n\nIf at least one condition is not met, then the algorithm will try to \'fix\' the position so that all conditions are met.';
-	String get scripts_kinds_head_description => 'There are several types of sub-scripts, and all rules of all defined sub-scripts must be respected by the generated position.\n\nOf course, it must also respect standard chess rules (for example : king of side not in turn musn\'t be in chess).\n\n';
-	String get scripts_kinds_player_king_constraint_title => 'Player\'s king\'s constraints\n\n';
-	String get scripts_kinds_player_king_constraint_description => 'Tells about the positioning constraints on the players\'s king (given that the player\'s color will be randomly choosen).\n\n';
-	String get scripts_kinds_computer_king_constraint_title => 'Computer\'s king\'s constraints\n\n';
-	String get scripts_kinds_computer_king_constraint_description => 'Tells about the positioning constraints on the computer\'s king (given that the player\'s color will be randomly choosen).\n\n';
-	String get scripts_kinds_kings_mutual_constraints_title => 'Kings\'s mutual constraints\n\n';
-	String get scripts_kinds_kings_mutual_constraints_description => 'Tells about the positioning constraints that both kings must respect between them.\n\n';
-	String get scripts_kinds_other_pieces_count_constraints_title => 'Other pieces counts\' constraints\n\n';
-	String get scripts_kinds_other_pieces_count_constraints_description => 'Tells about the counts\' constraints on pieces other than kings.\n\n';
-	String get scripts_kinds_other_pieces_global_constraints_title => 'Other pieces\' global constraints\n\n';
-	String get scripts_kinds_other_pieces_global_constraints_description => 'Tells about the positioning constraints for pieces other by kings, for each couple [type of piece / is it a player piece ?].\n\n';
-	String get scripts_kinds_other_pieces_mutual_constraints_title => 'Other pieces\' mutual constraints\n\n';
-	String get scripts_kinds_other_pieces_mutual_constraints_description => 'Tells about the positioning constraints for pieces other by kings, that they must respect between each other, two by two, for each couple [type of piece / is it a player piece ?].\n\n';
-	String get scripts_kinds_other_pieces_indexed_constraints_title => 'Other pieces constraints by order\n\n';
-	String get scripts_kinds_other_pieces_indexed_constraints_description => 'Tells about the positioning constraints for pieces other than kings, that they must respect given their apparition order on the chess board, for each couple [type of piece / is it a player piece ?].\n\n';
-	String get scripts_format_head_description => 'Each script may start with one or several variables creation statements.\n\nBut the final expression must be a statement that returns a boolean expression.\n\nThis return expression will be used by the algorithm in order to check that the generated position is correct.\n\nPlease take into account that a statement can expand on several lines : they end as soon as the character \';\' is met.\n\nAlso, beware of the case sensitivity : uppercase or lowercase can make the difference.\n\n At last, in each sub-script, you should check that you don\'t use an undeclared variable : though your code will be accepted, it will always fail to generate the position.\n\n';
-	String get scripts_format_main_description_1 => 'This is the syntax for the return expression :\n\n';
-	String get scripts_format_code_section_1 => 'return [your boolean expression];\n\n';
-	String get scripts_format_main_description_2 => 'This is a simple script sample :\n\n';
-	String get scripts_comments_head_description => 'You can use two forms of comments, which are inspired by comments from the C language.\n\n';
-	String get scripts_comments_multiline_comments_title => 'Multilines comments\n\n';
-	String get scripts_comments_multiline_comments_description => 'A multiline comment starts with \'/*\' and ends with \'*/\', and can expand on several lines.\n\n';
-	String get scripts_comments_multiline_comments_sample => '/* This is a\n multilines comment.\n\nAnd can expand on several lines.*/\n\n';
-	String get scripts_comments_single_line_comments_title => 'Single line comments\n\n';
-	String get scripts_comments_single_line_comments_description_1 => 'A single line comment can only be on a single line, and just starts by \'//\'.\n\nSo all following characters of the given line are parts of the comment.\n\n';
-	String get scripts_comments_single_line_comments_sample_1 => '// This is a single line comment\n\n';
-	String get scripts_comments_single_line_comments_description_2 => 'A single line comment can also follow a statement on the same line.\n\n';
-	String get scripts_comments_single_line_comments_sample_2 => 'myIntVariable := FileF; // Sets to the value of the F file\n\n';
-	String get scripts_variables_head_description => 'These are things to consider about variables :\n\n';
-	String get scripts_variables_name_rules_title => 'Naming rules\n\n';
-	String get scripts_variables_name_rules_description => 'A variable name must start with a letter (either uppercase or lowercase).\n\nThen the following characters can be letters (uppercase and/or lowercase), digits or underscore (\'_\').\n\nAlso keep in mind that you can\'t use name of predifined value or of a predefined variable (given that each script type, as you\'ll see later, has its own set of predefined variables).\n\n';
-	String get scripts_variables_creation_title => 'Variable creation statement\n\n';
-	String get scripts_variables_creation_description => 'This is the syntax for creating either an int variable or a boolean variable :\n\n';
-	String get scripts_variables_creation_format => '[identifier] := [int expression | boolean expression];\n\n';
-	String get scripts_variables_creation_sample_head_text => 'This is an example :\n\n';
-	String get scripts_variables_creation_sample_code => 'myRank := boolIf(kingsInOpposition) then Rank4 else Rank1;\n\n';
-	String get scripts_predefined_variables_head_description => 'The predefined variables relies on the kind of sub-script we\'re editing.\n\nThese variables will be fed by the algorithm when checking for the generated position\'s correctness.\n\nOf course, you can\'t name a custom variable with one of those names.\n\nAlso, keep in mind that chess board\'s coordinates values take board\'s orientation into account.\n\n';
-	String get scripts_predefined_variables_single_king_constraints_title => 'Player\'s king\'s constraint / Computer king\'s constraint\n\n';
-	String get scripts_predefined_variables_single_king_constraints_variable_file => 'the file which has been set for the king';
-	String get scripts_predefined_variables_single_king_constraints_variable_rank => 'the rank which has been set for the king';
-	String get scripts_predefined_variables_single_king_constraints_variable_player_has_white => 'does the player have white pieces ?';
-	String get scripts_predefined_variables_mutual_kings_constraints_title => '\n\nMutual kings\' constraints\n\n';
-	String get scripts_predefined_variables_single_king_constraints_variable_file_player => 'the file which has been set for the player\'s king';
-	String get scripts_predefined_variables_single_king_constraints_variable_rank_player => 'the rank which has been set for the player\'s king';
-	String get scripts_predefined_variables_single_king_constraints_variable_file_computer => 'the file which has been set for the computer\'s king';
-	String get scripts_predefined_variables_single_king_constraints_variable_rank_computer => 'the rank which has been set for the computer\'s king';
-	String get scripts_predefined_variables_other_pieces_global_constraints_title => '\n\nOthers pieces globals contraints\n\n';
-	String get scripts_predefined_variables_other_pieces_global_constraints_file => 'the file which has been set for the piece';
-	String get scripts_predefined_variables_other_pieces_global_constraints_rank => 'the rank which has been set for the piece';
-	String get scripts_predefined_variables_other_pieces_mutual_constraints_title => '\n\nOther pieces mutual constraints\n\n';
-	String get scripts_predefined_variables_other_pieces_mutual_constraints_file_first => 'the file which has been set for the first piece';
-	String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_first => 'the file which has been set for the first piece';
-	String get scripts_predefined_variables_other_pieces_mutual_constraints_file_second => 'the file which has been set for the second piece';
-	String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_second => 'the file which has been set for the second piece';
-	String get scripts_predefined_variables_other_pieces_indexed_constraints_title => '\n\nOthers pieces\' constraints by order\n\n';
-	String get scripts_predefined_variables_other_pieces_indexed_constraints_apparition => 'the index (starting at 0) of apparition on the board';
-	String get int_expressions_head_description => 'An integer expression is simply an expression whose final produced value is an integer.\n\n';
-	String get int_expression_parenthesis_title => 'Parenthesis\n\n';
-	String get int_expression_parenthesis_description => 'Useful for isolating an integer expression, so that it will be computed in priority.\n\n';
-	String get int_expression_parenthesis_syntax => '([integer expression])\n\n';
-	String get int_expression_parenthesis_sample_text => 'An example :\n\n';
-	String get int_expression_conditional_title => 'Conditional expression\n\n';
-	String get int_expression_conditional_description => 'For producing expressions conditionnaly.\n\nBeware of the \'numIf\' keyword.\n\n';
-	String get int_expression_conditional_syntax => 'numIf([boolean expression]) then [integer expression] else [integer expression]\n\n';
-	String get int_expression_absolute_title => 'Absolute value\n\n';
-	String get int_expression_absolute_description => 'Produces the absolute value of the given expression.\n\n';
-	String get int_expression_absolute_syntax => 'abs([integer expression])\n\n';
-	String get int_expression_modulo_title => 'Modulo expression\n\n';
-	String get int_expression_modulo_description => 'Produces the modulo value of the given expression.\n\n It\'s the remainder of the division of the first operand by the second.\n\n';
-	String get int_expression_modulo_syntax => '[integer expression] % [integer expression]\n\n';
-	String get int_expression_modulo_sample_code => 'myIntVariable % 2\n\n';
-	String get int_expression_arithmetic_title => 'Arithmetic operators\n\n';
-	String get int_expression_arithmetic_description => 'There are two arithmetic operators available: \'+\' and \'-\'.\n\n';
-	String get int_expression_arithmetic_syntax_1 => '[integer expression] + [integer expression]\n';
-	String get int_expression_arithmetic_syntax_or => 'or\n';
-	String get int_expression_arithmetic_syntax_2 => '[integer expression] - [integer expression]\n\n';
-	String get int_expression_literal_title => 'Literals\n\n';
-	String get int_expression_literal_description => 'You can use literal values (1, 25, 150 for example).\n\n';
-	String get int_expression_variable_title => 'Variables\n\n';
-	String get int_expression_variable_description => 'Integer variables are also expressions.\n\n';
-	String get int_expression_predefined_values_title => 'Predefined values\n\n';
-	String get int_expression_predefined_values_description => 'All sub-scripts have the same predefined integer values (you can\'t name a variable with one of those names).\n\nAll of these values takes the chess board\'s orientation into account.\n\nThese are predefined integer values for the chess board files : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\nThese are predefined integer values for the chess board ranks : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n';
-	String get bool_expressions_head_description => 'An boolean expression is simply an expression whose final produced value is a boolean.\n\nNotice that there are no boolean litterals : you can\'t use true or false keywords.\n\n';
-	String get bool_expression_parenthesis_title => 'Parenthesis\n\n';
-	String get bool_expression_parenthesis_description => 'Useful for isolating an boolean expression, so that it will be computed in priority.\n\n';
-	String get bool_expression_parenthesis_syntax => '([boolean expression])\n\n';
-	String get bool_expression_conditional_title => 'Conditional expression\n\n';
-	String get bool_expression_conditional_description => 'For producing expressions conditionnaly.\n\nBeware of the \'boolIf\' keyword.\n\n';
-	String get bool_expression_conditional_syntax => 'boolIf([boolean expression]) then [boolean expression] else [boolean expression]\n\n';
-	String get bool_expression_variable_title => 'Variables\n\n';
-	String get bool_expression_variable_description => 'Boolean variables are also expressions.\n\n';
-	String get bool_expression_integer_comparation_title => 'Integers comparation\n\n';
-	String get bool_expression_integer_comparation_description => 'You can compare two integer values.\n\n \'==\' is for equality and \'!=\' is for difference.\n\n';
-	String get bool_expression_integer_comparation_syntax_1 => '[integer expression] < [integer expression]\n\n';
-	String get bool_expression_integer_comparation_syntax_2 => '[integer expression] > [integer expression]\n\n';
-	String get bool_expression_integer_comparation_syntax_3 => '[integer expression] <= [integer expression]\n\n';
-	String get bool_expression_integer_comparation_syntax_4 => '[integer expression] >= [integer expression]\n\n';
-	String get bool_expression_integer_comparation_syntax_5 => '[integer expression] == [integer expression]\n\n';
-	String get bool_expression_integer_comparation_syntax_6 => '[integer expression] != [integer expression]\n\n';
-	String get bool_expression_boolean_comparation_title => 'Boolean comparation\n\n';
-	String get bool_expression_boolean_comparation_description => 'You can compare two boolean values.\n\n\'<==>\' is for equality and \'<!=>\' is for difference.\n\n';
-	String get bool_expression_boolean_comparation_syntax_1 => '[boolean expression] <==> [boolean expression]\n\n';
-	String get bool_expression_boolean_comparation_syntax_2 => '[boolean expression] <!=> [boolean expression]\n\n';
-	String get bool_expression_logical_operators_title => 'Logical operators\n\n';
-	String get bool_expression_logical_operators_description => 'There are two available logical operators.\n\n';
-	String get bool_expression_logical_operators_syntax_1 => '[boolean expression] and [boolean expression]\n\n';
-	String get bool_expression_logical_operators_syntax_2 => '[boolean expression] or [boolean expression]\n\n';
+	late final _TranslationsVariablesTableHeadersEn headers = _TranslationsVariablesTableHeadersEn._(_root);
+	late final _TranslationsVariablesTableRowsEn rows = _TranslationsVariablesTableRowsEn._(_root);
 }
 
 // Path: home.menu_buttons
@@ -543,6 +428,387 @@ class _TranslationsScriptParserErrorSubstitutionsEn {
 	String get integer => '#Integer#';
 }
 
+// Path: variables_table.headers
+class _TranslationsVariablesTableHeadersEn {
+	_TranslationsVariablesTableHeadersEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get variable_name => 'Name';
+	String get variable_description => 'Description';
+	String get variable_type => 'Type';
+}
+
+// Path: variables_table.rows
+class _TranslationsVariablesTableRowsEn {
+	_TranslationsVariablesTableRowsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _TranslationsVariablesTableRowsFileAEn file_a = _TranslationsVariablesTableRowsFileAEn._(_root);
+	late final _TranslationsVariablesTableRowsFileBEn file_b = _TranslationsVariablesTableRowsFileBEn._(_root);
+	late final _TranslationsVariablesTableRowsFileCEn file_c = _TranslationsVariablesTableRowsFileCEn._(_root);
+	late final _TranslationsVariablesTableRowsFileDEn file_d = _TranslationsVariablesTableRowsFileDEn._(_root);
+	late final _TranslationsVariablesTableRowsFileEEn file_e = _TranslationsVariablesTableRowsFileEEn._(_root);
+	late final _TranslationsVariablesTableRowsFileFEn file_f = _TranslationsVariablesTableRowsFileFEn._(_root);
+	late final _TranslationsVariablesTableRowsFileGEn file_g = _TranslationsVariablesTableRowsFileGEn._(_root);
+	late final _TranslationsVariablesTableRowsFileHEn file_h = _TranslationsVariablesTableRowsFileHEn._(_root);
+	late final _TranslationsVariablesTableRowsRank1En rank_1 = _TranslationsVariablesTableRowsRank1En._(_root);
+	late final _TranslationsVariablesTableRowsRank2En rank_2 = _TranslationsVariablesTableRowsRank2En._(_root);
+	late final _TranslationsVariablesTableRowsRank3En rank_3 = _TranslationsVariablesTableRowsRank3En._(_root);
+	late final _TranslationsVariablesTableRowsRank4En rank_4 = _TranslationsVariablesTableRowsRank4En._(_root);
+	late final _TranslationsVariablesTableRowsRank5En rank_5 = _TranslationsVariablesTableRowsRank5En._(_root);
+	late final _TranslationsVariablesTableRowsRank6En rank_6 = _TranslationsVariablesTableRowsRank6En._(_root);
+	late final _TranslationsVariablesTableRowsRank7En rank_7 = _TranslationsVariablesTableRowsRank7En._(_root);
+	late final _TranslationsVariablesTableRowsRank8En rank_8 = _TranslationsVariablesTableRowsRank8En._(_root);
+	late final _TranslationsVariablesTableRowsKingFileEn king_file = _TranslationsVariablesTableRowsKingFileEn._(_root);
+	late final _TranslationsVariablesTableRowsKingRankEn king_rank = _TranslationsVariablesTableRowsKingRankEn._(_root);
+	late final _TranslationsVariablesTableRowsPlayerHasWhiteEn player_has_white = _TranslationsVariablesTableRowsPlayerHasWhiteEn._(_root);
+	late final _TranslationsVariablesTableRowsPlayerKingFileEn player_king_file = _TranslationsVariablesTableRowsPlayerKingFileEn._(_root);
+	late final _TranslationsVariablesTableRowsPlayerKingRankEn player_king_rank = _TranslationsVariablesTableRowsPlayerKingRankEn._(_root);
+	late final _TranslationsVariablesTableRowsComputerKingFileEn computer_king_file = _TranslationsVariablesTableRowsComputerKingFileEn._(_root);
+	late final _TranslationsVariablesTableRowsComputerKingRankEn computer_king_rank = _TranslationsVariablesTableRowsComputerKingRankEn._(_root);
+	late final _TranslationsVariablesTableRowsPieceFileEn piece_file = _TranslationsVariablesTableRowsPieceFileEn._(_root);
+	late final _TranslationsVariablesTableRowsPieceRankEn piece_rank = _TranslationsVariablesTableRowsPieceRankEn._(_root);
+	late final _TranslationsVariablesTableRowsApparitionIndexEn apparition_index = _TranslationsVariablesTableRowsApparitionIndexEn._(_root);
+	late final _TranslationsVariablesTableRowsFirstPieceFileEn first_piece_file = _TranslationsVariablesTableRowsFirstPieceFileEn._(_root);
+	late final _TranslationsVariablesTableRowsFirstPieceRankEn first_piece_rank = _TranslationsVariablesTableRowsFirstPieceRankEn._(_root);
+	late final _TranslationsVariablesTableRowsSecondPieceFileEn second_piece_file = _TranslationsVariablesTableRowsSecondPieceFileEn._(_root);
+	late final _TranslationsVariablesTableRowsSecondPieceRankEn second_piece_rank = _TranslationsVariablesTableRowsSecondPieceRankEn._(_root);
+}
+
+// Path: variables_table.rows.file_a
+class _TranslationsVariablesTableRowsFileAEn {
+	_TranslationsVariablesTableRowsFileAEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'A\' file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.file_b
+class _TranslationsVariablesTableRowsFileBEn {
+	_TranslationsVariablesTableRowsFileBEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'B\' file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.file_c
+class _TranslationsVariablesTableRowsFileCEn {
+	_TranslationsVariablesTableRowsFileCEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'C\' file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.file_d
+class _TranslationsVariablesTableRowsFileDEn {
+	_TranslationsVariablesTableRowsFileDEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'D\' file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.file_e
+class _TranslationsVariablesTableRowsFileEEn {
+	_TranslationsVariablesTableRowsFileEEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'E\' file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.file_f
+class _TranslationsVariablesTableRowsFileFEn {
+	_TranslationsVariablesTableRowsFileFEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'F\' file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.file_g
+class _TranslationsVariablesTableRowsFileGEn {
+	_TranslationsVariablesTableRowsFileGEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'G\' file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.file_h
+class _TranslationsVariablesTableRowsFileHEn {
+	_TranslationsVariablesTableRowsFileHEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'H\' file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.rank_1
+class _TranslationsVariablesTableRowsRank1En {
+	_TranslationsVariablesTableRowsRank1En._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'1\' rank';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.rank_2
+class _TranslationsVariablesTableRowsRank2En {
+	_TranslationsVariablesTableRowsRank2En._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'2\' rank';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.rank_3
+class _TranslationsVariablesTableRowsRank3En {
+	_TranslationsVariablesTableRowsRank3En._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'3\' rank';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.rank_4
+class _TranslationsVariablesTableRowsRank4En {
+	_TranslationsVariablesTableRowsRank4En._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'4\' rank';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.rank_5
+class _TranslationsVariablesTableRowsRank5En {
+	_TranslationsVariablesTableRowsRank5En._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'5\' rank';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.rank_6
+class _TranslationsVariablesTableRowsRank6En {
+	_TranslationsVariablesTableRowsRank6En._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'6\' rank';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.rank_7
+class _TranslationsVariablesTableRowsRank7En {
+	_TranslationsVariablesTableRowsRank7En._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'7\' rank';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.rank_8
+class _TranslationsVariablesTableRowsRank8En {
+	_TranslationsVariablesTableRowsRank8En._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The \'8\' rank';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.king_file
+class _TranslationsVariablesTableRowsKingFileEn {
+	_TranslationsVariablesTableRowsKingFileEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The king\'s file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.king_rank
+class _TranslationsVariablesTableRowsKingRankEn {
+	_TranslationsVariablesTableRowsKingRankEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The king\'s rank';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.player_has_white
+class _TranslationsVariablesTableRowsPlayerHasWhiteEn {
+	_TranslationsVariablesTableRowsPlayerHasWhiteEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'Does the player have white side ?';
+	String get type => 'Boolean';
+}
+
+// Path: variables_table.rows.player_king_file
+class _TranslationsVariablesTableRowsPlayerKingFileEn {
+	_TranslationsVariablesTableRowsPlayerKingFileEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The player\'s king\'s file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.player_king_rank
+class _TranslationsVariablesTableRowsPlayerKingRankEn {
+	_TranslationsVariablesTableRowsPlayerKingRankEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The player\'s king\'s rank';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.computer_king_file
+class _TranslationsVariablesTableRowsComputerKingFileEn {
+	_TranslationsVariablesTableRowsComputerKingFileEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The computer\'s king\'s file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.computer_king_rank
+class _TranslationsVariablesTableRowsComputerKingRankEn {
+	_TranslationsVariablesTableRowsComputerKingRankEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The computer\'s king\'s rank';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.piece_file
+class _TranslationsVariablesTableRowsPieceFileEn {
+	_TranslationsVariablesTableRowsPieceFileEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The piece\'s file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.piece_rank
+class _TranslationsVariablesTableRowsPieceRankEn {
+	_TranslationsVariablesTableRowsPieceRankEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The piece\'s rank';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.apparition_index
+class _TranslationsVariablesTableRowsApparitionIndexEn {
+	_TranslationsVariablesTableRowsApparitionIndexEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The index of order of apparition for the piece (starts at 0)';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.first_piece_file
+class _TranslationsVariablesTableRowsFirstPieceFileEn {
+	_TranslationsVariablesTableRowsFirstPieceFileEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The first piece\'s file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.first_piece_rank
+class _TranslationsVariablesTableRowsFirstPieceRankEn {
+	_TranslationsVariablesTableRowsFirstPieceRankEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The first piece\'s rank';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.second_piece_file
+class _TranslationsVariablesTableRowsSecondPieceFileEn {
+	_TranslationsVariablesTableRowsSecondPieceFileEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The second piece\'s file';
+	String get type => 'Integer';
+}
+
+// Path: variables_table.rows.second_piece_rank
+class _TranslationsVariablesTableRowsSecondPieceRankEn {
+	_TranslationsVariablesTableRowsSecondPieceRankEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get description => 'The second piece\'s rank';
+	String get type => 'Integer';
+}
+
 // Path: <root>
 class _TranslationsEs extends Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
@@ -574,7 +840,7 @@ class _TranslationsEs extends Translations {
 	@override late final _TranslationsTypeEs type = _TranslationsTypeEs._(_root);
 	@override late final _TranslationsSampleScriptEs sample_script = _TranslationsSampleScriptEs._(_root);
 	@override late final _TranslationsScriptEditorPageEs script_editor_page = _TranslationsScriptEditorPageEs._(_root);
-	@override late final _TranslationsSyntaxManualPageEs syntax_manual_page = _TranslationsSyntaxManualPageEs._(_root);
+	@override late final _TranslationsVariablesTableEs variables_table = _TranslationsVariablesTableEs._(_root);
 }
 
 // Path: misc
@@ -781,135 +1047,20 @@ class _TranslationsScriptEditorPageEs extends _TranslationsScriptEditorPageEn {
 	@override String get before_exit_message => '¿Desea salir de esta página y cancelar la edición del guione?';
 	@override String get exercise_creation_success => 'Ejercicio guardado';
 	@override String get exercise_creation_error => '¡No se pudo guardar el ejercicio!';
+	@override String get insert_variable_title => 'Insertar una predefinida variable';
+	@override String get choice_common_constants => 'Constantes comunes';
+	@override String get choice_script_variables => 'Variable para el tipo de código';
 }
 
-// Path: syntax_manual_page
-class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
-	_TranslationsSyntaxManualPageEs._(_TranslationsEs root) : this._root = root, super._(root);
+// Path: variables_table
+class _TranslationsVariablesTableEs extends _TranslationsVariablesTableEn {
+	_TranslationsVariablesTableEs._(_TranslationsEs root) : this._root = root, super._(root);
 
 	@override final _TranslationsEs _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Sintaxis de guiones';
-	@override String get table_header_variable_name => 'Nombre';
-	@override String get table_header_variable_type => 'Tipo';
-	@override String get table_header_variable_use => 'Uso';
-	@override String get scripts_goal => 'Objetivo de los guiones';
-	@override String get scripts_kinds => 'Tipos de guiones';
-	@override String get scripts_format => 'Formato de los guiones';
-	@override String get comments => 'Comentarios';
-	@override String get variables => 'Variables';
-	@override String get predefined_variables => 'Variables predefinidas';
-	@override String get int_expressions => 'Expresiones enteras';
-	@override String get bool_expressions => 'Expresiones booleanas';
-	@override String get scripts_goal_description => 'Un guione de generación de posiciones se divide en varios subprogramas, cada uno de su propio tipo y en un lenguaje personalizado, cuyas siguientes secciones te ayudarán a comprender.\n\nEl objetivo de un subprograma es comprobar que la posición generada cumple con todas sus restricciones.\n\nSi al menos una condición no se cumple, el algoritmo intentará \'arreglar\' la posición para que se cumplan todas las condiciones.';
-	@override String get scripts_kinds_head_description => 'Existen varios tipos de subprogramas, y la posición generada debe respetar todas las reglas de todos los subprogramas definidos.\n\nPor supuesto, también debe respetar las reglas estándar del ajedrez (por ejemplo, el rey del lado que no está en turno no puede estar en jaque).\n\n';
-	@override String get scripts_kinds_player_king_constraint_title => 'Restricción sobre rey del jugador\n\n';
-	@override String get scripts_kinds_player_king_constraint_description => 'Indica las restricciones de posicionamiento del rey del jugador (dado que el color del jugador se elegirá al azar).\n\n';
-	@override String get scripts_kinds_computer_king_constraint_title => 'Restricciones sobre rey de la computadora\n\n';
-	@override String get scripts_kinds_computer_king_constraint_description => 'Indica las restricciones de posicionamiento del rey de la computadora (dado que el color del jugador se elegirá al azar).\n\n';
-	@override String get scripts_kinds_kings_mutual_constraints_title => 'Restricciones mutuas de los reyes\n\n';
-	@override String get scripts_kinds_kings_mutual_constraints_description => 'Indica las restricciones de posicionamiento que ambos reyes deben respetar entre sí.\n\n';
-	@override String get scripts_kinds_other_pieces_count_constraints_title => 'Restricciones sobre número de otras piezas\n\n';
-	@override String get scripts_kinds_other_pieces_count_constraints_description => 'Indica las restricciones de conteo en piezas que no son reyes.\n\n';
-	@override String get scripts_kinds_other_pieces_global_constraints_title => 'Restricciones globales sobre otras piezas\n\n';
-	@override String get scripts_kinds_other_pieces_global_constraints_description => 'Indica las restricciones de posicionamiento para las piezas que no son reyes, para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n';
-	@override String get scripts_kinds_other_pieces_mutual_constraints_title => 'Restricciones mutuas sobre otras piezas\n\n';
-	@override String get scripts_kinds_other_pieces_mutual_constraints_description => 'Indica las restricciones de posicionamiento para las piezas que no son reyes, que deben respetar entre sí, dos a dos,para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n';
-	@override String get scripts_kinds_other_pieces_indexed_constraints_title => 'Restricciones sobre otras piezas por orden\n\n';
-	@override String get scripts_kinds_other_pieces_indexed_constraints_description => 'Indica las restricciones de posicionamiento para las piezas que no son reyes, que deben respetar dado su orden de aparición en el tablero de ajedrez, para cada par [tipo de pieza / ¿es una pieza de jugador?].\n\n';
-	@override String get scripts_format_head_description => 'Cada guione puede comenzar con una o varias declaraciones de creación de variables.\n\nPero la expresión final debe ser una declaración que devuelva una expresión booleana.\n\nEsta expresión de retorno será utilizada por el algoritmo para comprobar que la posición generada es correcta.\n\nPor favor tenga en cuenta que una declaración puede extenderse en varias líneas: terminan tan pronto como se encuentra el carácter \';\'.\n\nAdemás, tenga cuidado con la sensibilidad a las mayúsculas: las mayúsculas o minúsculas pueden marcar la diferencia.\n\n Finalmente, en cada guión, debes comprobar que no utilizas ninguna variable no declarada: aunque tu código sea aceptado, siempre fallará a la hora de generar la posición.\n\n ';
-	@override String get scripts_format_main_description_1 => 'Esta es la sintaxis para la expresión de retorno:\n\n';
-	@override String get scripts_format_code_section_1 => 'return [su expresión booleana];\n\n';
-	@override String get scripts_format_main_description_2 => 'Este es un ejemplo de guione simple :\n\n';
-	@override String get scripts_comments_head_description => 'Puedes usar dos formas de comentarios, que están inspirados en los comentarios del lenguaje C.\n\n';
-	@override String get scripts_comments_multiline_comments_title => 'Comentarios multilínea\n\n';
-	@override String get scripts_comments_multiline_comments_description => 'Un comentario multilínea comienza con \'/*\' y termina con \'*/\', y puede expandirse en varias líneas.';
-	@override String get scripts_comments_multiline_comments_sample => '/* Este es un \ncomentario multilínea. \n\nY puede expandirse en varias líneas.*/\n\n';
-	@override String get scripts_comments_single_line_comments_title => 'Comentarios de una sola línea\n\n';
-	@override String get scripts_comments_single_line_comments_description_1 => 'Un comentario de una sola línea solo puede estar en una sola línea y comienza con \'//\'.\n\nPor lo tanto, todos los caracteres siguientes de la línea dada son parte del comentario.\n\n';
-	@override String get scripts_comments_single_line_comments_sample_1 => '// Este es un comentario de una sola línea\n\n';
-	@override String get scripts_comments_single_line_comments_description_2 => 'Un comentario de una sola línea también puede seguir a una declaración en la misma línea.\n\n';
-	@override String get scripts_comments_single_line_comments_sample_2 => 'miVariableEntera := FileF; // Establece el valor de la columna F\n\n';
-	@override String get scripts_variables_head_description => 'Estos son aspectos a considerar sobre las variables:\n\n';
-	@override String get scripts_variables_name_rules_title => 'Reglas de nomenclatura\n\n';
-	@override String get scripts_variables_name_rules_description => 'Un nombre de variable debe comenzar con una letra (mayúscula o minúscula).\n\nLuego, los caracteres siguientes pueden ser letras (mayúsculas y/o minúsculas), dígitos o guiones bajos (\'_\').\n\nTen en cuenta también que no puedes usar el nombre de un valor predefinido o de una variable predefinida (ya que cada tipo de guione, como verás más adelante, tiene su propio conjunto de variables predefinidas).\n\n';
-	@override String get scripts_variables_creation_title => 'Instrucción de creación de variable\n\n';
-	@override String get scripts_variables_creation_description => 'Esta es la sintaxis para crear una variable entera o una variable booleana:\n\n';
-	@override String get scripts_variables_creation_format => '[identificador] := [expresión entera | expresión booleana];\n\n';
-	@override String get scripts_variables_creation_sample_head_text => 'Este es un ejemplo:\n\n';
-	@override String get scripts_variables_creation_sample_code => 'miFila :=  boolIf(reyesEnOposicion) then Rank4 else Rank1;\n\n';
-	@override String get scripts_predefined_variables_head_description => 'Las variables predefinidas dependen del tipo de la subrutina que estemos editando.\n\nEstas variables serán alimentadas por el algoritmo al comprobar la corrección de la posición generada.\n\nPor supuesto, no se puede nombrar una variable personal con uno de esos nombres.\n\nAdemás, ten en cuenta que los valores de las coordenadas del tablero de ajedrez tienen en cuenta la orientación del tablero.\n\n';
-	@override String get scripts_predefined_variables_single_king_constraints_title => 'Restricciones rey del jugador / Restricciones rey de la computadora\n\n';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_file => 'la columna que ha sido preparado para el rey';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_rank => 'el rango que ha sido preparado para el rey';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_player_has_white => '¿tiene el jugador las piezas blancas?';
-	@override String get scripts_predefined_variables_mutual_kings_constraints_title => '\n\nRestricciones mutuas de los reyes\n\n';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_file_player => 'la columna que ha sido preparado para el rey del jugador';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_rank_player => 'el rango que ha sido preparado para el rey del jugador';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_file_computer => 'la columna que ha sido preparado para el rey de la computadora';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_rank_computer => 'el rango que ha sido preparado para el rey de la computadora';
-	@override String get scripts_predefined_variables_other_pieces_global_constraints_title => '\n\nRestricciones globales sobre otras piezas\n\n';
-	@override String get scripts_predefined_variables_other_pieces_global_constraints_file => 'la columna que ha sido preparado para la pieza';
-	@override String get scripts_predefined_variables_other_pieces_global_constraints_rank => 'el rango que ha sido preparado para la pieza';
-	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_title => '\n\nRestricciones mutuas sobre otras piezas\n\n';
-	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_file_first => 'la columna que ha sido preparado para la primera pieza';
-	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_first => 'el rango que ha sido preparado para la primera pieza';
-	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_file_second => 'la columna que ha sido preparado para la segunda pieza';
-	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_second => 'la columna que ha sido preparado para la segunda pieza';
-	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_title => '\n\nRestricciones sobre otras piezas por orden\n\n';
-	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_apparition => 'el índice (empezando en 0) de aparición en el tablero';
-	@override String get int_expressions_head_description => 'Una expresión entera es simplemente una expresión cuyo valor final producido es un entero.\n\n';
-	@override String get int_expression_parenthesis_title => 'Paréntesis\n\n';
-	@override String get int_expression_parenthesis_description => 'Útil para aislar una expresión entera, de modo que se calcule con prioridad.\n\n';
-	@override String get int_expression_parenthesis_syntax => '([expresión entera])\n\n';
-	@override String get int_expression_parenthesis_sample_text => 'Este es un ejemplo:\n\n';
-	@override String get int_expression_conditional_title => 'Expresión condicional\n\n';
-	@override String get int_expression_conditional_description => 'Para producir expresiones condicionalmente.\n\nCuidado con la palabra clave \'numIf\'.\n\n';
-	@override String get int_expression_conditional_syntax => 'numIf([expresión booleana]) then [expresión entera] else [expresión entera]\n\n';
-	@override String get int_expression_absolute_title => 'Valor absoluto\n\n';
-	@override String get int_expression_absolute_description => 'Produce el valor absoluto de la expresión dada.\n\n';
-	@override String get int_expression_absolute_syntax => 'abs([expresión entera])\n\n';
-	@override String get int_expression_modulo_title => 'Expresión modulo\n\n';
-	@override String get int_expression_modulo_description => 'Produce el valor modular de la expresión dada.\n\nEs el resto de la división del primer operando por el segundo.\n\n';
-	@override String get int_expression_modulo_syntax => '[expresión entera] % [expresión entera]\n\n';
-	@override String get int_expression_modulo_sample_code => 'miVariableEntera % 2\n\n';
-	@override String get int_expression_arithmetic_title => 'Operadores aritméticos\n\n';
-	@override String get int_expression_arithmetic_description => 'Hay dos operadores aritméticos disponibles: \'+\' y \'-\'.\n\n';
-	@override String get int_expression_arithmetic_syntax_1 => '[expresión entera] + [expresión entera]\n';
-	@override String get int_expression_arithmetic_syntax_or => 'o\n';
-	@override String get int_expression_arithmetic_syntax_2 => '[expresión entera] - [expresión entera]\n\n';
-	@override String get int_expression_literal_title => 'Literales\n\n';
-	@override String get int_expression_literal_description => 'Puedes usar valores literales (1, 25, 150 por ejemplo).\n\n';
-	@override String get int_expression_variable_title => 'Variables\n\n';
-	@override String get int_expression_variable_description => 'Las variables enteras también son expresiones.\n\n';
-	@override String get int_expression_predefined_values_title => 'Valores predefinidos\n\n';
-	@override String get int_expression_predefined_values_description => 'Todos las subrutinas tienen los mismos valores enteros predefinidos (no puedes nombrar una variable con uno de esos nombres).\n\nTodos estos valores tienen en cuenta la orientación del tablero de ajedrez.\n\nEstos son los valores enteros predefinidos para las columnas del tablero de ajedrez: FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\nEstos son los valores enteros predefinidos para los rangos del tablero de ajedrez: Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n ';
-	@override String get bool_expressions_head_description => 'Una expresión booleana es simplemente una expresión cuyo valor final producido es un valor booleano.\n\nTenga en cuenta que no hay literales booleanos: no puede usar las palabras clave true o false.\n\n';
-	@override String get bool_expression_parenthesis_title => 'Paréntesis\n\n';
-	@override String get bool_expression_parenthesis_description => 'Útil para aislar una expresión booleana, de modo que se calcule con prioridad.\n\n';
-	@override String get bool_expression_parenthesis_syntax => '([expresión booleana])\n\n';
-	@override String get bool_expression_conditional_title => 'Expresión condicional\n\n';
-	@override String get bool_expression_conditional_description => 'Para producir expresiones condicionalmente.\n\nCuidado con la palabra clave \'boolIf\'.\n\n';
-	@override String get bool_expression_conditional_syntax => 'boolIf([expresión booleana]) then [expresión booleana] else [expresión booleana]\n\n';
-	@override String get bool_expression_variable_title => 'Variables\n\n';
-	@override String get bool_expression_variable_description => 'Booleanas variables también son expresiones.\n\n';
-	@override String get bool_expression_integer_comparation_title => 'Comparación de enteros\n\n';
-	@override String get bool_expression_integer_comparation_description => 'You can compare two integers values.\n\n\'==\' es para igualdad y \'!=\' es para diferencia.\n\n';
-	@override String get bool_expression_integer_comparation_syntax_1 => '[expresión entera] < [expresión entera]\n\n';
-	@override String get bool_expression_integer_comparation_syntax_2 => '[expresión entera] > [expresión entera]\n\n';
-	@override String get bool_expression_integer_comparation_syntax_3 => '[expresión entera] <= [expresión entera]\n\n';
-	@override String get bool_expression_integer_comparation_syntax_4 => '[expresión entera] >= [expresión entera]\n\n';
-	@override String get bool_expression_integer_comparation_syntax_5 => '[expresión entera] == [expresión entera]\n\n';
-	@override String get bool_expression_integer_comparation_syntax_6 => '[expresión entera] != [expresión entera]\n\n';
-	@override String get bool_expression_boolean_comparation_title => 'Comparación de booleanos\n\n';
-	@override String get bool_expression_boolean_comparation_description => 'Puedes comparar dos valores booleanos.\n\n\'<==>\' es para la igualdad y \'<!=>\' es para la diferencia.\n\n';
-	@override String get bool_expression_boolean_comparation_syntax_1 => '[expresión booleana] <==> [expresión booleana]\n\n';
-	@override String get bool_expression_boolean_comparation_syntax_2 => '[expresión booleana] <!=> [expresión booleana]\n\n';
-	@override String get bool_expression_logical_operators_title => 'Operadores lógicos\n\n';
-	@override String get bool_expression_logical_operators_description => 'Hay dos operadores lógicos disponibles.\n\n';
-	@override String get bool_expression_logical_operators_syntax_1 => '[expresión booleana] and [expresión booleana]\n\n';
-	@override String get bool_expression_logical_operators_syntax_2 => '[expresión booleana] or [expresión booleana]\n\n';
+	@override late final _TranslationsVariablesTableHeadersEs headers = _TranslationsVariablesTableHeadersEs._(_root);
+	@override late final _TranslationsVariablesTableRowsEs rows = _TranslationsVariablesTableRowsEs._(_root);
 }
 
 // Path: home.menu_buttons
@@ -951,6 +1102,387 @@ class _TranslationsScriptParserErrorSubstitutionsEs extends _TranslationsScriptP
 	@override String get integer => '#Entero#';
 }
 
+// Path: variables_table.headers
+class _TranslationsVariablesTableHeadersEs extends _TranslationsVariablesTableHeadersEn {
+	_TranslationsVariablesTableHeadersEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get variable_name => 'Nombre';
+	@override String get variable_description => 'Descripción';
+	@override String get variable_type => 'Tipo';
+}
+
+// Path: variables_table.rows
+class _TranslationsVariablesTableRowsEs extends _TranslationsVariablesTableRowsEn {
+	_TranslationsVariablesTableRowsEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsVariablesTableRowsFileAEs file_a = _TranslationsVariablesTableRowsFileAEs._(_root);
+	@override late final _TranslationsVariablesTableRowsFileBEs file_b = _TranslationsVariablesTableRowsFileBEs._(_root);
+	@override late final _TranslationsVariablesTableRowsFileCEs file_c = _TranslationsVariablesTableRowsFileCEs._(_root);
+	@override late final _TranslationsVariablesTableRowsFileDEs file_d = _TranslationsVariablesTableRowsFileDEs._(_root);
+	@override late final _TranslationsVariablesTableRowsFileEEs file_e = _TranslationsVariablesTableRowsFileEEs._(_root);
+	@override late final _TranslationsVariablesTableRowsFileFEs file_f = _TranslationsVariablesTableRowsFileFEs._(_root);
+	@override late final _TranslationsVariablesTableRowsFileGEs file_g = _TranslationsVariablesTableRowsFileGEs._(_root);
+	@override late final _TranslationsVariablesTableRowsFileHEs file_h = _TranslationsVariablesTableRowsFileHEs._(_root);
+	@override late final _TranslationsVariablesTableRowsRank1Es rank_1 = _TranslationsVariablesTableRowsRank1Es._(_root);
+	@override late final _TranslationsVariablesTableRowsRank2Es rank_2 = _TranslationsVariablesTableRowsRank2Es._(_root);
+	@override late final _TranslationsVariablesTableRowsRank3Es rank_3 = _TranslationsVariablesTableRowsRank3Es._(_root);
+	@override late final _TranslationsVariablesTableRowsRank4Es rank_4 = _TranslationsVariablesTableRowsRank4Es._(_root);
+	@override late final _TranslationsVariablesTableRowsRank5Es rank_5 = _TranslationsVariablesTableRowsRank5Es._(_root);
+	@override late final _TranslationsVariablesTableRowsRank6Es rank_6 = _TranslationsVariablesTableRowsRank6Es._(_root);
+	@override late final _TranslationsVariablesTableRowsRank7Es rank_7 = _TranslationsVariablesTableRowsRank7Es._(_root);
+	@override late final _TranslationsVariablesTableRowsRank8Es rank_8 = _TranslationsVariablesTableRowsRank8Es._(_root);
+	@override late final _TranslationsVariablesTableRowsKingFileEs king_file = _TranslationsVariablesTableRowsKingFileEs._(_root);
+	@override late final _TranslationsVariablesTableRowsKingRankEs king_rank = _TranslationsVariablesTableRowsKingRankEs._(_root);
+	@override late final _TranslationsVariablesTableRowsPlayerHasWhiteEs player_has_white = _TranslationsVariablesTableRowsPlayerHasWhiteEs._(_root);
+	@override late final _TranslationsVariablesTableRowsPlayerKingFileEs player_king_file = _TranslationsVariablesTableRowsPlayerKingFileEs._(_root);
+	@override late final _TranslationsVariablesTableRowsPlayerKingRankEs player_king_rank = _TranslationsVariablesTableRowsPlayerKingRankEs._(_root);
+	@override late final _TranslationsVariablesTableRowsComputerKingFileEs computer_king_file = _TranslationsVariablesTableRowsComputerKingFileEs._(_root);
+	@override late final _TranslationsVariablesTableRowsComputerKingRankEs computer_king_rank = _TranslationsVariablesTableRowsComputerKingRankEs._(_root);
+	@override late final _TranslationsVariablesTableRowsPieceFileEs piece_file = _TranslationsVariablesTableRowsPieceFileEs._(_root);
+	@override late final _TranslationsVariablesTableRowsPieceRankEs piece_rank = _TranslationsVariablesTableRowsPieceRankEs._(_root);
+	@override late final _TranslationsVariablesTableRowsApparitionIndexEs apparition_index = _TranslationsVariablesTableRowsApparitionIndexEs._(_root);
+	@override late final _TranslationsVariablesTableRowsFirstPieceFileEs first_piece_file = _TranslationsVariablesTableRowsFirstPieceFileEs._(_root);
+	@override late final _TranslationsVariablesTableRowsFirstPieceRankEs first_piece_rank = _TranslationsVariablesTableRowsFirstPieceRankEs._(_root);
+	@override late final _TranslationsVariablesTableRowsSecondPieceFileEs second_piece_file = _TranslationsVariablesTableRowsSecondPieceFileEs._(_root);
+	@override late final _TranslationsVariablesTableRowsSecondPieceRankEs second_piece_rank = _TranslationsVariablesTableRowsSecondPieceRankEs._(_root);
+}
+
+// Path: variables_table.rows.file_a
+class _TranslationsVariablesTableRowsFileAEs extends _TranslationsVariablesTableRowsFileAEn {
+	_TranslationsVariablesTableRowsFileAEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna \'A\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.file_b
+class _TranslationsVariablesTableRowsFileBEs extends _TranslationsVariablesTableRowsFileBEn {
+	_TranslationsVariablesTableRowsFileBEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna \'B\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.file_c
+class _TranslationsVariablesTableRowsFileCEs extends _TranslationsVariablesTableRowsFileCEn {
+	_TranslationsVariablesTableRowsFileCEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna \'C\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.file_d
+class _TranslationsVariablesTableRowsFileDEs extends _TranslationsVariablesTableRowsFileDEn {
+	_TranslationsVariablesTableRowsFileDEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna \'D\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.file_e
+class _TranslationsVariablesTableRowsFileEEs extends _TranslationsVariablesTableRowsFileEEn {
+	_TranslationsVariablesTableRowsFileEEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna \'E\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.file_f
+class _TranslationsVariablesTableRowsFileFEs extends _TranslationsVariablesTableRowsFileFEn {
+	_TranslationsVariablesTableRowsFileFEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna \'F\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.file_g
+class _TranslationsVariablesTableRowsFileGEs extends _TranslationsVariablesTableRowsFileGEn {
+	_TranslationsVariablesTableRowsFileGEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna \'G\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.file_h
+class _TranslationsVariablesTableRowsFileHEs extends _TranslationsVariablesTableRowsFileHEn {
+	_TranslationsVariablesTableRowsFileHEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna \'H\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.rank_1
+class _TranslationsVariablesTableRowsRank1Es extends _TranslationsVariablesTableRowsRank1En {
+	_TranslationsVariablesTableRowsRank1Es._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango \'1\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.rank_2
+class _TranslationsVariablesTableRowsRank2Es extends _TranslationsVariablesTableRowsRank2En {
+	_TranslationsVariablesTableRowsRank2Es._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango \'2\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.rank_3
+class _TranslationsVariablesTableRowsRank3Es extends _TranslationsVariablesTableRowsRank3En {
+	_TranslationsVariablesTableRowsRank3Es._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango \'3\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.rank_4
+class _TranslationsVariablesTableRowsRank4Es extends _TranslationsVariablesTableRowsRank4En {
+	_TranslationsVariablesTableRowsRank4Es._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango \'4\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.rank_5
+class _TranslationsVariablesTableRowsRank5Es extends _TranslationsVariablesTableRowsRank5En {
+	_TranslationsVariablesTableRowsRank5Es._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango \'5\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.rank_6
+class _TranslationsVariablesTableRowsRank6Es extends _TranslationsVariablesTableRowsRank6En {
+	_TranslationsVariablesTableRowsRank6Es._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango \'6\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.rank_7
+class _TranslationsVariablesTableRowsRank7Es extends _TranslationsVariablesTableRowsRank7En {
+	_TranslationsVariablesTableRowsRank7Es._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango \'7\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.rank_8
+class _TranslationsVariablesTableRowsRank8Es extends _TranslationsVariablesTableRowsRank8En {
+	_TranslationsVariablesTableRowsRank8Es._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango \'8\'';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.king_file
+class _TranslationsVariablesTableRowsKingFileEs extends _TranslationsVariablesTableRowsKingFileEn {
+	_TranslationsVariablesTableRowsKingFileEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna del rey';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.king_rank
+class _TranslationsVariablesTableRowsKingRankEs extends _TranslationsVariablesTableRowsKingRankEn {
+	_TranslationsVariablesTableRowsKingRankEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango del rey';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.player_has_white
+class _TranslationsVariablesTableRowsPlayerHasWhiteEs extends _TranslationsVariablesTableRowsPlayerHasWhiteEn {
+	_TranslationsVariablesTableRowsPlayerHasWhiteEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => '¿El jugador tiene lado blanco?';
+	@override String get type => 'Booleano';
+}
+
+// Path: variables_table.rows.player_king_file
+class _TranslationsVariablesTableRowsPlayerKingFileEs extends _TranslationsVariablesTableRowsPlayerKingFileEn {
+	_TranslationsVariablesTableRowsPlayerKingFileEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna del rey del jugador';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.player_king_rank
+class _TranslationsVariablesTableRowsPlayerKingRankEs extends _TranslationsVariablesTableRowsPlayerKingRankEn {
+	_TranslationsVariablesTableRowsPlayerKingRankEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango del rey del jugador';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.computer_king_file
+class _TranslationsVariablesTableRowsComputerKingFileEs extends _TranslationsVariablesTableRowsComputerKingFileEn {
+	_TranslationsVariablesTableRowsComputerKingFileEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna del rey de la computadora';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.computer_king_rank
+class _TranslationsVariablesTableRowsComputerKingRankEs extends _TranslationsVariablesTableRowsComputerKingRankEn {
+	_TranslationsVariablesTableRowsComputerKingRankEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango del rey de la computadora';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.piece_file
+class _TranslationsVariablesTableRowsPieceFileEs extends _TranslationsVariablesTableRowsPieceFileEn {
+	_TranslationsVariablesTableRowsPieceFileEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna de la pieza';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.piece_rank
+class _TranslationsVariablesTableRowsPieceRankEs extends _TranslationsVariablesTableRowsPieceRankEn {
+	_TranslationsVariablesTableRowsPieceRankEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango de la pieza';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.apparition_index
+class _TranslationsVariablesTableRowsApparitionIndexEs extends _TranslationsVariablesTableRowsApparitionIndexEn {
+	_TranslationsVariablesTableRowsApparitionIndexEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El índice del orden de aparición de la pieza (comienza en 0)';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.first_piece_file
+class _TranslationsVariablesTableRowsFirstPieceFileEs extends _TranslationsVariablesTableRowsFirstPieceFileEn {
+	_TranslationsVariablesTableRowsFirstPieceFileEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna de la primera pieza';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.first_piece_rank
+class _TranslationsVariablesTableRowsFirstPieceRankEs extends _TranslationsVariablesTableRowsFirstPieceRankEn {
+	_TranslationsVariablesTableRowsFirstPieceRankEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango de la primera pieza';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.second_piece_file
+class _TranslationsVariablesTableRowsSecondPieceFileEs extends _TranslationsVariablesTableRowsSecondPieceFileEn {
+	_TranslationsVariablesTableRowsSecondPieceFileEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La columna de la segunda pieza';
+	@override String get type => 'Entero';
+}
+
+// Path: variables_table.rows.second_piece_rank
+class _TranslationsVariablesTableRowsSecondPieceRankEs extends _TranslationsVariablesTableRowsSecondPieceRankEn {
+	_TranslationsVariablesTableRowsSecondPieceRankEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'El rango de la segunda pieza';
+	@override String get type => 'Entero';
+}
+
 // Path: <root>
 class _TranslationsFr extends Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
@@ -982,7 +1514,7 @@ class _TranslationsFr extends Translations {
 	@override late final _TranslationsTypeFr type = _TranslationsTypeFr._(_root);
 	@override late final _TranslationsSampleScriptFr sample_script = _TranslationsSampleScriptFr._(_root);
 	@override late final _TranslationsScriptEditorPageFr script_editor_page = _TranslationsScriptEditorPageFr._(_root);
-	@override late final _TranslationsSyntaxManualPageFr syntax_manual_page = _TranslationsSyntaxManualPageFr._(_root);
+	@override late final _TranslationsVariablesTableFr variables_table = _TranslationsVariablesTableFr._(_root);
 }
 
 // Path: misc
@@ -1189,135 +1721,20 @@ class _TranslationsScriptEditorPageFr extends _TranslationsScriptEditorPageEn {
 	@override String get before_exit_message => 'Souhaitez-vous quitter la page et annuler l\'édition du script ?';
 	@override String get exercise_creation_success => 'Exercise sauvegardé';
 	@override String get exercise_creation_error => 'Échec de sauvegarde de l\'exercice !';
+	@override String get insert_variable_title => 'Insérer une variable prédéfinie';
+	@override String get choice_common_constants => 'Constantes communes';
+	@override String get choice_script_variables => 'Variables pour le type de script';
 }
 
-// Path: syntax_manual_page
-class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
-	_TranslationsSyntaxManualPageFr._(_TranslationsFr root) : this._root = root, super._(root);
+// Path: variables_table
+class _TranslationsVariablesTableFr extends _TranslationsVariablesTableEn {
+	_TranslationsVariablesTableFr._(_TranslationsFr root) : this._root = root, super._(root);
 
 	@override final _TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Syntaxe des scripts';
-	@override String get table_header_variable_name => 'Nom';
-	@override String get table_header_variable_type => 'Type';
-	@override String get table_header_variable_use => 'Utilisation';
-	@override String get scripts_goal => 'Objectif des scripts';
-	@override String get scripts_kinds => 'Types de scripts';
-	@override String get scripts_format => 'Format des scripts';
-	@override String get comments => 'Commentaires';
-	@override String get variables => 'Variables';
-	@override String get predefined_variables => 'Variables prédéfinies';
-	@override String get int_expressions => 'Expressions entières';
-	@override String get bool_expressions => 'Expressions booléennes';
-	@override String get scripts_goal_description => 'Un script de génération de position est composé de plusieurs sous-scripts, chacun étant de son propre type et dans un langage personnalisé, que les prochaines sections vous aideront à comprendre.\n\nLe but d\'un sous-script est de vérifier que la position générée respecte toutes ses contraintes.\n\nSi au moins une des conditions n\'est pas respectée, alors l\'algorithme tentera de \'fixer\' la position de telle manière que toutes les contraintes soient respectéees.';
-	@override String get scripts_kinds_head_description => 'Il y a plusieurs types de sous-scripts, et toutes les règles définies dans l\'ensemble des sous-scripts doivent être respectées par la position générée.\n\nBien sûr, elle doit aussi respecter les règles standards (par exemple : le roi qui n\'est pas au trait ne doit pas être en échec).\n\n';
-	@override String get scripts_kinds_player_king_constraint_title => 'Contraintes sur le roi du joueur\n\n';
-	@override String get scripts_kinds_player_king_constraint_description => 'Renseigne sur les contraintes d\'emplacement du roi du joueur (sachant que la couleur du joueur est tirée aléatoirement).\n\n';
-	@override String get scripts_kinds_computer_king_constraint_title => 'Contraintes sur le roi de l\'ordinateur\n\n';
-	@override String get scripts_kinds_computer_king_constraint_description => 'Renseigne sur les contraintes d\'emplacement du roi de l\'ordinateur (sachant que la couleur du joueur est tirée aléatoirement).\n\n';
-	@override String get scripts_kinds_kings_mutual_constraints_title => 'Contraintes mutuelles entre rois\n\n';
-	@override String get scripts_kinds_kings_mutual_constraints_description => 'Renseigne sur les contraintes de positionnement que les deux rois doivent respecter entre eux.\n\n';
-	@override String get scripts_kinds_other_pieces_count_constraints_title => 'Contraintes sur le compte des autres pièces\n\n';
-	@override String get scripts_kinds_other_pieces_count_constraints_description => 'Renseigne sur les contraintes sur le compte des pièces autres que les rois.\n\n';
-	@override String get scripts_kinds_other_pieces_global_constraints_title => 'Contraintes globales sur les autres pièces\n\n';
-	@override String get scripts_kinds_other_pieces_global_constraints_description => 'Renseigne sur les contraintes de positionnement des pièces autres que les rois, pour chaque couple [type de pièce / est-ce une pièce du joueur ?].\n\n';
-	@override String get scripts_kinds_other_pieces_mutual_constraints_title => 'Contraintes mutuelles sur les autres pièces\n\n';
-	@override String get scripts_kinds_other_pieces_mutual_constraints_description => 'Renseigne sur les contraintes de positionnement des pièces autres que les rois, qu\'elles doivent respecter entre elles, deux par deux, pour chaque couple [type de pièce / est-ce une pièce d\'un joueur ?].\n\n';
-	@override String get scripts_kinds_other_pieces_indexed_constraints_title => 'Contraintes des autres pièces par ordre\n\n';
-	@override String get scripts_kinds_other_pieces_indexed_constraints_description => 'Renseigne sur les contraintes de positionnement des pièces autres que les rois, qu\'elles doivent respecter en fonction de l\'ordre d\'apparition sur l\'échiquier, pour chaque couple [type de pièce / est-ce une pièce du joueur ?].\n\n';
-	@override String get scripts_format_head_description => 'Chaque script peut commencer par une ou plusieures instructions de création de variables.\n\nMais au final la dernière instruction doit retourner une expression booléenne.\n\nCette expression de retour sera utilisée par l\'algorithme afin de vérifier que la position générée est correcte.\n\nVeuillez aussi prendre en compte le fait qu\'une instruction peut s\'étendre sur plusieurs lignes : elles se terminent dès le caractère \';\'.\n\nAussi, faites attention à la casse : les majuscules ou les minuscules peuvent faire la différence.\n\n Enfin, vous devriez vérifier que dans chaque sous-script, vous n\'utilisez pas de variable non déclarée : bien que le code soit accepté, il ne pourra jamais générer de position.\n\n';
-	@override String get scripts_format_main_description_1 => 'Voici la syntaxe pour l\'expression de retour :\n\n';
-	@override String get scripts_format_code_section_1 => 'return [votre expression booléenne];\n\n';
-	@override String get scripts_format_main_description_2 => 'Voici un exemple simple de script :\n\n';
-	@override String get scripts_comments_head_description => 'Vous pouvez utiliser deux types de commentaires, qui sont directement inspirés du langage C.\n\n';
-	@override String get scripts_comments_multiline_comments_title => 'Commentaires multi-lignes\n\n';
-	@override String get scripts_comments_multiline_comments_description => 'Un commentaire multi-lignes commence par \'/*\' et finit par \'*/\', et peut s\'étendre sur plusieurs lignes.\n\n';
-	@override String get scripts_comments_multiline_comments_sample => '/* Ceci est un\ncommentaire multi-lignes.\n\nEt peut s\'étendre sur plusieurs lignes.*/\n\n';
-	@override String get scripts_comments_single_line_comments_title => 'Commentaires mono-lignes\n\n';
-	@override String get scripts_comments_single_line_comments_description_1 => 'Un commentaire mono-ligne peut seulement se situer sur une seule ligne, et commence par \'//\'.\n\nPar conséquent, tous les caractères suivants de cette ligne font partie du commentaire.\n\n';
-	@override String get scripts_comments_single_line_comments_sample_1 => '// Ceci est un commentaire mono-ligne\n\n';
-	@override String get scripts_comments_single_line_comments_description_2 => 'Un commentaire mono-ligne peut aussi suivre une déclaration sur la même ligne.\n\n';
-	@override String get scripts_comments_single_line_comments_sample_2 => 'maVariableEntiere := FileF; // Fixe à la valeur de la colonne F\n\n';
-	@override String get scripts_variables_head_description => 'Voici certaines choses à considérer à propos des variables :\n\n';
-	@override String get scripts_variables_name_rules_title => 'Règles de nommage\n\n';
-	@override String get scripts_variables_name_rules_description => 'Un nom de variable doit commencer par une lettre (soit majuscule, soit minuscule).\n\nEnsuite les caractères suivant peuvent être des lettres (en majuscule et/ou en minuscules), des chiffres ou des underscores (\'_\').\n\nAussi gardez à l\'esprit que vous ne pouvez pas définir au nom d\'une valeur prédéfinie ou d\'une variable prédéfinie (sachant que chaque type de script, comme vous le verrez plus tard, dispose de son propre ensemble de variables prédéfinies).\n\n';
-	@override String get scripts_variables_creation_title => 'Instruction de création de variables\n\n';
-	@override String get scripts_variables_creation_description => 'Voici la syntaxe pour créér une variable entière ou booléenne :\n\n';
-	@override String get scripts_variables_creation_format => '[identifiant] := [expression entière | expression booléenne];\n\n';
-	@override String get scripts_variables_creation_sample_head_text => 'À titre d\'exemple :\n\n';
-	@override String get scripts_variables_creation_sample_code => 'maRangee :=  boolIf(roisEnOpposition) then Rank4 else Rank1;\n\n';
-	@override String get scripts_predefined_variables_head_description => 'L\'ensemble des variables prédéfinies dépendent du type de script en cours d\'édition.\n\nCes variables seront alimentées par l\'algorithme lors de la vérification de la validité de la position.\n\nBien sûr, vous ne pouvez pas nommer une variable personnelle avec un de ces noms.\n\nEnfin, ne perdez pas de vue que les variables de coordonnées prenent en compte l\'orientation de l\'échiquier.\n\n';
-	@override String get scripts_predefined_variables_single_king_constraints_title => 'Contraintes sur le roi du joueur / Contraintes sur le roi de l\'ordinateur\n\n';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_file => 'la colonne qui a été choisie pour le roi';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_rank => 'la rangée qui a été choisie pour le roi';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_player_has_white => 'le joueur dispose-t-il des pièces blanches ?';
-	@override String get scripts_predefined_variables_mutual_kings_constraints_title => '\n\nContraintes mutuelles entre les rois\n\n';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_file_player => 'la colonne qui a été choisie pour le roi du joueur';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_rank_player => 'la rangée qui a été choisie pour le roi du joueur';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_file_computer => 'la colonne qui a été choisie pour le roi de l\'ordinateur';
-	@override String get scripts_predefined_variables_single_king_constraints_variable_rank_computer => 'la rangée qui a été choisie pour le roi de l\'ordinateur';
-	@override String get scripts_predefined_variables_other_pieces_global_constraints_title => '\n\nContraintes globales des autres pièces\n\n';
-	@override String get scripts_predefined_variables_other_pieces_global_constraints_file => 'la colonne qui a été choisie pour la pièce';
-	@override String get scripts_predefined_variables_other_pieces_global_constraints_rank => 'la rangée qui a été choisie pour la pièce';
-	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_title => '\n\nContraintes mutuelles des autres pièces\n\n';
-	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_file_first => 'la colonne qui a été choisie pour la première pièce';
-	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_first => 'la rangée qui a été choisie pour la première pièce';
-	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_file_second => 'la colonne qui a été choisie pour la deuxième pièce';
-	@override String get scripts_predefined_variables_other_pieces_mutual_constraints_rank_second => 'la rangée qui a été choisie pour la deuxième pièce';
-	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_title => '\n\nContraintes des autres pièces par ordre\n\n';
-	@override String get scripts_predefined_variables_other_pieces_indexed_constraints_apparition => 'l\'index (démarrant à 0) d\'apparition sur l\'échiquier';
-	@override String get int_expressions_head_description => 'Une expression entière est simplement une expression dont la valeur finalement produite est un entier.\n\n';
-	@override String get int_expression_parenthesis_title => 'Parenthèses\n\n';
-	@override String get int_expression_parenthesis_description => 'Utile pour isoler une expression entière, de sorte qu\'elle soit calculée en priorité.\n\n';
-	@override String get int_expression_parenthesis_syntax => '([expression entière])\n\n';
-	@override String get int_expression_parenthesis_sample_text => 'À titre d\'exemple :\n\n';
-	@override String get int_expression_conditional_title => 'Expression conditionnelle\n\n';
-	@override String get int_expression_conditional_description => 'Pour produire une expression de manière conditionnelle.\n\nAttention au mot-clé \'numIf\'.\n\n';
-	@override String get int_expression_conditional_syntax => 'numIf([expression booléenne]) then [expression entière] else [expression entière]\n\n';
-	@override String get int_expression_absolute_title => 'Valeur absolue\n\n';
-	@override String get int_expression_absolute_description => 'Produit la valeur absolue de l\'expression donnée.\n\n';
-	@override String get int_expression_absolute_syntax => 'abs([expression entière])\n\n';
-	@override String get int_expression_modulo_title => 'Expression modulo\n\n';
-	@override String get int_expression_modulo_description => 'Produit la valeur modulo de l\'expression donnée.\n\nC\'est le reste de la division de la première opérande par la seconde.\n\n';
-	@override String get int_expression_modulo_syntax => '[expression entière] % [expression entière]\n\n';
-	@override String get int_expression_modulo_sample_code => 'maVariableEntiere % 2\n\n';
-	@override String get int_expression_arithmetic_title => 'Opérateurs arithmétiques\n\n';
-	@override String get int_expression_arithmetic_description => 'Il y a deux opérateurs arithmétiques disponibles: \'+\' et \'-\'.\n\n';
-	@override String get int_expression_arithmetic_syntax_1 => '[expression entière] + [expression entière]\n';
-	@override String get int_expression_arithmetic_syntax_or => 'ou\n';
-	@override String get int_expression_arithmetic_syntax_2 => '[expression entière] - [expression entière]\n\n';
-	@override String get int_expression_literal_title => 'Litéraux\n\n';
-	@override String get int_expression_literal_description => 'Vous pouvez utiliser des valeurs litérales (1, 25, 150 par exemple).\n\n';
-	@override String get int_expression_variable_title => 'Variables\n\n';
-	@override String get int_expression_variable_description => 'Les variables entières sont également des expressions.\n\n';
-	@override String get int_expression_predefined_values_title => 'Valeurs prédéfinies\n\n';
-	@override String get int_expression_predefined_values_description => 'Tous les sous-scripts ont les même valeurs prédéfinies (vous ne pouvez pas nommer une variable avec un de leurs noms).\n\nToutes ces valeurs prennent en compte l\'orientation de l\'échiquier.\n\nVoici les valeurs entières prédéfines pour les colonnes de l\'échiquier : FileA, FileB, FileC, FileD, FileE, FileF, FileG, FileH.\n\nVoici les valeurs entières prédéfines pour les rangées de l\'échiquier : Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8.\n\n ';
-	@override String get bool_expressions_head_description => 'Une expression booléenne est simplement un expression dont la valeur finale produite est un booléen.\n\nNotez qu\'il n\'y a pas de littéral booléen: vous ne pouvez pas utiliser les mots-clés true et false.\n\n';
-	@override String get bool_expression_parenthesis_title => 'Parenthèses\n\n';
-	@override String get bool_expression_parenthesis_description => 'Utile pour isoler une expression entière, de sorte qu\'elle sera calculée en priorité.\n\n';
-	@override String get bool_expression_parenthesis_syntax => '([expression booléenne])\n\n';
-	@override String get bool_expression_conditional_title => 'Expression conditionnelle\n\n';
-	@override String get bool_expression_conditional_description => 'Pour produire une expression de manière conditionnelle.\n\nAttention au mot-clé \'boolIf\'.\n\n';
-	@override String get bool_expression_conditional_syntax => 'boolIf([expression booléenne]) then [expression booléenne] else [expression booléenne]\n\n';
-	@override String get bool_expression_variable_title => 'Variables\n\n';
-	@override String get bool_expression_variable_description => 'Les variables booléennes sont également des expressions.\n\n';
-	@override String get bool_expression_integer_comparation_title => 'Comparaison d\'entiers\n\n';
-	@override String get bool_expression_integer_comparation_description => 'Vous pouvez comparer deux valeurs entières.\n\n\'==\' pour l\'égalité et \'!=\' pour la différence.\n\n';
-	@override String get bool_expression_integer_comparation_syntax_1 => '[expression entière] < [expression entière]\n\n';
-	@override String get bool_expression_integer_comparation_syntax_2 => '[expression entière] > [expression entière]\n\n';
-	@override String get bool_expression_integer_comparation_syntax_3 => '[expression entière] <= [expression entière]\n\n';
-	@override String get bool_expression_integer_comparation_syntax_4 => '[expression entière] >= [expression entière]\n\n';
-	@override String get bool_expression_integer_comparation_syntax_5 => '[expression entière] == [expression entière]\n\n';
-	@override String get bool_expression_integer_comparation_syntax_6 => '[expression entière] != [expression entière]\n\n';
-	@override String get bool_expression_boolean_comparation_title => 'Comparaison de booléens\n\n';
-	@override String get bool_expression_boolean_comparation_description => 'Vous pouvez comparer deux valeurs entières.\n\n\'<==>\' est pour l\'égalité and \'<!=>\' est pour la différence.\n\n';
-	@override String get bool_expression_boolean_comparation_syntax_1 => '[expression booléenne] <==> [expression booléenne]\n\n';
-	@override String get bool_expression_boolean_comparation_syntax_2 => '[expression booléenne] <!=> [expression booléenne]\n\n';
-	@override String get bool_expression_logical_operators_title => 'Opérateurs logiques\n\n';
-	@override String get bool_expression_logical_operators_description => 'Il y a deux opérateurs logiques disponibles.\n\n';
-	@override String get bool_expression_logical_operators_syntax_1 => '[expression booléenne] and [expression booléenne]\n\n';
-	@override String get bool_expression_logical_operators_syntax_2 => '[expression booléenne] or [expression booléenne]\n\n';
+	@override late final _TranslationsVariablesTableHeadersFr headers = _TranslationsVariablesTableHeadersFr._(_root);
+	@override late final _TranslationsVariablesTableRowsFr rows = _TranslationsVariablesTableRowsFr._(_root);
 }
 
 // Path: home.menu_buttons
@@ -1357,4 +1774,385 @@ class _TranslationsScriptParserErrorSubstitutionsFr extends _TranslationsScriptP
 	@override String get eof => '#FinDeFichier#';
 	@override String get variable_name => '#NomDeVariable#';
 	@override String get integer => '#Entier#';
+}
+
+// Path: variables_table.headers
+class _TranslationsVariablesTableHeadersFr extends _TranslationsVariablesTableHeadersEn {
+	_TranslationsVariablesTableHeadersFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get variable_name => 'Nom';
+	@override String get variable_description => 'Description';
+	@override String get variable_type => 'Type';
+}
+
+// Path: variables_table.rows
+class _TranslationsVariablesTableRowsFr extends _TranslationsVariablesTableRowsEn {
+	_TranslationsVariablesTableRowsFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsVariablesTableRowsFileAFr file_a = _TranslationsVariablesTableRowsFileAFr._(_root);
+	@override late final _TranslationsVariablesTableRowsFileBFr file_b = _TranslationsVariablesTableRowsFileBFr._(_root);
+	@override late final _TranslationsVariablesTableRowsFileCFr file_c = _TranslationsVariablesTableRowsFileCFr._(_root);
+	@override late final _TranslationsVariablesTableRowsFileDFr file_d = _TranslationsVariablesTableRowsFileDFr._(_root);
+	@override late final _TranslationsVariablesTableRowsFileEFr file_e = _TranslationsVariablesTableRowsFileEFr._(_root);
+	@override late final _TranslationsVariablesTableRowsFileFFr file_f = _TranslationsVariablesTableRowsFileFFr._(_root);
+	@override late final _TranslationsVariablesTableRowsFileGFr file_g = _TranslationsVariablesTableRowsFileGFr._(_root);
+	@override late final _TranslationsVariablesTableRowsFileHFr file_h = _TranslationsVariablesTableRowsFileHFr._(_root);
+	@override late final _TranslationsVariablesTableRowsRank1Fr rank_1 = _TranslationsVariablesTableRowsRank1Fr._(_root);
+	@override late final _TranslationsVariablesTableRowsRank2Fr rank_2 = _TranslationsVariablesTableRowsRank2Fr._(_root);
+	@override late final _TranslationsVariablesTableRowsRank3Fr rank_3 = _TranslationsVariablesTableRowsRank3Fr._(_root);
+	@override late final _TranslationsVariablesTableRowsRank4Fr rank_4 = _TranslationsVariablesTableRowsRank4Fr._(_root);
+	@override late final _TranslationsVariablesTableRowsRank5Fr rank_5 = _TranslationsVariablesTableRowsRank5Fr._(_root);
+	@override late final _TranslationsVariablesTableRowsRank6Fr rank_6 = _TranslationsVariablesTableRowsRank6Fr._(_root);
+	@override late final _TranslationsVariablesTableRowsRank7Fr rank_7 = _TranslationsVariablesTableRowsRank7Fr._(_root);
+	@override late final _TranslationsVariablesTableRowsRank8Fr rank_8 = _TranslationsVariablesTableRowsRank8Fr._(_root);
+	@override late final _TranslationsVariablesTableRowsKingFileFr king_file = _TranslationsVariablesTableRowsKingFileFr._(_root);
+	@override late final _TranslationsVariablesTableRowsKingRankFr king_rank = _TranslationsVariablesTableRowsKingRankFr._(_root);
+	@override late final _TranslationsVariablesTableRowsPlayerHasWhiteFr player_has_white = _TranslationsVariablesTableRowsPlayerHasWhiteFr._(_root);
+	@override late final _TranslationsVariablesTableRowsPlayerKingFileFr player_king_file = _TranslationsVariablesTableRowsPlayerKingFileFr._(_root);
+	@override late final _TranslationsVariablesTableRowsPlayerKingRankFr player_king_rank = _TranslationsVariablesTableRowsPlayerKingRankFr._(_root);
+	@override late final _TranslationsVariablesTableRowsComputerKingFileFr computer_king_file = _TranslationsVariablesTableRowsComputerKingFileFr._(_root);
+	@override late final _TranslationsVariablesTableRowsComputerKingRankFr computer_king_rank = _TranslationsVariablesTableRowsComputerKingRankFr._(_root);
+	@override late final _TranslationsVariablesTableRowsPieceFileFr piece_file = _TranslationsVariablesTableRowsPieceFileFr._(_root);
+	@override late final _TranslationsVariablesTableRowsPieceRankFr piece_rank = _TranslationsVariablesTableRowsPieceRankFr._(_root);
+	@override late final _TranslationsVariablesTableRowsApparitionIndexFr apparition_index = _TranslationsVariablesTableRowsApparitionIndexFr._(_root);
+	@override late final _TranslationsVariablesTableRowsFirstPieceFileFr first_piece_file = _TranslationsVariablesTableRowsFirstPieceFileFr._(_root);
+	@override late final _TranslationsVariablesTableRowsFirstPieceRankFr first_piece_rank = _TranslationsVariablesTableRowsFirstPieceRankFr._(_root);
+	@override late final _TranslationsVariablesTableRowsSecondPieceFileFr second_piece_file = _TranslationsVariablesTableRowsSecondPieceFileFr._(_root);
+	@override late final _TranslationsVariablesTableRowsSecondPieceRankFr second_piece_rank = _TranslationsVariablesTableRowsSecondPieceRankFr._(_root);
+}
+
+// Path: variables_table.rows.file_a
+class _TranslationsVariablesTableRowsFileAFr extends _TranslationsVariablesTableRowsFileAEn {
+	_TranslationsVariablesTableRowsFileAFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La colonne \'A\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.file_b
+class _TranslationsVariablesTableRowsFileBFr extends _TranslationsVariablesTableRowsFileBEn {
+	_TranslationsVariablesTableRowsFileBFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La colonne \'B\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.file_c
+class _TranslationsVariablesTableRowsFileCFr extends _TranslationsVariablesTableRowsFileCEn {
+	_TranslationsVariablesTableRowsFileCFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La colonne \'C\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.file_d
+class _TranslationsVariablesTableRowsFileDFr extends _TranslationsVariablesTableRowsFileDEn {
+	_TranslationsVariablesTableRowsFileDFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La colonne \'D\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.file_e
+class _TranslationsVariablesTableRowsFileEFr extends _TranslationsVariablesTableRowsFileEEn {
+	_TranslationsVariablesTableRowsFileEFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La colonne \'E\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.file_f
+class _TranslationsVariablesTableRowsFileFFr extends _TranslationsVariablesTableRowsFileFEn {
+	_TranslationsVariablesTableRowsFileFFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La colonne \'F\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.file_g
+class _TranslationsVariablesTableRowsFileGFr extends _TranslationsVariablesTableRowsFileGEn {
+	_TranslationsVariablesTableRowsFileGFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La colonne \'G\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.file_h
+class _TranslationsVariablesTableRowsFileHFr extends _TranslationsVariablesTableRowsFileHEn {
+	_TranslationsVariablesTableRowsFileHFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La colonne \'H\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.rank_1
+class _TranslationsVariablesTableRowsRank1Fr extends _TranslationsVariablesTableRowsRank1En {
+	_TranslationsVariablesTableRowsRank1Fr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée \'1\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.rank_2
+class _TranslationsVariablesTableRowsRank2Fr extends _TranslationsVariablesTableRowsRank2En {
+	_TranslationsVariablesTableRowsRank2Fr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée \'2\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.rank_3
+class _TranslationsVariablesTableRowsRank3Fr extends _TranslationsVariablesTableRowsRank3En {
+	_TranslationsVariablesTableRowsRank3Fr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée \'3\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.rank_4
+class _TranslationsVariablesTableRowsRank4Fr extends _TranslationsVariablesTableRowsRank4En {
+	_TranslationsVariablesTableRowsRank4Fr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée \'4\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.rank_5
+class _TranslationsVariablesTableRowsRank5Fr extends _TranslationsVariablesTableRowsRank5En {
+	_TranslationsVariablesTableRowsRank5Fr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée \'5\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.rank_6
+class _TranslationsVariablesTableRowsRank6Fr extends _TranslationsVariablesTableRowsRank6En {
+	_TranslationsVariablesTableRowsRank6Fr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée \'6\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.rank_7
+class _TranslationsVariablesTableRowsRank7Fr extends _TranslationsVariablesTableRowsRank7En {
+	_TranslationsVariablesTableRowsRank7Fr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée \'7\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.rank_8
+class _TranslationsVariablesTableRowsRank8Fr extends _TranslationsVariablesTableRowsRank8En {
+	_TranslationsVariablesTableRowsRank8Fr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée \'8\'';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.king_file
+class _TranslationsVariablesTableRowsKingFileFr extends _TranslationsVariablesTableRowsKingFileEn {
+	_TranslationsVariablesTableRowsKingFileFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La colonne du roi';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.king_rank
+class _TranslationsVariablesTableRowsKingRankFr extends _TranslationsVariablesTableRowsKingRankEn {
+	_TranslationsVariablesTableRowsKingRankFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée du roi';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.player_has_white
+class _TranslationsVariablesTableRowsPlayerHasWhiteFr extends _TranslationsVariablesTableRowsPlayerHasWhiteEn {
+	_TranslationsVariablesTableRowsPlayerHasWhiteFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Le joueur a-t-il les Blancs ?';
+	@override String get type => 'Booléen';
+}
+
+// Path: variables_table.rows.player_king_file
+class _TranslationsVariablesTableRowsPlayerKingFileFr extends _TranslationsVariablesTableRowsPlayerKingFileEn {
+	_TranslationsVariablesTableRowsPlayerKingFileFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La colonne du roi du joueur';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.player_king_rank
+class _TranslationsVariablesTableRowsPlayerKingRankFr extends _TranslationsVariablesTableRowsPlayerKingRankEn {
+	_TranslationsVariablesTableRowsPlayerKingRankFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée du roi du joueur';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.computer_king_file
+class _TranslationsVariablesTableRowsComputerKingFileFr extends _TranslationsVariablesTableRowsComputerKingFileEn {
+	_TranslationsVariablesTableRowsComputerKingFileFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée du roi de l\'ordinateur';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.computer_king_rank
+class _TranslationsVariablesTableRowsComputerKingRankFr extends _TranslationsVariablesTableRowsComputerKingRankEn {
+	_TranslationsVariablesTableRowsComputerKingRankFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée du roi de l\'ordinateur';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.piece_file
+class _TranslationsVariablesTableRowsPieceFileFr extends _TranslationsVariablesTableRowsPieceFileEn {
+	_TranslationsVariablesTableRowsPieceFileFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La colonne de la pièce';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.piece_rank
+class _TranslationsVariablesTableRowsPieceRankFr extends _TranslationsVariablesTableRowsPieceRankEn {
+	_TranslationsVariablesTableRowsPieceRankFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée de la pièce';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.apparition_index
+class _TranslationsVariablesTableRowsApparitionIndexFr extends _TranslationsVariablesTableRowsApparitionIndexEn {
+	_TranslationsVariablesTableRowsApparitionIndexFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'L\'index d\'ordre d\'apparition de la pièce (commence à 0)';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.first_piece_file
+class _TranslationsVariablesTableRowsFirstPieceFileFr extends _TranslationsVariablesTableRowsFirstPieceFileEn {
+	_TranslationsVariablesTableRowsFirstPieceFileFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La colonne de la première pièce';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.first_piece_rank
+class _TranslationsVariablesTableRowsFirstPieceRankFr extends _TranslationsVariablesTableRowsFirstPieceRankEn {
+	_TranslationsVariablesTableRowsFirstPieceRankFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée de la première pièce';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.second_piece_file
+class _TranslationsVariablesTableRowsSecondPieceFileFr extends _TranslationsVariablesTableRowsSecondPieceFileEn {
+	_TranslationsVariablesTableRowsSecondPieceFileFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La colonne de la deuxième pièce';
+	@override String get type => 'Entier';
+}
+
+// Path: variables_table.rows.second_piece_rank
+class _TranslationsVariablesTableRowsSecondPieceRankFr extends _TranslationsVariablesTableRowsSecondPieceRankEn {
+	_TranslationsVariablesTableRowsSecondPieceRankFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'La rangée de la deuxième pièce';
+	@override String get type => 'Entier';
 }
