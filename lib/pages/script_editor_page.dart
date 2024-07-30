@@ -23,9 +23,11 @@ const drawingString = "draw";
 const playeKingTabIndex = 0;
 const computerKingTabIndex = 1;
 const kingsMutualTabIndex = 2;
+const otherPiecesCountTabIndex = 3;
 const otherPieceGlobalTabIndex = 4;
 const otherPiecesMutualTabIndex = 5;
 const otherPiecesIndexedTabIndex = 6;
+const goalTabIndex = 7;
 
 class InitialScriptsSet {
   final String playerKingConstraints;
@@ -870,6 +872,10 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
   }
 
   void _purposeInsertVariable() async {
+    final notATextEditor = (_selectedTabIndex == otherPiecesCountTabIndex) ||
+        (_selectedTabIndex == goalTabIndex);
+    if (notATextEditor) return;
+
     final noPieceKindSelected =
         (_selectedTabIndex == otherPieceGlobalTabIndex &&
                 _otherPiecesGlobalConstraintsSelectedPieceKind == null) ||
@@ -924,6 +930,9 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     final otherPiecesKinds = _getOtherPiecesKindsFromPiecesCountScript(
         _otherPiecesCountConstraintsScript);
 
+    final notATextEditor = (_selectedTabIndex == otherPiecesCountTabIndex) ||
+        (_selectedTabIndex == goalTabIndex);
+
     return PopScope(
       canPop: false,
       onPopInvoked: _handleExitPage,
@@ -945,7 +954,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                 t.script_editor_page.title,
               ),
               actions: [
-                if (!widget.readOnly)
+                if (!widget.readOnly && !notATextEditor)
                   IconButton(
                     onPressed: _purposeInsertVariable,
                     icon: const FaIcon(
