@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:basicchessendgamestrainer/commons.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +26,16 @@ class VariableInsertor extends StatelessWidget {
       translations.variablesTableHeaderType,
     ];
 
-    final columnProportions = <int>[
+    var columnProportions = <double>[
       3,
       5,
-      1,
+      2,
     ];
+
+    if (Platform.isAndroid &&
+        MediaQuery.of(context).orientation == Orientation.portrait) {
+      columnProportions = <double>[1, 1, 1];
+    }
 
     return ProportionalTable(
       headers: headers,
@@ -48,7 +55,7 @@ class VariableInsertor extends StatelessWidget {
 class ProportionalTable extends StatelessWidget {
   final List<String> headers;
   final List<List<String>> data;
-  final List<int> columnProportions;
+  final List<double> columnProportions;
   final void Function(int rowIndex, int colIndex) callback;
 
   const ProportionalTable({
@@ -87,24 +94,35 @@ class ProportionalTable extends StatelessWidget {
   }
 
   Widget _buildHeaderRow(BuildContext context) {
-    return Row(
-      children: List.generate(headers.length, (index) {
-        return Expanded(
-          flex: columnProportions[index],
-          child: Container(
-            padding: const EdgeInsets.all(8.0),
+    return Table(
+      border: TableBorder.all(
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      columnWidths: {
+        for (int i = 0; i < headers.length; i++)
+          i: FlexColumnWidth(columnProportions[i]),
+      },
+      children: [
+        TableRow(
+          decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary,
-            child: Text(
-              headers[index],
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-              textAlign: TextAlign.center,
-            ),
           ),
-        );
-      }),
+          children: List.generate(headers.length, (index) {
+            return Container(
+              padding: const EdgeInsets.all(8.0),
+              color: Theme.of(context).colorScheme.primary,
+              child: Text(
+                headers[index],
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            );
+          }),
+        ),
+      ],
     );
   }
 
@@ -114,27 +132,30 @@ class ProportionalTable extends StatelessWidget {
     required BuildContext context,
     required void Function(int rowIndex, int colIndex) callback,
   }) {
-    return Row(
-      children: List.generate(row.length, (index) {
-        return Expanded(
-          flex: columnProportions[index],
-          child: Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            child: GestureDetector(
+    return Table(
+      border: TableBorder.all(
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      columnWidths: {
+        for (int i = 0; i < row.length; i++)
+          i: FlexColumnWidth(columnProportions[i]),
+      },
+      children: [
+        TableRow(
+          children: List.generate(row.length, (index) {
+            return GestureDetector(
               onTap: () => callback(rowIndex, index),
-              child: Text(
-                row[index],
-                textAlign: TextAlign.center,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  row[index],
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-          ),
-        );
-      }),
+            );
+          }),
+        ),
+      ],
     );
   }
 }
