@@ -20,6 +20,13 @@ final _openSaveFileDialogsPlugin = OpenSaveFileDialogs();
 const winningString = "win";
 const drawingString = "draw";
 
+const playeKingTabIndex = 0;
+const computerKingTabIndex = 1;
+const kingsMutualTabIndex = 2;
+const otherPieceGlobalTabIndex = 4;
+const otherPiecesMutualTabIndex = 5;
+const otherPiecesIndexedTabIndex = 6;
+
 class InitialScriptsSet {
   final String playerKingConstraints;
   final String computerKingConstraints;
@@ -130,7 +137,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
   PieceKind? _otherPiecesIndexedConstraintsSelectedPieceKind;
   PieceKind? _otherPiecesMutualConstraintsSelectedPieceKind;
 
-  int _selectedTabIndex = 0;
+  int _selectedTabIndex = playeKingTabIndex;
 
   @override
   void initState() {
@@ -725,25 +732,25 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
   TextEditingController? _getControllerForCurrentScript() {
     TextEditingController? controller;
 
-    if (_selectedTabIndex == 0) {
+    if (_selectedTabIndex == playeKingTabIndex) {
       controller = _playerKingConstraintsScriptController;
-    } else if (_selectedTabIndex == 1) {
+    } else if (_selectedTabIndex == computerKingTabIndex) {
       controller = _computerKingConstraintsScriptController;
-    } else if (_selectedTabIndex == 2) {
+    } else if (_selectedTabIndex == kingsMutualTabIndex) {
       controller = _kingsMutualConstraintsScriptController;
-    } else if (_selectedTabIndex == 4) {
+    } else if (_selectedTabIndex == otherPieceGlobalTabIndex) {
       if (_otherPiecesGlobalConstraintsSelectedPieceKind == null) {
         return null;
       }
       controller = _otherPiecesGlobalConstraintsScripts[
           _otherPiecesGlobalConstraintsSelectedPieceKind];
-    } else if (_selectedTabIndex == 5) {
+    } else if (_selectedTabIndex == otherPiecesIndexedTabIndex) {
       if (_otherPiecesIndexedConstraintsSelectedPieceKind == null) {
         return null;
       }
       controller = _otherPiecesIndexedConstraintsScripts[
           _otherPiecesIndexedConstraintsSelectedPieceKind];
-    } else if (_selectedTabIndex == 6) {
+    } else if (_selectedTabIndex == otherPiecesMutualTabIndex) {
       if (_otherPiecesMutualConstraintsSelectedPieceKind == null) {
         return null;
       }
@@ -756,11 +763,16 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
 
   List<List<String>> _getInsertVariableForCurrentScript() {
     return switch (_selectedTabIndex) {
-      0 || 1 => _getPlayerKingConstraintsVariablesData(),
-      2 => _getKingsMutualConstraintsVariablesData(),
-      4 => _getOtherPiecesGlobalConstraintsVariablesData(),
-      5 => _getOtherPiecesIndexedConstraintsVariablesData(),
-      6 => _getOtherPiecesMutualConstraintsVariablesData(),
+      playeKingTabIndex ||
+      computerKingTabIndex =>
+        _getPlayerKingConstraintsVariablesData(),
+      kingsMutualTabIndex => _getKingsMutualConstraintsVariablesData(),
+      otherPieceGlobalTabIndex =>
+        _getOtherPiecesGlobalConstraintsVariablesData(),
+      otherPiecesIndexedTabIndex =>
+        _getOtherPiecesIndexedConstraintsVariablesData(),
+      otherPiecesMutualTabIndex =>
+        _getOtherPiecesMutualConstraintsVariablesData(),
       _ => throw Exception(
           "Cannot insert variable for this kind of selected tab index : $_selectedTabIndex")
     };
@@ -858,6 +870,18 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
   }
 
   void _purposeInsertVariable() async {
+    final noPieceKindSelected =
+        (_selectedTabIndex == otherPieceGlobalTabIndex &&
+                _otherPiecesGlobalConstraintsSelectedPieceKind == null) ||
+            (_selectedTabIndex == otherPiecesMutualTabIndex &&
+                _otherPiecesMutualConstraintsSelectedPieceKind == null) ||
+            (_selectedTabIndex == otherPiecesIndexedTabIndex &&
+                _otherPiecesIndexedConstraintsSelectedPieceKind == null);
+
+    if (noPieceKindSelected) {
+      return;
+    }
+
     await showDialog(
         context: context,
         barrierDismissible: true,
