@@ -1049,12 +1049,12 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                   readOnly: widget.readOnly,
                   availablePiecesKinds: otherPiecesKinds,
                   controllers: _otherPiecesMutualConstraintsScripts,
-                  focusNode: _otherPiecesIndexedConstraintsFocusNode,
+                  focusNode: _otherPiecesMutualConstraintsFocusNode,
                   selectedPieceKind:
-                      _otherPiecesIndexedConstraintsSelectedPieceKind,
+                      _otherPiecesMutualConstraintsSelectedPieceKind,
                   onPieceKindSelection: (kind) {
                     setState(() {
-                      _otherPiecesIndexedConstraintsSelectedPieceKind = kind;
+                      _otherPiecesMutualConstraintsSelectedPieceKind = kind;
                     });
                   },
                 ),
@@ -1062,11 +1062,11 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                   readOnly: widget.readOnly,
                   availablePiecesKinds: otherPiecesKinds,
                   controllers: _otherPiecesIndexedConstraintsScripts,
-                  focusNode: _otherPiecesMutualConstraintsFocusNode,
-                  selectedType: _otherPiecesMutualConstraintsSelectedPieceKind,
+                  focusNode: _otherPiecesIndexedConstraintsFocusNode,
+                  selectedType: _otherPiecesIndexedConstraintsSelectedPieceKind,
                   onPieceKindSelection: (kind) {
                     setState(() {
-                      _otherPiecesMutualConstraintsSelectedPieceKind = kind;
+                      _otherPiecesIndexedConstraintsSelectedPieceKind = kind;
                     });
                   },
                 ),

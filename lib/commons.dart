@@ -68,7 +68,7 @@ void insertTextAtCursor({
   final text = controller.text;
   final selection = controller.selection;
   final newText =
-      text.replaceRange(selection.start >= 0 ? selection.start : 0, selection.end, textToInsert);
+      text.replaceRange(selection.start, selection.end, textToInsert);
   final newSelection = TextSelection.collapsed(
     offset: selection.start + textToInsert.length,
   );
