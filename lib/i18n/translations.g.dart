@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 630 (210 per locale)
+/// Strings: 696 (232 per locale)
 ///
-/// Built on 2024-08-06 at 17:41 UTC
+/// Built on 2024-08-06 at 20:24 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -400,6 +400,7 @@ class _TranslationsSyntaxManualPageEn {
 	String get title => 'Manual of syntax';
 	late final _TranslationsSyntaxManualPageIntroductionEn introduction = _TranslationsSyntaxManualPageIntroductionEn._(_root);
 	late final _TranslationsSyntaxManualPageLuaAdaptationEn lua_adaptation = _TranslationsSyntaxManualPageLuaAdaptationEn._(_root);
+	late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEn explaining_generation_algorithm = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEn._(_root);
 }
 
 // Path: home.menu_buttons
@@ -519,6 +520,18 @@ class _TranslationsSyntaxManualPageLuaAdaptationEn {
 	late final _TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsEn available_syntax_elements = _TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsEn._(_root);
 	late final _TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsEn removed_syntax_elements = _TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsEn._(_root);
 	late final _TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsEn available_operators = _TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsEn._(_root);
+}
+
+// Path: syntax_manual_page.explaining_generation_algorithm
+class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEn {
+	_TranslationsSyntaxManualPageExplainingGenerationAlgorithmEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Explaining the generation algorithm';
+	late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEn general_considerations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEn._(_root);
+	late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEn order_of_scripts_evaluations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEn._(_root);
 }
 
 // Path: variables_table.rows.file_a
@@ -917,6 +930,45 @@ class _TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsEn {
 	String get part_5 => '*) & | ~ << >>';
 }
 
+// Path: syntax_manual_page.explaining_generation_algorithm.general_considerations
+class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEn {
+	_TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'General considerations';
+	String get part_1_1 => 'The algorithm starts with an empty board, and try to place each piece one after the other.';
+	String get part_1_2 => 'Of course, it checks for the fact that the legal chess rules are respected.';
+	String get part_1_3 => 'But it also checks that, for the current piece kind, the contraints - if any - defined for it are respected.';
+	String get part_1_4 => 'By piece kind, we mean, for example, a Rook belonging to the Computer, or a Pawn belonging to the Player.';
+	String get part_2_1 => 'So each constraints is defined in a script, written in a subset of Lua as stated earlier.';
+	String get part_2_2 => 'Each script has access to some predefined variables, whose values will be provided by the algorithm, but also some coordinates constants.';
+	String get part_2_3 => 'You can have access to each script predefined variables and constants, and insert their names, by accessing the helper box for the script you\'re editing.';
+	String get part_2_4 => 'But, above all - and that\'s how the algorithm will know if your constraints are respected - each script must return a boolean value.';
+	String get part_3_1 => 'If at any step, the constraints are not respected for the last placed pieces, the algorithm will try to place it somewhere else.';
+	String get part_3_2 => 'So it avoid restarting from scratch at each failure.';
+}
+
+// Path: syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations
+class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEn {
+	_TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Order of script evaluations';
+	String get part_1_1 => 'The first steps of the algoritm are quite simples:';
+	String get part_1_2 => '*) it starts to place the player\'s king, and use the player\'s king constraints script if defined for a check';
+	String get part_1_3 => '*) it then places the computer\'s king, and use the computer\'s king constraints script, and also the kings mutual constraints script';
+	String get part_2_1 => 'The following steps are a bit more complex. It uses the count constraints in order to know how many pieces of each kind it must generate.';
+	String get part_2_2 => 'Then, for each single piece of a given kind, it places one after other and performs several checks:';
+	String get part_2_3 => '*) it use the global constraints for this kind, in order to see if the overall constraints for this kind is respected';
+	String get part_2_4 => '*) it use the indexed constraints for this kind, in order to see if the constraints relative to the apparation order of the current piece in its kind group is respected';
+	String get part_2_5 => '*) it use the mutual constraints for this kind, in order to see if the contraints relative to two pieces of the same kind is each other respected';
+	String get part_3_1 => 'We\'ll explore the different script kinds more in the following sections.';
+}
+
 // Path: <root>
 class _TranslationsEs extends Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
@@ -1182,6 +1234,7 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override String get title => 'Manual de sintaxis';
 	@override late final _TranslationsSyntaxManualPageIntroductionEs introduction = _TranslationsSyntaxManualPageIntroductionEs._(_root);
 	@override late final _TranslationsSyntaxManualPageLuaAdaptationEs lua_adaptation = _TranslationsSyntaxManualPageLuaAdaptationEs._(_root);
+	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEs explaining_generation_algorithm = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEs._(_root);
 }
 
 // Path: home.menu_buttons
@@ -1301,6 +1354,18 @@ class _TranslationsSyntaxManualPageLuaAdaptationEs extends _TranslationsSyntaxMa
 	@override late final _TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsEs available_syntax_elements = _TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsEs._(_root);
 	@override late final _TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsEs removed_syntax_elements = _TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsEs._(_root);
 	@override late final _TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsEs available_operators = _TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsEs._(_root);
+}
+
+// Path: syntax_manual_page.explaining_generation_algorithm
+class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEs extends _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEn {
+	_TranslationsSyntaxManualPageExplainingGenerationAlgorithmEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Explicando el algoritmo de generación';
+	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEs general_considerations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEs._(_root);
+	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEs order_of_scripts_evaluations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEs._(_root);
 }
 
 // Path: variables_table.rows.file_a
@@ -1699,6 +1764,45 @@ class _TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsEs extends _Tr
 	@override String get part_5 => '*) & | ~ << >>';
 }
 
+// Path: syntax_manual_page.explaining_generation_algorithm.general_considerations
+class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEs extends _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEn {
+	_TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Consideraciones Generales';
+	@override String get part_1_1 => 'El algoritmo comienza con un tablero vacío y trata de colocar cada pieza una detrás de otra.';
+	@override String get part_1_2 => 'Por supuesto, se comprueba que se respeten las reglas legales del ajedrez.';
+	@override String get part_1_3 => 'Pero también verifica que, para el tipo de la pieza actual, se respeten las restricciones (si las hay) definidas para ello.';
+	@override String get part_1_4 => 'Por tipo de pieza nos referimos, por ejemplo, a una Torre perteneciente a la Computadora o a un Peón perteneciente al Jugador.';
+	@override String get part_2_1 => 'Entonces, cada restricción se define en un código, escrito en un subconjunto de Lua como se indicó anteriormente.';
+	@override String get part_2_2 => 'Cada código tiene acceso a algunas variables predefinidas, cuyos valores serán proporcionados por el algoritmo, pero también a algunas constantes de coordenadas.';
+	@override String get part_2_3 => 'Puede tener acceso a las variables y constantes predefinidas de cada código e insertar sus nombres accediendo al cuadro de ayuda del tipo de código que está editando.';
+	@override String get part_2_4 => 'Pero, sobre todo (y así sabrá el algoritmo si se respetan sus restricciones), cada código debe devolver un valor booleano.';
+	@override String get part_3_1 => 'Si en algún paso no se respetan las restricciones para las últimas piezas colocadas, el algoritmo intentará colocarlas en otro lugar.';
+	@override String get part_3_2 => 'De esta manera se evita tener que reiniciar desde cero en cada fallo.';
+}
+
+// Path: syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations
+class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEs extends _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEn {
+	_TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Orden de evaluación de los códigos';
+	@override String get part_1_1 => 'Los primeros pasos del algoritmo son bastante simples:';
+	@override String get part_1_2 => '*) comienza a colocar el rey del jugador y usa el código de restricciones del rey del jugador si está definido para una verificación';
+	@override String get part_1_3 => '*) luego coloca al rey de la computadora y utiliza el código de restricciones del rey de la computadora, y también el código de restricciones mutuas de los reyes';
+	@override String get part_2_1 => 'Los siguientes pasos son un poco más complejos. Utiliza las restricciones de conteo para saber cuántas piezas de cada tipo debe generar.';
+	@override String get part_2_2 => 'Luego, para cada pieza individual de un tipo determinado, coloca uno tras otro y realiza varias comprobaciones:';
+	@override String get part_2_3 => '*) utiliza las restricciones globales para este tipo, con el fin de ver si se respetan las restricciones generales para este tipo';
+	@override String get part_2_4 => '*) utiliza las restricciones indexadas para este tipo, con el fin de ver si se respetan las restricciones relativas al orden de aparición de la pieza actual en su grupo de tipo';
+	@override String get part_2_5 => '*) utiliza las restricciones mutuas para este tipo, con el fin de ver si las restricciones relativas a dos piezas del mismo tipo se respetan entre sí';
+	@override String get part_3_1 => 'Exploraremos los diferentes tipos de código más en las siguientes secciones.';
+}
+
 // Path: <root>
 class _TranslationsFr extends Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
@@ -1964,6 +2068,7 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 	@override String get title => 'Manuel de syntaxe';
 	@override late final _TranslationsSyntaxManualPageIntroductionFr introduction = _TranslationsSyntaxManualPageIntroductionFr._(_root);
 	@override late final _TranslationsSyntaxManualPageLuaAdaptationFr lua_adaptation = _TranslationsSyntaxManualPageLuaAdaptationFr._(_root);
+	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmFr explaining_generation_algorithm = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmFr._(_root);
 }
 
 // Path: home.menu_buttons
@@ -2083,6 +2188,18 @@ class _TranslationsSyntaxManualPageLuaAdaptationFr extends _TranslationsSyntaxMa
 	@override late final _TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsFr available_syntax_elements = _TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsFr._(_root);
 	@override late final _TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsFr removed_syntax_elements = _TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsFr._(_root);
 	@override late final _TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsFr available_operators = _TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsFr._(_root);
+}
+
+// Path: syntax_manual_page.explaining_generation_algorithm
+class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmFr extends _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEn {
+	_TranslationsSyntaxManualPageExplainingGenerationAlgorithmFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Explication de l\'algorithm de génération';
+	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsFr general_considerations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsFr._(_root);
+	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsFr order_of_scripts_evaluations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsFr._(_root);
 }
 
 // Path: variables_table.rows.file_a
@@ -2479,4 +2596,43 @@ class _TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsFr extends _Tr
 	@override String get part_3 => '*) > >= < <= ~= ==';
 	@override String get part_4 => '*) not and  or';
 	@override String get part_5 => '*) & | ~ << >>';
+}
+
+// Path: syntax_manual_page.explaining_generation_algorithm.general_considerations
+class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsFr extends _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEn {
+	_TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Considérations générales';
+	@override String get part_1_1 => 'L\'algorithme commence avec un échiquier vide, et essaie de placer chaque pièce l\'une après l\'autre.';
+	@override String get part_1_2 => 'Bien sûr, il vérifie aussi que les règles générales du jeu d\'échecs soient respectées.';
+	@override String get part_1_3 => 'Mais il vérifie aussi que, pour chaque type de pièce, les contraintes - s\'il y en a - définies pour lui soient respectées.';
+	@override String get part_1_4 => 'Par type de pièce, nous voulons dire, par exemple, une Tour de l\'Ordinateur, ou un Pion du Joueur.';
+	@override String get part_2_1 => 'Donc chaque contrainte est écrite dans un script, écrit dans un sous-ensemble de Lua comme expliqué plus tôt.';
+	@override String get part_2_2 => 'Chaque script a accès à un certain nombre de variables prédéfinies, dont les valeurs seront fournies par l\'algorithme, mais aussi des constantes pour les coordonnées.';
+	@override String get part_2_3 => 'Vous pouvez accéder aux variables prédéfines et constantes de chaque type de script, et insérer leurs noms, en accédant à la boîte d\'aide pour le type de script en cours d\'édition.';
+	@override String get part_2_4 => 'Mais, avant tout - et c\'est de cette manière que l\'algorithme saura si vos contraintes sont respectées - chaque script doit retourner une valeur booléenne.';
+	@override String get part_3_1 => 'Si à une étape quelconque, les contraintes pour la dernière pièce mise en place ne sont pas respectées, l\'algorithme esseaira de la placer ailleurs.';
+	@override String get part_3_2 => 'Cela permet donc d\'éviter de repartir de zéro à chaque échec.';
+}
+
+// Path: syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations
+class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsFr extends _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEn {
+	_TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Ordre d\'évaluation des scripts';
+	@override String get part_1_1 => 'Les premières étapes de l\'algorithmes sont très simples:';
+	@override String get part_1_2 => '*) il commence par placer le roi du joueur, et se sert du script de contraintes du roi du joueur si défini pour une vérification';
+	@override String get part_1_3 => '*) il place ensuite le roi de l\'ordinateur, et se sert du script de contraintes du roi de l\'ordinateur, et aussi du script de contraintes mutuelles entre les rois';
+	@override String get part_2_1 => 'Les étapes suivantes sont un peu plus complexes. Il se sert d\'abord des contraintes de compte des autres types de pièces afin de savoir combien il doit en générer.';
+	@override String get part_2_2 => 'Ensuite, pour chaque type de pièce donné, il en place une par une et efféctue un certain nombre de vérifications :';
+	@override String get part_2_3 => '*) il utilise les contraintes globales pour ce type de pièces, afin de voir si les contraintes générales pour ce type de pièce sont respectées';
+	@override String get part_2_4 => '*) il utilise les contraintes indexées pour ce type de pièces, afin de voir si les contraintes relatives à l\'ordre d\'apparition de la pièce dans son groupe de type de pièces sont respectées';
+	@override String get part_2_5 => '*) il utilise les contraintes mutuelles pour ce type de pièces, afin de voir si les contraintes relatives à deux pièces de même type de pièce sont respectées entre elles';
+	@override String get part_3_1 => 'Nous explorerons plus en détail les différents types de scripts dans les sections suivantes.';
 }

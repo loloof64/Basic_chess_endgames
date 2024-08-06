@@ -269,5 +269,32 @@ syntax_manual_page:
       part_3: "*) > >= < <= ~= =="
       part_4: "*) not and  or"
       part_5: "*) & | ~ << >>"
+  explaining_generation_algorithm:
+    title: "Explaining the generation algorithm"
+    general_considerations:
+      title: "General considerations"
+      part_1_1: "The algorithm starts with an empty board, and try to place each piece one after the other."
+      part_1_2: "Of course, it checks for the fact that the legal chess rules are respected."
+      part_1_3: "But it also checks that, for the current piece kind, the contraints - if any - defined for it are respected."
+      part_1_4: "By piece kind, we mean, for example, a Rook belonging to the Computer, or a Pawn belonging to the Player."
+      part_2_1: "So each constraints is defined in a script, written in a subset of Lua as stated earlier."
+      part_2_2: "Each script has access to some predefined variables, whose values will be provided by the algorithm, but also some coordinates constants."
+      part_2_3: "You can have access to each script predefined variables and constants, and insert their names, by accessing the helper box for the script you're editing."
+      part_2_4: "But, above all - and that's how the algorithm will know if your constraints are respected - each script must return a boolean value."
+      part_3_1: "If at any step, the constraints are not respected for the last placed pieces, the algorithm will try to place it somewhere else."
+      part_3_2: "So it avoid restarting from scratch at each failure."
+    order_of_scripts_evaluations:
+      title: "Order of script evaluations"
+      part_1_1: "The first steps of the algoritm are quite simples:"
+      part_1_2: "*) it starts to place the player's king, and use the player's king constraints script if defined for a check"
+      part_1_3: "*) it then places the computer's king, and use the computer's king constraints script, and also the kings mutual constraints script"
+      part_2_1: "The following steps are a bit more complex. It uses the count constraints in order to know how many pieces of each kind it must generate."
+      part_2_2: "Then, for each single piece of a given kind, it places one after other and performs several checks:"
+      part_2_3: "*) it use the global constraints for this kind, in order to see if the overall constraints for this kind is respected"
+      part_2_4: "*) it use the indexed constraints for this kind, in order to see if the constraints relative to the apparation order of the current piece in its kind group is respected"
+      part_2_5: "*) it use the mutual constraints for this kind, in order to see if the contraints relative to two pieces of the same kind is each other respected"
+      part_3_1: "We'll explore the different script kinds more in the following sections."
+
+
 
 

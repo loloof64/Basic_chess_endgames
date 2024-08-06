@@ -75,7 +75,7 @@ final introductionPage = Page(
       title: "",
       content: "${t.syntax_manual_page.introduction.part_1} " +
           "${t.syntax_manual_page.introduction.part_2} " +
-          "${t.syntax_manual_page.introduction.part_3}\n" +
+          "${t.syntax_manual_page.introduction.part_3}\n\n" +
           "${t.syntax_manual_page.introduction.part_4}",
     ),
   ],
@@ -117,9 +117,43 @@ final luaAdaptationPage =
   ),
 ]);
 
+final algorithmPage = Page(
+  title: t.syntax_manual_page.explaining_generation_algorithm.title,
+  sections: <Section>[
+    Section(
+      title: t.syntax_manual_page.explaining_generation_algorithm
+          .general_considerations.title,
+      content: "${t.syntax_manual_page.explaining_generation_algorithm.general_considerations.part_1_1} " +
+          "${t.syntax_manual_page.explaining_generation_algorithm.general_considerations.part_1_2} " +
+          "${t.syntax_manual_page.explaining_generation_algorithm.general_considerations.part_1_3} " +
+          "${t.syntax_manual_page.explaining_generation_algorithm.general_considerations.part_1_4}\n\n" +
+          "${t.syntax_manual_page.explaining_generation_algorithm.general_considerations.part_2_1} " +
+          "${t.syntax_manual_page.explaining_generation_algorithm.general_considerations.part_2_2} " +
+          "${t.syntax_manual_page.explaining_generation_algorithm.general_considerations.part_2_3} " +
+          "${t.syntax_manual_page.explaining_generation_algorithm.general_considerations.part_2_4}\n\n" +
+          "${t.syntax_manual_page.explaining_generation_algorithm.general_considerations.part_3_1} " +
+          "${t.syntax_manual_page.explaining_generation_algorithm.general_considerations.part_3_2} ",
+    ),
+    Section(
+      title: t.syntax_manual_page.explaining_generation_algorithm
+          .order_of_scripts_evaluations.title,
+      content: "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_1_1}\n" +
+          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_1_2}\n" +
+          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_1_3}\n\n"+
+          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_1} "+
+          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_2}\n"+
+          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_3}\n"+
+          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_4}\n"+
+          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_5}\n\n"+
+          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_3_1}",
+    ),
+  ],
+);
+
 final pages = <Page>[
   introductionPage,
   luaAdaptationPage,
+  algorithmPage,
 ];
 
 class SyntaxManualPage extends StatefulWidget {
