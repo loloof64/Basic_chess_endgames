@@ -244,3 +244,31 @@ syntax_manual_page:
     part_2: "Estas restricciones se distribuyen entre varios tipos y se puede definir un código para cada uno."
     part_3: "Veremos más sobre las restricciones más adelante."
     part_4: "La sintaxis es un pequeño subconjunto del lenguaje Lua (5.4)."
+  lua_adaptation:
+    title: "Adaptación del lenguaje Lua"
+    supported_types:
+      title: "Tipos admitidos"
+      part_1: "*) Int"
+      part_2: "*) Boolean"
+    removed_types:
+      title: "Tipos eliminados"
+      part_1: "*) Float"
+      part_2: "*) String"
+      part_3: "*) Array"
+      part_4: "*) Map"
+    available_syntax_elements:
+      title: "Elementos de sintaxis disponibles"
+      part_1: "*) asignación"
+      part_2: "*) Declaración if (precaución: la declaración if no es una expresión)"
+    removed_syntax_elements:
+      title: "Elementos de sintaxis eliminados"
+      part_1: "*) Sentencias de bucle"
+      part_2: "*) Funciones"
+      part_3: "*) Corrutinas"
+    available_operators:
+      title: "Operadores disponibles"
+      part_1: "*) paréntesis"
+      part_2: "*) + - * / ^ % //"
+      part_3: "*) > >= < <= ~= =="
+      part_4: "*) not and  or"
+      part_5: "*) & | ~ << >>"

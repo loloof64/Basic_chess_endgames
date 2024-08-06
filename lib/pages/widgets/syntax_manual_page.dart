@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings, unnecessary_string_interpolations, prefer_adjacent_string_concatenation
+
 import 'package:flutter/material.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 
@@ -43,7 +45,7 @@ class Section {
         child: Text(
           title,
           style: const TextStyle(
-            fontStyle: FontStyle.italic,
+            decoration: TextDecoration.underline,
             fontSize: 16.0,
           ),
         ),
@@ -62,14 +64,53 @@ class Section {
 }
 
 final introductionPage = Page(
-      title: t.syntax_manual_page.introduction.title,
-      sections: <Section>[
-        Section(
-            title: "",
-            content:
-                "${t.syntax_manual_page.introduction.part_1} ${t.syntax_manual_page.introduction.part_2} ${t.syntax_manual_page.introduction.part_3}\n${t.syntax_manual_page.introduction.part_4}"),
-      ],
-    );
+  title: t.syntax_manual_page.introduction.title,
+  sections: <Section>[
+    Section(
+      title: "",
+      content: "${t.syntax_manual_page.introduction.part_1} " +
+          "${t.syntax_manual_page.introduction.part_2} " +
+          "${t.syntax_manual_page.introduction.part_3}\n" +
+          "${t.syntax_manual_page.introduction.part_4}",
+    ),
+  ],
+);
+
+final luaAdaptationPage =
+    Page(title: t.syntax_manual_page.lua_adaptation.title, sections: <Section>[
+  Section(
+    title: t.syntax_manual_page.lua_adaptation.supported_types.title,
+    content: "${t.syntax_manual_page.lua_adaptation.supported_types.part_1}\n" +
+        "${t.syntax_manual_page.lua_adaptation.supported_types.part_2}",
+  ),
+  Section(
+    title: t.syntax_manual_page.lua_adaptation.removed_types.title,
+    content: "${t.syntax_manual_page.lua_adaptation.removed_types.part_1}\n" +
+        "${t.syntax_manual_page.lua_adaptation.removed_types.part_2}\n" +
+        "${t.syntax_manual_page.lua_adaptation.removed_types.part_3}\n" +
+        "${t.syntax_manual_page.lua_adaptation.removed_types.part_4}",
+  ),
+  Section(
+    title: t.syntax_manual_page.lua_adaptation.available_syntax_elements.title,
+    content:
+        "${t.syntax_manual_page.lua_adaptation.available_syntax_elements.part_1}\n" +
+            "${t.syntax_manual_page.lua_adaptation.available_syntax_elements.part_2}",
+  ),
+  Section(
+    title: t.syntax_manual_page.lua_adaptation.removed_syntax_elements.title,
+    content: "${t.syntax_manual_page.lua_adaptation.removed_syntax_elements.part_1}\n" +
+        "${t.syntax_manual_page.lua_adaptation.removed_syntax_elements.part_2}\n" +
+        "${t.syntax_manual_page.lua_adaptation.removed_syntax_elements.part_3}",
+  ),
+  Section(
+    title: t.syntax_manual_page.lua_adaptation.available_operators.title,
+    content: "${t.syntax_manual_page.lua_adaptation.available_operators.part_1}\n" +
+        "${t.syntax_manual_page.lua_adaptation.available_operators.part_2}\n" +
+        "${t.syntax_manual_page.lua_adaptation.available_operators.part_3}\n" +
+        "${t.syntax_manual_page.lua_adaptation.available_operators.part_4}\n" +
+        "${t.syntax_manual_page.lua_adaptation.available_operators.part_5}",
+  ),
+]);
 
 class SyntaxManualPage extends StatelessWidget {
   const SyntaxManualPage({super.key});
@@ -85,7 +126,7 @@ class SyntaxManualPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ...introductionPage.toWidgets(),
+            ...luaAdaptationPage.toWidgets(),
           ],
         ),
       ),

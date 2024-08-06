@@ -241,4 +241,33 @@ syntax_manual_page:
     part_2: "These constraints are dispatched among several types, and you can define a script for each."
     part_3: "We'll see more about constraints later."
     part_4: "The syntax is a tiny subset of the Lua (5.4) language."
+  lua_adaptation:
+    title: "Adaptation of the Lua language"
+    supported_types:
+      title: "Supported types"
+      part_1: "*) Integer"
+      part_2: "*) Boolean"
+    removed_types:
+      title: "Removed types"
+      part_1: "*) Float"
+      part_2: "*) String"
+      part_3: "*) Array"
+      part_4: "*) Map"
+    available_syntax_elements:
+      title: "Available syntax elements"
+      part_1: "*) assignment"
+      part_2: "*) if statement (caution : if statement is not an expression)"
+    removed_syntax_elements:
+      title: "Removed syntax elements"
+      part_1: "*) Loops statements"
+      part_2: "*) Functions"
+      part_3: "*) Coroutines"
+    available_operators:
+      title: "Available operators"
+      part_1: "*) parenthesis"
+      part_2: "*) + - * / ^ % //"
+      part_3: "*) > >= < <= ~= =="
+      part_4: "*) not and  or"
+      part_5: "*) & | ~ << >>"
+
 

@@ -248,3 +248,31 @@ syntax_manual_page:
     part_2: "Ces contraintes sont réparties en plusieurs types, et vous avez la possibilité de définir un script pour chaque type."
     part_3: "Nous reparlerons des contraintes plus tard."
     part_4: "La syntaxe est un petit sous-ensemble du langage Lua (5.4)."
+  lua_adaptation:
+    title: "Adaptation du langage Lua"
+    supported_types:
+      title: "Types supportés"
+      part_1: "*) Integer"
+      part_2: "*) Boolean"
+    removed_types:
+      title: "Types supprimés"
+      part_1: "*) Float"
+      part_2: "*) String"
+      part_3: "*) Array"
+      part_4: "*) Map"
+    available_syntax_elements:
+      title: "Éléments de syntaxe disponibles"
+      part_1: "*) affectation"
+      part_2: "*) instruction if (attention : l'instruction if n'est pas une expression)"
+    removed_syntax_elements:
+      title: "Éléments de syntaxe supprimés"
+      part_1: "*) instructions boucles"
+      part_2: "*) fonctions"
+      part_3: "*) coroutines"
+    available_operators:
+      title: "Opérateurs disponibles"
+      part_1: "*) parenthèses"
+      part_2: "*) + - * / ^ % //"
+      part_3: "*) > >= < <= ~= =="
+      part_4: "*) not and  or"
+      part_5: "*) & | ~ << >>"
