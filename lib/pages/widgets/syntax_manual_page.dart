@@ -27,6 +27,11 @@ class Page {
       for (final currentSection in sections) ...currentSection.toWidgets()
     ];
   }
+
+  @override
+  String toString() {
+    return title;
+  }
 }
 
 class Section {
@@ -112,11 +117,37 @@ final luaAdaptationPage =
   ),
 ]);
 
-class SyntaxManualPage extends StatelessWidget {
+final pages = <Page>[
+  introductionPage,
+  luaAdaptationPage,
+];
+
+class SyntaxManualPage extends StatefulWidget {
   const SyntaxManualPage({super.key});
 
   @override
+  State<SyntaxManualPage> createState() => _SyntaxManualPageState();
+}
+
+class _SyntaxManualPageState extends State<SyntaxManualPage> {
+  Page _currentPage = pages[0];
+
+  void _handlePageChanged(Page? page) {
+    if (page == null) return;
+    setState(() {
+      _currentPage = page;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final dropdownItems = pages.map((currentPage) {
+      return DropdownMenuItem<Page>(
+        value: currentPage,
+        child: Text(currentPage.title),
+      );
+    }).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(t.syntax_manual_page.title),
@@ -126,7 +157,15 @@ class SyntaxManualPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ...luaAdaptationPage.toWidgets(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<Page>(
+                items: dropdownItems,
+                onChanged: _handlePageChanged,
+                value: _currentPage,
+              ),
+            ),
+            ..._currentPage.toWidgets(),
           ],
         ),
       ),
