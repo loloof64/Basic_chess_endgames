@@ -135,17 +135,26 @@ final algorithmPage = Page(
           "${t.syntax_manual_page.explaining_generation_algorithm.general_considerations.part_3_2} ",
     ),
     Section(
-      title: t.syntax_manual_page.explaining_generation_algorithm
-          .order_of_scripts_evaluations.title,
-      content: "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_1_1}\n" +
-          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_1_2}\n" +
-          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_1_3}\n\n"+
-          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_1} "+
-          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_2}\n"+
-          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_3}\n"+
-          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_4}\n"+
-          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_5}\n\n"+
-          "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_3_1}",
+        title: t.syntax_manual_page.explaining_generation_algorithm
+            .order_of_scripts_evaluations.title,
+        content: "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_1_1}\n" +
+            "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_1_2}\n" +
+            "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_1_3}\n\n" +
+            "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_1} " +
+            "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_2}\n" +
+            "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_3}\n" +
+            "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_4}\n" +
+            "${t.syntax_manual_page.explaining_generation_algorithm.order_of_scripts_evaluations.part_2_5}"),
+  ],
+);
+
+final goalPage = Page(
+  title: t.syntax_manual_page.goal_of_position.title,
+  sections: <Section>[
+    Section(
+      title: "",
+      content: "${t.syntax_manual_page.goal_of_position.part_1} " +
+          "${t.syntax_manual_page.goal_of_position.part_2}",
     ),
   ],
 );
@@ -154,6 +163,7 @@ final pages = <Page>[
   introductionPage,
   luaAdaptationPage,
   algorithmPage,
+  goalPage,
 ];
 
 class SyntaxManualPage extends StatefulWidget {

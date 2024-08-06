@@ -293,7 +293,10 @@ syntax_manual_page:
       part_2_3: "*) it use the global constraints for this kind, in order to see if the overall constraints for this kind is respected"
       part_2_4: "*) it use the indexed constraints for this kind, in order to see if the constraints relative to the apparation order of the current piece in its kind group is respected"
       part_2_5: "*) it use the mutual constraints for this kind, in order to see if the contraints relative to two pieces of the same kind is each other respected"
-      part_3_1: "We'll explore the different script kinds more in the following sections."
+  goal_of_position:
+    title: "Goal of the position"
+    part_1: "You can define the goal of the position (to win or to draw)."
+    part_2: "Keep in mind that it won't affect the algorithm : it's just an information for the player of the position."
 
 
 

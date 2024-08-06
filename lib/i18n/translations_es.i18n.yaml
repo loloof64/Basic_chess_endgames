@@ -296,4 +296,7 @@ syntax_manual_page:
       part_2_3: "*) utiliza las restricciones globales para este tipo, con el fin de ver si se respetan las restricciones generales para este tipo"
       part_2_4: "*) utiliza las restricciones indexadas para este tipo, con el fin de ver si se respetan las restricciones relativas al orden de aparición de la pieza actual en su grupo de tipo"
       part_2_5: "*) utiliza las restricciones mutuas para este tipo, con el fin de ver si las restricciones relativas a dos piezas del mismo tipo se respetan entre sí"
-      part_3_1: "Exploraremos los diferentes tipos de código más en las siguientes secciones."
+  goal_of_position:
+    title: "Objetivo de la posición"
+    part_1: "Puedes definir el objetivo de la posición (ganar o empatar)."
+    part_2: "Tenga en cuenta que esto no afectará al algoritmo: es solo una información para el jugador de la posición."

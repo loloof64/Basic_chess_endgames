@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 696 (232 per locale)
+/// Strings: 702 (234 per locale)
 ///
-/// Built on 2024-08-06 at 20:24 UTC
+/// Built on 2024-08-06 at 20:49 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -401,6 +401,7 @@ class _TranslationsSyntaxManualPageEn {
 	late final _TranslationsSyntaxManualPageIntroductionEn introduction = _TranslationsSyntaxManualPageIntroductionEn._(_root);
 	late final _TranslationsSyntaxManualPageLuaAdaptationEn lua_adaptation = _TranslationsSyntaxManualPageLuaAdaptationEn._(_root);
 	late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEn explaining_generation_algorithm = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEn._(_root);
+	late final _TranslationsSyntaxManualPageGoalOfPositionEn goal_of_position = _TranslationsSyntaxManualPageGoalOfPositionEn._(_root);
 }
 
 // Path: home.menu_buttons
@@ -532,6 +533,18 @@ class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEn {
 	String get title => 'Explaining the generation algorithm';
 	late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEn general_considerations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEn._(_root);
 	late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEn order_of_scripts_evaluations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEn._(_root);
+}
+
+// Path: syntax_manual_page.goal_of_position
+class _TranslationsSyntaxManualPageGoalOfPositionEn {
+	_TranslationsSyntaxManualPageGoalOfPositionEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Goal of the position';
+	String get part_1 => 'You can define the goal of the position (to win or to draw).';
+	String get part_2 => 'Keep in mind that it won\'t affect the algorithm : it\'s just an information for the player of the position.';
 }
 
 // Path: variables_table.rows.file_a
@@ -966,7 +979,6 @@ class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEv
 	String get part_2_3 => '*) it use the global constraints for this kind, in order to see if the overall constraints for this kind is respected';
 	String get part_2_4 => '*) it use the indexed constraints for this kind, in order to see if the constraints relative to the apparation order of the current piece in its kind group is respected';
 	String get part_2_5 => '*) it use the mutual constraints for this kind, in order to see if the contraints relative to two pieces of the same kind is each other respected';
-	String get part_3_1 => 'We\'ll explore the different script kinds more in the following sections.';
 }
 
 // Path: <root>
@@ -1235,6 +1247,7 @@ class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
 	@override late final _TranslationsSyntaxManualPageIntroductionEs introduction = _TranslationsSyntaxManualPageIntroductionEs._(_root);
 	@override late final _TranslationsSyntaxManualPageLuaAdaptationEs lua_adaptation = _TranslationsSyntaxManualPageLuaAdaptationEs._(_root);
 	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEs explaining_generation_algorithm = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEs._(_root);
+	@override late final _TranslationsSyntaxManualPageGoalOfPositionEs goal_of_position = _TranslationsSyntaxManualPageGoalOfPositionEs._(_root);
 }
 
 // Path: home.menu_buttons
@@ -1366,6 +1379,18 @@ class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmEs extends _Tran
 	@override String get title => 'Explicando el algoritmo de generación';
 	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEs general_considerations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEs._(_root);
 	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEs order_of_scripts_evaluations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsEs._(_root);
+}
+
+// Path: syntax_manual_page.goal_of_position
+class _TranslationsSyntaxManualPageGoalOfPositionEs extends _TranslationsSyntaxManualPageGoalOfPositionEn {
+	_TranslationsSyntaxManualPageGoalOfPositionEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Objetivo de la posición';
+	@override String get part_1 => 'Puedes definir el objetivo de la posición (ganar o empatar).';
+	@override String get part_2 => 'Tenga en cuenta que esto no afectará al algoritmo: es solo una información para el jugador de la posición.';
 }
 
 // Path: variables_table.rows.file_a
@@ -1800,7 +1825,6 @@ class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEv
 	@override String get part_2_3 => '*) utiliza las restricciones globales para este tipo, con el fin de ver si se respetan las restricciones generales para este tipo';
 	@override String get part_2_4 => '*) utiliza las restricciones indexadas para este tipo, con el fin de ver si se respetan las restricciones relativas al orden de aparición de la pieza actual en su grupo de tipo';
 	@override String get part_2_5 => '*) utiliza las restricciones mutuas para este tipo, con el fin de ver si las restricciones relativas a dos piezas del mismo tipo se respetan entre sí';
-	@override String get part_3_1 => 'Exploraremos los diferentes tipos de código más en las siguientes secciones.';
 }
 
 // Path: <root>
@@ -2069,6 +2093,7 @@ class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
 	@override late final _TranslationsSyntaxManualPageIntroductionFr introduction = _TranslationsSyntaxManualPageIntroductionFr._(_root);
 	@override late final _TranslationsSyntaxManualPageLuaAdaptationFr lua_adaptation = _TranslationsSyntaxManualPageLuaAdaptationFr._(_root);
 	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmFr explaining_generation_algorithm = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmFr._(_root);
+	@override late final _TranslationsSyntaxManualPageGoalOfPositionFr goal_of_position = _TranslationsSyntaxManualPageGoalOfPositionFr._(_root);
 }
 
 // Path: home.menu_buttons
@@ -2200,6 +2225,18 @@ class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmFr extends _Tran
 	@override String get title => 'Explication de l\'algorithm de génération';
 	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsFr general_considerations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsFr._(_root);
 	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsFr order_of_scripts_evaluations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsFr._(_root);
+}
+
+// Path: syntax_manual_page.goal_of_position
+class _TranslationsSyntaxManualPageGoalOfPositionFr extends _TranslationsSyntaxManualPageGoalOfPositionEn {
+	_TranslationsSyntaxManualPageGoalOfPositionFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Objectif de la position';
+	@override String get part_1 => 'Vous pouvez définir l\'objectif de la position (gagner ou faire nulle).';
+	@override String get part_2 => 'Gardez à l\'esprit que cela n\'aura aucune incidence sur l\'algorithme : c\'est juste une information pour le joueur de votre position.';
 }
 
 // Path: variables_table.rows.file_a
@@ -2634,5 +2671,4 @@ class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEv
 	@override String get part_2_3 => '*) il utilise les contraintes globales pour ce type de pièces, afin de voir si les contraintes générales pour ce type de pièce sont respectées';
 	@override String get part_2_4 => '*) il utilise les contraintes indexées pour ce type de pièces, afin de voir si les contraintes relatives à l\'ordre d\'apparition de la pièce dans son groupe de type de pièces sont respectées';
 	@override String get part_2_5 => '*) il utilise les contraintes mutuelles pour ce type de pièces, afin de voir si les contraintes relatives à deux pièces de même type de pièce sont respectées entre elles';
-	@override String get part_3_1 => 'Nous explorerons plus en détail les différents types de scripts dans les sections suivantes.';
 }

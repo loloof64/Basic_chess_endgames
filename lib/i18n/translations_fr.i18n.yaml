@@ -300,4 +300,7 @@ syntax_manual_page:
       part_2_3: "*) il utilise les contraintes globales pour ce type de pièces, afin de voir si les contraintes générales pour ce type de pièce sont respectées"
       part_2_4: "*) il utilise les contraintes indexées pour ce type de pièces, afin de voir si les contraintes relatives à l'ordre d'apparition de la pièce dans son groupe de type de pièces sont respectées"
       part_2_5: "*) il utilise les contraintes mutuelles pour ce type de pièces, afin de voir si les contraintes relatives à deux pièces de même type de pièce sont respectées entre elles"
-      part_3_1: "Nous explorerons plus en détail les différents types de scripts dans les sections suivantes."
+  goal_of_position:
+    title: "Objectif de la position"
+    part_1: "Vous pouvez définir l'objectif de la position (gagner ou faire nulle)."
+    part_2: "Gardez à l'esprit que cela n'aura aucune incidence sur l'algorithme : c'est juste une information pour le joueur de votre position."
