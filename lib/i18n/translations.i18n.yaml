@@ -233,3 +233,12 @@ variables_table:
     second_piece_rank:
       description: "The second piece's rank"
       type: "Integer"
+syntax_manual_page:
+  title: "Manual of syntax"
+  introduction:
+    title: "Introduction"
+    part_1: "In order to generate a position, the algorithm must be told which constraints it must respect."
+    part_2: "These constraints are dispatched among several types, and you can define a script for each."
+    part_3: "We'll see more about constraints later."
+    part_4: "The syntax is a tiny subset of the Lua (5.4) language."
+

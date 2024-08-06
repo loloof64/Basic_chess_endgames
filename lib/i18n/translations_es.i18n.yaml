@@ -236,3 +236,11 @@ variables_table:
     second_piece_rank:
       description: "El rango de la segunda pieza"
       type: "Entero"
+syntax_manual_page:
+  title: "Manual de sintaxis"
+  introduction:
+    title: "Introducción"
+    part_1: "Para generar una posición, es necesario indicarle al algoritmo qué restricciones debe respetar."
+    part_2: "Estas restricciones se distribuyen entre varios tipos y se puede definir un código para cada uno."
+    part_3: "Veremos más sobre las restricciones más adelante."
+    part_4: "La sintaxis es un pequeño subconjunto del lenguaje Lua (5.4)."

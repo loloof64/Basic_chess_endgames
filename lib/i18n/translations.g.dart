@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 546 (182 per locale)
+/// Strings: 564 (188 per locale)
 ///
-/// Built on 2024-07-30 at 12:00 UTC
+/// Built on 2024-08-06 at 16:45 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -167,6 +167,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsSampleScriptEn sample_script = _TranslationsSampleScriptEn._(_root);
 	late final _TranslationsScriptEditorPageEn script_editor_page = _TranslationsScriptEditorPageEn._(_root);
 	late final _TranslationsVariablesTableEn variables_table = _TranslationsVariablesTableEn._(_root);
+	late final _TranslationsSyntaxManualPageEn syntax_manual_page = _TranslationsSyntaxManualPageEn._(_root);
 }
 
 // Path: misc
@@ -389,6 +390,17 @@ class _TranslationsVariablesTableEn {
 	late final _TranslationsVariablesTableRowsEn rows = _TranslationsVariablesTableRowsEn._(_root);
 }
 
+// Path: syntax_manual_page
+class _TranslationsSyntaxManualPageEn {
+	_TranslationsSyntaxManualPageEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Manual of syntax';
+	late final _TranslationsSyntaxManualPageIntroductionEn introduction = _TranslationsSyntaxManualPageIntroductionEn._(_root);
+}
+
 // Path: home.menu_buttons
 class _TranslationsHomeMenuButtonsEn {
 	_TranslationsHomeMenuButtonsEn._(this._root);
@@ -477,6 +489,20 @@ class _TranslationsVariablesTableRowsEn {
 	late final _TranslationsVariablesTableRowsFirstPieceRankEn first_piece_rank = _TranslationsVariablesTableRowsFirstPieceRankEn._(_root);
 	late final _TranslationsVariablesTableRowsSecondPieceFileEn second_piece_file = _TranslationsVariablesTableRowsSecondPieceFileEn._(_root);
 	late final _TranslationsVariablesTableRowsSecondPieceRankEn second_piece_rank = _TranslationsVariablesTableRowsSecondPieceRankEn._(_root);
+}
+
+// Path: syntax_manual_page.introduction
+class _TranslationsSyntaxManualPageIntroductionEn {
+	_TranslationsSyntaxManualPageIntroductionEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Introduction';
+	String get part_1 => 'In order to generate a position, the algorithm must be told which constraints it must respect.';
+	String get part_2 => 'These constraints are dispatched among several types, and you can define a script for each.';
+	String get part_3 => 'We\'ll see more about constraints later.';
+	String get part_4 => 'The syntax is a tiny subset of the Lua (5.4) language.';
 }
 
 // Path: variables_table.rows.file_a
@@ -841,6 +867,7 @@ class _TranslationsEs extends Translations {
 	@override late final _TranslationsSampleScriptEs sample_script = _TranslationsSampleScriptEs._(_root);
 	@override late final _TranslationsScriptEditorPageEs script_editor_page = _TranslationsScriptEditorPageEs._(_root);
 	@override late final _TranslationsVariablesTableEs variables_table = _TranslationsVariablesTableEs._(_root);
+	@override late final _TranslationsSyntaxManualPageEs syntax_manual_page = _TranslationsSyntaxManualPageEs._(_root);
 }
 
 // Path: misc
@@ -1063,6 +1090,17 @@ class _TranslationsVariablesTableEs extends _TranslationsVariablesTableEn {
 	@override late final _TranslationsVariablesTableRowsEs rows = _TranslationsVariablesTableRowsEs._(_root);
 }
 
+// Path: syntax_manual_page
+class _TranslationsSyntaxManualPageEs extends _TranslationsSyntaxManualPageEn {
+	_TranslationsSyntaxManualPageEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Manual de sintaxis';
+	@override late final _TranslationsSyntaxManualPageIntroductionEs introduction = _TranslationsSyntaxManualPageIntroductionEs._(_root);
+}
+
 // Path: home.menu_buttons
 class _TranslationsHomeMenuButtonsEs extends _TranslationsHomeMenuButtonsEn {
 	_TranslationsHomeMenuButtonsEs._(_TranslationsEs root) : this._root = root, super._(root);
@@ -1151,6 +1189,20 @@ class _TranslationsVariablesTableRowsEs extends _TranslationsVariablesTableRowsE
 	@override late final _TranslationsVariablesTableRowsFirstPieceRankEs first_piece_rank = _TranslationsVariablesTableRowsFirstPieceRankEs._(_root);
 	@override late final _TranslationsVariablesTableRowsSecondPieceFileEs second_piece_file = _TranslationsVariablesTableRowsSecondPieceFileEs._(_root);
 	@override late final _TranslationsVariablesTableRowsSecondPieceRankEs second_piece_rank = _TranslationsVariablesTableRowsSecondPieceRankEs._(_root);
+}
+
+// Path: syntax_manual_page.introduction
+class _TranslationsSyntaxManualPageIntroductionEs extends _TranslationsSyntaxManualPageIntroductionEn {
+	_TranslationsSyntaxManualPageIntroductionEs._(_TranslationsEs root) : this._root = root, super._(root);
+
+	@override final _TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Introducción';
+	@override String get part_1 => 'Para generar una posición, es necesario indicarle al algoritmo qué restricciones debe respetar.';
+	@override String get part_2 => 'Estas restricciones se distribuyen entre varios tipos y se puede definir un código para cada uno.';
+	@override String get part_3 => 'Veremos más sobre las restricciones más adelante.';
+	@override String get part_4 => 'La sintaxis es un pequeño subconjunto del lenguaje Lua (5.4).';
 }
 
 // Path: variables_table.rows.file_a
@@ -1515,6 +1567,7 @@ class _TranslationsFr extends Translations {
 	@override late final _TranslationsSampleScriptFr sample_script = _TranslationsSampleScriptFr._(_root);
 	@override late final _TranslationsScriptEditorPageFr script_editor_page = _TranslationsScriptEditorPageFr._(_root);
 	@override late final _TranslationsVariablesTableFr variables_table = _TranslationsVariablesTableFr._(_root);
+	@override late final _TranslationsSyntaxManualPageFr syntax_manual_page = _TranslationsSyntaxManualPageFr._(_root);
 }
 
 // Path: misc
@@ -1737,6 +1790,17 @@ class _TranslationsVariablesTableFr extends _TranslationsVariablesTableEn {
 	@override late final _TranslationsVariablesTableRowsFr rows = _TranslationsVariablesTableRowsFr._(_root);
 }
 
+// Path: syntax_manual_page
+class _TranslationsSyntaxManualPageFr extends _TranslationsSyntaxManualPageEn {
+	_TranslationsSyntaxManualPageFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Manuel de syntaxe';
+	@override late final _TranslationsSyntaxManualPageIntroductionFr introduction = _TranslationsSyntaxManualPageIntroductionFr._(_root);
+}
+
 // Path: home.menu_buttons
 class _TranslationsHomeMenuButtonsFr extends _TranslationsHomeMenuButtonsEn {
 	_TranslationsHomeMenuButtonsFr._(_TranslationsFr root) : this._root = root, super._(root);
@@ -1825,6 +1889,20 @@ class _TranslationsVariablesTableRowsFr extends _TranslationsVariablesTableRowsE
 	@override late final _TranslationsVariablesTableRowsFirstPieceRankFr first_piece_rank = _TranslationsVariablesTableRowsFirstPieceRankFr._(_root);
 	@override late final _TranslationsVariablesTableRowsSecondPieceFileFr second_piece_file = _TranslationsVariablesTableRowsSecondPieceFileFr._(_root);
 	@override late final _TranslationsVariablesTableRowsSecondPieceRankFr second_piece_rank = _TranslationsVariablesTableRowsSecondPieceRankFr._(_root);
+}
+
+// Path: syntax_manual_page.introduction
+class _TranslationsSyntaxManualPageIntroductionFr extends _TranslationsSyntaxManualPageIntroductionEn {
+	_TranslationsSyntaxManualPageIntroductionFr._(_TranslationsFr root) : this._root = root, super._(root);
+
+	@override final _TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Introduction';
+	@override String get part_1 => 'Afin de générer une position, l\'algorithme a besoin de connaître les contraintes à respecter.';
+	@override String get part_2 => 'Ces contraintes sont réparties en plusieurs types, et vous avez la possibilité de définir un script pour chaque type.';
+	@override String get part_3 => 'Nous reparlerons des contraintes plus tard.';
+	@override String get part_4 => 'La syntaxe est un petit sous-ensemble du langage Lua (5.4).';
 }
 
 // Path: variables_table.rows.file_a

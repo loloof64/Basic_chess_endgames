@@ -240,3 +240,11 @@ variables_table:
     second_piece_rank:
       description: "La rangée de la deuxième pièce"
       type: "Entier"
+syntax_manual_page:
+  title: "Manuel de syntaxe"
+  introduction:
+    title: "Introduction"
+    part_1: "Afin de générer une position, l'algorithme a besoin de connaître les contraintes à respecter."
+    part_2: "Ces contraintes sont réparties en plusieurs types, et vous avez la possibilité de définir un script pour chaque type."
+    part_3: "Nous reparlerons des contraintes plus tard."
+    part_4: "La syntaxe est un petit sous-ensemble du langage Lua (5.4)."
