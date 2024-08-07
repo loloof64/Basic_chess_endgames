@@ -21,6 +21,20 @@ In order to update translations, run
 dart run slang
 ```
 
+### Buildind an AppImage for Linux
+
+1. Setup Docker (docker-ce-cli is free) on your Linux Host
+2. Go into the root of the project from your terminal
+3. Build the base image : `docker build -t basic_chess_endgames_build .`
+4. Build the AppImage inside a container: `docker run -ti --mount type=bind,source=$(pwd),target=/home/developer/project basic_chess_endgames_build bash`
+5. Inside the container, run `cd project`
+6. Go on with the following command `flutter clean`
+7. Now `flutter build linux --release`
+8. Run `appimage-builder --recipe AppImageBuilder.yml`
+
+Your AppImage should have been generated in the root of the project, so you can close the running Docker container (run `exit`).
+For further builds, you may want to restart from step 4, and so saving a lot of time.
+
 ## Credits
 
 ### SvgRepo

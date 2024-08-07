@@ -45,3 +45,6 @@ app.*.map.json
 
 /lib/antlr4/.antlr
 .vscode
+*.AppImage
+/AppDir
+/appimage-builder-cache
