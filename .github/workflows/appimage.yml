@@ -4,9 +4,6 @@ on:
   push:
     branches: [ releases ]
 
-env:
-  VERSION: 1.0.0
-
 jobs:
   build:
     name: Build
@@ -39,5 +36,4 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: './*.AppImage*'
-        tag: $VERSION
         bodyFile: "body.md"
