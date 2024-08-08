@@ -10,7 +10,7 @@ You can generate a position from an example script. In the list, there also icon
 
 But you can clone an example and adapt it for your own needs. And you can also see the code of an example.
 
-### Custom scripts
+### Custom scripts
 
 You can also define your custom scripts : each section is written in a subset of the Lua language. There's also a manual in the script editor page.
 
