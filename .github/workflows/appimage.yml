@@ -1,8 +1,9 @@
 name: AppImage Release
 
-on:
+on:  
   push:
-    branches: [ releases ]
+    tags:
+      - '*'
 
 jobs:
   build:
