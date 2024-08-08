@@ -4,6 +4,9 @@ on:
   push:
     branches: [ releases ]
 
+env:
+  VERSION: 1.0.0
+
 jobs:
   build:
     name: Build
@@ -33,9 +36,8 @@ jobs:
         name: AppImage
         path: './*.AppImage*'
     - name: Publish artifact
-      uses: SierraSoftworks/gh-releases@v1.0.7
+      uses: ncipollo/release-action@v1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        overwrite: 'true'
-        files: |
-          './*.AppImage*'
+        artifacts: './*.AppImage*'
+        tag: $VERSION
+        bodyFile: "body.md"
