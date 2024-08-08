@@ -1,1 +1,1 @@
-Initial release.
+Fixing application name for the AppImage.
