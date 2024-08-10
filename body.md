@@ -1,1 +1,1 @@
-Fixing application name for the AppImage.
+Trying to fix the AppImage publication issue.
