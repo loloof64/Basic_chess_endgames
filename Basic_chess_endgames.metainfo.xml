@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.loloof64.basic_chess_endgames.Basic_chess_endgames</id>
+  
+  <name>Basic chess endgames</name>
+  <summary>Generate a ches position from your own criterias and play with it against the computer</summary>
+  
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  
+  <description>
+    <p>
+      # Examples
+    </p>
+    <p>
+      You can generate a position from an example script. In the list, there also icons in order to know if we can hope for a win or for a draw.
+    </p>
+    <p>
+      But you can clone an example and adapt it for your own needs. And you can also see the code of an example.
+    </p>
+    <p>
+      # Custom scripts
+    </p>
+    <p>
+      You can also define your custom scripts : each section is written in a subset of the Lua language. There&apos;s also a manual in the script editor page.
+    </p>
+    <p>
+      You can also see the predefined variables of each script section, as well as their types. And you can insert them in your code by selecting them.
+    </p>
+    <p>
+      # Game
+    </p>
+    <p>
+      Once the position is generated, you can play it against the computer, and abort it at any time.
+    </p>
+    <p>
+      Whenever game is finished, you can see the history of moves.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">Basic_chess_endgames.desktop</launchable>
+</component>

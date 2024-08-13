@@ -1,1 +1,1 @@
-Trying to fix the AppImage publication issue.
+Trying to fix error missing libpixbufloader-svg.so.
