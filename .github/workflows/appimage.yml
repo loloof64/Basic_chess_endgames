@@ -1,9 +1,7 @@
 name: AppImage Release
 
-on:  
-  push:
-    tags:
-      - '*'
+on:
+  workflow_call:
 
 jobs:
   build:

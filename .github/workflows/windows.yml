@@ -1,9 +1,7 @@
 name: Build Windows Installer
 
-on:  
-  push:
-    tags:
-      - '*'
+on:
+  workflow_call:
 
 jobs:
   build:
