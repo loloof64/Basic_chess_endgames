@@ -18,6 +18,11 @@ jobs:
     - name: Copy icon to Windows runner folder
       run: copy icon.ico windows\runner\
 
+    - name: Install CMake
+      uses: lukka/get-cmake@latest
+      with:
+        cmakeVersion: 3.26.1
+
     - name: Install yq
       run: choco install yq
     
