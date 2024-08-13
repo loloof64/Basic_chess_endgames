@@ -5,17 +5,16 @@ script:
  - cp -r build/linux/x64/release/bundle AppDir
  - mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps/
  - cp icon.png AppDir/usr/share/icons/hicolor/256x256/apps/
+ - cp Basic_chess_endgames.desktop AppDir/usr/share/applications/
 AppDir:
   path: ./AppDir
   app_info:
     id: com.loloof64.basic_chess_endgames
     name: Basic_chess_endgames
     icon: icon
-    version: 4.0.12
+    version: 4.0.14
     exec: basicchessendgamestrainer
     exec_args: $@
-    terminal: false
-    categories: Games;
   apt:
     arch: amd64
     allow_unauthenticated: true

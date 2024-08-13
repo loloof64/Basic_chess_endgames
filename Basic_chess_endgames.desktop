@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=4.0.14
+Name=BasicChessEndgames
+Comment=Generate a chess position and play with it
+Exec=basicchessendgamestrainer
+Icon=icon
+Terminal=false
+Categories=Games;
