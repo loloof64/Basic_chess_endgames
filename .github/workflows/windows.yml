@@ -1,0 +1,44 @@
+name: Build Windows Installer
+
+on:  
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install ImageMagick
+      run: choco install imagemagick -y
+    - name: Convert PNG to ICO
+      run: magick convert icon.png -define icon:auto-resize=256,128,64,48,32,16 icon.ico
+
+    - name: Copy icon to Windows runner folder
+      run: copy icon.ico windows\runner\
+    
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.x'
+        channel: 'stable'
+        flutter-version-file: pubspec.yaml
+    - name: Install dependencies
+      run: flutter pub get
+    
+    - name: Build Windows application
+      run: flutter build windows --release
+    
+    - name: Create installer
+      run: |
+        choco install innosetup -y
+        iscc "windows/inno_setup.iss"
+      
+    - name: Upload installer artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-installer
+        path: build/windows/installer/BasicChessEndgames.exe
