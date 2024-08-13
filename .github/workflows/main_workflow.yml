@@ -1,0 +1,14 @@
+name: Main Workflow
+
+on:  
+  push:
+    tags:
+      - '*'
+
+jobs:
+  run-linux:
+    uses: ./.github/workflows/appimage.yml
+
+  run-windows:
+    needs: run-linux
+    uses: ./.github/workflows/windows.yml

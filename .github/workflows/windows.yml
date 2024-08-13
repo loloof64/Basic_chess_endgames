@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2019
     
     steps:
     - uses: actions/checkout@v3
@@ -19,6 +19,9 @@ jobs:
 
     - name: Copy icon to Windows runner folder
       run: copy icon.ico windows\runner\
+
+    - name: Install yq
+      run: choco install yq
     
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
