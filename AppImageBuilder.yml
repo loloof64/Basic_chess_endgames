@@ -7,13 +7,15 @@ script:
  - cp icon.png AppDir/usr/share/icons/hicolor/256x256/apps/
  - mkdir -p AppDir/usr/share/applications/
  - cp Basic_chess_endgames.desktop AppDir/usr/share/applications/
+ - mkdir -p AppDir/usr/share/metainfo
+ - cp Basic_chess_endgames.metainfo.xml AppDir/usr/share/metainfo/Basic_chess_endgames.metainfo.xml
 AppDir:
   path: ./AppDir
   app_info:
     id: com.loloof64.basic_chess_endgames
     name: Basic_chess_endgames
     icon: icon
-    version: 4.0.18
+    version: 4.0.20
     exec: basicchessendgamestrainer
     exec_args: $@
   apt:

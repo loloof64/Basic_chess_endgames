@@ -1,1 +1,1 @@
-Trying to fix error missing libpixbufloader-svg.so.
+Added metadatainfo.

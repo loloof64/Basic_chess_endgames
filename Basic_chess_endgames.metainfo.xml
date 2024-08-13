@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>com.loloof64.basic_chess_endgames.Basic_chess_endgames</id>
+  <id>io.github.loloof64.basic_chess_endgames</id>
   
   <name>Basic chess endgames</name>
   <summary>Generate a ches position from your own criterias and play with it against the computer</summary>
@@ -39,4 +39,15 @@
   </description>
   
   <launchable type="desktop-id">Basic_chess_endgames.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://github.com/loloof64/Basic_chess_endgames/blob/main/screenshots/home.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://github.com/loloof64/Basic_chess_endgames/blob/main/screenshots/examples.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://github.com/loloof64/Basic_chess_endgames/blob/main/screenshots/game.png</image>
+    </screenshot>
+  </screenshots>
 </component>
