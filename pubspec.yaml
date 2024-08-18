@@ -126,6 +126,10 @@ flutter_launcher_icons:
   android: true
   image_path: "assets/images/logo.png"
   min_sdk_android: 22
+  windows:
+    generate: true
+    image_path: "icon.png"
+    icon_size: 256
 flutter_native_splash:
   color: "#8c246f"
   image: "assets/images/logo.png"
