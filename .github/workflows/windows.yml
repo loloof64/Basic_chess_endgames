@@ -12,6 +12,12 @@ jobs:
 
     - name: Install ImageMagick
       run: choco install imagemagick -y
+    - name: Convert PNG to ICO
+      run: magick convert icon.png -define icon:auto-resize=256,128,64,48,32,16 icon.ico
+
+    - name: Copy icon to Windows runner folder
+      run: copy icon.ico windows\runner\
+
     - name: Install yq
       run: choco install yq
 
