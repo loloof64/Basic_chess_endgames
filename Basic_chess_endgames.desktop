@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Version=4.0.44
+Version=4.0.46
 Name=BasicChessEndgames
 Comment=Generate a chess position and play with it
 Exec=basicchessendgamestrainer
