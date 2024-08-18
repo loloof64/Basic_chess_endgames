@@ -12,12 +12,6 @@ jobs:
 
     - name: Install ImageMagick
       run: choco install imagemagick -y
-    - name: Convert PNG to ICO
-      run: magick convert icon.png -define icon:auto-resize=256,128,64,48,32,16 icon.ico
-
-    - name: Copy icon to Windows runner folder
-      run: copy icon.ico windows\runner\
-
     - name: Install yq
       run: choco install yq
 
@@ -25,7 +19,6 @@ jobs:
       uses: microsoft/setup-msbuild@v2
       with:
         msbuild-architecture: x64
-
     
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
@@ -34,14 +27,15 @@ jobs:
         flutter-version-file: pubspec.yaml
     - name: Install dependencies
       run: flutter pub get
+
+    - name: Generate icon
+      run: flutter pub run flutter_launcher_icons
     
     - name: Build Windows application
       run: flutter build windows --release
     
     - name: Create installer
-      run: |
-        choco install innosetup -y
-        iscc "windows/inno_setup.iss"
+      run: iscc "windows/inno_setup.iss"
       
     - name: Upload installer artifact
       uses: actions/upload-artifact@v3
