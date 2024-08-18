@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: windows-2022
     
     steps:
     - uses: actions/checkout@v3
@@ -18,13 +18,15 @@ jobs:
     - name: Copy icon to Windows runner folder
       run: copy icon.ico windows\runner\
 
-    - name: Install CMake
-      uses: lukka/get-cmake@latest
-      with:
-        cmakeVersion: 3.26.1
-
     - name: Install yq
       run: choco install yq
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: '[16.4,16.5)'
+        msbuild-architecture: x64
+
     
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
