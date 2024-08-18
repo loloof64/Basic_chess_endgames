@@ -1,15 +1,15 @@
 [Setup]
 AppName=BasicChessEndgames
-AppVersion=4.0.46
+AppVersion=4.0.48
 DefaultDirName={pf}\BasicChessEndgames
 DefaultGroupName=BasicChessEndgames
 OutputDir=..\..\build\windows\installer
 OutputBaseFilename=BasicChessEndgames
-SetupIconFile=icon.ico
+SetupIconFile="runner\icon.ico"
 
 [Files]
 Source: "..\..\build\windows\runner\Release\*"; DestDir: "{app}"; Flags: recursesubdirs
-Source: "icon.ico"; DestDir: "{app}"
+Source: "runner\icon.ico"; DestDir: "{app}"
 
 [Icons]
 Name: "{group}\BasicChessEndgames"; Filename: "{app}\BasicChessEndgames.exe"; IconFilename: "{app}\icon.ico"
