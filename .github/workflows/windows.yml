@@ -45,3 +45,7 @@ jobs:
       with:
         name: BasicChessEndgames.exe
         path: build/windows/installer/BasicChessEndgames.exe
+    - name: Publish artifact
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "BasicChessEndgames.exe"
