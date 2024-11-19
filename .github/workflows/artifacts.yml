@@ -7,9 +7,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Publish artifact
-        uses: ncipollo/release-action@v1
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download Linux Artifact
+        uses: actions/download-artifact@v4
         with:
-          artifacts: '*.AppImage*, *.exe'
-          bodyFile: "body.md"
+          name: BasicChessEndgames.AppImage
+          path: ./linux
+
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: BasicChessEndgames.exe
+          path: ./windows
+
+      - name: Install GitHub CLI
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Create Release
+        run: |
+          gh release create ${{ github.ref_name }} \
+            ./linux/BasicChessEndgames.AppImage ./windows/BasicChessEndgames.exe \
+            --title "Release ${{ github.release_number`  }}">
