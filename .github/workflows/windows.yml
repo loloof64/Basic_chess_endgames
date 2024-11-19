@@ -43,5 +43,5 @@ jobs:
     - name: Upload installer artifact
       uses: actions/upload-artifact@v4
       with:
-        name: windows-installer
-        path: build/windows/installer/BasicChessEndgames.exe
+        name: BasicChessEndgames.exe
+        path: build/windows/installer/windows-installer
