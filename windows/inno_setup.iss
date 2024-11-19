@@ -1,6 +1,6 @@
 [Setup]
 AppName=BasicChessEndgames
-AppVersion=4.0.80
+AppVersion=4.0.82
 DefaultDirName={commonpf}\BasicChessEndgames
 DefaultGroupName=BasicChessEndgames
 OutputDir=..\build\windows\installer
