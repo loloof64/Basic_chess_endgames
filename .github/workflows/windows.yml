@@ -41,7 +41,7 @@ jobs:
       run: iscc "windows\inno_setup.iss"
       
     - name: Upload installer artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: windows-installer
         path: build/windows/installer/BasicChessEndgames.exe
