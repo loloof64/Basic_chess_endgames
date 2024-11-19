@@ -38,7 +38,7 @@ jobs:
       run: flutter build windows --release
     
     - name: Create installer
-      run: iscc "inno_setup.iss"
+      run: iscc "windows\inno_setup.iss"
       
     - name: Upload installer artifact
       uses: actions/upload-artifact@v4
