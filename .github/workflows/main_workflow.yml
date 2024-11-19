@@ -12,3 +12,7 @@ jobs:
   run-windows:
     needs: run-linux
     uses: ./.github/workflows/windows.yml
+
+  publish:
+    needs: run-windows
+    uses: ./.github/workflows/artifacts.yml

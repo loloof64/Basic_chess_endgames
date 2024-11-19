@@ -1,0 +1,14 @@
+name:  Publish artifacts
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish artifact
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: '*.AppImage*, *.exe'
+          bodyFile: "body.md"

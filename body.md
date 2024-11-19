@@ -1,1 +1,1 @@
-Trying to release windows' version.
+Trying to release Linux and Windows executables.

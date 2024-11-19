@@ -29,10 +29,5 @@ jobs:
     - name: Save build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: AppImage
+        name: BasicChessEndgames.AppImage
         path: './*.AppImage*'
-    - name: Publish artifact
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: './*.AppImage*'
-        bodyFile: "body.md"
