@@ -43,5 +43,5 @@ jobs:
     - name: Upload installer artifact
       uses: actions/upload-artifact@v4
       with:
-        name: BasicChessEndgames.exe
+        name: BasicChessEndgames-${{ github.release_number }}-x86_64.exe
         path: build/windows/installer/BasicChessEndgames.exe

@@ -39,5 +39,5 @@ jobs:
       - name: Create Release
         run: |
           gh release create ${{ github.ref_name }} \
-          ./linux/BasicChessEndgames.AppImage ./windows/BasicChessEndgames.exe \
+          ./linux/BasicChessEndgames*.AppImage ./windows/BasicChessEndgames*.exe \
           --title "Release ${{ github.release_number }}"
