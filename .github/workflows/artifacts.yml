@@ -25,11 +25,8 @@ jobs:
           path: ./artifacts
           name: BasicChessEndgames-${{ github.ref_name }}-x86_64.exe
 
-      - name: Debug artifacts [Remove when done with it !!!!]
-        run: ls -l ./artifacts
-
       - name: Rename windows artifact
-        run: mv BasicChessEndgames.exe BasicChessEndgames-${{ github.ref_name }}-x86_64.exe 
+        run: mv ./artifacts/BasicChessEndgames.exe ./artifacts/BasicChessEndgames-${{ github.ref_name }}-x86_64.exe 
 
       - name: Install GitHub CLI
         uses: actions/setup-node@v3
