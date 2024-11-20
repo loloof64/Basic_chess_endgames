@@ -2,6 +2,11 @@
 
 Generate a chess position from your criterias and play it against your device.
 
+# Releases
+
+* Windows release is built under windows 11, and so may not be retro-compatible with older Windows versions,
+* Linux release is built under Ubuntu 20.04, and so may not be retro-compatible with linux older than 2020.
+
 ## Usage
 
 ### Examples
