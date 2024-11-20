@@ -29,5 +29,5 @@ jobs:
     - name: Save build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: BasicChessEndgames.AppImage
+        name: BasicChessEndgames-${{ github.ref_name }}-x86_64.AppImage
         path: './*.AppImage*'
