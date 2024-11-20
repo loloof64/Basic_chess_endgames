@@ -25,12 +25,6 @@ jobs:
           name: BasicChessEndgames.exe
           path: ./windows
 
-      - name: Debug linux artifacts
-        run: ls -R ./linux
-
-      - name: Debug windows artifacts
-        run: ls -R ./windows
-
       - name: Install GitHub CLI
         uses: actions/setup-node@v3
         with:
