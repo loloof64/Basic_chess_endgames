@@ -31,17 +31,17 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
-    - name: Generate icon
-      run: flutter pub run flutter_launcher_icons
-    
-    - name: Build Windows application
-      run: flutter build windows --release
-    
-    - name: Create installer
-      run: iscc "windows\inno_setup.iss"
-      
+    - name: Decode MSIX certificate
+      run: echo "${{ secrets.MSIX_CERTIFICATE_BASE64 }}" | base64 -d > msix_cert.pfx
+
+    - name: Use MSIX certificate
+      env:
+        MSIX_CERTIFICATE_PATH: msix_cert.pfx
+        MSIX_CERTIFICATE_PASSWORD: ${{ secrets.MSIX_CERTIFICATE_PASSWORD }}
+      run: flutter pub run msix:create
+
     - name: Upload installer artifact
       uses: actions/upload-artifact@v4
       with:
-        name: BasicChessEndgames-${{ github.ref_name }}-x86_64.exe
-        path: build/windows/installer/BasicChessEndgames.exe
+        name: BasicChessEndgames-${{ github.ref_name }}-x86_64.msix
+        path: build/msix/*.msix

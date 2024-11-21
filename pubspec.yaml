@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 4.0.108+17
+version: 4.0.110+17
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -61,6 +61,7 @@ dependencies:
   equatable: ^2.0.5
   open_save_file_dialogs: ^0.1.1
   file_picker: ^8.0.0+1
+  msix: ^3.16.8
 
 dev_dependencies:
   flutter_test:
@@ -136,3 +137,11 @@ flutter_native_splash:
   android_12:
     image: "assets/images/logo.png"
     color: "#8c246f"
+
+msix_config:
+  display_name: Basic Chess Endgames
+  publisher_display_name: Laurent Bernabe
+  identity_name: com.loloof64.basicchessendgames
+  publisher: CN=Laurent Bernabe
+  msix_version: 4.0.110.0
+  logo_path: assets/images/logo.png
