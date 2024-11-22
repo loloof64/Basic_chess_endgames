@@ -27,27 +27,9 @@ jobs:
       run: flutter pub get
 
     - name: Decode MSIX certificate
-      shell: pwsh
-      run: |
-        if (-not $env:CERTIFICATE_SECRET) {
-          Write-Host "Le secret est vide ou non défini."
-          throw "Le secret du certificat est vide."
-        } else {
-          Write-Host "Le secret est présent."
-        }
-        if ($env:CERTIFICATE_SECRET -match '^\s*$') {
-          throw "Empty certificate."
-        }
-        try {
-          $decodedBytes = [Convert]::FromBase64String($env:CERTIFICATE_SECRET)
-        }
-        catch {
-          throw "Error while decoding certificate."
-        }
-        $outputFile = "msix_cert.pfx"
-        [IO.File]::WriteAllBytes($outputFile, $decodedBytes)
+      run: echo $CERTIFICATE_BASE64 | base64 --decode > certificate.pfx
       env:
-        CERTIFICATE_SECRET: ${{ secrets.MSIX_CERTIFICATE_BASE64 }}
+        CERTIFICATE_BASE64: ${{ secrets.MSIX_CERTIFICATE_BASE64 }}
 
     - name: Use MSIX certificate
       env:
