@@ -26,6 +26,13 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
+    - name: Install WSL and base64
+      run: |
+        wsl --install
+        wsl --install Ubuntu-24.04
+        wsl sudo apt-get update
+        wsl sudo apt-get install coreutils
+
     - name: Decode MSIX certificate
       run: echo "${{ secrets.MSIX_CERTIFICATE_BASE64 }}" | base64 -d > msix_cert.pfx
 
