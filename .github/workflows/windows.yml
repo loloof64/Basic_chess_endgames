@@ -29,11 +29,11 @@ jobs:
     - name: Decode MSIX certificate
       shell: pwsh
       run: |
-        if ([string]::IsNullOrWhiteSpace(${{ env.CERTIFICATE_SECRET }})) {
+        if ([string]::IsNullOrWhiteSpace($env:CERTIFICATE_SECRET)) {
           throw "Empty or invalid certificate."
         }
         try {
-          $decodedBytes = [Convert]::FromBase64String(${{ env.CERTIFICATE_SECRET }})
+          $decodedBytes = [Convert]::FromBase64String($env:CERTIFICATE_SECRET)
         }
         catch {
           throw "Error while decoding certificate."
