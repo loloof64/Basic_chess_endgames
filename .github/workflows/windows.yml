@@ -29,8 +29,14 @@ jobs:
     - name: Decode MSIX certificate
       shell: pwsh
       run: |
-        if ([string]::IsNullOrWhiteSpace($env:CERTIFICATE_SECRET)) {
-          throw "Empty or invalid certificate."
+        if (-not $env:CERTIFICATE_SECRET) {
+          Write-Host "Le secret est vide ou non défini."
+          throw "Le secret du certificat est vide."
+        } else {
+          Write-Host "Le secret est présent."
+        }
+        if ($env:CERTIFICATE_SECRET -match '^\s*$') {
+          throw "Empty certificate."
         }
         try {
           $decodedBytes = [Convert]::FromBase64String($env:CERTIFICATE_SECRET)
