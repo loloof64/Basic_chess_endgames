@@ -33,7 +33,7 @@ jobs:
 
     - name: Use MSIX certificate
       env:
-        APP_VERSION: 4.0.134.0
+        APP_VERSION: 4.0.136.0
         MSIX_CERTIFICATE_PATH: certificate.pfx
         MSIX_CERTIFICATE_PASSWORD: ${{ secrets.MSIX_CERTIFICATE_PASSWORD }}
       run: flutter pub run msix:create --display-name Basic Chess Endgames --publisher-display-name Laurent Bernabe --identity-name com.loloof64.basicchessendgames --logo-path assets/images/logo.png --trim-logo false --languages en,fr,es --version $APP_VERSION --certificate-path $MSIX_CERTIFICATE_PATH --certificate-password $MSIX_CERTIFICATE_PASSWORD
