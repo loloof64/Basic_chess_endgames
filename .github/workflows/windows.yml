@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2022
+    runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v3
@@ -26,22 +26,16 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
-    - name: Install WSL and base64
-      run: |
-        wsl --install -d Ubuntu-24.04
-        wsl sudo apt-get update
-        wsl sudo apt-get install coreutils
-
     - name: Decode MSIX certificate
-      run: wsl echo "${{ secrets.MSIX_CERTIFICATE_BASE64 }}" | base64 -d > msix_cert.pfx
-
-    - name: Get the certificate in the filesystem
-      run: wsl cp msix_cert.pfx /mnt/c/
-      
+      shell: pwsh
+      run: |
+       $decodedBytes = [Convert]::FromBase64String(${{ secrets.MSIX_CERTIFICATE_BASE64 }})
+       $outputFile = "msix_cert.pfx"
+       [IO.File]::WriteAllBytes($outputFile, $decodedBytes)
 
     - name: Use MSIX certificate
       env:
-        MSIX_CERTIFICATE_PATH: /c/msix_cert.pfx
+        MSIX_CERTIFICATE_PATH: msix_cert.pfx
         MSIX_CERTIFICATE_PASSWORD: ${{ secrets.MSIX_CERTIFICATE_PASSWORD }}
       run: flutter pub run msix:create
 
