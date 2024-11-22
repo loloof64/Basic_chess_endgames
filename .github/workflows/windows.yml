@@ -29,9 +29,17 @@ jobs:
     - name: Decode MSIX certificate
       shell: pwsh
       run: |
-       $decodedBytes = [Convert]::FromBase64String(${{ secrets.MSIX_CERTIFICATE_BASE64 }})
-       $outputFile = "msix_cert.pfx"
-       [IO.File]::WriteAllBytes($outputFile, $decodedBytes)
+        if ([string]::IsNullOrWhiteSpace(${{ secrets.MSIX_CERTIFICATE_BASE64 }})) {
+          throw "Empty or invalid certificate."
+        }
+        try {
+          $decodedBytes = [Convert]::FromBase64String(${{ secrets.MSIX_CERTIFICATE_BASE64 }})
+        }
+        catch {
+          throw "Error while decoding certificate."
+        }
+        $outputFile = "msix_cert.pfx"
+        [IO.File]::WriteAllBytes($outputFile, $decodedBytes)
 
     - name: Use MSIX certificate
       env:
