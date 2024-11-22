@@ -31,9 +31,14 @@ jobs:
       env:
         CERTIFICATE_BASE64: ${{ secrets.MSIX_CERTIFICATE_BASE64 }}
 
+    - name: Debug [TEMP !!!]
+      run: echo $(( ${#PASS} * 6 ))
+      env:
+        PASS: ${{ secrets.MSIX_CERTIFICATE_PASSWORD }}
+
     - name: Use MSIX certificate
       env:
-        APP_VERSION: 4.0.136.0
+        APP_VERSION: 4.0.138.0
         MSIX_CERTIFICATE_PATH: certificate.pfx
         MSIX_CERTIFICATE_PASSWORD: ${{ secrets.MSIX_CERTIFICATE_PASSWORD }}
       run: flutter pub run msix:create --display-name Basic Chess Endgames --publisher-display-name Laurent Bernabe --identity-name com.loloof64.basicchessendgames --logo-path assets/images/logo.png --trim-logo false --languages en,fr,es --version $APP_VERSION --certificate-path $MSIX_CERTIFICATE_PATH --certificate-password $MSIX_CERTIFICATE_PASSWORD
