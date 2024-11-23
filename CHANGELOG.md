@@ -1,6 +1,7 @@
 ## 4.1.0
 
 * Rename window title in desktop version
+* Set board reversed by default if player has black side
 
 ## 4.0.148
 

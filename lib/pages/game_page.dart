@@ -50,9 +50,11 @@ class _GamePageState extends ConsumerState<GamePage> {
     if (gameStartAsWhite) {
       _whitePlayerType = PlayerType.human;
       _blackPlayerType = PlayerType.computer;
+      _blackSideAtBottom = false;
     } else {
       _whitePlayerType = PlayerType.computer;
       _blackPlayerType = PlayerType.human;
+      _blackSideAtBottom = true;
     }
     _doStartNewGame();
     super.initState();
