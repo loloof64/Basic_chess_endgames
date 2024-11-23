@@ -12,6 +12,7 @@ jobs:
   run-windows:
     needs: run-linux
     uses: ./.github/workflows/windows.yml
+    secrets: inherit
 
   publish:
     needs: [run-linux, run-windows]

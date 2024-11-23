@@ -5,15 +5,10 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2022
+    runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v3
-    - name: Convert PNG to ICO
-      run: magick icon.png -define icon:auto-resize=256,128,64,48,32,16 icon.ico
-
-    - name: Copy icon to Windows runner folder
-      run: copy icon.ico windows\runner\
 
     - name: Install yq
       run: choco install yq
@@ -30,16 +25,13 @@ jobs:
         flutter-version-file: pubspec.yaml
     - name: Install dependencies
       run: flutter pub get
-
-    - name: Generate icon
-      run: flutter pub run flutter_launcher_icons
-    
+      
     - name: Build Windows application
       run: flutter build windows --release
     
     - name: Create installer
       run: iscc "windows\inno_setup.iss"
-      
+
     - name: Upload installer artifact
       uses: actions/upload-artifact@v4
       with:
