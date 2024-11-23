@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Basic Chess Endgames"
-#define MyAppVersion "4.0.142"
+#define MyAppVersion "4.0.144"
 #define MyAppPublisher "Laurent Bernabe"
 #define MyAppExeName "basicchessendgamestrainer.exe"
 
