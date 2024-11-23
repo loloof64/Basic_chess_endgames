@@ -32,9 +32,6 @@ jobs:
     - name: Create installer
       run: iscc "windows\inno_setup.iss"
 
-    - name: Rename windows artifact
-      run: mv ./artifacts/BasicChessEndgames.exe ./artifacts/BasicChessEndgames-${{ github.ref_name }}-x86_64.exe
-
     - name: Upload installer artifact
       uses: actions/upload-artifact@v4
       with:
