@@ -10,6 +10,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:window_size/window_size.dart';
 
 void main() async {
   final isDesktop = Platform.isWindows ||
@@ -20,6 +21,9 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  if (isDesktop) {
+    setWindowTitle("Basic chess endgames");
+  }
   stockfishManager.init();
   runApp(ProviderScope(child: TranslationProvider(child: home)));
 }
