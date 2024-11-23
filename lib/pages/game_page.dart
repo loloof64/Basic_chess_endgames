@@ -608,7 +608,7 @@ class _GamePageState extends ConsumerState<GamePage> {
     stockfishManager.sendCommand("go movetime 1200");
   }
 
-  void _handleExitPage(bool didPop) async {
+  void _handleExitPage(bool didPop, Object? result) async {
     if (didPop) return;
     return await showDialog(
         context: context,
@@ -692,7 +692,7 @@ class _GamePageState extends ConsumerState<GamePage> {
 
     return PopScope(
       canPop: false,
-      onPopInvoked: _handleExitPage,
+      onPopInvokedWithResult: _handleExitPage,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,

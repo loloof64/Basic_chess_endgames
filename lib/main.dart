@@ -27,7 +27,7 @@ void main() async {
 class AppMobile extends StatelessWidget {
   const AppMobile({super.key});
 
-  void _handleExit(bool didPop) {
+  void _handleExit(bool didPop, Object? result) {
     if (didPop) return;
     stockfishManager.dispose();
     SystemNavigator.pop();
@@ -38,7 +38,7 @@ class AppMobile extends StatelessWidget {
     return ProviderScope(
       child: PopScope(
         canPop: false,
-        onPopInvoked: _handleExit,
+        onPopInvokedWithResult: _handleExit,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           onGenerateTitle: (context) => t.misc.app_title,
@@ -63,7 +63,7 @@ class AppDesktop extends StatefulWidget {
 }
 
 class _AppDesktopState extends State<AppDesktop> with WindowListener {
-  void _handleExit(bool didPop) {
+  void _handleExit(bool didPop, Object? result) {
     if (didPop) return;
     stockfishManager.dispose();
     SystemNavigator.pop();
@@ -92,7 +92,7 @@ class _AppDesktopState extends State<AppDesktop> with WindowListener {
     return ProviderScope(
       child: PopScope(
         canPop: false,
-        onPopInvoked: _handleExit,
+        onPopInvokedWithResult: _handleExit,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           onGenerateTitle: (context) => t.misc.app_title,

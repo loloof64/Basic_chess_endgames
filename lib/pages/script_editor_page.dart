@@ -676,7 +676,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     return convertScriptToPiecesCounts(script).keys.toList();
   }
 
-  void _handleExitPage(bool didPop) async {
+  void _handleExitPage(bool didPop, Object? result) async {
     if (didPop) return;
     if (widget.readOnly) {
       Navigator.of(context).pop();
@@ -936,7 +936,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
 
     return PopScope(
       canPop: false,
-      onPopInvoked: _handleExitPage,
+      onPopInvokedWithResult: _handleExitPage,
       child: DefaultTabController(
         length: 8,
         child: Builder(builder: (context) {

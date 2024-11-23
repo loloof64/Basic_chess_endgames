@@ -9,10 +9,9 @@ const titlesFontSize = 26.0;
 const rgpdWarningHeight = 200.0;
 
 class HomePage extends StatelessWidget {
-
   const HomePage({super.key});
 
-  void _handleExit(bool didPop) async {
+  void _handleExit(bool didPop, Object? result) async {
     if (didPop) return;
     stockfishManager.dispose();
     await SystemNavigator.pop();
@@ -22,7 +21,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: _handleExit,
+      onPopInvokedWithResult: _handleExit,
       child: const HomeWidget(),
     );
   }
