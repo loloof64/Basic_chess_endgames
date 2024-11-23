@@ -25,21 +25,15 @@ jobs:
         flutter-version-file: pubspec.yaml
     - name: Install dependencies
       run: flutter pub get
-
-    - name: Decode MSIX certificate
-      run: echo $CERTIFICATE_BASE64 | base64 --decode > certificate.pfx
-      env:
-        CERTIFICATE_BASE64: ${{ secrets.MSIX_CERTIFICATE_BASE64 }}
-
-    - name: Use MSIX certificate
-      env:
-        APP_VERSION: 4.0.140.0
-        MSIX_CERTIFICATE_PATH: certificate.pfx
-        MSIX_CERTIFICATE_PASSWORD: ${{ secrets.MSIX_CERTIFICATE_PASSWORD }}
-      run: flutter pub run msix:create --display-name Basic Chess Endgames --publisher-display-name Laurent Bernabe --identity-name com.loloof64.basicchessendgames --logo-path assets/images/logo.png --trim-logo false --languages en,fr,es --version $APP_VERSION --certificate-path "$MSIX_CERTIFICATE_PATH" --certificate-password "$MSIX_CERTIFICATE_PASSWORD"
+      
+    - name: Build Windows application
+      run: flutter build windows --release
+    
+    - name: Create installer
+      run: iscc "windows\inno_setup.iss"
 
     - name: Upload installer artifact
       uses: actions/upload-artifact@v4
       with:
-        name: BasicChessEndgames-${{ github.ref_name }}-x86_64.msix
-        path: build/msix/*.msix
+        name: BasicChessEndgames-${{ github.ref_name }}-x86_64.exe
+        path: build/windows/installer/BasicChessEndgames.exe
