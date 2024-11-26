@@ -66,9 +66,8 @@ class PortraitWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final goalText = gameGoal == Goal.win
-        ? t.game_page.goal_win
-        : t.game_page.goal_draw;
+    final goalText =
+        gameGoal == Goal.win ? t.game_page.goal_win : t.game_page.goal_draw;
     final screenWidth = MediaQuery.of(context).size.width;
     final goalTextFontSize = screenWidth * 0.03;
     final playerTurnSize = screenWidth * 0.03;
@@ -90,6 +89,8 @@ class PortraitWidget extends StatelessWidget {
           engineThinking: engineThinking,
           onPromotionCommited: onPromotionCommited,
           chessBoardColors: ChessBoardColors(),
+          cellHighlights: const <String, Color>{},
+          onTap: ({required cellCoordinate}) => {},
         ),
         const Divider(height: gapSize),
         Row(
