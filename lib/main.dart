@@ -20,8 +20,7 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  WindowManager.instance.setTitle("Basic chess endgames");
-  
+
   stockfishManager.init();
   runApp(ProviderScope(child: TranslationProvider(child: home)));
 }
