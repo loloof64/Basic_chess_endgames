@@ -123,6 +123,8 @@ class ChessHistory extends StatelessWidget {
       color: Theme.of(context).colorScheme.onSecondary,
     );
 
+    final selectedTextStyle = textStyle.copyWith(color: Theme.of(context).colorScheme.primary);
+
     nodesDescriptions.asMap().forEach((index, currentNode) {
       if (currentNode.fen != null) {
         final nodeSelected = index == selectedNodeIndex;
@@ -134,7 +136,7 @@ class ChessHistory extends StatelessWidget {
                 ),
                 child: Text(
                   currentNode.caption,
-                  style: textStyle,
+                  style: selectedTextStyle,
                 ),
               )
             : TextButton(
