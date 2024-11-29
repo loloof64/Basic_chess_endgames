@@ -8,7 +8,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
-  flutter_stockfish_plugin
+  stockfish_chess_engine
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

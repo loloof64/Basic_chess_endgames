@@ -1,5 +1,5 @@
-import 'package:flutter_stockfish_plugin/stockfish.dart';
-import 'package:flutter_stockfish_plugin/stockfish_state.dart';
+import 'package:stockfish_chess_engine/stockfish.dart';
+import 'package:stockfish_chess_engine/stockfish_state.dart';
 
 class StockfishManager {
   Stockfish? _stockfish;
@@ -24,9 +24,11 @@ class StockfishManager {
 
   Stream<String> geOutputStream() {
     if (_stockfish == null) throw "Stockfish is still uninitialized !";
-    if (_stockfish!.state.value != StockfishState.ready) throw "Stockfish is not yet ready !";
+    if (_stockfish!.state.value != StockfishState.ready) {
+      throw "Stockfish is not yet ready !";
+    }
     return _stockfish!.stdout;
-  } 
+  }
 }
 
 StockfishManager stockfishManager = StockfishManager();
