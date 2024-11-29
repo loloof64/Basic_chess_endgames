@@ -305,6 +305,7 @@ class TranslationsHomeErrorsPopupLabelsEn {
 	// Translations
 	String get script_type => 'Script type';
 	String get position => 'Position';
+	String get position_short => 'Pos.';
 	String get message => 'Message';
 }
 

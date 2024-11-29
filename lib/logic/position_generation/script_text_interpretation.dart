@@ -586,6 +586,8 @@ class ErrorsSummaryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -616,7 +618,9 @@ class ErrorsSummaryWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      t.home.errors_popup_labels.position,
+                      isPortrait
+                          ? t.home.errors_popup_labels.position_short
+                          : t.home.errors_popup_labels.position,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.onPrimary,

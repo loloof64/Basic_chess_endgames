@@ -302,6 +302,7 @@ class _TranslationsHomeErrorsPopupLabelsFr extends TranslationsHomeErrorsPopupLa
 	// Translations
 	@override String get script_type => 'Type de script';
 	@override String get position => 'Position';
+	@override String get position_short => 'Pos.';
 	@override String get message => 'Message';
 }
 

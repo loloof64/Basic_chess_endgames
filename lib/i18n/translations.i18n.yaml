@@ -34,6 +34,7 @@ home:
   errors_popup_labels:
     script_type: "Script type"
     position: "Position"
+    position_short: "Pos."
     message: "Message"
 sample_chooser:
   title: "Example chooser"
