@@ -550,10 +550,10 @@ packages:
     dependency: "direct main"
     description:
       name: open_save_file_dialogs
-      sha256: faec95f7fa085e3e7a4c63dc614a3792d187facb68f58bddfa23b20957751152
+      sha256: "7c7173ccf8f85c0108ae74a5d6c23f47b841dea1099133f485db6324f857f48f"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.1"
+    version: "0.1.2"
   package_config:
     dependency: transitive
     description:

@@ -59,7 +59,7 @@ dependencies:
   window_manager: ^0.4.3
   external_path: ^2.0.1
   equatable: ^2.0.7
-  open_save_file_dialogs: ^0.1.1
+  open_save_file_dialogs: ^0.1.2
   file_picker: ^8.1.4
 
 dev_dependencies:
