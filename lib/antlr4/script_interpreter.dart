@@ -40,17 +40,6 @@ class CustomErrorListener extends BaseErrorListener {
   }
 }
 
-class VariableIsNotAffectedException implements Exception {
-  String varName;
-
-  VariableIsNotAffectedException(this.varName);
-
-  @override
-  String toString() {
-    return "VariableIsNotAffectedException($varName)";
-  }
-}
-
 class MissingReturnStatementException implements Exception {}
 
 class ParserError implements Exception {

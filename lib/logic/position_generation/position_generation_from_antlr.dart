@@ -254,15 +254,6 @@ class PositionGeneratorFromAntlr {
             message: message,
             scriptType: scriptTypeLabel,
           );
-        } on VariableIsNotAffectedException catch (ex) {
-          final scriptTypeLabel = translations.fromScriptType(
-              scriptType: ScriptType.playerKingConstraint);
-          final message = translations.variableNotAffected(Name: ex.varName);
-          Logger().e(ex);
-          throw InterpretationError(
-            message: message,
-            scriptType: scriptTypeLabel,
-          );
         } on ReturnedValueNotABooleanException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
               scriptType: ScriptType.playerKingConstraint);
@@ -369,15 +360,6 @@ class PositionGeneratorFromAntlr {
             message: message,
             scriptType: scriptTypeLabel,
           );
-        } on VariableIsNotAffectedException catch (ex) {
-          final scriptTypeLabel = translations.fromScriptType(
-              scriptType: ScriptType.computerKingConstraint);
-          final message = translations.variableNotAffected(Name: ex.varName);
-          Logger().e(ex);
-          throw InterpretationError(
-            message: message,
-            scriptType: scriptTypeLabel,
-          );
         } on ReturnedValueNotABooleanException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
               scriptType: ScriptType.computerKingConstraint);
@@ -427,15 +409,6 @@ class PositionGeneratorFromAntlr {
           final scriptTypeLabel = translations.fromScriptType(
               scriptType: ScriptType.mutualKingConstraint);
           final message = translations.missingReturnStatement;
-          Logger().e(ex);
-          throw InterpretationError(
-            message: message,
-            scriptType: scriptTypeLabel,
-          );
-        } on VariableIsNotAffectedException catch (ex) {
-          final scriptTypeLabel = translations.fromScriptType(
-              scriptType: ScriptType.mutualKingConstraint);
-          final message = translations.variableNotAffected(Name: ex.varName);
           Logger().e(ex);
           throw InterpretationError(
             message: message,
@@ -578,21 +551,6 @@ class PositionGeneratorFromAntlr {
                 pieceKind: pieceCountConstraint.pieceKind,
                 translations: translations,
               );
-            } on VariableIsNotAffectedException catch (ex) {
-              final scriptTypeLabel = translations.fromScriptType(
-                scriptType: ScriptType.otherPiecesGlobalConstraint,
-                pieceKind: pieceCountConstraint.pieceKind,
-              );
-              final message =
-                  translations.variableNotAffected(Name: ex.varName);
-              Logger().e(ex);
-              throw InterpretationError(
-                      scriptType: scriptTypeLabel, message: message)
-                  .withComplexScriptType(
-                typeLabel: scriptTypeLabel,
-                pieceKind: pieceCountConstraint.pieceKind,
-                translations: translations,
-              );
             } on ReturnedValueNotABooleanException catch (ex) {
               final scriptTypeLabel = translations.fromScriptType(
                   scriptType: ScriptType.otherPiecesGlobalConstraint);
@@ -658,21 +616,6 @@ class PositionGeneratorFromAntlr {
                 pieceKind: pieceCountConstraint.pieceKind,
               );
               final message = translations.missingReturnStatement;
-              Logger().e(ex);
-              throw InterpretationError(
-                      scriptType: scriptTypeLabel, message: message)
-                  .withComplexScriptType(
-                typeLabel: scriptTypeLabel,
-                pieceKind: pieceCountConstraint.pieceKind,
-                translations: translations,
-              );
-            } on VariableIsNotAffectedException catch (ex) {
-              final scriptTypeLabel = translations.fromScriptType(
-                scriptType: ScriptType.otherPiecesIndexedConstraint,
-                pieceKind: pieceCountConstraint.pieceKind,
-              );
-              final message =
-                  translations.variableNotAffected(Name: ex.varName);
               Logger().e(ex);
               throw InterpretationError(
                       scriptType: scriptTypeLabel, message: message)
@@ -752,21 +695,6 @@ class PositionGeneratorFromAntlr {
                   pieceKind: pieceCountConstraint.pieceKind,
                 );
                 final message = translations.missingReturnStatement;
-                Logger().e(ex);
-                throw InterpretationError(
-                        scriptType: scriptTypeLabel, message: message)
-                    .withComplexScriptType(
-                  typeLabel: scriptTypeLabel,
-                  pieceKind: pieceCountConstraint.pieceKind,
-                  translations: translations,
-                );
-              } on VariableIsNotAffectedException catch (ex) {
-                final scriptTypeLabel = translations.fromScriptType(
-                  scriptType: ScriptType.otherPiecesMutualConstraint,
-                  pieceKind: pieceCountConstraint.pieceKind,
-                );
-                final message =
-                    translations.variableNotAffected(Name: ex.varName);
                 Logger().e(ex);
                 throw InterpretationError(
                         scriptType: scriptTypeLabel, message: message)
