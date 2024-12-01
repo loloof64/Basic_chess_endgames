@@ -135,14 +135,14 @@ class InterpretationError implements Exception {
   }
 
   InterpretationError withComplexScriptType({
-    required String type,
+    required String typeLabel,
     required PieceKind pieceKind,
     required TranslationsWrapper translations,
   }) {
     return InterpretationError(
       message: message,
       position: position,
-      scriptType: "$type [${pieceKind.toLocalizedEasyString(
+      scriptType: "$typeLabel [${pieceKind.toLocalizedEasyString(
         translations: translations,
       )}]",
     );

@@ -318,39 +318,30 @@ class ScriptTextTransformer {
             return <InterpretationError>[];
           }
         case ScriptType.otherPiecesGlobalConstraint:
-          final (constraint, errors) = _parseMapOfScripts(
+          final constraint = _parseMapOfScripts(
             scriptContent,
             scriptType,
           );
-          if (errors.isNotEmpty) {
-            return errors;
-          } else {
-            constraints.otherPiecesGlobalConstraints = constraint;
-            return <InterpretationError>[];
-          }
+          constraints.otherPiecesGlobalConstraints = constraint;
+          return <InterpretationError>[];
 
         case ScriptType.otherPiecesIndexedConstraint:
-          final (constraint, errors) = _parseMapOfScripts(
+          final constraint = _parseMapOfScripts(
             scriptContent,
             scriptType,
           );
-          if (errors.isNotEmpty) {
-            return errors;
-          } else {
-            constraints.otherPiecesIndexedConstraints = constraint;
-            return <InterpretationError>[];
-          }
+
+          constraints.otherPiecesIndexedConstraints = constraint;
+          return <InterpretationError>[];
         case ScriptType.otherPiecesMutualConstraint:
-          final (constraint, errors) = _parseMapOfScripts(
+          final constraint = _parseMapOfScripts(
             scriptContent,
             scriptType,
           );
-          if (errors.isNotEmpty) {
-            return errors;
-          } else {
-            constraints.otherPiecesMutualConstraints = constraint;
-            return <InterpretationError>[];
-          }
+
+          constraints.otherPiecesMutualConstraints = constraint;
+          return <InterpretationError>[];
+
         case ScriptType.goal:
           constraints.mustWin = _parseGoalScript(scriptContent);
           break;
@@ -358,10 +349,18 @@ class ScriptTextTransformer {
       return <InterpretationError>[];
     } on MissingScriptTypeException {
       final message = translations.missingScriptType;
-      return <InterpretationError>[InterpretationError(message: message)];
+      return <InterpretationError>[
+        InterpretationError(
+          message: message,
+        ),
+      ];
     } on UnRecognizedScriptTypeException {
       final message = translations.missingScriptType;
-      return <InterpretationError>[InterpretationError(message: message)];
+      return <InterpretationError>[
+        InterpretationError(
+          message: message,
+        )
+      ];
     }
   }
 
@@ -388,14 +387,12 @@ class ScriptTextTransformer {
     return (result, error);
   }
 
-  // can throw exceptions
+  // can throw exception
   // MissingOtherPieceScriptTypeException
-  // UnRecognizedScriptTypeException
-  (Map<PieceKind, String>, List<InterpretationError>) _parseMapOfScripts(
+  Map<PieceKind, String> _parseMapOfScripts(
       String scriptContent, ScriptType scriptType) {
     final results = <PieceKind, String>{};
     final parts = scriptContent.split(otherPiecesSingleScriptSeparator);
-    final errorsList = <InterpretationError>[];
 
     for (var scriptDivision in parts) {
       if (scriptDivision.trim().isEmpty) continue;
@@ -410,7 +407,7 @@ class ScriptTextTransformer {
       results[kind] = scriptContent;
     }
 
-    return (results, errorsList);
+    return results;
   }
 
   bool _parseGoalScript(String scriptContent) {

@@ -556,7 +556,7 @@ class PositionGeneratorFromAntlr {
                 for (final currentError in errors1) {
                   _errors.add(
                     currentError.withComplexScriptType(
-                      type: scriptTypeLabel,
+                      typeLabel: scriptTypeLabel,
                       pieceKind: pieceCountConstraint.pieceKind,
                       translations: translations,
                     ),
@@ -572,7 +572,12 @@ class PositionGeneratorFromAntlr {
               final message = translations.missingReturnStatement;
               Logger().e(ex);
               throw InterpretationError(
-                  scriptType: scriptTypeLabel, message: message);
+                      scriptType: scriptTypeLabel, message: message)
+                  .withComplexScriptType(
+                typeLabel: scriptTypeLabel,
+                pieceKind: pieceCountConstraint.pieceKind,
+                translations: translations,
+              );
             } on VariableIsNotAffectedException catch (ex) {
               final scriptTypeLabel = translations.fromScriptType(
                 scriptType: ScriptType.otherPiecesGlobalConstraint,
@@ -582,7 +587,12 @@ class PositionGeneratorFromAntlr {
                   translations.variableNotAffected(Name: ex.varName);
               Logger().e(ex);
               throw InterpretationError(
-                  scriptType: scriptTypeLabel, message: message);
+                      scriptType: scriptTypeLabel, message: message)
+                  .withComplexScriptType(
+                typeLabel: scriptTypeLabel,
+                pieceKind: pieceCountConstraint.pieceKind,
+                translations: translations,
+              );
             } on ReturnedValueNotABooleanException catch (ex) {
               final scriptTypeLabel = translations.fromScriptType(
                   scriptType: ScriptType.otherPiecesGlobalConstraint);
@@ -591,6 +601,10 @@ class PositionGeneratorFromAntlr {
               throw InterpretationError(
                 message: message,
                 scriptType: scriptTypeLabel,
+              ).withComplexScriptType(
+                typeLabel: scriptTypeLabel,
+                pieceKind: pieceCountConstraint.pieceKind,
+                translations: translations,
               );
             } on ParseCancellationException catch (ex) {
               final scriptTypeLabel = translations.fromScriptType(
@@ -599,6 +613,10 @@ class PositionGeneratorFromAntlr {
               throw InterpretationError(
                 message: ex.message,
                 scriptType: scriptTypeLabel,
+              ).withComplexScriptType(
+                typeLabel: scriptTypeLabel,
+                pieceKind: pieceCountConstraint.pieceKind,
+                translations: translations,
               );
             }
           });
@@ -626,7 +644,7 @@ class PositionGeneratorFromAntlr {
                 for (final currentError in errors2) {
                   _errors.add(
                     currentError.withComplexScriptType(
-                      type: scriptTypeLabel,
+                      typeLabel: scriptTypeLabel,
                       pieceKind: pieceCountConstraint.pieceKind,
                       translations: translations,
                     ),
@@ -642,7 +660,12 @@ class PositionGeneratorFromAntlr {
               final message = translations.missingReturnStatement;
               Logger().e(ex);
               throw InterpretationError(
-                  scriptType: scriptTypeLabel, message: message);
+                      scriptType: scriptTypeLabel, message: message)
+                  .withComplexScriptType(
+                typeLabel: scriptTypeLabel,
+                pieceKind: pieceCountConstraint.pieceKind,
+                translations: translations,
+              );
             } on VariableIsNotAffectedException catch (ex) {
               final scriptTypeLabel = translations.fromScriptType(
                 scriptType: ScriptType.otherPiecesIndexedConstraint,
@@ -652,7 +675,12 @@ class PositionGeneratorFromAntlr {
                   translations.variableNotAffected(Name: ex.varName);
               Logger().e(ex);
               throw InterpretationError(
-                  scriptType: scriptTypeLabel, message: message);
+                      scriptType: scriptTypeLabel, message: message)
+                  .withComplexScriptType(
+                typeLabel: scriptTypeLabel,
+                pieceKind: pieceCountConstraint.pieceKind,
+                translations: translations,
+              );
             } on ReturnedValueNotABooleanException catch (ex) {
               final scriptTypeLabel = translations.fromScriptType(
                   scriptType: ScriptType.otherPiecesIndexedConstraint);
@@ -661,6 +689,10 @@ class PositionGeneratorFromAntlr {
               throw InterpretationError(
                 message: message,
                 scriptType: scriptTypeLabel,
+              ).withComplexScriptType(
+                typeLabel: scriptTypeLabel,
+                pieceKind: pieceCountConstraint.pieceKind,
+                translations: translations,
               );
             } on ParseCancellationException catch (ex) {
               final scriptTypeLabel = translations.fromScriptType(
@@ -669,6 +701,10 @@ class PositionGeneratorFromAntlr {
               throw InterpretationError(
                 message: ex.message,
                 scriptType: scriptTypeLabel,
+              ).withComplexScriptType(
+                typeLabel: scriptTypeLabel,
+                pieceKind: pieceCountConstraint.pieceKind,
+                translations: translations,
               );
             }
           });
@@ -702,7 +738,7 @@ class PositionGeneratorFromAntlr {
                   for (final currentError in errors3) {
                     _errors.add(
                       currentError.withComplexScriptType(
-                        type: scriptTypeLabel,
+                        typeLabel: scriptTypeLabel,
                         pieceKind: pieceCountConstraint.pieceKind,
                         translations: translations,
                       ),
@@ -718,7 +754,12 @@ class PositionGeneratorFromAntlr {
                 final message = translations.missingReturnStatement;
                 Logger().e(ex);
                 throw InterpretationError(
-                    scriptType: scriptTypeLabel, message: message);
+                        scriptType: scriptTypeLabel, message: message)
+                    .withComplexScriptType(
+                  typeLabel: scriptTypeLabel,
+                  pieceKind: pieceCountConstraint.pieceKind,
+                  translations: translations,
+                );
               } on VariableIsNotAffectedException catch (ex) {
                 final scriptTypeLabel = translations.fromScriptType(
                   scriptType: ScriptType.otherPiecesMutualConstraint,
@@ -728,7 +769,12 @@ class PositionGeneratorFromAntlr {
                     translations.variableNotAffected(Name: ex.varName);
                 Logger().e(ex);
                 throw InterpretationError(
-                    scriptType: scriptTypeLabel, message: message);
+                        scriptType: scriptTypeLabel, message: message)
+                    .withComplexScriptType(
+                  typeLabel: scriptTypeLabel,
+                  pieceKind: pieceCountConstraint.pieceKind,
+                  translations: translations,
+                );
               } on ReturnedValueNotABooleanException catch (ex) {
                 final scriptTypeLabel = translations.fromScriptType(
                     scriptType: ScriptType.otherPiecesMutualConstraint);
@@ -737,6 +783,10 @@ class PositionGeneratorFromAntlr {
                 throw InterpretationError(
                   message: message,
                   scriptType: scriptTypeLabel,
+                ).withComplexScriptType(
+                  typeLabel: scriptTypeLabel,
+                  pieceKind: pieceCountConstraint.pieceKind,
+                  translations: translations,
                 );
               } on ParseCancellationException catch (ex) {
                 final scriptTypeLabel = translations.fromScriptType(
@@ -745,6 +795,10 @@ class PositionGeneratorFromAntlr {
                 throw InterpretationError(
                   message: ex.message,
                   scriptType: scriptTypeLabel,
+                ).withComplexScriptType(
+                  typeLabel: scriptTypeLabel,
+                  pieceKind: pieceCountConstraint.pieceKind,
+                  translations: translations,
                 );
               }
             });
