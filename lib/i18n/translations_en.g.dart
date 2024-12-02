@@ -144,6 +144,7 @@ class TranslationsScriptParserEn {
 	String no_viable_alt_exception({required Object Token, required Object LineNumber, required Object PositionInLine}) => 'The input ${Token} does not match any rule. (Line ${LineNumber}, character number ${PositionInLine})';
 	String get no_antlr4_token => '[No occurence]';
 	String get eof => '[EndOfFile]';
+	String get parenthesis_without_expression => 'Parenthesis without expression inside.';
 	String overriding_predefined_variable({required Object Name}) => 'You try to change the value of predefined variable ${Name}.';
 	String get type_error => 'Please check that you don\'t use int value instead of boolean value and vice versa.';
 	String get missing_script_type => 'Failed to generate position : please check that all of the script sections declares a correct script type.';

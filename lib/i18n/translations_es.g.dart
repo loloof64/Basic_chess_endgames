@@ -141,6 +141,7 @@ class _TranslationsScriptParserEs extends TranslationsScriptParserEn {
 	@override String no_viable_alt_exception({required Object Token, required Object LineNumber, required Object PositionInLine}) => 'La entrada ${Token} no coincide con ninguna regla. (Línea ${LineNumber}, número de carácter ${PositionInLine})';
 	@override String get no_antlr4_token => '[Sin ocurrencia]';
 	@override String get eof => '[FinDeArchivo]';
+	@override String get parenthesis_without_expression => 'Paréntesis sin expresión dentro.';
 	@override String overriding_predefined_variable({required Object Name}) => 'Intentas cambiar el valor de la variable predefinida ${Name}.';
 	@override String get type_error => 'Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa.';
 	@override String get missing_script_type => 'No se pudo generar la posición: compruebe que todas las secciones del guione declaran un tipo de guione correcto.';

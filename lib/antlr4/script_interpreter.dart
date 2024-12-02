@@ -188,6 +188,7 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
       MissingSomeStatementBlocksInIfExpressionException() =>
         translations.errorIfStatementMissingBlock,
       InvalidAssignementStatementException() => translations.invalidAssignment,
+      ParenthesisWithoutExpressionException() => translations.parenthesisWithoutExpression,
       _ => throw Exception("Not a known Parser Error $error"),
     };
 
@@ -509,7 +510,7 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
 
   @override
   visitParenthesisPrefix(ParenthesisPrefixContext ctx) {
-    final rawExp = ctx.exp();
+    final rawExp = ctx.exp(0);
 
     if (rawExp == null) {
       throw ParenthesisWithoutExpressionException(context: ctx);

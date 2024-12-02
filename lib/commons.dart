@@ -15,6 +15,8 @@ TranslationsWrapper getTranslations(BuildContext context) {
     typeError: t.script_parser.type_error,
     noAntlr4Token: t.script_parser.no_antlr4_token,
     eof: t.script_parser.eof,
+    parenthesisWithoutExpression:
+        t.script_parser.parenthesis_without_expression,
     variableNotAffected: t.script_parser.variable_not_affected,
     overridingPredefinedVariable:
         t.script_parser.overriding_predefined_variable,

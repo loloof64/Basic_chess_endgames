@@ -81,7 +81,7 @@ exp
     
 prefix
     : NAME							# variablePrefix
-    | '(' exp ')'					# parenthesisPrefix
+    | '(' exp* ')'					# parenthesisPrefix
     ;
     
 number

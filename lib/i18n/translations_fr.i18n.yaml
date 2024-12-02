@@ -68,6 +68,7 @@ scriptParser:
     (Ligne $lineNumber, numéro de caractère $positionInLine)"
   noAntlr4Token: "[Aucune occurence]"
   eof: "[FinDeFichier]"
+  parenthesisWithoutExpression: "Parenthèses sans expression."
   overridingPredefinedVariable: "Vous essayez de modifier la valeur de la variable prédéfinie $name."
   typeError:
     "Veuillez vérifier que vous n'utilisez pas de valeur entière à la place \

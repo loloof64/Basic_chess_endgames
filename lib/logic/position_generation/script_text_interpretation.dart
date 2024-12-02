@@ -37,6 +37,7 @@ class TranslationsWrapper {
   final String typeError;
   final String noAntlr4Token;
   final String eof;
+  final String parenthesisWithoutExpression;
   final String maxGenerationAttemptsAchieved;
   final String failedGeneratingPosition;
   final String playerKingConstraint;
@@ -103,6 +104,7 @@ class TranslationsWrapper {
     required this.typeError,
     required this.noAntlr4Token,
     required this.eof,
+    required this.parenthesisWithoutExpression,
     required this.maxGenerationAttemptsAchieved,
     required this.failedGeneratingPosition,
     required this.playerKingConstraint,

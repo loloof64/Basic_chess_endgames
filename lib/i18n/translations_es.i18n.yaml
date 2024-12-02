@@ -68,6 +68,7 @@ scriptParser:
   noViableAltException: "La entrada $token no coincide con ninguna regla. (Línea $lineNumber, número de carácter $positionInLine)"
   noAntlr4Token: "[Sin ocurrencia]"
   eof: "[FinDeArchivo]"
+  parenthesisWithoutExpression: "Paréntesis sin expresión dentro."
   overridingPredefinedVariable: "Intentas cambiar el valor de la variable predefinida $name."
   typeError: "Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa."
   missingScriptType: "No se pudo generar la posición: compruebe que todas las secciones del guione declaran un tipo de guione correcto."

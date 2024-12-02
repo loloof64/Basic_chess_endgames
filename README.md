@@ -38,6 +38,12 @@ antlr4 -o generated -no-listener -visitor -Dlanguage=Dart Lua.g4
 
 ```
 
+And in LuaLexer.dart file, make LuaLexer extend LuaLexerBase instead of Lexer :
+
+```dart
+class LuaLexer extends LuaLexerBase {
+```
+
 ### Translations
 
 In order to update translations, run

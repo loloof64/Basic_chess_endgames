@@ -65,6 +65,7 @@ scriptParser:
   noViableAltException: "The input $token does not match any rule. (Line $lineNumber, character number $positionInLine)"
   noAntlr4Token: "[No occurence]"
   eof: "[EndOfFile]"
+  parenthesisWithoutExpression: "Parenthesis without expression inside."
   overridingPredefinedVariable: "You try to change the value of predefined variable $name."
   typeError: "Please check that you don't use int value instead of boolean value and vice versa."
   missingScriptType: "Failed to generate position : please check that all of the script sections declares a correct script type."
