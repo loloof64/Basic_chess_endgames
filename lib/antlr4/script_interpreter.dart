@@ -188,7 +188,8 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
       MissingSomeStatementBlocksInIfExpressionException() =>
         translations.errorIfStatementMissingBlock,
       InvalidAssignementStatementException() => translations.invalidAssignment,
-      ParenthesisWithoutExpressionException() => translations.parenthesisWithoutExpression,
+      ParenthesisWithoutExpressionException() =>
+        translations.parenthesisWithoutExpression,
       _ => throw Exception("Not a known Parser Error $error"),
     };
 
@@ -200,6 +201,7 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
         description.replaceAll("INT", translations.errorSubstitutionInteger);
 
     final position = "${error.getStartLine()!}:${error.getStartColumn()! + 1}";
+
     _errors.add(InterpretationError(
         message: description, position: position, scriptType: ""));
   }
@@ -298,8 +300,12 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
     final namesIndexes = Iterable<int>.generate(names.length).toList();
     for (final variableIndex in namesIndexes) {
       final variableName = names[variableIndex];
-      _builtVariables[variableName] =
-          (values.length >= variableIndex + 1) ? values[variableIndex] : null;
+      try {
+        _builtVariables[variableName] =
+            (values.length >= variableIndex + 1) ? values[variableIndex] : null;
+      } on ParseCancellationException {
+        throw UndefinedVariableException(context: ctx);
+      }
     }
 
     return null;
@@ -505,7 +511,11 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
 
   @override
   visitVariablePrefix(VariablePrefixContext ctx) {
-    return _builtVariables[ctx.text];
+    try {
+      return _builtVariables[ctx.text];
+    } on ParseCancellationException {
+      throw UndefinedVariableException(context: ctx);
+    }
   }
 
   @override
