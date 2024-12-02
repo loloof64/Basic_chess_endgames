@@ -263,14 +263,6 @@ class PositionGeneratorFromAntlr {
             message: message,
             scriptType: scriptTypeLabel,
           );
-        } on ParseCancellationException catch (ex) {
-          final scriptTypeLabel = translations.fromScriptType(
-              scriptType: ScriptType.playerKingConstraint);
-          Logger().e(ex);
-          throw InterpretationError(
-            message: ex.message,
-            scriptType: scriptTypeLabel,
-          );
         }
       });
     }
@@ -369,14 +361,6 @@ class PositionGeneratorFromAntlr {
             message: message,
             scriptType: scriptTypeLabel,
           );
-        } on ParseCancellationException catch (ex) {
-          final scriptTypeLabel = translations.fromScriptType(
-              scriptType: ScriptType.computerKingConstraint);
-          Logger().e(ex);
-          throw InterpretationError(
-            message: ex.message,
-            scriptType: scriptTypeLabel,
-          );
         }
       });
     }
@@ -421,14 +405,6 @@ class PositionGeneratorFromAntlr {
           Logger().e(ex);
           throw InterpretationError(
             message: message,
-            scriptType: scriptTypeLabel,
-          );
-        } on ParseCancellationException catch (ex) {
-          final scriptTypeLabel = translations.fromScriptType(
-              scriptType: ScriptType.mutualKingConstraint);
-          Logger().e(ex);
-          throw InterpretationError(
-            message: ex.message,
             scriptType: scriptTypeLabel,
           );
         }
@@ -564,18 +540,6 @@ class PositionGeneratorFromAntlr {
                 pieceKind: pieceCountConstraint.pieceKind,
                 translations: translations,
               );
-            } on ParseCancellationException catch (ex) {
-              final scriptTypeLabel = translations.fromScriptType(
-                  scriptType: ScriptType.otherPiecesGlobalConstraint);
-              Logger().e(ex);
-              throw InterpretationError(
-                message: ex.message,
-                scriptType: scriptTypeLabel,
-              ).withComplexScriptType(
-                typeLabel: scriptTypeLabel,
-                pieceKind: pieceCountConstraint.pieceKind,
-                translations: translations,
-              );
             }
           });
         }
@@ -631,18 +595,6 @@ class PositionGeneratorFromAntlr {
               Logger().e(ex);
               throw InterpretationError(
                 message: message,
-                scriptType: scriptTypeLabel,
-              ).withComplexScriptType(
-                typeLabel: scriptTypeLabel,
-                pieceKind: pieceCountConstraint.pieceKind,
-                translations: translations,
-              );
-            } on ParseCancellationException catch (ex) {
-              final scriptTypeLabel = translations.fromScriptType(
-                  scriptType: ScriptType.otherPiecesIndexedConstraint);
-              Logger().e(ex);
-              throw InterpretationError(
-                message: ex.message,
                 scriptType: scriptTypeLabel,
               ).withComplexScriptType(
                 typeLabel: scriptTypeLabel,
@@ -710,18 +662,6 @@ class PositionGeneratorFromAntlr {
                 Logger().e(ex);
                 throw InterpretationError(
                   message: message,
-                  scriptType: scriptTypeLabel,
-                ).withComplexScriptType(
-                  typeLabel: scriptTypeLabel,
-                  pieceKind: pieceCountConstraint.pieceKind,
-                  translations: translations,
-                );
-              } on ParseCancellationException catch (ex) {
-                final scriptTypeLabel = translations.fromScriptType(
-                    scriptType: ScriptType.otherPiecesMutualConstraint);
-                Logger().e(ex);
-                throw InterpretationError(
-                  message: ex.message,
                   scriptType: scriptTypeLabel,
                 ).withComplexScriptType(
                   typeLabel: scriptTypeLabel,
