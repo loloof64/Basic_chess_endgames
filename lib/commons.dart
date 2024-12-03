@@ -17,6 +17,14 @@ TranslationsWrapper getTranslations(BuildContext context) {
     eof: t.script_parser.eof,
     parenthesisWithoutExpression:
         t.script_parser.parenthesis_without_expression,
+    unaryExpressionWithoutValue: t.script_parser.unary_expression_without_value,
+    invalidExpressionType: t.script_parser.invalid_expression_type,
+    missingValueInExponentExpression:
+        t.script_parser.missing_value_in_exponent_expression,
+    missingValueInBinaryExpression:
+        t.script_parser.missing_value_in_binary_expression,
+    scriptTypeInt: t.script_parser.types.int,
+    scriptTypeBool: t.script_parser.types.bool,
     variableNotAffected: t.script_parser.variable_not_affected,
     overridingPredefinedVariable:
         t.script_parser.overriding_predefined_variable,

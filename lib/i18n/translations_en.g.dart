@@ -145,6 +145,10 @@ class TranslationsScriptParserEn {
 	String get no_antlr4_token => '[No occurence]';
 	String get eof => '[EndOfFile]';
 	String get parenthesis_without_expression => 'Parenthesis without expression inside.';
+	String get unary_expression_without_value => 'Unary expression without value.';
+	String invalid_expression_type({required Object Expected, required Object Got, required Object Operator}) => 'Invalid expression type (expected: ${Expected}, got: ${Got}, operator: ${Operator}).';
+	String get missing_value_in_exponent_expression => 'Missing value in exponent expression.';
+	String missing_value_in_binary_expression({required Object Operator}) => 'Missing value in binary expression (operator: ${Operator}).';
 	String overriding_predefined_variable({required Object Name}) => 'You try to change the value of predefined variable ${Name}.';
 	String get type_error => 'Please check that you don\'t use int value instead of boolean value and vice versa.';
 	String get missing_script_type => 'Failed to generate position : please check that all of the script sections declares a correct script type.';
@@ -162,6 +166,7 @@ class TranslationsScriptParserEn {
 	String get misc_syntaxt_error_unknown_token => 'Miscellaneous syntax error !';
 	String get if_statement_missing_block => 'The \'if\' statement is missing at least one statements block or condition !';
 	late final TranslationsScriptParserErrorSubstitutionsEn error_substitutions = TranslationsScriptParserErrorSubstitutionsEn.internal(_root);
+	late final TranslationsScriptParserTypesEn types = TranslationsScriptParserTypesEn.internal(_root);
 }
 
 // Path: script_type
@@ -320,6 +325,17 @@ class TranslationsScriptParserErrorSubstitutionsEn {
 	String get eof => '#EndOfFile#';
 	String get variable_name => '#VariableName#';
 	String get integer => '#Integer#';
+}
+
+// Path: script_parser.types
+class TranslationsScriptParserTypesEn {
+	TranslationsScriptParserTypesEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get int => 'integer';
+	String get bool => 'boolean';
 }
 
 // Path: variables_table.headers

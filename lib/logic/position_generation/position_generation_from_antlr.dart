@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:antlr4/antlr4.dart';
 import 'package:basicchessendgamestrainer/antlr4/script_interpreter.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';

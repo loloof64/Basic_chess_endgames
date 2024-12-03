@@ -142,6 +142,10 @@ class _TranslationsScriptParserFr extends TranslationsScriptParserEn {
 	@override String get no_antlr4_token => '[Aucune occurence]';
 	@override String get eof => '[FinDeFichier]';
 	@override String get parenthesis_without_expression => 'Parenthèses sans expression.';
+	@override String get unary_expression_without_value => 'Expression unaire sans valeur.';
+	@override String invalid_expression_type({required Object Expected, required Object Got, required Object Operator}) => 'Type d\'expression invalide (attendu: ${Expected}, obtenu: ${Got}, opérateur: ${Operator}).';
+	@override String get missing_value_in_exponent_expression => 'Il manque une valeur dans l\'expression exposant.';
+	@override String missing_value_in_binary_expression({required Object Operator}) => 'Il manque une valeur dans l\'expression binaire (opérateur: ${Operator}).';
 	@override String overriding_predefined_variable({required Object Name}) => 'Vous essayez de modifier la valeur de la variable prédéfinie ${Name}.';
 	@override String get type_error => 'Veuillez vérifier que vous n\'utilisez pas de valeur entière à la place de valeur booléenne, et vice versa.';
 	@override String get missing_script_type => 'Échec de génération de la position: veuillez vérifier que toutes les sections du script déclarent un type de script correct.';
@@ -159,6 +163,7 @@ class _TranslationsScriptParserFr extends TranslationsScriptParserEn {
 	@override String get misc_syntaxt_error_unknown_token => 'Erreur de syntaxe diverse !';
 	@override String get if_statement_missing_block => 'Il manque au moins un bloc d\'instructions ou condition dans l\'instruction \'if\' !';
 	@override late final _TranslationsScriptParserErrorSubstitutionsFr error_substitutions = _TranslationsScriptParserErrorSubstitutionsFr._(_root);
+	@override late final _TranslationsScriptParserTypesFr types = _TranslationsScriptParserTypesFr._(_root);
 }
 
 // Path: script_type
@@ -317,6 +322,17 @@ class _TranslationsScriptParserErrorSubstitutionsFr extends TranslationsScriptPa
 	@override String get eof => '#FinDeFichier#';
 	@override String get variable_name => '#NomDeVariable#';
 	@override String get integer => '#Entier#';
+}
+
+// Path: script_parser.types
+class _TranslationsScriptParserTypesFr extends TranslationsScriptParserTypesEn {
+	_TranslationsScriptParserTypesFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get int => 'entier';
+	@override String get bool => 'booléen';
 }
 
 // Path: variables_table.headers

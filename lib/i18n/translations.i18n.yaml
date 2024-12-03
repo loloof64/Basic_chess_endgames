@@ -66,6 +66,10 @@ scriptParser:
   noAntlr4Token: "[No occurence]"
   eof: "[EndOfFile]"
   parenthesisWithoutExpression: "Parenthesis without expression inside."
+  unaryExpressionWithoutValue: "Unary expression without value."
+  invalidExpressionType: "Invalid expression type (expected: $expected, got: $got, operator: $operator)."
+  missingValueInExponentExpression: "Missing value in exponent expression."
+  missingValueInBinaryExpression: "Missing value in binary expression (operator: $operator)."
   overridingPredefinedVariable: "You try to change the value of predefined variable $name."
   typeError: "Please check that you don't use int value instead of boolean value and vice versa."
   missingScriptType: "Failed to generate position : please check that all of the script sections declares a correct script type."
@@ -86,6 +90,9 @@ scriptParser:
     eof: "#EndOfFile#"
     variable_name:  "#VariableName#"
     integer: "#Integer#"
+  types:
+    int: "integer"
+    bool: "boolean"
 scriptType:
   playerKingConstraint: "Player king constraint"
   computerKingConstraint: "Computer king constraint"

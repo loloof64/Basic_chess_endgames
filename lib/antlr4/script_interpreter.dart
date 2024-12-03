@@ -10,6 +10,18 @@ import 'package:basicchessendgamestrainer/logic/position_generation/position_gen
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 
+enum SyntaxTypes {
+  int,
+  bool;
+
+  String translate(TranslationsWrapper translations) {
+    return switch (this) {
+      int => translations.scriptTypeInt,
+      bool => translations.scriptTypeBool,
+    };
+  }
+}
+
 class CustomErrorListener extends BaseErrorListener {
   final void Function(
       {required String message,
@@ -67,6 +79,34 @@ class UndefinedVariableException extends ParserError {
 
 class ParenthesisWithoutExpressionException extends ParserError {
   ParenthesisWithoutExpressionException({required super.context});
+}
+
+class UnaryExpressionWithoutValueException extends ParserError {
+  UnaryExpressionWithoutValueException({required super.context});
+}
+
+class InvalidExpressionTypeException extends ParserError {
+  final SyntaxTypes expected;
+  final SyntaxTypes got;
+  final String operator;
+
+  InvalidExpressionTypeException({
+    required super.context,
+    required this.expected,
+    required this.got,
+    required this.operator,
+  });
+}
+
+class MissingValueInExponentExpressionException extends ParserError {
+  MissingValueInExponentExpressionException({required super.context});
+}
+
+class MissingValueInBinaryExpressionException extends ParserError {
+  final String operator;
+
+  MissingValueInBinaryExpressionException(
+      {required super.context, required this.operator});
 }
 
 class BuiltVariablesHolder {
@@ -190,6 +230,24 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
       InvalidAssignementStatementException() => translations.invalidAssignment,
       ParenthesisWithoutExpressionException() =>
         translations.parenthesisWithoutExpression,
+      UnaryExpressionWithoutValueException() =>
+        translations.unaryExpressionWithoutValue,
+      InvalidExpressionTypeException(
+        expected: final expected,
+        got: final got,
+        operator: final operator,
+      ) =>
+        translations.invalidExpressionType(
+          Expected: expected.translate(translations),
+          Got: got.translate(translations),
+          Operator: operator,
+        ),
+      MissingValueInExponentExpressionException() =>
+        translations.missingValueInExponentExpression,
+      MissingValueInBinaryExpressionException(
+        operator: final String operator
+      ) =>
+        translations.missingValueInBinaryExpression(Operator: operator),
       _ => throw Exception("Not a known Parser Error $error"),
     };
 
@@ -274,6 +332,9 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
       throw ReturnedValueNotABooleanException();
     }
     final value = visit(rawValue);
+    if (value == null) {
+      throw ReturnedValueNotABooleanException();
+    }
     _builtVariables['return'] = value;
   }
 
@@ -366,11 +427,24 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
     final rawRight = ctx.exp(1);
 
     if (rawLeft == null || rawRight == null) {
-      throw UndefinedVariableException(context: ctx);
+      throw MissingValueInExponentExpressionException(context: ctx);
     }
 
     final left = visit(rawLeft);
     final right = visit(rawRight);
+
+    if (left == null || right == null) {
+      throw MissingValueInExponentExpressionException(context: ctx);
+    }
+
+    if (left is! int || right is! int) {
+      throw InvalidExpressionTypeException(
+        context: ctx,
+        expected: SyntaxTypes.int,
+        got: SyntaxTypes.bool,
+        operator: '^',
+      );
+    }
 
     return left ^ right;
   }
@@ -378,14 +452,41 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
   @override
   visitUnaryExpr(UnaryExprContext ctx) {
     final rawValue = ctx.exp();
-    if (rawValue == null) throw UndefinedVariableException(context: ctx);
+    if (rawValue == null) {
+      throw UnaryExpressionWithoutValueException(context: ctx);
+    }
 
     final value = visit(rawValue);
+    if (value == null) throw UnaryExpressionWithoutValueException(context: ctx);
     final operator = ctx.op?.type;
 
     return switch (operator) {
-      LuaParser.TOKEN_NOT => !value,
-      LuaParser.TOKEN_MINUS => -value,
+      LuaParser.TOKEN_NOT => {
+          if (value is! bool)
+            {
+              throw InvalidExpressionTypeException(
+                context: ctx,
+                expected: SyntaxTypes.bool,
+                got: SyntaxTypes.int,
+                operator: ctx.op!.text!,
+              )
+            }
+          else
+            {!value}
+        },
+      LuaParser.TOKEN_MINUS => {
+          if (value is! int)
+            {
+              throw InvalidExpressionTypeException(
+                context: ctx,
+                expected: SyntaxTypes.int,
+                got: SyntaxTypes.bool,
+                operator: ctx.op!.text!,
+              )
+            }
+          else
+            {-value}
+        },
       _ => throw Exception("Unrecognized unary operator '$operator'")
     };
   }
@@ -401,7 +502,23 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
 
     final left = visit(rawLeft);
     final right = visit(rawRight);
-    final operator = ctx.op?.type;
+    final operator = ctx.op!.type;
+
+    if (left == null || right == null) {
+      throw MissingValueInBinaryExpressionException(
+        context: ctx,
+        operator: ctx.op!.text!,
+      );
+    }
+
+    if (left is! int || right is! int) {
+      throw InvalidExpressionTypeException(
+        context: ctx,
+        expected: SyntaxTypes.int,
+        got: SyntaxTypes.bool,
+        operator: ctx.op!.text!,
+      );
+    }
 
     return switch (operator) {
       LuaParser.TOKEN_STAR => left * right,
@@ -423,7 +540,23 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
 
     final left = visit(rawLeft);
     final right = visit(rawRight);
-    final operator = ctx.op?.type;
+    final operator = ctx.op!.type;
+
+    if (left == null || right == null) {
+      throw MissingValueInBinaryExpressionException(
+        context: ctx,
+        operator: ctx.op!.text!,
+      );
+    }
+
+    if (left is! int || right is! int) {
+      throw InvalidExpressionTypeException(
+        context: ctx,
+        expected: SyntaxTypes.int,
+        got: SyntaxTypes.bool,
+        operator: ctx.op!.text!,
+      );
+    }
 
     return switch (operator) {
       LuaParser.TOKEN_PLUS => left + right,
@@ -443,7 +576,23 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
 
     final left = visit(rawLeft);
     final right = visit(rawRight);
-    final operator = ctx.op?.type;
+    final operator = ctx.op!.type;
+
+    if (left == null || right == null) {
+      throw MissingValueInBinaryExpressionException(
+        context: ctx,
+        operator: ctx.op!.text!,
+      );
+    }
+
+    if (left is! int || right is! int) {
+      throw InvalidExpressionTypeException(
+        context: ctx,
+        expected: SyntaxTypes.int,
+        got: SyntaxTypes.bool,
+        operator: ctx.op!.text!,
+      );
+    }
 
     return switch (operator) {
       LuaParser.TOKEN_LT => left < right,
@@ -468,6 +617,22 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
     final left = visit(rawLeft);
     final right = visit(rawRight);
 
+    if (left == null || right == null) {
+      throw MissingValueInBinaryExpressionException(
+        context: ctx,
+        operator: "and",
+      );
+    }
+
+    if (left is! bool || right is! bool) {
+      throw InvalidExpressionTypeException(
+        context: ctx,
+        expected: SyntaxTypes.bool,
+        got: SyntaxTypes.int,
+        operator: "and",
+      );
+    }
+
     return left && right;
   }
 
@@ -483,6 +648,22 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
     final left = visit(rawLeft);
     final right = visit(rawRight);
 
+    if (left == null || right == null) {
+      throw MissingValueInBinaryExpressionException(
+        context: ctx,
+        operator: "or",
+      );
+    }
+
+    if (left is! bool || right is! bool) {
+      throw InvalidExpressionTypeException(
+        context: ctx,
+        expected: SyntaxTypes.bool,
+        got: SyntaxTypes.int,
+        operator: "or",
+      );
+    }
+
     return left || right;
   }
 
@@ -497,14 +678,83 @@ class ScriptInterpreter extends LuaBaseVisitor<dynamic> {
 
     final left = visit(rawLeft);
     final right = visit(rawRight);
-    final operator = ctx.op?.type;
+    final operator = ctx.op!.type;
+
+    if (left == null || right == null) {
+      throw MissingValueInBinaryExpressionException(
+        context: ctx,
+        operator: ctx.op!.text!,
+      );
+    }
 
     return switch (operator) {
-      LuaParser.TOKEN_AMP => left & right,
-      LuaParser.TOKEN_PIPE => left | right,
-      LuaParser.TOKEN_SQUIG => left ^ right,
-      LuaParser.TOKEN_LL => left << right,
-      LuaParser.TOKEN_GG => left >> right,
+      LuaParser.TOKEN_AMP => {
+          if (left is! bool || right is! bool)
+            {
+              throw InvalidExpressionTypeException(
+                context: ctx,
+                expected: SyntaxTypes.bool,
+                got: SyntaxTypes.int,
+                operator: ctx.op!.text!,
+              )
+            }
+          else
+            {
+              left & right,
+            }
+        },
+      LuaParser.TOKEN_PIPE => {
+          if (left is! bool || right is! bool)
+            {
+              throw InvalidExpressionTypeException(
+                context: ctx,
+                expected: SyntaxTypes.bool,
+                got: SyntaxTypes.int,
+                operator: ctx.op!.text!,
+              )
+            }
+          else
+            {left | right},
+        },
+      LuaParser.TOKEN_SQUIG => {
+          if (left is! bool || right is! bool)
+            {
+              throw InvalidExpressionTypeException(
+                context: ctx,
+                expected: SyntaxTypes.bool,
+                got: SyntaxTypes.int,
+                operator: ctx.op!.text!,
+              )
+            }
+          else
+            {left ^ right},
+        },
+      LuaParser.TOKEN_LL => {
+          if (left is! int || right is! int)
+            {
+              throw InvalidExpressionTypeException(
+                context: ctx,
+                expected: SyntaxTypes.int,
+                got: SyntaxTypes.bool,
+                operator: ctx.op!.text!,
+              )
+            }
+          else
+            {left << right},
+        },
+      LuaParser.TOKEN_GG => {
+          if (left is! int || right is! int)
+            {
+              throw InvalidExpressionTypeException(
+                context: ctx,
+                expected: SyntaxTypes.int,
+                got: SyntaxTypes.bool,
+                operator: ctx.op!.text!,
+              )
+            }
+          else
+            {left >> right},
+        },
       _ => throw Exception("Unrecognized integer binary operator '$operator'"),
     };
   }

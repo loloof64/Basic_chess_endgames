@@ -69,6 +69,10 @@ scriptParser:
   noAntlr4Token: "[Aucune occurence]"
   eof: "[FinDeFichier]"
   parenthesisWithoutExpression: "Parenthèses sans expression."
+  unaryExpressionWithoutValue: "Expression unaire sans valeur."
+  invalidExpressionType: "Type d'expression invalide (attendu: $expected, obtenu: $got, opérateur: $operator)."
+  missingValueInExponentExpression: "Il manque une valeur dans l'expression exposant."
+  missingValueInBinaryExpression: "Il manque une valeur dans l'expression binaire (opérateur: $operator)."
   overridingPredefinedVariable: "Vous essayez de modifier la valeur de la variable prédéfinie $name."
   typeError:
     "Veuillez vérifier que vous n'utilisez pas de valeur entière à la place \
@@ -93,6 +97,9 @@ scriptParser:
     eof: "#FinDeFichier#"
     variable_name:  "#NomDeVariable#"
     integer: "#Entier#"
+  types:
+    int: "entier"
+    bool: "booléen"
 scriptType:
   playerKingConstraint: "Contraintes du roi du joueur"
   computerKingConstraint: "Contraintes du roi de l'ordinateur"

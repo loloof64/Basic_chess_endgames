@@ -69,6 +69,10 @@ scriptParser:
   noAntlr4Token: "[Sin ocurrencia]"
   eof: "[FinDeArchivo]"
   parenthesisWithoutExpression: "Paréntesis sin expresión dentro."
+  unaryExpressionWithoutValue: "Expresión unaria sin valor."
+  invalidExpressionType: "Tipo de expresión no válido (esperado: $expected, obtenido: $got, operator: $operator)."
+  missingValueInExponentExpression: "Falta un valor en la expresión de exponente."
+  missingValueInBinaryExpression: "Falta un valor en la expresión binaria (operador: $operator)."
   overridingPredefinedVariable: "Intentas cambiar el valor de la variable predefinida $name."
   typeError: "Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa."
   missingScriptType: "No se pudo generar la posición: compruebe que todas las secciones del guione declaran un tipo de guione correcto."
@@ -89,6 +93,9 @@ scriptParser:
     eof: "#FinDelDocumento#"
     variable_name:  "#NombreDeUnaVariable#"
     integer: "#Entero#"
+  types:
+    int: "entero"
+    bool: "booleano"
 scriptType:
   playerKingConstraint: "Restricción sobre rey del jugador"
   computerKingConstraint: "Restricción sobre rey de la computadora"

@@ -38,6 +38,18 @@ class TranslationsWrapper {
   final String noAntlr4Token;
   final String eof;
   final String parenthesisWithoutExpression;
+  final String unaryExpressionWithoutValue;
+  final String Function({
+    required Object Expected,
+    required Object Got,
+    required Object Operator,
+  }) invalidExpressionType;
+  final String missingValueInExponentExpression;
+  final String Function({
+    required Object Operator,
+  }) missingValueInBinaryExpression;
+  final String scriptTypeInt;
+  final String scriptTypeBool;
   final String maxGenerationAttemptsAchieved;
   final String failedGeneratingPosition;
   final String playerKingConstraint;
@@ -105,6 +117,12 @@ class TranslationsWrapper {
     required this.noAntlr4Token,
     required this.eof,
     required this.parenthesisWithoutExpression,
+    required this.unaryExpressionWithoutValue,
+    required this.invalidExpressionType,
+    required this.missingValueInExponentExpression,
+    required this.missingValueInBinaryExpression,
+    required this.scriptTypeInt,
+    required this.scriptTypeBool,
     required this.maxGenerationAttemptsAchieved,
     required this.failedGeneratingPosition,
     required this.playerKingConstraint,

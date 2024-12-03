@@ -142,6 +142,10 @@ class _TranslationsScriptParserEs extends TranslationsScriptParserEn {
 	@override String get no_antlr4_token => '[Sin ocurrencia]';
 	@override String get eof => '[FinDeArchivo]';
 	@override String get parenthesis_without_expression => 'Paréntesis sin expresión dentro.';
+	@override String get unary_expression_without_value => 'Expresión unaria sin valor.';
+	@override String invalid_expression_type({required Object Expected, required Object Got, required Object Operator}) => 'Tipo de expresión no válido (esperado: ${Expected}, obtenido: ${Got}, operator: ${Operator}).';
+	@override String get missing_value_in_exponent_expression => 'Falta un valor en la expresión de exponente.';
+	@override String missing_value_in_binary_expression({required Object Operator}) => 'Falta un valor en la expresión binaria (operador: ${Operator}).';
 	@override String overriding_predefined_variable({required Object Name}) => 'Intentas cambiar el valor de la variable predefinida ${Name}.';
 	@override String get type_error => 'Por favor, compruebe que no utiliza un valor int en lugar de un valor booleano y viceversa.';
 	@override String get missing_script_type => 'No se pudo generar la posición: compruebe que todas las secciones del guione declaran un tipo de guione correcto.';
@@ -159,6 +163,7 @@ class _TranslationsScriptParserEs extends TranslationsScriptParserEn {
 	@override String get misc_syntaxt_error_unknown_token => '¡Error de sintaxis varios!';
 	@override String get if_statement_missing_block => '¡La declaración \'if\' le falta al menos un bloque de declaraciones o condición!';
 	@override late final _TranslationsScriptParserErrorSubstitutionsEs error_substitutions = _TranslationsScriptParserErrorSubstitutionsEs._(_root);
+	@override late final _TranslationsScriptParserTypesEs types = _TranslationsScriptParserTypesEs._(_root);
 }
 
 // Path: script_type
@@ -317,6 +322,17 @@ class _TranslationsScriptParserErrorSubstitutionsEs extends TranslationsScriptPa
 	@override String get eof => '#FinDelDocumento#';
 	@override String get variable_name => '#NombreDeUnaVariable#';
 	@override String get integer => '#Entero#';
+}
+
+// Path: script_parser.types
+class _TranslationsScriptParserTypesEs extends TranslationsScriptParserTypesEn {
+	_TranslationsScriptParserTypesEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get int => 'entero';
+	@override String get bool => 'booleano';
 }
 
 // Path: variables_table.headers
