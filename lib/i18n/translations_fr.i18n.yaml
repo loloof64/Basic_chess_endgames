@@ -110,7 +110,7 @@ scriptType:
   pieceKindCountConstraint: "Contraintes sur le compte des autres pièces"
   otherPiecesGlobalConstraintSpecialized: "Contraintes globales pour les autres pièces $pieceKind"
   otherPiecesIndexedConstraintSpecialized: "Contraintes par index pour les autres pièces $pieceKind"
-  otherPiecesMutualConstraintSpecialized: "Contraintes sur le compte des autres pièces $pieceKind"
+  otherPiecesMutualConstraintSpecialized: "Contraintes mutuelles pour les autres pièces $pieceKind"
 side:
   player: joueur
   computer: ordinateur

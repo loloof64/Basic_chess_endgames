@@ -182,7 +182,7 @@ class _TranslationsScriptTypeEs extends TranslationsScriptTypeEn {
 	@override String get piece_kind_count_constraint => 'Restricción de recuento de tipos de piezas';
 	@override String other_pieces_global_constraint_specialized({required Object PieceKind}) => 'Restricción global de otras piezas ${PieceKind}';
 	@override String other_pieces_indexed_constraint_specialized({required Object PieceKind}) => 'Restricción indexada de otras piezas ${PieceKind}';
-	@override String other_pieces_mutual_constraint_specialized({required Object PieceKind}) => 'Restricción de recuento de tipos de piezas ${PieceKind}';
+	@override String other_pieces_mutual_constraint_specialized({required Object PieceKind}) => 'Restricción mutuas de tipos de piezas ${PieceKind}';
 }
 
 // Path: side

@@ -1,4 +1,4 @@
-## 4.1.4
+## 4.2.0
 
 * Minor fixes
 * Rename window title in desktop version

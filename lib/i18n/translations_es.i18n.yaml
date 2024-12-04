@@ -106,7 +106,7 @@ scriptType:
   pieceKindCountConstraint: "Restricción de recuento de tipos de piezas"
   otherPiecesGlobalConstraintSpecialized: "Restricción global de otras piezas $pieceKind"
   otherPiecesIndexedConstraintSpecialized: "Restricción indexada de otras piezas $pieceKind"
-  otherPiecesMutualConstraintSpecialized: "Restricción de recuento de tipos de piezas $pieceKind"
+  otherPiecesMutualConstraintSpecialized: "Restricción mutuas de tipos de piezas $pieceKind"
 side:
   player: jugador
   computer: computadora

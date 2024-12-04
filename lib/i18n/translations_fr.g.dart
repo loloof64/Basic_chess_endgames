@@ -182,7 +182,7 @@ class _TranslationsScriptTypeFr extends TranslationsScriptTypeEn {
 	@override String get piece_kind_count_constraint => 'Contraintes sur le compte des autres pièces';
 	@override String other_pieces_global_constraint_specialized({required Object PieceKind}) => 'Contraintes globales pour les autres pièces ${PieceKind}';
 	@override String other_pieces_indexed_constraint_specialized({required Object PieceKind}) => 'Contraintes par index pour les autres pièces ${PieceKind}';
-	@override String other_pieces_mutual_constraint_specialized({required Object PieceKind}) => 'Contraintes sur le compte des autres pièces ${PieceKind}';
+	@override String other_pieces_mutual_constraint_specialized({required Object PieceKind}) => 'Contraintes mutuelles pour les autres pièces ${PieceKind}';
 }
 
 // Path: side
