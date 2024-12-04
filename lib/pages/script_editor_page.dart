@@ -959,7 +959,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                   IconButton(
                     onPressed: _purposeInsertVariable,
                     icon: const FaIcon(
-                      FontAwesomeIcons.penToSquare,
+                      FontAwesomeIcons.book,
                     ),
                   ),
                 IconButton(
@@ -971,7 +971,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                     );
                   },
                   icon: const FaIcon(
-                    FontAwesomeIcons.book,
+                    FontAwesomeIcons.circleQuestion,
                   ),
                 )
               ],

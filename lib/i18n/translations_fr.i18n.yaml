@@ -286,7 +286,7 @@ syntax_manual_page:
       part_4: "*) not and  or"
       part_5: "*) & | ~ << >>"
   explaining_generation_algorithm:
-    title: "Explication de l'algorithm de génération"
+    title: "Explication de l'algorithme de génération"
     general_considerations:
       title: "Considérations générales"
       part_1_1: "L'algorithme commence avec un échiquier vide, et essaie de placer chaque pièce l'une après l'autre."

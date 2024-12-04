@@ -422,7 +422,7 @@ class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmFr extends Trans
 	final TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Explication de l\'algorithm de génération';
+	@override String get title => 'Explication de l\'algorithme de génération';
 	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsFr general_considerations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsFr._(_root);
 	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsFr order_of_scripts_evaluations = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmOrderOfScriptsEvaluationsFr._(_root);
 }
