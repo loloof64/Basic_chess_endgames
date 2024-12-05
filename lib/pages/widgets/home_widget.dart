@@ -172,10 +172,15 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         _isBusy = false;
       });
 
-      final (newPosition, errors) =
-          message as (String?, List<PositionGenerationError>);
+      final (newPosition, errorsJson) =
+          message as (String?, List<Map<String, dynamic>>);
 
       if (newPosition == null) {
+        final errors = errorsJson
+            .map(
+              (e) => PositionGenerationError.fromJson(e),
+            )
+            .toList();
         await showGenerationErrorsPopup(
           errors: errors,
           context: context,

@@ -155,6 +155,20 @@ class InterpretationError implements Exception {
     this.scriptType = "",
   });
 
+  factory InterpretationError.fromJson(Map<String, dynamic> json) {
+    return InterpretationError(
+      message: json['message'],
+      position: json['position'],
+      scriptType: json['scriptType'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'message': message,
+        'position': position,
+        'scriptType': scriptType,
+      };
+
   InterpretationError withScriptType(String newScriptType) {
     return InterpretationError(
       message: message,

@@ -472,10 +472,15 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         _isCheckingPosition = false;
       });
 
-      final (newPosition, errors) =
-          message as (String?, List<PositionGenerationError>);
+      final (newPosition, errorsInJson) =
+          message as (String?, List<Map<String, dynamic>>);
 
       if (newPosition == null) {
+        final errors = errorsInJson
+            .map(
+              (e) => PositionGenerationError.fromJson(e),
+            )
+            .toList();
         await showGenerationErrorsPopup(errors: errors, context: context);
         if (!mounted) return;
 

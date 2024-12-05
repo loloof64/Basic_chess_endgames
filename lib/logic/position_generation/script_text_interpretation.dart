@@ -25,6 +25,22 @@ class PositionGenerationError {
     required this.position,
   });
 
+  factory PositionGenerationError.fromJson(Map<String, dynamic> json) {
+    return PositionGenerationError(
+      message: json['message'],
+      scriptType: json['scriptType'],
+      position: json['position'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'message': message,
+      'scriptType': scriptType,
+      'position': position,
+    };
+  }
+
   PositionGenerationError.fromInterpretationError(InterpretationError ex)
       : message = ex.message,
         scriptType = ex.scriptType,
@@ -461,15 +477,18 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
         final (generatedPosition, errors) =
             positionGenerator.generatePosition();
         if (errors.isNotEmpty) {
-          // We can only send one error
-          final error = errors.first;
-          Logger().e(
-              "${error.message} (@${error.position}) <= ${error.scriptType}");
+          for (var error in errors) {
+            Logger().e(
+                "${error.message} (@${error.position}) <= ${error.scriptType}");
+          }
           parameters.sendPort.send((
             null,
-            <PositionGenerationError>[
-              PositionGenerationError.fromInterpretationError(error)
-            ]
+            errors
+                .map(
+                  (e) => PositionGenerationError.fromInterpretationError(e)
+                      .toJson(),
+                )
+                .toList(),
           ));
         } else {
           parameters.sendPort
