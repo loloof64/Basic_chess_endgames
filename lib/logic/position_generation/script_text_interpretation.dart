@@ -491,8 +491,12 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
                 .toList(),
           ));
         } else {
-          parameters.sendPort
-              .send((generatedPosition, <PositionGenerationError>[]));
+          parameters.sendPort.send(
+            (
+              generatedPosition,
+              <Map<String, dynamic>>[],
+            ),
+          );
         }
       } on InterpretationError catch (ex) {
         Logger().e("${ex.message} (@${ex.position}) <= ${ex.scriptType}");
@@ -500,7 +504,7 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
           null,
           <PositionGenerationError>[
             PositionGenerationError.fromInterpretationError(ex)
-          ]
+          ].map((e) => e.toJson()),
         ));
       } on PositionGenerationLoopException catch (ex) {
         Logger().e(ex.message);
@@ -515,7 +519,7 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
                       parameters.translations.maxGenerationAttemptsAchieved,
                   position: "",
                 )
-              ],
+              ].map((e) => e.toJson()),
             ),
           );
         } else {
@@ -527,7 +531,7 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
                 message: parameters.translations.tooRestrictiveScriptMessage,
                 position: "",
               )
-            ]
+            ].map((e) => e.toJson())
           ));
         }
       }
@@ -541,7 +545,7 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
           message: parameters.translations.missingScriptType,
           position: "",
         )
-      ]
+      ].map((e) => e.toJson())
     ));
   } on UnRecognizedScriptTypeException catch (ex) {
     parameters.sendPort.send((
@@ -553,7 +557,7 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
               parameters.translations.unrecognizedScriptType(Type: ex.type),
           position: "",
         )
-      ]
+      ].map((e) => e.toJson())
     ));
   }
 }
