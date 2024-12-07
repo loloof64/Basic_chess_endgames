@@ -426,9 +426,8 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     });
 
     _scriptCheckerIsolate = await Isolate.spawn(
-      generatePositionFromScript,
+      checkScriptCorrectness,
       SampleScriptGenerationParameters(
-        inGameMode: false,
         gameScript: script,
         translations: getTranslations(context),
         sendPort: receivePort.sendPort,
@@ -472,11 +471,11 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         _isCheckingPosition = false;
       });
 
-      final (newPosition, errorsInJson) =
-          message as (String?, List<Map<String, dynamic>>);
+      final (success, errorsInJsonFormat) =
+          message as (bool, List<Map<String, dynamic>>);
 
-      if (newPosition == null) {
-        final errors = errorsInJson
+      if (!success) {
+        final errors = errorsInJsonFormat
             .map(
               (e) => PositionGenerationError.fromJson(e),
             )
@@ -487,7 +486,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              t.home.failed_generating_position,
+              t.script_editor_page.invalid_script,
             ),
           ),
         );

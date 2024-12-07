@@ -257,6 +257,7 @@ class _TranslationsScriptEditorPageFr extends TranslationsScriptEditorPageEn {
 	@override String get insert_variable_title => 'Insérer une variable prédéfinie';
 	@override String get choice_common_constants => 'Constantes communes';
 	@override String get choice_script_variables => 'Variables pour le type de script';
+	@override String get invalid_script => 'Le script contient des errreurs. Veuillez les corriger.';
 }
 
 // Path: variables_table

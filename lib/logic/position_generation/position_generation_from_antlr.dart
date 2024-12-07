@@ -182,6 +182,389 @@ class PositionGeneratorFromAntlr {
     _allConstraints = constraints;
   }
 
+  (bool, List<InterpretationError>) checkScriptCorrectness() {
+    _errors.clear();
+
+    final playerHasWhite = _randomNumberGenerator.nextBool();
+    String currentFen = "8/8/8/8/8/8/8/8 ${playerHasWhite ? 'w' : 'b'} - - 0 1";
+
+    (String, BoardCoordinate) placePieceRandomly(
+        String currentPositionFen, String pieceToAddFen) {
+      final builtPosition = chess.Chess.fromFEN(
+        currentPositionFen,
+        check_validity: false,
+      );
+      final wantedCellOccupied = true;
+      while (wantedCellOccupied) {
+        final file = _randomNumberGenerator.nextInt(8);
+        final rank = _randomNumberGenerator.nextInt(8);
+        final targetCell = BoardCoordinate(file, rank);
+        if (builtPosition.get(targetCell.toUciString()) == null) {
+          return (currentPositionFen, targetCell);
+        }
+      }
+    }
+
+    // place player king randomly
+    final (String newFenPK, BoardCoordinate playerKingCell) =
+        placePieceRandomly(
+      currentFen,
+      playerHasWhite ? 'K' : 'k',
+    );
+
+    // checks player king constraints
+    if (_allConstraints.playerKingConstraint != null) {
+      try {
+        final (_, errors) = evaluateScript(
+          script: _allConstraints.playerKingConstraint!,
+          predefinedValues: <String, dynamic>{
+            "file": playerKingCell.file,
+            "rank": playerKingCell.rank,
+            "playerHasWhite": playerHasWhite,
+            ...commonConstantsPredefinedValues,
+          },
+          translations: translations,
+        );
+
+        if (errors.isNotEmpty) {
+          _errors.addAll(
+            errors.map(
+              (err) => err.withScriptType(
+                translations.fromScriptType(
+                  scriptType: ScriptType.playerKingConstraint,
+                ),
+              ),
+            ),
+          );
+        }
+      } on MissingReturnStatementException catch (ex) {
+        final scriptTypeLabel = translations.fromScriptType(
+            scriptType: ScriptType.playerKingConstraint);
+        final message = translations.missingReturnStatement;
+        Logger().e(ex);
+        throw InterpretationError(
+          message: message,
+          scriptType: scriptTypeLabel,
+        );
+      } on ReturnedValueNotABooleanException catch (ex) {
+        final scriptTypeLabel = translations.fromScriptType(
+            scriptType: ScriptType.playerKingConstraint);
+        final message = translations.returnStatementNotABoolean;
+        Logger().e(ex);
+        throw InterpretationError(
+          message: message,
+          scriptType: scriptTypeLabel,
+        );
+      }
+    }
+
+    //place computer king randomly
+    final (String newFenBothKings, BoardCoordinate computerKingCell) =
+        placePieceRandomly(
+      newFenPK,
+      playerHasWhite ? 'k' : 'K',
+    );
+
+    // checks computer king constraints
+    if (_allConstraints.computerKingConstraint != null) {
+      try {
+        final (_, errors) = evaluateScript(
+          script: _allConstraints.computerKingConstraint!,
+          predefinedValues: <String, dynamic>{
+            "file": computerKingCell.file,
+            "rank": computerKingCell.rank,
+            "playerHasWhite": !playerHasWhite,
+            ...commonConstantsPredefinedValues,
+          },
+          translations: translations,
+        );
+        if (errors.isNotEmpty) {
+          _errors.addAll(
+            errors.map(
+              (err) => err.withScriptType(
+                translations.fromScriptType(
+                  scriptType: ScriptType.computerKingConstraint,
+                ),
+              ),
+            ),
+          );
+        }
+      } on MissingReturnStatementException catch (ex) {
+        final scriptTypeLabel = translations.fromScriptType(
+            scriptType: ScriptType.computerKingConstraint);
+        final message = translations.missingReturnStatement;
+        Logger().e(ex);
+        throw InterpretationError(
+          message: message,
+          scriptType: scriptTypeLabel,
+        );
+      } on ReturnedValueNotABooleanException catch (ex) {
+        final scriptTypeLabel = translations.fromScriptType(
+            scriptType: ScriptType.computerKingConstraint);
+        final message = translations.returnStatementNotABoolean;
+        Logger().e(ex);
+        throw InterpretationError(
+          message: message,
+          scriptType: scriptTypeLabel,
+        );
+      }
+    }
+
+    // checks kings mutual constraints
+    if (_allConstraints.kingsMutualConstraint != null) {
+      try {
+        final (_, errors) = evaluateScript(
+          script: _allConstraints.kingsMutualConstraint!,
+          predefinedValues: <String, dynamic>{
+            "playerKingFile": playerKingCell.file,
+            "playerKingRank": playerKingCell.rank,
+            "computerKingFile": computerKingCell.file,
+            "computerKingRank": computerKingCell.rank,
+            "playerHasWhite": playerHasWhite,
+            ...commonConstantsPredefinedValues,
+          },
+          translations: translations,
+        );
+        if (errors.isNotEmpty) {
+          _errors.addAll(
+            errors.map(
+              (err) => err.withScriptType(
+                translations.fromScriptType(
+                  scriptType: ScriptType.mutualKingConstraint,
+                ),
+              ),
+            ),
+          );
+        }
+      } on MissingReturnStatementException catch (ex) {
+        final scriptTypeLabel = translations.fromScriptType(
+            scriptType: ScriptType.mutualKingConstraint);
+        final message = translations.missingReturnStatement;
+        Logger().e(ex);
+        throw InterpretationError(
+          message: message,
+          scriptType: scriptTypeLabel,
+        );
+      } on ReturnedValueNotABooleanException catch (ex) {
+        final scriptTypeLabel = translations.fromScriptType(
+            scriptType: ScriptType.mutualKingConstraint);
+        final message = translations.returnStatementNotABoolean;
+        Logger().e(ex);
+        throw InterpretationError(
+          message: message,
+          scriptType: scriptTypeLabel,
+        );
+      }
+    }
+
+    // checks other pieces constraints
+    for (final pieceKindCount in _allConstraints.otherPiecesCountConstraint) {
+      // place two instances of pieces in the position with only the two kings
+      final (newFen1, piece1Coord) = placePieceRandomly(
+        newFenBothKings,
+        pieceKindCount.pieceKind.getFen(
+          playerHasWhite: playerHasWhite,
+        ),
+      );
+      final (positionWithBothInstances, piece2Coord) = placePieceRandomly(
+        newFen1,
+        pieceKindCount.pieceKind.getFen(
+          playerHasWhite: playerHasWhite,
+        ),
+      );
+
+      // checks for global constraint
+      if (_allConstraints
+              .otherPiecesGlobalConstraints[pieceKindCount.pieceKind] !=
+          null) {
+        try {
+          final (_, errors) = evaluateScript(
+            script: _allConstraints
+                .otherPiecesGlobalConstraints[pieceKindCount.pieceKind]!,
+            predefinedValues: <String, dynamic>{
+              "file": piece1Coord.file,
+              "rank": piece1Coord.rank,
+              "playerKingFile": playerKingCell.file,
+              "playerKingRank": playerKingCell.rank,
+              "computerKingFile": computerKingCell.file,
+              "computerKingRank": computerKingCell.rank,
+              "playerHasWhite": playerHasWhite,
+              ...commonConstantsPredefinedValues,
+            },
+            translations: translations,
+          );
+          if (errors.isNotEmpty) {
+            final scriptTypeLabel = translations.fromScriptType(
+                scriptType: ScriptType.otherPiecesGlobalConstraint);
+            for (final currentError in errors) {
+              _errors.add(
+                currentError.withComplexScriptType(
+                  typeLabel: scriptTypeLabel,
+                  pieceKind: pieceKindCount.pieceKind,
+                  translations: translations,
+                ),
+              );
+            }
+          }
+        } on MissingReturnStatementException catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+            scriptType: ScriptType.otherPiecesGlobalConstraint,
+            pieceKind: pieceKindCount.pieceKind,
+          );
+          final message = translations.missingReturnStatement;
+          Logger().e(ex);
+          throw InterpretationError(
+                  scriptType: scriptTypeLabel, message: message)
+              .withComplexScriptType(
+            typeLabel: scriptTypeLabel,
+            pieceKind: pieceKindCount.pieceKind,
+            translations: translations,
+          );
+        } on ReturnedValueNotABooleanException catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.otherPiecesGlobalConstraint);
+          final message = translations.returnStatementNotABoolean;
+          Logger().e(ex);
+          throw InterpretationError(
+            message: message,
+            scriptType: scriptTypeLabel,
+          ).withComplexScriptType(
+            typeLabel: scriptTypeLabel,
+            pieceKind: pieceKindCount.pieceKind,
+            translations: translations,
+          );
+        }
+      }
+
+      // check for mutual constraint
+      if (_allConstraints
+              .otherPiecesMutualConstraints[pieceKindCount.pieceKind] !=
+          null) {
+        try {
+          final (passedConditions3, errors) = evaluateScript(
+            script: _allConstraints
+                .otherPiecesMutualConstraints[pieceKindCount.pieceKind]!,
+            predefinedValues: <String, dynamic>{
+              "firstPieceFile": piece1Coord.file,
+              "firstPieceRank": piece1Coord.rank,
+              "secondPieceFile": piece2Coord.file,
+              "secondPieceRank": piece2Coord.rank,
+              "playerHasWhite": playerHasWhite,
+              ...commonConstantsPredefinedValues,
+            },
+            translations: translations,
+          );
+          if (errors.isNotEmpty) {
+            final scriptTypeLabel = translations.fromScriptType(
+                scriptType: ScriptType.otherPiecesMutualConstraint);
+            for (final currentError in errors) {
+              _errors.add(
+                currentError.withComplexScriptType(
+                  typeLabel: scriptTypeLabel,
+                  pieceKind: pieceKindCount.pieceKind,
+                  translations: translations,
+                ),
+              );
+            }
+          }
+        } on MissingReturnStatementException catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+            scriptType: ScriptType.otherPiecesMutualConstraint,
+            pieceKind: pieceKindCount.pieceKind,
+          );
+          final message = translations.missingReturnStatement;
+          Logger().e(ex);
+          throw InterpretationError(
+                  scriptType: scriptTypeLabel, message: message)
+              .withComplexScriptType(
+            typeLabel: scriptTypeLabel,
+            pieceKind: pieceKindCount.pieceKind,
+            translations: translations,
+          );
+        } on ReturnedValueNotABooleanException catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.otherPiecesMutualConstraint);
+          final message = translations.returnStatementNotABoolean;
+          Logger().e(ex);
+          throw InterpretationError(
+            message: message,
+            scriptType: scriptTypeLabel,
+          ).withComplexScriptType(
+            typeLabel: scriptTypeLabel,
+            pieceKind: pieceKindCount.pieceKind,
+            translations: translations,
+          );
+        }
+      }
+
+      // check for indexed constraint
+      if (_allConstraints
+              .otherPiecesIndexedConstraints[pieceKindCount.pieceKind] !=
+          null) {
+        try {
+          final (_, errors) = evaluateScript(
+            script: _allConstraints
+                .otherPiecesIndexedConstraints[pieceKindCount.pieceKind]!,
+            predefinedValues: <String, dynamic>{
+              "file": piece1Coord.file,
+              "rank": piece1Coord.rank,
+              "apparitionIndex": 0,
+              "playerHasWhite": playerHasWhite,
+              ...commonConstantsPredefinedValues,
+            },
+            translations: translations,
+          );
+          if (errors.isNotEmpty) {
+            final scriptTypeLabel = translations.fromScriptType(
+                scriptType: ScriptType.otherPiecesIndexedConstraint);
+            for (final currentError in errors) {
+              _errors.add(
+                currentError.withComplexScriptType(
+                  typeLabel: scriptTypeLabel,
+                  pieceKind: pieceKindCount.pieceKind,
+                  translations: translations,
+                ),
+              );
+            }
+          }
+        } on MissingReturnStatementException catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+            scriptType: ScriptType.otherPiecesIndexedConstraint,
+            pieceKind: pieceKindCount.pieceKind,
+          );
+          final message = translations.missingReturnStatement;
+          Logger().e(ex);
+          throw InterpretationError(
+                  scriptType: scriptTypeLabel, message: message)
+              .withComplexScriptType(
+            typeLabel: scriptTypeLabel,
+            pieceKind: pieceKindCount.pieceKind,
+            translations: translations,
+          );
+        } on ReturnedValueNotABooleanException catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.otherPiecesIndexedConstraint);
+          final message = translations.returnStatementNotABoolean;
+          Logger().e(ex);
+          throw InterpretationError(
+            message: message,
+            scriptType: scriptTypeLabel,
+          ).withComplexScriptType(
+            typeLabel: scriptTypeLabel,
+            pieceKind: pieceKindCount.pieceKind,
+            translations: translations,
+          );
+        }
+      }
+    }
+
+    if (_errors.isNotEmpty) {
+      return (false, [..._errors]);
+    }
+
+    return (true, []);
+  }
+
   // can throw
   // PositionGenerationLoopException
   (String?, List<InterpretationError>) generatePosition() {

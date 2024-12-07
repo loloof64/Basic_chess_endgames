@@ -464,7 +464,8 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
           generationErrors
               .map(
                 (singleErr) =>
-                    PositionGenerationError.fromInterpretationError(singleErr),
+                    PositionGenerationError.fromInterpretationError(singleErr)
+                        .toJson(),
               )
               .toList(),
         ),
@@ -508,32 +509,19 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
         ));
       } on PositionGenerationLoopException catch (ex) {
         Logger().e(ex.message);
-        if (parameters.inGameMode) {
-          parameters.sendPort.send(
-            (
-              null,
-              <PositionGenerationError>[
-                PositionGenerationError(
-                  scriptType: "",
-                  message:
-                      parameters.translations.maxGenerationAttemptsAchieved,
-                  position: "",
-                )
-              ].map((e) => e.toJson()),
-            ),
-          );
-        } else {
-          parameters.sendPort.send((
+
+        parameters.sendPort.send(
+          (
             null,
             <PositionGenerationError>[
               PositionGenerationError(
                 scriptType: "",
-                message: parameters.translations.tooRestrictiveScriptMessage,
+                message: parameters.translations.maxGenerationAttemptsAchieved,
                 position: "",
               )
-            ].map((e) => e.toJson())
-          ));
-        }
+            ].map((e) => e.toJson()),
+          ),
+        );
       }
     }
   } on MissingOtherPieceScriptTypeException {
@@ -550,6 +538,89 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
   } on UnRecognizedScriptTypeException catch (ex) {
     parameters.sendPort.send((
       null,
+      <PositionGenerationError>[
+        PositionGenerationError(
+          scriptType: "",
+          message:
+              parameters.translations.unrecognizedScriptType(Type: ex.type),
+          position: "",
+        )
+      ].map((e) => e.toJson())
+    ));
+  }
+}
+
+void checkScriptCorrectness(SampleScriptGenerationParameters parameters) {
+  try {
+    final (constraintsExpr, generationErrors) = ScriptTextTransformer(
+      allConstraintsScriptText: parameters.gameScript,
+      translations: parameters.translations,
+    ).transformTextIntoConstraints();
+    if (generationErrors.isNotEmpty) {
+      parameters.sendPort.send(
+        (
+          false,
+          generationErrors
+              .map(
+                (singleErr) =>
+                    PositionGenerationError.fromInterpretationError(singleErr)
+                        .toJson(),
+              )
+              .toList(),
+        ),
+      );
+    } else {
+      final positionGenerator =
+          PositionGeneratorFromAntlr(translations: parameters.translations);
+      positionGenerator.setConstraints(constraintsExpr);
+      try {
+        final (success, errors) = positionGenerator.checkScriptCorrectness();
+        if (errors.isNotEmpty) {
+          for (var error in errors) {
+            Logger().e(
+                "${error.message} (@${error.position}) <= ${error.scriptType}");
+          }
+          parameters.sendPort.send((
+            false,
+            errors
+                .map(
+                  (e) => PositionGenerationError.fromInterpretationError(e)
+                      .toJson(),
+                )
+                .toList(),
+          ));
+        } else {
+          parameters.sendPort.send(
+            (
+              true,
+              <Map<String, dynamic>>[],
+            ),
+          );
+        }
+      } on InterpretationError catch (ex) {
+        Logger().e("${ex.message} (@${ex.position}) <= ${ex.scriptType}");
+        parameters.sendPort.send((
+          false,
+          <PositionGenerationError>[
+            PositionGenerationError.fromInterpretationError(ex)
+          ].map((e) => e.toJson()),
+        ));
+      }
+    }
+  } on MissingOtherPieceScriptTypeException {
+    parameters.sendPort.send((
+      false,
+      <PositionGenerationError>[
+        PositionGenerationError(
+          scriptType: "",
+          message: parameters.translations.missingScriptType,
+          position: "",
+        )
+      ].map((e) => e.toJson())
+    ));
+  } on UnRecognizedScriptTypeException catch (ex) {
+    parameters.sendPort.send((
+      false,
       <PositionGenerationError>[
         PositionGenerationError(
           scriptType: "",
@@ -603,13 +674,11 @@ Future<void> showGenerationErrorsPopup({
 }
 
 class SampleScriptGenerationParameters {
-  final bool inGameMode;
   final SendPort sendPort;
   final String gameScript;
   final TranslationsWrapper translations;
 
   SampleScriptGenerationParameters({
-    required this.inGameMode,
     required this.gameScript,
     required this.sendPort,
     required this.translations,

@@ -153,6 +153,7 @@ script_editor_page:
   insert_variable_title: "Insérer une variable prédéfinie"
   choice_common_constants: "Constantes communes"
   choice_script_variables: "Variables pour le type de script"
+  invalid_script: "Le script contient des errreurs. Veuillez les corriger."
 variables_table:
   headers:
     variable_name: "Nom"

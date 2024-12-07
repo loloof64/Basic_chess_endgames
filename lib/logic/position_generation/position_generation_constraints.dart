@@ -31,6 +31,28 @@ class PieceKind with FastEquatable {
   @override
   List<Object> get hashParameters => [pieceType, side];
 
+  String getFen({required bool playerHasWhite}) {
+    if (playerHasWhite) {
+      return switch (pieceType) {
+        PieceType.pawn => 'P',
+        PieceType.knight => 'N',
+        PieceType.bishop => 'B',
+        PieceType.rook => 'R',
+        PieceType.queen => 'Q',
+        PieceType.king => 'K',
+      };
+    } else {
+      return switch (pieceType) {
+        PieceType.pawn => 'p',
+        PieceType.knight => 'n',
+        PieceType.bishop => 'b',
+        PieceType.rook => 'r',
+        PieceType.queen => 'q',
+        PieceType.king => 'k',
+      };
+    }
+  }
+
   static PieceKind from(String line) {
     return switch (line) {
       'player pawn' => PieceKind(PieceType.pawn, Side.player),
@@ -54,12 +76,12 @@ class PieceKind with FastEquatable {
   }
 
   String toLocalizedEasyString({required TranslationsWrapper translations}) {
-    final sideString = switch(side) {
+    final sideString = switch (side) {
       Side.player => translations.player,
       Side.computer => translations.computer
     };
 
-    final typeString = switch(pieceType) {
+    final typeString = switch (pieceType) {
       PieceType.pawn => translations.pawn,
       PieceType.knight => translations.knight,
       PieceType.bishop => translations.bishop,

@@ -260,6 +260,7 @@ class TranslationsScriptEditorPageEn {
 	String get insert_variable_title => 'Insert a predifined variable';
 	String get choice_common_constants => 'Common constants';
 	String get choice_script_variables => 'Variable for the script type';
+	String get invalid_script => 'The script has some errors. Please correct them.';
 }
 
 // Path: variables_table

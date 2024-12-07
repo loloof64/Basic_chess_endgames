@@ -132,7 +132,6 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     _positionGenerationIsolate = await Isolate.spawn(
       generatePositionFromScript,
       SampleScriptGenerationParameters(
-        inGameMode: true,
         gameScript: script,
         translations: getTranslations(context),
         sendPort: receivePort.sendPort,
