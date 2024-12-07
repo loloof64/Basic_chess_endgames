@@ -147,6 +147,7 @@ script_editor_page:
   exercise_creation_success: "Ejercicio guardado"
   exercise_creation_error: "¡No se pudo guardar el ejercicio!"
   insert_variable_title: "Insertar una predefinida variable"
+  consult_variables_title: "Consultar predefinidas variables"
   choice_common_constants: "Constantes comunes"
   choice_script_variables: "Variable para el tipo de código"
   invalid_script: "El código tiene errores. Por favor, corregirlos."

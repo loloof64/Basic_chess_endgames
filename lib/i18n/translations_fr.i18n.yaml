@@ -151,6 +151,7 @@ script_editor_page:
   exercise_creation_success: "Exercise sauvegardé"
   exercise_creation_error: "Échec de sauvegarde de l'exercice !"
   insert_variable_title: "Insérer une variable prédéfinie"
+  consult_variables_title: "Consulter les variables prédéfinies"
   choice_common_constants: "Constantes communes"
   choice_script_variables: "Variables pour le type de script"
   invalid_script: "Le script contient des errreurs. Veuillez les corriger."

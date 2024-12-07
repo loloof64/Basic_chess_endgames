@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class VariableInsertor extends StatelessWidget {
   final TranslationsWrapper translations;
   final List<List<String>> data;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final void Function() onDone;
 
   const VariableInsertor({
@@ -42,8 +42,11 @@ class VariableInsertor extends StatelessWidget {
       data: data,
       columnProportions: columnProportions,
       callback: (rowIndex, _) {
+        if (controller == null) {
+          return;
+        }
         insertTextAtCursor(
-          controller: controller,
+          controller: controller!,
           textToInsert: data[rowIndex][0],
         );
         onDone();

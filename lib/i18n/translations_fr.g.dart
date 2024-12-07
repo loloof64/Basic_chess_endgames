@@ -255,6 +255,7 @@ class _TranslationsScriptEditorPageFr extends TranslationsScriptEditorPageEn {
 	@override String get exercise_creation_success => 'Exercise sauvegardé';
 	@override String get exercise_creation_error => 'Échec de sauvegarde de l\'exercice !';
 	@override String get insert_variable_title => 'Insérer une variable prédéfinie';
+	@override String get consult_variables_title => 'Consulter les variables prédéfinies';
 	@override String get choice_common_constants => 'Constantes communes';
 	@override String get choice_script_variables => 'Variables pour le type de script';
 	@override String get invalid_script => 'Le script contient des errreurs. Veuillez les corriger.';

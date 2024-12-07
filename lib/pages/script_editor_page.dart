@@ -787,14 +787,18 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
 
   Future<void> _showInsertVariableDialog({
     required List<List<String>> data,
-    required TextEditingController controller,
+    required TextEditingController? controller,
   }) async {
     return await showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
-            title: Text(t.script_editor_page.insert_variable_title),
+            title: Text(
+              widget.readOnly
+                  ? t.script_editor_page.consult_variables_title
+                  : t.script_editor_page.insert_variable_title,
+            ),
             content: VariableInsertor(
               translations: getTranslations(context),
               data: data,
@@ -828,7 +832,13 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
   }
 
   Future<void> _purposeInsertCommonConstant() async {
+    final data = _getCommonVariablesData();
+
     if (widget.readOnly) {
+      await _showInsertVariableDialog(
+        data: data,
+        controller: null,
+      );
       return;
     }
 
@@ -844,7 +854,6 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
       return;
     }
 
-    final data = _getCommonVariablesData();
     return await _showInsertVariableDialog(
       data: data,
       controller: controller,
@@ -852,7 +861,13 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
   }
 
   Future<void> _purposeInsertScriptVariable() async {
+    final data = _getInsertVariableForCurrentScript();
+
     if (widget.readOnly) {
+      await _showInsertVariableDialog(
+        data: data,
+        controller: null,
+      );
       return;
     }
 
@@ -867,8 +882,6 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     if (noTextFieldActive) {
       return;
     }
-
-    final data = _getInsertVariableForCurrentScript();
 
     return await _showInsertVariableDialog(
       data: data,
@@ -899,7 +912,9 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         builder: (context) {
           return AlertDialog(
             title: Text(
-              t.script_editor_page.insert_variable_title,
+              widget.readOnly
+                  ? t.script_editor_page.consult_variables_title
+                  : t.script_editor_page.insert_variable_title,
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -959,7 +974,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                 t.script_editor_page.title,
               ),
               actions: [
-                if (!widget.readOnly && !notATextEditor)
+                if (!notATextEditor)
                   IconButton(
                     onPressed: _purposeInsertVariable,
                     icon: const FaIcon(
