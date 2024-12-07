@@ -559,7 +559,7 @@ class PositionGeneratorFromAntlr {
     }
 
     if (_errors.isNotEmpty) {
-      return (false, [..._errors]);
+      return (false, _errors);
     }
 
     return (true, []);

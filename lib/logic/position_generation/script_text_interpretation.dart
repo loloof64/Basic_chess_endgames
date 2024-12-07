@@ -751,54 +751,48 @@ class ErrorsSummaryWidget extends StatelessWidget {
             ],
           ),
           // Contenu défilable
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              return Table(
-                columnWidths: const {
-                  0: FractionColumnWidth(2 / 8),
-                  1: FractionColumnWidth(1 / 8),
-                  2: FractionColumnWidth(5 / 8),
-                },
-                children: [
-                  for (final currentItem in items)
-                    TableRow(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            currentItem.scriptType,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            currentItem.position,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            currentItem.message,
-                          ),
-                        ),
-                      ],
-                    ),
-                ],
-              );
+          Table(
+            columnWidths: const {
+              0: FractionColumnWidth(2 / 8),
+              1: FractionColumnWidth(1 / 8),
+              2: FractionColumnWidth(5 / 8),
             },
-          ),
+            children: items
+                .map(
+                  (err) => TableRow(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          err.scriptType,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          err.position,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          err.message,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                .toList(),
+          )
         ],
       ),
     );
