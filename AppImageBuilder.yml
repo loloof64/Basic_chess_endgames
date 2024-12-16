@@ -15,7 +15,7 @@ AppDir:
     id: com.loloof64.basic_chess_endgames
     name: BasicChessEndgames
     icon: icon
-    version: 4.2.3
+    version: 4.2.4
     exec: basicchessendgamestrainer
     exec_args: $@
   apt:
