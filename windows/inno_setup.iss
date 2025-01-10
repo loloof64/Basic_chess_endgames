@@ -52,7 +52,7 @@ Source: "..\build\windows\x64\runner\Release\flutter_windows.dll"; DestDir: "{ap
 Source: "..\build\windows\x64\runner\Release\nn-5af11540bbfe.nnue"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\build\windows\x64\runner\Release\screen_retriever_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\build\windows\x64\runner\Release\window_manager_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build\windows\runner\Release\icudtl.dat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\build\windows\runner\Release\data\icudtl.dat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\build\windows\runner\Release\data\flutter_assets\*"; DestDir: "{app}\data\flutter_assets"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\build\windows\x64\runner\Release\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
