@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Basic Chess Endgames"
-#define MyAppVersion "4.2.9"
+#define MyAppVersion "4.2.10"
 #define MyAppPublisher "Laurent Bernabe"
 #define MyAppExeName "basicchessendgamestrainer.exe"
 
@@ -45,9 +45,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "..\build\windows\x64\runner\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build\windows\x64\plugins\stockfish_chess_engine\shared\Release\stockfish.dll"; DestDir: "{app}\plugins\stockfish_chess_engine\shared\Release"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\build\windows\x64\plugins\stockfish_chess_engine\shared\Release\stockfish.exp"; DestDir: "{app}\plugins\stockfish_chess_engine\shared\Release"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\build\windows\x64\plugins\stockfish_chess_engine\shared\Release\stockfish.lib"; DestDir: "{app}\plugins\stockfish_chess_engine\shared\Release"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\build\windows\x64\plugins\stockfish_chess_engine\shared\Release\*"; DestDir: "{app}\plugins\stockfish_chess_engine\shared\Release"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\build\windows\x64\plugins\screen_retriever_windows\shared\Release\*"; DestDir: "{app}\plugins\screen_retriever_windows\shared\Release"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\build\windows\x64\plugins\window_manager\shared\Release\*"; DestDir: "{app}\plugins\window_manager\shared\Release"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\build\windows\x64\runner\Release\flutter_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\build\windows\x64\runner\Release\nn-5af11540bbfe.nnue"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\build\windows\x64\runner\Release\screen_retriever_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
