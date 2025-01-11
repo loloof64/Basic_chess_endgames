@@ -360,6 +360,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.1"
+  flutter_stockfish_plugin:
+    dependency: "direct main"
+    description:
+      name: flutter_stockfish_plugin
+      sha256: "65981f2c102e3ea97fed36bbf9c9100aaa1b1560a88068abd807c7bcd108c589"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -799,14 +807,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  stockfish_chess_engine:
-    dependency: "direct main"
-    description:
-      name: stockfish_chess_engine
-      sha256: "166bf6661618d5cf06513a404c9e69921a8ef69e0eec1dd2b71db603fab594f0"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.6.0"
   stream_channel:
     dependency: transitive
     description:

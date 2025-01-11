@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 4.2.11+18
+version: 4.2.12+18
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -46,14 +46,13 @@ dependencies:
   chess_vectors_flutter: ^1.1.0
   chess: ^0.8.1
   flutter_riverpod: ^2.6.1
-  stockfish_chess_engine: ^0.6.0
   font_awesome_flutter: ^10.8.0
   flex_color_scheme: ^8.0.1
   antlr4: ^4.13.2
   logger: ^2.5.0 
   http: ^1.2.2
-  slang: ^4.2.11
-  slang_flutter: ^4.2.11
+  slang: ^4.2.12
+  slang_flutter: ^4.2.12
   path_provider: ^2.1.5
   path: ^1.9.0
   window_manager: ^0.4.3
@@ -61,6 +60,7 @@ dependencies:
   equatable: ^2.0.7
   open_save_file_dialogs: ^0.1.2
   file_picker: ^8.1.4
+  flutter_stockfish_plugin: ^1.1.0
 
 dev_dependencies:
   flutter_test:
