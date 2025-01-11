@@ -23,10 +23,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ./artifacts
-          name: BasicChessEndgames-${{ github.ref_name }}-x86_64.exe
-
-      - name: Rename windows artifact
-        run: mv ./artifacts/BasicChessEndgames.exe ./artifacts/BasicChessEndgames-${{ github.ref_name }}-x86_64.exe
+          name: BasicChessEndgames-${{ github.ref_name }}-x86_64.zip
 
       - name: Install GitHub CLI
         uses: actions/setup-node@v3
@@ -38,3 +35,4 @@ jobs:
           gh release create ${{ github.ref_name }} \
           ./artifacts/* \
           --title "Release ${{ github.ref_name }}"
+          --notes-file ReleaseMessage.md
