@@ -49,3 +49,4 @@ app.*.map.json
 *.AppImage
 /appimage-builder-cache
 *.exe
+*.aps
