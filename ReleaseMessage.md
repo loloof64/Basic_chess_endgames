@@ -2,3 +2,4 @@
     * is based on Stockfish 17
     * has code for ios and macos
     * will use a little NNUE on mobile device
+* Limiting number of shown errors, in order to avoid freezing the UI
