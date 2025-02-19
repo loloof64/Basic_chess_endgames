@@ -39,7 +39,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   intl: any
-  flutter_native_splash: ^2.4.3
+  flutter_native_splash: ^2.4.5
   flutter_svg: ^2.0.15
   simple_chess_board: ^1.5.0
   fast_equatable: ^1.1.0
@@ -69,7 +69,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.14.1
+  flutter_launcher_icons: ^0.14.3
   custom_lint:
   riverpod_lint:
 
@@ -127,12 +127,14 @@ flutter:
         fonts:
         - asset: assets/fonts/FreeSerif.ttf
 flutter_launcher_icons:
-  android: true
+  android: "launcher_icon"
   image_path: "assets/images/logo.png"
   min_sdk_android: 22
+  adaptive_icon_background: "#8c246f"
+  adaptive_icon_foreground: "assets/images/logo.png"
   windows:
     generate: true
-    image_path: "icon.png"
+    image_path: "assets/images/logo.png"
     icon_size: 256
 flutter_native_splash:
   color: "#8c246f"
