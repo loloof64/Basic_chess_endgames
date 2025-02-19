@@ -477,14 +477,18 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
       try {
         final (generatedPosition, errors) =
             positionGenerator.generatePosition();
-        if (errors.isNotEmpty) {
-          for (var error in errors) {
-            Logger().e(
+
+        // We limit the number of errors to process
+        const maxDisplayedErrors = 100;
+        final limitedErrors = errors.take(maxDisplayedErrors).toList();
+        if (limitedErrors.isNotEmpty) {
+          for (final error in limitedErrors) {
+           Logger().e(
                 "${error.message} (@${error.position}) <= ${error.scriptType}");
           }
           parameters.sendPort.send((
             null,
-            errors
+            limitedErrors
                 .map(
                   (e) => PositionGenerationError.fromInterpretationError(e)
                       .toJson(),

@@ -39,7 +39,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   intl: any
-  flutter_native_splash: ^2.4.5
+  flutter_native_splash: ^2.4.4
   flutter_svg: ^2.0.15
   simple_chess_board: ^1.5.0
   fast_equatable: ^1.1.0
