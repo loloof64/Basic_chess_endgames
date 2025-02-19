@@ -1,5 +1,5 @@
-import 'package:flutter_stockfish_plugin/stockfish.dart';
-import 'package:flutter_stockfish_plugin/stockfish_state.dart';
+import 'package:stockfish_chess_engine/stockfish_chess_engine.dart';
+import 'package:stockfish_chess_engine/stockfish_chess_engine_state.dart';
 
 class StockfishManager {
   Stockfish? _stockfish;

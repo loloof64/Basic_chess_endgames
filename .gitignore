@@ -50,3 +50,4 @@ app.*.map.json
 /appimage-builder-cache
 *.exe
 *.aps
+/android/app/.cxx/
