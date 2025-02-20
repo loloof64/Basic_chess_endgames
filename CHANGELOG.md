@@ -1,3 +1,7 @@
+## 4.3.1
+
+Upgrade flutter sdk so that the CI/CD can build for windows
+
 ## 4.3.0
 
 * Using package stockfish_chess_engine 0.8.1, which
