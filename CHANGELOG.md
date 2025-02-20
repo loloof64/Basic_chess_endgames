@@ -1,3 +1,7 @@
+## 4.3.2
+
+Fix AppImage runtime error : failing to load libstockfish_chess_engine.so
+
 ## 4.3.1
 
 Upgrade flutter sdk so that the CI/CD can build for windows

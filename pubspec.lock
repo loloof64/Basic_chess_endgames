@@ -796,10 +796,10 @@ packages:
     dependency: "direct main"
     description:
       name: stockfish_chess_engine
-      sha256: "0dcbd69321cba20d198e2da064315af389c037d3bd6b10f357ac132750e012ba"
+      sha256: "9349400ad696900b731c40d50c8459475f6739c07da0018a948de79f3c1d5b9d"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   stream_channel:
     dependency: transitive
     description:
