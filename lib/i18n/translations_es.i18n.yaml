@@ -226,35 +226,7 @@ syntax_manual_page:
     part_1: "Para generar una posición, es necesario indicarle al algoritmo qué restricciones debe respetar."
     part_2: "Estas restricciones se distribuyen entre varios tipos y se puede definir un código para cada uno."
     part_3: "Veremos más sobre las restricciones más adelante."
-    part_4: "La sintaxis es un pequeño subconjunto del lenguaje Lua (5.4)."
-  lua_adaptation:
-    title: "Adaptación del lenguaje Lua"
-    supported_types:
-      title: "Tipos admitidos"
-      part_1: "*) Int"
-      part_2: "*) Boolean"
-    removed_types:
-      title: "Tipos eliminados"
-      part_1: "*) Float"
-      part_2: "*) String"
-      part_3: "*) Array"
-      part_4: "*) Map"
-    available_syntax_elements:
-      title: "Elementos de sintaxis disponibles"
-      part_1: "*) asignación"
-      part_2: "*) Declaración if (precaución: la declaración if no es una expresión)"
-    removed_syntax_elements:
-      title: "Elementos de sintaxis eliminados"
-      part_1: "*) Sentencias de bucle"
-      part_2: "*) Funciones"
-      part_3: "*) Corrutinas"
-    available_operators:
-      title: "Operadores disponibles"
-      part_1: "*) paréntesis"
-      part_2: "*) + - * / ^ % //"
-      part_3: "*) > >= < <= ~= =="
-      part_4: "*) not and  or"
-      part_5: "*) & | ~ << >>"
+    part_4: "El programa utiliza una Máquina Virtual Lua 5.3 para interpretar los scripts."
   explaining_generation_algorithm:
     title: "Explicando el algoritmo de generación"
     general_considerations:
@@ -266,7 +238,7 @@ syntax_manual_page:
       part_2_1: "Entonces, cada restricción se define en un código, escrito en un subconjunto de Lua como se indicó anteriormente."
       part_2_2: "Cada código tiene acceso a algunas variables predefinidas, cuyos valores serán proporcionados por el algoritmo, pero también a algunas constantes de coordenadas."
       part_2_3: "Puede tener acceso a las variables y constantes predefinidas de cada código e insertar sus nombres accediendo al cuadro de ayuda del tipo de código que está editando."
-      part_2_4: "Pero, sobre todo (y así sabrá el algoritmo si se respetan sus restricciones), cada código debe devolver un valor booleano."
+      part_2_4: "Pero, sobre todo (y así sabrá el algoritmo si se respetan sus restricciones), cada código debe definir una variable booleana 'result'."
       part_3_1: "Si en algún paso no se respetan las restricciones para las últimas piezas colocadas, el algoritmo intentará colocarlas en otro lugar."
       part_3_2: "De esta manera se evita tener que reiniciar desde cero en cada fallo."
     order_of_scripts_evaluations:

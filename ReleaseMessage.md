@@ -7,3 +7,4 @@
     * you're are more free in your scripts
     * meanwhile, in case of error, you get a less precise info and in english, but you still have the error line
     * all samples work fine now
+    * adapted syntax manual

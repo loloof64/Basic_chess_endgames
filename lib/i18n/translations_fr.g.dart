@@ -260,7 +260,6 @@ class _TranslationsSyntaxManualPageFr extends TranslationsSyntaxManualPageEn {
 	// Translations
 	@override String get title => 'Manuel de syntaxe';
 	@override late final _TranslationsSyntaxManualPageIntroductionFr introduction = _TranslationsSyntaxManualPageIntroductionFr._(_root);
-	@override late final _TranslationsSyntaxManualPageLuaAdaptationFr lua_adaptation = _TranslationsSyntaxManualPageLuaAdaptationFr._(_root);
 	@override late final _TranslationsSyntaxManualPageExplainingGenerationAlgorithmFr explaining_generation_algorithm = _TranslationsSyntaxManualPageExplainingGenerationAlgorithmFr._(_root);
 	@override late final _TranslationsSyntaxManualPageGoalOfPositionFr goal_of_position = _TranslationsSyntaxManualPageGoalOfPositionFr._(_root);
 }
@@ -355,22 +354,7 @@ class _TranslationsSyntaxManualPageIntroductionFr extends TranslationsSyntaxManu
 	@override String get part_1 => 'Afin de générer une position, l\'algorithme a besoin de connaître les contraintes à respecter.';
 	@override String get part_2 => 'Ces contraintes sont réparties en plusieurs types, et vous avez la possibilité de définir un script pour chaque type.';
 	@override String get part_3 => 'Nous reparlerons des contraintes plus tard.';
-	@override String get part_4 => 'La syntaxe est un petit sous-ensemble du langage Lua (5.4).';
-}
-
-// Path: syntax_manual_page.lua_adaptation
-class _TranslationsSyntaxManualPageLuaAdaptationFr extends TranslationsSyntaxManualPageLuaAdaptationEn {
-	_TranslationsSyntaxManualPageLuaAdaptationFr._(TranslationsFr root) : this._root = root, super.internal(root);
-
-	final TranslationsFr _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Adaptation du langage Lua';
-	@override late final _TranslationsSyntaxManualPageLuaAdaptationSupportedTypesFr supported_types = _TranslationsSyntaxManualPageLuaAdaptationSupportedTypesFr._(_root);
-	@override late final _TranslationsSyntaxManualPageLuaAdaptationRemovedTypesFr removed_types = _TranslationsSyntaxManualPageLuaAdaptationRemovedTypesFr._(_root);
-	@override late final _TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsFr available_syntax_elements = _TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsFr._(_root);
-	@override late final _TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsFr removed_syntax_elements = _TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsFr._(_root);
-	@override late final _TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsFr available_operators = _TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsFr._(_root);
+	@override String get part_4 => 'Le programme une Machine Virtuelle de Lua 5.3 afin d\'interpréter les scripts.';
 }
 
 // Path: syntax_manual_page.explaining_generation_algorithm
@@ -727,72 +711,6 @@ class _TranslationsVariablesTableRowsSecondPieceRankFr extends TranslationsVaria
 	@override String get type => 'Entier';
 }
 
-// Path: syntax_manual_page.lua_adaptation.supported_types
-class _TranslationsSyntaxManualPageLuaAdaptationSupportedTypesFr extends TranslationsSyntaxManualPageLuaAdaptationSupportedTypesEn {
-	_TranslationsSyntaxManualPageLuaAdaptationSupportedTypesFr._(TranslationsFr root) : this._root = root, super.internal(root);
-
-	final TranslationsFr _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Types supportés';
-	@override String get part_1 => '*) Integer';
-	@override String get part_2 => '*) Boolean';
-}
-
-// Path: syntax_manual_page.lua_adaptation.removed_types
-class _TranslationsSyntaxManualPageLuaAdaptationRemovedTypesFr extends TranslationsSyntaxManualPageLuaAdaptationRemovedTypesEn {
-	_TranslationsSyntaxManualPageLuaAdaptationRemovedTypesFr._(TranslationsFr root) : this._root = root, super.internal(root);
-
-	final TranslationsFr _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Types supprimés';
-	@override String get part_1 => '*) Float';
-	@override String get part_2 => '*) String';
-	@override String get part_3 => '*) Array';
-	@override String get part_4 => '*) Map';
-}
-
-// Path: syntax_manual_page.lua_adaptation.available_syntax_elements
-class _TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsFr extends TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsEn {
-	_TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsFr._(TranslationsFr root) : this._root = root, super.internal(root);
-
-	final TranslationsFr _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Éléments de syntaxe disponibles';
-	@override String get part_1 => '*) affectation';
-	@override String get part_2 => '*) instruction if (attention : l\'instruction if n\'est pas une expression)';
-}
-
-// Path: syntax_manual_page.lua_adaptation.removed_syntax_elements
-class _TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsFr extends TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsEn {
-	_TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsFr._(TranslationsFr root) : this._root = root, super.internal(root);
-
-	final TranslationsFr _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Éléments de syntaxe supprimés';
-	@override String get part_1 => '*) instructions boucles';
-	@override String get part_2 => '*) fonctions';
-	@override String get part_3 => '*) coroutines';
-}
-
-// Path: syntax_manual_page.lua_adaptation.available_operators
-class _TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsFr extends TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsEn {
-	_TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsFr._(TranslationsFr root) : this._root = root, super.internal(root);
-
-	final TranslationsFr _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Opérateurs disponibles';
-	@override String get part_1 => '*) parenthèses';
-	@override String get part_2 => '*) + - * / ^ % //';
-	@override String get part_3 => '*) > >= < <= ~= ==';
-	@override String get part_4 => '*) not and  or';
-	@override String get part_5 => '*) & | ~ << >>';
-}
-
 // Path: syntax_manual_page.explaining_generation_algorithm.general_considerations
 class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsFr extends TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEn {
 	_TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsFr._(TranslationsFr root) : this._root = root, super.internal(root);
@@ -808,7 +726,7 @@ class _TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsidera
 	@override String get part_2_1 => 'Donc chaque contrainte est écrite dans un script, écrit dans un sous-ensemble de Lua comme expliqué plus tôt.';
 	@override String get part_2_2 => 'Chaque script a accès à un certain nombre de variables prédéfinies, dont les valeurs seront fournies par l\'algorithme, mais aussi des constantes pour les coordonnées.';
 	@override String get part_2_3 => 'Vous pouvez accéder aux variables prédéfines et constantes de chaque type de script, et insérer leurs noms, en accédant à la boîte d\'aide pour le type de script en cours d\'édition.';
-	@override String get part_2_4 => 'Mais, avant tout - et c\'est de cette manière que l\'algorithme saura si vos contraintes sont respectées - chaque script doit retourner une valeur booléenne.';
+	@override String get part_2_4 => 'Mais, avant tout - et c\'est de cette manière que l\'algorithme saura si vos contraintes sont respectées - chaque script doit définir une valeur \'result\' booléenne.';
 	@override String get part_3_1 => 'Si à une étape quelconque, les contraintes pour la dernière pièce mise en place ne sont pas respectées, l\'algorithme esseaira de la placer ailleurs.';
 	@override String get part_3_2 => 'Cela permet donc d\'éviter de repartir de zéro à chaque échec.';
 }

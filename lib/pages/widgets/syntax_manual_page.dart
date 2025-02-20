@@ -81,42 +81,6 @@ final introductionPage = Page(
   ],
 );
 
-final luaAdaptationPage =
-    Page(title: t.syntax_manual_page.lua_adaptation.title, sections: <Section>[
-  Section(
-    title: t.syntax_manual_page.lua_adaptation.supported_types.title,
-    content: "${t.syntax_manual_page.lua_adaptation.supported_types.part_1}\n" +
-        "${t.syntax_manual_page.lua_adaptation.supported_types.part_2}",
-  ),
-  Section(
-    title: t.syntax_manual_page.lua_adaptation.removed_types.title,
-    content: "${t.syntax_manual_page.lua_adaptation.removed_types.part_1}\n" +
-        "${t.syntax_manual_page.lua_adaptation.removed_types.part_2}\n" +
-        "${t.syntax_manual_page.lua_adaptation.removed_types.part_3}\n" +
-        "${t.syntax_manual_page.lua_adaptation.removed_types.part_4}",
-  ),
-  Section(
-    title: t.syntax_manual_page.lua_adaptation.available_syntax_elements.title,
-    content:
-        "${t.syntax_manual_page.lua_adaptation.available_syntax_elements.part_1}\n" +
-            "${t.syntax_manual_page.lua_adaptation.available_syntax_elements.part_2}",
-  ),
-  Section(
-    title: t.syntax_manual_page.lua_adaptation.removed_syntax_elements.title,
-    content: "${t.syntax_manual_page.lua_adaptation.removed_syntax_elements.part_1}\n" +
-        "${t.syntax_manual_page.lua_adaptation.removed_syntax_elements.part_2}\n" +
-        "${t.syntax_manual_page.lua_adaptation.removed_syntax_elements.part_3}",
-  ),
-  Section(
-    title: t.syntax_manual_page.lua_adaptation.available_operators.title,
-    content: "${t.syntax_manual_page.lua_adaptation.available_operators.part_1}\n" +
-        "${t.syntax_manual_page.lua_adaptation.available_operators.part_2}\n" +
-        "${t.syntax_manual_page.lua_adaptation.available_operators.part_3}\n" +
-        "${t.syntax_manual_page.lua_adaptation.available_operators.part_4}\n" +
-        "${t.syntax_manual_page.lua_adaptation.available_operators.part_5}",
-  ),
-]);
-
 final algorithmPage = Page(
   title: t.syntax_manual_page.explaining_generation_algorithm.title,
   sections: <Section>[
@@ -161,7 +125,6 @@ final goalPage = Page(
 
 final pages = <Page>[
   introductionPage,
-  luaAdaptationPage,
   algorithmPage,
   goalPage,
 ];

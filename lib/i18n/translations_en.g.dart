@@ -263,7 +263,6 @@ class TranslationsSyntaxManualPageEn {
 	// Translations
 	String get title => 'Manual of syntax';
 	late final TranslationsSyntaxManualPageIntroductionEn introduction = TranslationsSyntaxManualPageIntroductionEn.internal(_root);
-	late final TranslationsSyntaxManualPageLuaAdaptationEn lua_adaptation = TranslationsSyntaxManualPageLuaAdaptationEn.internal(_root);
 	late final TranslationsSyntaxManualPageExplainingGenerationAlgorithmEn explaining_generation_algorithm = TranslationsSyntaxManualPageExplainingGenerationAlgorithmEn.internal(_root);
 	late final TranslationsSyntaxManualPageGoalOfPositionEn goal_of_position = TranslationsSyntaxManualPageGoalOfPositionEn.internal(_root);
 }
@@ -358,22 +357,7 @@ class TranslationsSyntaxManualPageIntroductionEn {
 	String get part_1 => 'In order to generate a position, the algorithm must be told which constraints it must respect.';
 	String get part_2 => 'These constraints are dispatched among several types, and you can define a script for each.';
 	String get part_3 => 'We\'ll see more about constraints later.';
-	String get part_4 => 'The syntax is a tiny subset of the Lua (5.4) language.';
-}
-
-// Path: syntax_manual_page.lua_adaptation
-class TranslationsSyntaxManualPageLuaAdaptationEn {
-	TranslationsSyntaxManualPageLuaAdaptationEn.internal(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get title => 'Adaptation of the Lua language';
-	late final TranslationsSyntaxManualPageLuaAdaptationSupportedTypesEn supported_types = TranslationsSyntaxManualPageLuaAdaptationSupportedTypesEn.internal(_root);
-	late final TranslationsSyntaxManualPageLuaAdaptationRemovedTypesEn removed_types = TranslationsSyntaxManualPageLuaAdaptationRemovedTypesEn.internal(_root);
-	late final TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsEn available_syntax_elements = TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsEn.internal(_root);
-	late final TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsEn removed_syntax_elements = TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsEn.internal(_root);
-	late final TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsEn available_operators = TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsEn.internal(_root);
+	String get part_4 => 'The program uses a Lua 5.3 Virtual Machine in order to interpret the scripts.';
 }
 
 // Path: syntax_manual_page.explaining_generation_algorithm
@@ -730,72 +714,6 @@ class TranslationsVariablesTableRowsSecondPieceRankEn {
 	String get type => 'Integer';
 }
 
-// Path: syntax_manual_page.lua_adaptation.supported_types
-class TranslationsSyntaxManualPageLuaAdaptationSupportedTypesEn {
-	TranslationsSyntaxManualPageLuaAdaptationSupportedTypesEn.internal(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get title => 'Supported types';
-	String get part_1 => '*) Integer';
-	String get part_2 => '*) Boolean';
-}
-
-// Path: syntax_manual_page.lua_adaptation.removed_types
-class TranslationsSyntaxManualPageLuaAdaptationRemovedTypesEn {
-	TranslationsSyntaxManualPageLuaAdaptationRemovedTypesEn.internal(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get title => 'Removed types';
-	String get part_1 => '*) Float';
-	String get part_2 => '*) String';
-	String get part_3 => '*) Array';
-	String get part_4 => '*) Map';
-}
-
-// Path: syntax_manual_page.lua_adaptation.available_syntax_elements
-class TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsEn {
-	TranslationsSyntaxManualPageLuaAdaptationAvailableSyntaxElementsEn.internal(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get title => 'Available syntax elements';
-	String get part_1 => '*) assignment';
-	String get part_2 => '*) if statement (caution : if statement is not an expression)';
-}
-
-// Path: syntax_manual_page.lua_adaptation.removed_syntax_elements
-class TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsEn {
-	TranslationsSyntaxManualPageLuaAdaptationRemovedSyntaxElementsEn.internal(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get title => 'Removed syntax elements';
-	String get part_1 => '*) Loops statements';
-	String get part_2 => '*) Functions';
-	String get part_3 => '*) Coroutines';
-}
-
-// Path: syntax_manual_page.lua_adaptation.available_operators
-class TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsEn {
-	TranslationsSyntaxManualPageLuaAdaptationAvailableOperatorsEn.internal(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get title => 'Available operators';
-	String get part_1 => '*) parenthesis';
-	String get part_2 => '*) + - * / ^ % //';
-	String get part_3 => '*) > >= < <= ~= ==';
-	String get part_4 => '*) not and  or';
-	String get part_5 => '*) & | ~ << >>';
-}
-
 // Path: syntax_manual_page.explaining_generation_algorithm.general_considerations
 class TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEn {
 	TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderationsEn.internal(this._root);
@@ -811,7 +729,7 @@ class TranslationsSyntaxManualPageExplainingGenerationAlgorithmGeneralConsiderat
 	String get part_2_1 => 'So each constraints is defined in a script, written in a subset of Lua as stated earlier.';
 	String get part_2_2 => 'Each script has access to some predefined variables, whose values will be provided by the algorithm, but also some coordinates constants.';
 	String get part_2_3 => 'You can have access to each script predefined variables and constants, and insert their names, by accessing the helper box for the script you\'re editing.';
-	String get part_2_4 => 'But, above all - and that\'s how the algorithm will know if your constraints are respected - each script must return a boolean value.';
+	String get part_2_4 => 'But, above all - and that\'s how the algorithm will know if your constraints are respected - each script must define a \'result\' boolean value.';
 	String get part_3_1 => 'If at any step, the constraints are not respected for the last placed pieces, the algorithm will try to place it somewhere else.';
 	String get part_3_2 => 'So it avoid restarting from scratch at each failure.';
 }

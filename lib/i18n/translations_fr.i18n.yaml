@@ -228,35 +228,7 @@ syntax_manual_page:
     part_1: "Afin de générer une position, l'algorithme a besoin de connaître les contraintes à respecter."
     part_2: "Ces contraintes sont réparties en plusieurs types, et vous avez la possibilité de définir un script pour chaque type."
     part_3: "Nous reparlerons des contraintes plus tard."
-    part_4: "La syntaxe est un petit sous-ensemble du langage Lua (5.4)."
-  lua_adaptation:
-    title: "Adaptation du langage Lua"
-    supported_types:
-      title: "Types supportés"
-      part_1: "*) Integer"
-      part_2: "*) Boolean"
-    removed_types:
-      title: "Types supprimés"
-      part_1: "*) Float"
-      part_2: "*) String"
-      part_3: "*) Array"
-      part_4: "*) Map"
-    available_syntax_elements:
-      title: "Éléments de syntaxe disponibles"
-      part_1: "*) affectation"
-      part_2: "*) instruction if (attention : l'instruction if n'est pas une expression)"
-    removed_syntax_elements:
-      title: "Éléments de syntaxe supprimés"
-      part_1: "*) instructions boucles"
-      part_2: "*) fonctions"
-      part_3: "*) coroutines"
-    available_operators:
-      title: "Opérateurs disponibles"
-      part_1: "*) parenthèses"
-      part_2: "*) + - * / ^ % //"
-      part_3: "*) > >= < <= ~= =="
-      part_4: "*) not and  or"
-      part_5: "*) & | ~ << >>"
+    part_4: "Le programme une Machine Virtuelle de Lua 5.3 afin d'interpréter les scripts."
   explaining_generation_algorithm:
     title: "Explication de l'algorithme de génération"
     general_considerations:
@@ -268,7 +240,7 @@ syntax_manual_page:
       part_2_1: "Donc chaque contrainte est écrite dans un script, écrit dans un sous-ensemble de Lua comme expliqué plus tôt."
       part_2_2: "Chaque script a accès à un certain nombre de variables prédéfinies, dont les valeurs seront fournies par l'algorithme, mais aussi des constantes pour les coordonnées."
       part_2_3: "Vous pouvez accéder aux variables prédéfines et constantes de chaque type de script, et insérer leurs noms, en accédant à la boîte d'aide pour le type de script en cours d'édition."
-      part_2_4: "Mais, avant tout - et c'est de cette manière que l'algorithme saura si vos contraintes sont respectées - chaque script doit retourner une valeur booléenne."
+      part_2_4: "Mais, avant tout - et c'est de cette manière que l'algorithme saura si vos contraintes sont respectées - chaque script doit définir une valeur 'result' booléenne."
       part_3_1: "Si à une étape quelconque, les contraintes pour la dernière pièce mise en place ne sont pas respectées, l'algorithme esseaira de la placer ailleurs."
       part_3_2: "Cela permet donc d'éviter de repartir de zéro à chaque échec."
     order_of_scripts_evaluations:
