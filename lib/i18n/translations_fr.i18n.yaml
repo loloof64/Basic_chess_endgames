@@ -61,45 +61,15 @@ gamePage:
     générée, mais aussi interrompre la partie de manière prématurée.\n \
     Une fois la partie terminée, vous pourrez visualiser les coups joués grâce au composant historique."
 scriptParser:
-  variableNotAffected: "La variable $name a été utilisée avant même d'avoir été définie."
-  inputMismatch: "Entrée incorrecte dans la ligne $line :\
-    caractère à l'index $index. Vous auriez dû mettre $expected mais j'ai reçu $received."
-  noViableAltException: "L'entrée $token ne correspond à aucune règle.\
-    (Ligne $lineNumber, numéro de caractère $positionInLine)"
-  noAntlr4Token: "[Aucune occurence]"
-  eof: "[FinDeFichier]"
-  parenthesisWithoutExpression: "Parenthèses sans expression."
-  unaryExpressionWithoutValue: "Expression unaire sans valeur."
-  invalidExpressionType: "Type d'expression invalide (attendu: $expected, obtenu: $got, opérateur: $operator)."
-  missingValueInExponentExpression: "Il manque une valeur dans l'expression exposant."
-  missingValueInBinaryExpression: "Il manque une valeur dans l'expression binaire (opérateur: $operator)."
-  overridingPredefinedVariable: "Vous essayez de modifier la valeur de la variable prédéfinie $name."
-  typeError:
-    "Veuillez vérifier que vous n'utilisez pas de valeur entière à la place \
-    de valeur booléenne, et vice versa."
+  undefinedScriptType: "#NonDéfini#"
   missingScriptType:
     "Échec de génération de la position: veuillez vérifier que toutes les \
     sections du script déclarent un type de script correct."
   unrecognized_script_type: "Type de script non reconnu : $type."
   miscErrorDialogTitle: "Erreur globale"
   misc_checking_error: "La vérification d'erreurs a échoué pour une raison diverse."
-  no_return_statement: "Il manque l'instruction 'return': vérifiez aussi que vous retournez une valeur booléenne."
-  return_statement_not_boolean: "L'instruction 'return' ne retourne pas un booléen."
-  too_restrictive_script_title: "Script trop restrictif ?"
-  too_restrictive_script_message : "Échec de génération de position à partir de votre script: serait-il trop restrictif ?"
-  wrong_token_alternatives: "Symbol non reconnu ($symbol): attendant un parmi ($expectedSymbols) !"
-  invalid_assignements: "Instruction d'assignement invalide !"
-  unrecognized_token: "Symbol non reconnu ($symbol) !"
-  misc_syntaxt_error: "Erreur de syntaxe diverse ($symbol) !"
   misc_syntaxt_error_unknown_token: "Erreur de syntaxe diverse !"
-  if_statement_missing_block: "Il manque au moins un bloc d'instructions ou condition dans l'instruction 'if' !"
-  error_substitutions:
-    eof: "#FinDeFichier#"
-    variable_name:  "#NomDeVariable#"
-    integer: "#Entier#"
-  types:
-    int: "entier"
-    bool: "booléen"
+  missing_result_value: "Le script doit définir une variable booléenne 'result' !"
 scriptType:
   playerKingConstraint: "Contraintes du roi du joueur"
   computerKingConstraint: "Contraintes du roi de l'ordinateur"

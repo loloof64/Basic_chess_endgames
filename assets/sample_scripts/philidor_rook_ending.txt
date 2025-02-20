@@ -2,14 +2,14 @@
 
 isOnMiddleFile = (file >= FileC) and (file <= FileF)
 if playerHasWhite then isOnPlayerFirstRank = (rank == Rank1) else isOnPlayerFirstRank = (rank == Rank8) end
-return isOnMiddleFile and isOnPlayerFirstRank
+result = isOnMiddleFile and isOnPlayerFirstRank
 
 @@@@@@
 
 # computer king constraints
 
 if playerHasWhite then kingOnPlayerFourthRank = (rank == Rank4) else kingOnPlayerFourthRank = (rank == Rank5) end
-return kingOnPlayerFourthRank
+result = kingOnPlayerFourthRank
 
 @@@@@@
 
@@ -19,7 +19,7 @@ distanceBetweenKings = playerKingFile - computerKingFile
 if distanceBetweenKings > 0 then absDistanceBetweenKings = distanceBetweenKings else absDistanceBetweenKings = -distanceBetweenKings end
 kingFileNearPlayerKingFile = absDistanceBetweenKings == 1
 
-return kingFileNearPlayerKingFile
+result = kingFileNearPlayerKingFile
 
 @@@@@@
 
@@ -37,7 +37,7 @@ computer rook : 1
 
 fileOnPlayerKingFile = (file == playerKingFile)
 if playerHasWhite then pawnOnPlayerFourthRank = (rank == Rank4) else pawnOnPlayerFourthRank = (rank == Rank5) end
-return fileOnPlayerKingFile and pawnOnPlayerFourthRank
+result = fileOnPlayerKingFile and pawnOnPlayerFourthRank
 
 ---
 
@@ -45,7 +45,7 @@ return fileOnPlayerKingFile and pawnOnPlayerFourthRank
 
 if (playerKingFile <= FileD) then isRightFile = (file == FileH) else isRightFile = (file == FileA) end
 if playerHasWhite then isRightRank = (rank == Rank8) else isRightRank = (rank == Rank1) end
-return isRightFile and isRightRank
+result = isRightFile and isRightRank
 
 ---
 
@@ -53,7 +53,7 @@ return isRightFile and isRightRank
 
 if (playerKingFile <= FileD) then isOnRightFile = (file == FileA) else isOnRightFile = (file == FileH) end
 if playerHasWhite then isOnComputerSeventhRank = (rank == Rank2) else isOnComputerSeventhRank = (rank == Rank7) end
-return isOnRightFile and isOnComputerSeventhRank
+result = isOnRightFile and isOnComputerSeventhRank
 
 @@@@@@
 

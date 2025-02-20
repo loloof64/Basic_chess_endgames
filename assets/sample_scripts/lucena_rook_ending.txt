@@ -5,7 +5,7 @@ isOnRightFile = (file >= FileB) and (file <= FileG)
 if playerHasWhite then expectedRank = Rank8 else expectedRank = Rank1 end
 isOnRightRank = rank == expectedRank
 
-return isOnRightFile and isOnRightRank
+result = isOnRightFile and isOnRightRank
 
 @@@@@@
 
@@ -13,7 +13,7 @@ return isOnRightFile and isOnRightRank
 
 if playerHasWhite then computerSecondRank = Rank7 else computerSecondRank = Rank2 end
 kingOnComputerSecondRank = rank == computerSecondRank
-return kingOnComputerSecondRank
+result = kingOnComputerSecondRank
 
 @@@@@@
 
@@ -21,7 +21,7 @@ return kingOnComputerSecondRank
 
 if (playerKingFile <= FileD) then expectedComputerKingFile = playerKingFile + 2 else expectedComputerKingFile = computerKingFile - 2 end
 kingOnLongSide = computerKingFile == expectedComputerKingFile
-return kingOnLongSide
+result = kingOnLongSide
 
 @@@@@@
 
@@ -38,7 +38,7 @@ computer rook : 1
 [player pawn]
 
 if playerHasWhite then expectedRank = Rank7 else expectedRank = Rank2 end
-return (file == playerKingFile) and (rank == expectedRank)
+result = (file == playerKingFile) and (rank == expectedRank)
 
 ---
 
@@ -51,7 +51,7 @@ if (playerHasWhite) then expectedRank = Rank1 else expectedRank = Rank8 end
 isRightRank = rank == expectedRank
 
 
-return isRightFile and isRightRank
+result = isRightFile and isRightRank
 
 ---
 
@@ -60,7 +60,7 @@ return isRightFile and isRightRank
 if (playerKingFile <= FileD) then isOnShortSide = (file < playerKingFile) else isOnShortSide = (file > playerKingFile) end
 if playerHasWhite then isOnComputerSeventhRank = (rank == Rank2) else isOnComputerSeventhRank = (rank == Rank7) end
 
-return isOnShortSide and isOnComputerSeventhRank
+result = isOnShortSide and isOnComputerSeventhRank
 
 @@@@@@
 

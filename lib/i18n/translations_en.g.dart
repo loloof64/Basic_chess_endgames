@@ -139,34 +139,13 @@ class TranslationsScriptParserEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String variable_not_affected({required Object Name}) => 'The variable ${Name} has been used before having been defined.';
-	String input_mismatch({required Object Line, required Object Index, required Object Expected, required Object Received}) => 'Bad input at line ${Line}: character number ${Index}. You should have set ${Expected} but I got ${Received}.';
-	String no_viable_alt_exception({required Object Token, required Object LineNumber, required Object PositionInLine}) => 'The input ${Token} does not match any rule. (Line ${LineNumber}, character number ${PositionInLine})';
-	String get no_antlr4_token => '[No occurence]';
-	String get eof => '[EndOfFile]';
-	String get parenthesis_without_expression => 'Parenthesis without expression inside.';
-	String get unary_expression_without_value => 'Unary expression without value.';
-	String invalid_expression_type({required Object Expected, required Object Got, required Object Operator}) => 'Invalid expression type (expected: ${Expected}, got: ${Got}, operator: ${Operator}).';
-	String get missing_value_in_exponent_expression => 'Missing value in exponent expression.';
-	String missing_value_in_binary_expression({required Object Operator}) => 'Missing value in binary expression (operator: ${Operator}).';
-	String overriding_predefined_variable({required Object Name}) => 'You try to change the value of predefined variable ${Name}.';
-	String get type_error => 'Please check that you don\'t use int value instead of boolean value and vice versa.';
+	String get undefined_script_type => '#Undefined#';
 	String get missing_script_type => 'Failed to generate position : please check that all of the script sections declares a correct script type.';
 	String unrecognized_script_type({required Object Type}) => 'Unrecognized script type : ${Type}.';
 	String get misc_error_dialog_title => 'Global error';
 	String get misc_checking_error => 'The errors checking has failed for a miscellaneous error.';
-	String get no_return_statement => 'Missing return statement : also check that you return a boolean value.';
-	String get return_statement_not_boolean => 'Return statement does not return a boolean value.';
-	String get too_restrictive_script_title => 'Too restrictive script ?';
-	String get too_restrictive_script_message => 'Failed to generate a sample position from your script : is it too restrictive ?';
-	String wrong_token_alternatives({required Object Symbol, required Object ExpectedSymbols}) => 'Wrong symbol (${Symbol}) : expecting one among (${ExpectedSymbols}) !';
-	String get invalid_assignements => 'Invalid assignment statement !';
-	String unrecognized_token({required Object Symbol}) => 'Symbol not recognized (${Symbol}) !';
-	String misc_syntaxt_error({required Object Symbol}) => 'Miscellaneous syntax error (${Symbol}) !';
 	String get misc_syntaxt_error_unknown_token => 'Miscellaneous syntax error !';
-	String get if_statement_missing_block => 'The \'if\' statement is missing at least one statements block or condition !';
-	late final TranslationsScriptParserErrorSubstitutionsEn error_substitutions = TranslationsScriptParserErrorSubstitutionsEn.internal(_root);
-	late final TranslationsScriptParserTypesEn types = TranslationsScriptParserTypesEn.internal(_root);
+	String get missing_result_value => 'The script must set a boolean in the \'result\' variable !';
 }
 
 // Path: script_type
@@ -315,29 +294,6 @@ class TranslationsHomeErrorsPopupLabelsEn {
 	String get position => 'Position';
 	String get position_short => 'Pos.';
 	String get message => 'Message';
-}
-
-// Path: script_parser.error_substitutions
-class TranslationsScriptParserErrorSubstitutionsEn {
-	TranslationsScriptParserErrorSubstitutionsEn.internal(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get eof => '#EndOfFile#';
-	String get variable_name => '#VariableName#';
-	String get integer => '#Integer#';
-}
-
-// Path: script_parser.types
-class TranslationsScriptParserTypesEn {
-	TranslationsScriptParserTypesEn.internal(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get int => 'integer';
-	String get bool => 'boolean';
 }
 
 // Path: variables_table.headers

@@ -7,7 +7,7 @@ isRightRank = rank == expectedRank
 -- file must not be in a rook column
 fileInRightColumn = (file >= FileB) and (file <= FileG)
 
-return isRightRank and fileInRightColumn
+result = isRightRank and fileInRightColumn
 
 @@@@@@
 
@@ -15,13 +15,13 @@ return isRightRank and fileInRightColumn
 
 -- computer king must be the player's eight rank
 if playerHasWhite then expectedRank = Rank8 else expectedRank = Rank1 end
-return rank == expectedRank
+result = rank == expectedRank
 
 @@@@@@
 
 # kings mutual constraints
 
-return playerKingFile == computerKingFile
+result = playerKingFile == computerKingFile
 
 @@@@@@
 
@@ -40,7 +40,7 @@ if playerHasWhite then expectedRank = Rank5 else expectedRank = Rank4 end
 isRightRank = rank == expectedRank
 isRightFile = file == playerKingFile
 
-return isRightFile and isRightRank
+result = isRightFile and isRightRank
 
 @@@@@@
 

@@ -3,7 +3,7 @@
 kingInCenterColumn = (file >= FileC) and (file <= FileF)
 kingInCenterRank = (rank >= Rank3) and (rank <= Rank6)
 
-return kingInCenterColumn and kingInCenterRank
+result = kingInCenterColumn and kingInCenterRank
 
 @@@@@@
 
@@ -19,7 +19,8 @@ player bishop : 2
 
 firstSquareIsBlack = ((firstPieceFile + firstPieceRank) % 2) == 0
 secondSquareIsBlack = ((secondPieceFile + secondPieceRank) % 2) == 0
-return firstSquareIsBlack ~= secondSquareIsBlack
+
+result = firstSquareIsBlack ~= secondSquareIsBlack
 
 @@@@@@
 

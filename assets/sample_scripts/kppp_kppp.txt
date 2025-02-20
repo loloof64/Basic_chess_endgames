@@ -2,7 +2,7 @@
 
 if playerHasWhite then expectedRank = Rank1 else expectedRank = Rank8 end
 isRightRank = rank == expectedRank
-return isRightRank
+result = isRightRank
 
 @@@@@@
 
@@ -10,7 +10,7 @@ return isRightRank
 
 if playerHasWhite then expectedRank = Rank1 else expectedRank = Rank8 end
 isRightRank = rank == expectedRank
-return isRightRank
+result = isRightRank
 
 @@@@@@
 
@@ -27,7 +27,7 @@ computer pawn : 3
 
 if playerHasWhite then expectedRank = Rank5 else expectedRank = Rank4 end
 isRightRank = rank == expectedRank
-return isRightRank
+result = isRightRank
 
 ---
 
@@ -35,7 +35,7 @@ return isRightRank
 
 if playerHasWhite then expectedRank = Rank7 else expectedRank = Rank2 end
 isRightRank = rank == expectedRank
-return isRightRank
+result = isRightRank
 
 @@@@@@
 
@@ -43,13 +43,13 @@ return isRightRank
 
 [player pawn]
 
-return file == apparitionIndex
+result = file == apparitionIndex
 
 ---
 
 [computer pawn]
 
-return file == apparitionIndex
+result = file == apparitionIndex
 
 @@@@@@
 

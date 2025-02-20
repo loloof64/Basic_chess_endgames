@@ -136,34 +136,13 @@ class _TranslationsScriptParserFr extends TranslationsScriptParserEn {
 	final TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String variable_not_affected({required Object Name}) => 'La variable ${Name} a été utilisée avant même d\'avoir été définie.';
-	@override String input_mismatch({required Object Line, required Object Index, required Object Expected, required Object Received}) => 'Entrée incorrecte dans la ligne ${Line} :caractère à l\'index ${Index}. Vous auriez dû mettre ${Expected} mais j\'ai reçu ${Received}.';
-	@override String no_viable_alt_exception({required Object Token, required Object LineNumber, required Object PositionInLine}) => 'L\'entrée ${Token} ne correspond à aucune règle.(Ligne ${LineNumber}, numéro de caractère ${PositionInLine})';
-	@override String get no_antlr4_token => '[Aucune occurence]';
-	@override String get eof => '[FinDeFichier]';
-	@override String get parenthesis_without_expression => 'Parenthèses sans expression.';
-	@override String get unary_expression_without_value => 'Expression unaire sans valeur.';
-	@override String invalid_expression_type({required Object Expected, required Object Got, required Object Operator}) => 'Type d\'expression invalide (attendu: ${Expected}, obtenu: ${Got}, opérateur: ${Operator}).';
-	@override String get missing_value_in_exponent_expression => 'Il manque une valeur dans l\'expression exposant.';
-	@override String missing_value_in_binary_expression({required Object Operator}) => 'Il manque une valeur dans l\'expression binaire (opérateur: ${Operator}).';
-	@override String overriding_predefined_variable({required Object Name}) => 'Vous essayez de modifier la valeur de la variable prédéfinie ${Name}.';
-	@override String get type_error => 'Veuillez vérifier que vous n\'utilisez pas de valeur entière à la place de valeur booléenne, et vice versa.';
+	@override String get undefined_script_type => '#NonDéfini#';
 	@override String get missing_script_type => 'Échec de génération de la position: veuillez vérifier que toutes les sections du script déclarent un type de script correct.';
 	@override String unrecognized_script_type({required Object Type}) => 'Type de script non reconnu : ${Type}.';
 	@override String get misc_error_dialog_title => 'Erreur globale';
 	@override String get misc_checking_error => 'La vérification d\'erreurs a échoué pour une raison diverse.';
-	@override String get no_return_statement => 'Il manque l\'instruction \'return\': vérifiez aussi que vous retournez une valeur booléenne.';
-	@override String get return_statement_not_boolean => 'L\'instruction \'return\' ne retourne pas un booléen.';
-	@override String get too_restrictive_script_title => 'Script trop restrictif ?';
-	@override String get too_restrictive_script_message => 'Échec de génération de position à partir de votre script: serait-il trop restrictif ?';
-	@override String wrong_token_alternatives({required Object Symbol, required Object ExpectedSymbols}) => 'Symbol non reconnu (${Symbol}): attendant un parmi (${ExpectedSymbols}) !';
-	@override String get invalid_assignements => 'Instruction d\'assignement invalide !';
-	@override String unrecognized_token({required Object Symbol}) => 'Symbol non reconnu (${Symbol}) !';
-	@override String misc_syntaxt_error({required Object Symbol}) => 'Erreur de syntaxe diverse (${Symbol}) !';
 	@override String get misc_syntaxt_error_unknown_token => 'Erreur de syntaxe diverse !';
-	@override String get if_statement_missing_block => 'Il manque au moins un bloc d\'instructions ou condition dans l\'instruction \'if\' !';
-	@override late final _TranslationsScriptParserErrorSubstitutionsFr error_substitutions = _TranslationsScriptParserErrorSubstitutionsFr._(_root);
-	@override late final _TranslationsScriptParserTypesFr types = _TranslationsScriptParserTypesFr._(_root);
+	@override String get missing_result_value => 'Le script doit définir une variable booléenne \'result\' !';
 }
 
 // Path: script_type
@@ -312,29 +291,6 @@ class _TranslationsHomeErrorsPopupLabelsFr extends TranslationsHomeErrorsPopupLa
 	@override String get position => 'Position';
 	@override String get position_short => 'Pos.';
 	@override String get message => 'Message';
-}
-
-// Path: script_parser.error_substitutions
-class _TranslationsScriptParserErrorSubstitutionsFr extends TranslationsScriptParserErrorSubstitutionsEn {
-	_TranslationsScriptParserErrorSubstitutionsFr._(TranslationsFr root) : this._root = root, super.internal(root);
-
-	final TranslationsFr _root; // ignore: unused_field
-
-	// Translations
-	@override String get eof => '#FinDeFichier#';
-	@override String get variable_name => '#NomDeVariable#';
-	@override String get integer => '#Entier#';
-}
-
-// Path: script_parser.types
-class _TranslationsScriptParserTypesFr extends TranslationsScriptParserTypesEn {
-	_TranslationsScriptParserTypesFr._(TranslationsFr root) : this._root = root, super.internal(root);
-
-	final TranslationsFr _root; // ignore: unused_field
-
-	// Translations
-	@override String get int => 'entier';
-	@override String get bool => 'booléen';
 }
 
 // Path: variables_table.headers

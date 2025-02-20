@@ -3,10 +3,9 @@
 import 'dart:collection';
 import 'dart:isolate';
 
-import 'package:basicchessendgamestrainer/antlr4/script_interpreter.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
-import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_antlr.dart';
+import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_lua_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -17,19 +16,28 @@ const otherPiecesSingleScriptSeparator = '---';
 class PositionGenerationError {
   final String scriptType;
   final String message;
-  final String position;
 
   const PositionGenerationError({
     required this.message,
     required this.scriptType,
-    required this.position,
   });
 
   factory PositionGenerationError.fromJson(Map<String, dynamic> json) {
     return PositionGenerationError(
       message: json['message'],
       scriptType: json['scriptType'],
-      position: json['position'],
+    );
+  }
+
+  PositionGenerationError withComplexScriptType({
+    required String typeLabel,
+    required PieceKind pieceKind,
+    required TranslationsWrapper translations,
+  }) {
+    return PositionGenerationError(
+      message: message,
+      scriptType:
+          "$typeLabel [${pieceKind.toLocalizedEasyString(translations: translations)}]",
     );
   }
 
@@ -37,35 +45,14 @@ class PositionGenerationError {
     return {
       'message': message,
       'scriptType': scriptType,
-      'position': position,
     };
   }
-
-  PositionGenerationError.fromInterpretationError(InterpretationError ex)
-      : message = ex.message,
-        scriptType = ex.scriptType,
-        position = ex.position;
 }
 
 @immutable
 class TranslationsWrapper {
+  final String undefinedScriptType;
   final String missingScriptType;
-  final String typeError;
-  final String noAntlr4Token;
-  final String eof;
-  final String parenthesisWithoutExpression;
-  final String unaryExpressionWithoutValue;
-  final String Function({
-    required Object Expected,
-    required Object Got,
-    required Object Operator,
-  }) invalidExpressionType;
-  final String missingValueInExponentExpression;
-  final String Function({
-    required Object Operator,
-  }) missingValueInBinaryExpression;
-  final String scriptTypeInt;
-  final String scriptTypeBool;
   final String maxGenerationAttemptsAchieved;
   final String failedGeneratingPosition;
   final String playerKingConstraint;
@@ -81,36 +68,10 @@ class TranslationsWrapper {
       otherPiecesIndexedConstraintSpecialized;
   final String Function({required Object PieceKind})
       otherPiecesMutualConstraintSpecialized;
-  final String tooRestrictiveScriptTitle;
-  final String tooRestrictiveScriptMessage;
-  final String missingReturnStatement;
-  final String returnStatementNotABoolean;
-  final String Function({required Object Symbol}) unrecognizedSymbol;
-  final String Function({required Object Name}) variableNotAffected;
-  final String Function({required Object Name}) overridingPredefinedVariable;
   final String Function({required Object Type}) unrecognizedScriptType;
-  final String Function({
-    required Object LineNumber,
-    required Object PositionInLine,
-    required Object Token,
-  }) noViableAltException;
-  final String Function({
-    required Object Expected,
-    required Object Index,
-    required Object Line,
-    required Object Received,
-  }) inputMismatch;
-  final String Function({
-    required Object Symbol,
-    required Object ExpectedSymbols,
-  }) wrongTokenAlternatives;
-  final String invalidAssignment;
-  final String Function({required Object Symbol}) miscSyntaxError;
   final String miscSyntaxErrorUnknownToken;
-  final String errorSubstitutionEOF;
-  final String errorSubstitutionVariableName;
-  final String errorSubstitutionInteger;
-  final String errorIfStatementMissingBlock;
+
+  final String missingResultValue;
 
   final String player;
   final String computer;
@@ -127,18 +88,9 @@ class TranslationsWrapper {
   final String variablesTableHeaderType;
 
   const TranslationsWrapper({
+    required this.missingResultValue,
     required this.missingScriptType,
-    required this.unrecognizedSymbol,
-    required this.typeError,
-    required this.noAntlr4Token,
-    required this.eof,
-    required this.parenthesisWithoutExpression,
-    required this.unaryExpressionWithoutValue,
-    required this.invalidExpressionType,
-    required this.missingValueInExponentExpression,
-    required this.missingValueInBinaryExpression,
-    required this.scriptTypeInt,
-    required this.scriptTypeBool,
+    required this.undefinedScriptType,
     required this.maxGenerationAttemptsAchieved,
     required this.failedGeneratingPosition,
     required this.playerKingConstraint,
@@ -151,23 +103,8 @@ class TranslationsWrapper {
     required this.otherPiecesGlobalConstraintSpecialized,
     required this.otherPiecesIndexedConstraintSpecialized,
     required this.otherPiecesMutualConstraintSpecialized,
-    required this.variableNotAffected,
-    required this.overridingPredefinedVariable,
     required this.unrecognizedScriptType,
-    required this.noViableAltException,
-    required this.inputMismatch,
-    required this.wrongTokenAlternatives,
-    required this.invalidAssignment,
-    required this.miscSyntaxError,
     required this.miscSyntaxErrorUnknownToken,
-    required this.errorSubstitutionEOF,
-    required this.errorSubstitutionVariableName,
-    required this.errorSubstitutionInteger,
-    required this.errorIfStatementMissingBlock,
-    required this.tooRestrictiveScriptTitle,
-    required this.tooRestrictiveScriptMessage,
-    required this.missingReturnStatement,
-    required this.returnStatementNotABoolean,
     required this.player,
     required this.computer,
     required this.pawn,
@@ -241,7 +178,7 @@ bool overallScriptGoalIsToWin(String overallScriptContent) {
   final parts = overallScriptContent.split(scriptsSeparator);
   final goalPart = parts.where((singleScript) {
     final lines =
-        singleScript.split(RegExp(r'\r?\n')).map((line) => line.trim());
+        singleScript.split(RegExp(r'\r?\n')).map((line) => line.trim()).toList();
     return lines.contains('# goal');
   });
   if (goalPart.isEmpty) return true; // winning goal by default
@@ -306,9 +243,9 @@ class ScriptTextTransformer {
   // can throw exceptions
   // MissingOtherPieceScriptTypeException
   // UnRecognizedScriptTypeException
-  (PositionGeneratorConstraintsExpr, List<InterpretationError>)
+  (PositionGeneratorConstraintsExpr, List<PositionGenerationError>)
       transformTextIntoConstraints() {
-    final errors = <InterpretationError>[];
+    final errors = <PositionGenerationError>[];
     final scripts = allConstraintsScriptText.split(scriptsSeparator);
     for (final singleScript in scripts) {
       final currentErrors = _transformScriptIntoConstraint(singleScript);
@@ -322,7 +259,7 @@ class ScriptTextTransformer {
   // can throw exceptions
   // MissingOtherPieceScriptTypeException
   // UnRecognizedScriptTypeException
-  List<InterpretationError> _transformScriptIntoConstraint(String script) {
+  List<PositionGenerationError> _transformScriptIntoConstraint(String script) {
     if (script.trim().isEmpty) return [];
     try {
       final lines = script.split(RegExp(r'\r?\n')).where(
@@ -338,20 +275,20 @@ class ScriptTextTransformer {
       switch (scriptType) {
         case ScriptType.playerKingConstraint:
           constraints.playerKingConstraint = scriptContent;
-          return <InterpretationError>[];
+          return <PositionGenerationError>[];
         case ScriptType.computerKingConstraint:
           constraints.computerKingConstraint = scriptContent;
-          return <InterpretationError>[];
+          return <PositionGenerationError>[];
         case ScriptType.mutualKingConstraint:
           constraints.kingsMutualConstraint = scriptContent;
-          return <InterpretationError>[];
+          return <PositionGenerationError>[];
         case ScriptType.otherPiecesCount:
           final (constraint, error) = _parsePieceKindCountList(scriptContent);
           if (error != null) {
-            return <InterpretationError>[error];
+            return <PositionGenerationError>[error];
           } else {
             constraints.otherPiecesCountConstraint = constraint;
-            return <InterpretationError>[];
+            return <PositionGenerationError>[];
           }
         case ScriptType.otherPiecesGlobalConstraint:
           final constraint = _parseMapOfScripts(
@@ -359,7 +296,7 @@ class ScriptTextTransformer {
             scriptType,
           );
           constraints.otherPiecesGlobalConstraints = constraint;
-          return <InterpretationError>[];
+          return <PositionGenerationError>[];
 
         case ScriptType.otherPiecesIndexedConstraint:
           final constraint = _parseMapOfScripts(
@@ -368,7 +305,7 @@ class ScriptTextTransformer {
           );
 
           constraints.otherPiecesIndexedConstraints = constraint;
-          return <InterpretationError>[];
+          return <PositionGenerationError>[];
         case ScriptType.otherPiecesMutualConstraint:
           final constraint = _parseMapOfScripts(
             scriptContent,
@@ -376,35 +313,37 @@ class ScriptTextTransformer {
           );
 
           constraints.otherPiecesMutualConstraints = constraint;
-          return <InterpretationError>[];
+          return <PositionGenerationError>[];
 
         case ScriptType.goal:
           constraints.mustWin = _parseGoalScript(scriptContent);
           break;
       }
-      return <InterpretationError>[];
+      return <PositionGenerationError>[];
     } on MissingScriptTypeException {
-      final message = translations.missingScriptType;
-      return <InterpretationError>[
-        InterpretationError(
+      final message = translations.undefinedScriptType;
+      return <PositionGenerationError>[
+        PositionGenerationError(
           message: message,
+          scriptType: translations.undefinedScriptType,
         ),
       ];
     } on UnRecognizedScriptTypeException {
-      final message = translations.missingScriptType;
-      return <InterpretationError>[
-        InterpretationError(
+      final message = translations.undefinedScriptType;
+      return <PositionGenerationError>[
+        PositionGenerationError(
           message: message,
+          scriptType: translations.undefinedScriptType,
         )
       ];
     }
   }
 
-  (List<PieceKindCount>, InterpretationError?) _parsePieceKindCountList(
+  (List<PieceKindCount>, PositionGenerationError?) _parsePieceKindCountList(
       String scriptContent) {
     final result = <PieceKindCount>[];
     final lines = scriptContent.split('\n');
-    InterpretationError? error;
+    PositionGenerationError? error;
     for (String singleLine in lines) {
       try {
         final parts = singleLine.split(':');
@@ -414,8 +353,9 @@ class ScriptTextTransformer {
 
         result.add(PieceKindCount(kind, count));
       } on Exception {
-        error = InterpretationError(
-          message: translations.fromScriptType(
+        error = PositionGenerationError(
+          message: translations.miscSyntaxErrorUnknownToken,
+          scriptType: translations.fromScriptType(
               scriptType: ScriptType.otherPiecesCount, pieceKind: null),
         );
       }
@@ -463,16 +403,14 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
           null,
           generationErrors
               .map(
-                (singleErr) =>
-                    PositionGenerationError.fromInterpretationError(singleErr)
-                        .toJson(),
+                (singleErr) => singleErr.toJson(),
               )
               .toList(),
         ),
       );
     } else {
       final positionGenerator =
-          PositionGeneratorFromAntlr(translations: parameters.translations);
+          PositionGeneratorFromLuaVM(translations: parameters.translations);
       positionGenerator.setConstraints(constraintsExpr);
       try {
         final (generatedPosition, errors) =
@@ -483,15 +421,13 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
         final limitedErrors = errors.take(maxDisplayedErrors).toList();
         if (limitedErrors.isNotEmpty) {
           for (final error in limitedErrors) {
-           Logger().e(
-                "${error.message} (@${error.position}) <= ${error.scriptType}");
+            Logger().e("${error.message} <= ${error.scriptType}");
           }
           parameters.sendPort.send((
             null,
             limitedErrors
                 .map(
-                  (e) => PositionGenerationError.fromInterpretationError(e)
-                      .toJson(),
+                  (e) => e.toJson(),
                 )
                 .toList(),
           ));
@@ -503,13 +439,11 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
             ),
           );
         }
-      } on InterpretationError catch (ex) {
-        Logger().e("${ex.message} (@${ex.position}) <= ${ex.scriptType}");
+      } on PositionGenerationError catch (ex) {
+        Logger().e("${ex.message} <= ${ex.scriptType}");
         parameters.sendPort.send((
           null,
-          <PositionGenerationError>[
-            PositionGenerationError.fromInterpretationError(ex)
-          ].map((e) => e.toJson()),
+          <PositionGenerationError>[ex].map((e) => e.toJson()).toList(),
         ));
       } on PositionGenerationLoopException catch (ex) {
         Logger().e(ex.message);
@@ -521,23 +455,24 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
               PositionGenerationError(
                 scriptType: "",
                 message: parameters.translations.maxGenerationAttemptsAchieved,
-                position: "",
               )
-            ].map((e) => e.toJson()),
+            ].map((e) => e.toJson()).toList(),
           ),
         );
       }
     }
-  } on MissingOtherPieceScriptTypeException {
+  } on PositionGenerationError catch (e) {
+    parameters.sendPort.send((null, <PositionGenerationError>[e]));
+  } 
+  on MissingOtherPieceScriptTypeException {
     parameters.sendPort.send((
       null,
       <PositionGenerationError>[
         PositionGenerationError(
           scriptType: "",
           message: parameters.translations.missingScriptType,
-          position: "",
         )
-      ].map((e) => e.toJson())
+      ].map((e) => e.toJson()).toList()
     ));
   } on UnRecognizedScriptTypeException catch (ex) {
     parameters.sendPort.send((
@@ -547,9 +482,8 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
           scriptType: "",
           message:
               parameters.translations.unrecognizedScriptType(Type: ex.type),
-          position: "",
         )
-      ].map((e) => e.toJson())
+      ].map((e) => e.toJson()).toList()
     ));
   }
 }
@@ -566,30 +500,26 @@ void checkScriptCorrectness(SampleScriptGenerationParameters parameters) {
           false,
           generationErrors
               .map(
-                (singleErr) =>
-                    PositionGenerationError.fromInterpretationError(singleErr)
-                        .toJson(),
+                (singleErr) => singleErr.toJson(),
               )
               .toList(),
         ),
       );
     } else {
       final positionGenerator =
-          PositionGeneratorFromAntlr(translations: parameters.translations);
+          PositionGeneratorFromLuaVM(translations: parameters.translations);
       positionGenerator.setConstraints(constraintsExpr);
       try {
         final (success, errors) = positionGenerator.checkScriptCorrectness();
         if (errors.isNotEmpty) {
           for (var error in errors) {
-            Logger().e(
-                "${error.message} (@${error.position}) <= ${error.scriptType}");
+            Logger().e("${error.message} <= ${error.scriptType}");
           }
           parameters.sendPort.send((
             false,
             errors
                 .map(
-                  (e) => PositionGenerationError.fromInterpretationError(e)
-                      .toJson(),
+                  (e) => e.toJson(),
                 )
                 .toList(),
           ));
@@ -601,13 +531,11 @@ void checkScriptCorrectness(SampleScriptGenerationParameters parameters) {
             ),
           );
         }
-      } on InterpretationError catch (ex) {
-        Logger().e("${ex.message} (@${ex.position}) <= ${ex.scriptType}");
+      } on PositionGenerationError catch (ex) {
+        Logger().e("${ex.message} <= ${ex.scriptType}");
         parameters.sendPort.send((
           false,
-          <PositionGenerationError>[
-            PositionGenerationError.fromInterpretationError(ex)
-          ].map((e) => e.toJson()),
+          <PositionGenerationError>[ex].map((e) => e.toJson()).toList(),
         ));
       }
     }
@@ -617,10 +545,9 @@ void checkScriptCorrectness(SampleScriptGenerationParameters parameters) {
       <PositionGenerationError>[
         PositionGenerationError(
           scriptType: "",
-          message: parameters.translations.missingScriptType,
-          position: "",
+          message: parameters.translations.undefinedScriptType,
         )
-      ].map((e) => e.toJson())
+      ].map((e) => e.toJson()).toList()
     ));
   } on UnRecognizedScriptTypeException catch (ex) {
     parameters.sendPort.send((
@@ -630,9 +557,8 @@ void checkScriptCorrectness(SampleScriptGenerationParameters parameters) {
           scriptType: "",
           message:
               parameters.translations.unrecognizedScriptType(Type: ex.type),
-          position: "",
         )
-      ].map((e) => e.toJson())
+      ].map((e) => e.toJson()).toList()
     ));
   }
 }
@@ -699,20 +625,17 @@ class ErrorsSummaryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Table(
             columnWidths: const {
-              0: FractionColumnWidth(2 / 8),
-              1: FractionColumnWidth(1 / 8),
-              2: FractionColumnWidth(5 / 8),
+              0: FractionColumnWidth(3 / 8),
+              1: FractionColumnWidth(5 / 8),
             },
             children: [
-              // Contenu fixe
+              // Fixed content
               TableRow(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary,
@@ -722,18 +645,6 @@ class ErrorsSummaryWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       t.home.errors_popup_labels.script_type,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      isPortrait
-                          ? t.home.errors_popup_labels.position_short
-                          : t.home.errors_popup_labels.position,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.onPrimary,
@@ -757,9 +668,8 @@ class ErrorsSummaryWidget extends StatelessWidget {
           // Contenu défilable
           Table(
             columnWidths: const {
-              0: FractionColumnWidth(2 / 8),
-              1: FractionColumnWidth(1 / 8),
-              2: FractionColumnWidth(5 / 8),
+              0: FractionColumnWidth(3 / 8),
+              1: FractionColumnWidth(5 / 8),
             },
             children: items
                 .map(
@@ -772,15 +682,6 @@ class ErrorsSummaryWidget extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           err.scriptType,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          err.position,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                           ),

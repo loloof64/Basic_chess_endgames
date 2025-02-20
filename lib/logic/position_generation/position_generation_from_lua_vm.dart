@@ -1,14 +1,93 @@
 import 'dart:math';
 
-import 'package:basicchessendgamestrainer/antlr4/script_interpreter.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:logger/logger.dart';
+import 'package:lua_dardo/lua.dart';
+
+dynamic _getValueFromState(LuaState state, String variableName) {
+  // Push the global variable onto the stack
+  state.getGlobal(variableName);
+
+  // Check the type of the value and return accordingly
+  if (state.isNumber(-1)) {
+    return state.toNumber(-1);
+  } else if (state.isString(-1)) {
+    return state.toStr(-1);
+  } else if (state.isBoolean(-1)) {
+    return state.toBoolean(-1);
+  } else {
+    return null; // Return null if the type is not handled
+  }
+}
+
+void _setPredefinedVariableInLua(
+  LuaState state,
+  String variableName,
+  dynamic value,
+) {
+  if (value is int) {
+    state.pushInteger(value);
+  } else if (value is double) {
+    state.pushNumber(value);
+  } else if (value is String) {
+    state.pushString(value);
+  } else if (value is bool) {
+    state.pushBoolean(value);
+  } else {
+    return; // Return if the type is not handled
+  }
+  state.setGlobal(variableName);
+}
+
+String? _executeLuaCode(LuaState ls, String scriptCode) {
+  final success = ls.doString(scriptCode);
+  if (!success) {
+    return ls.toStr(-1);
+  }
+  return null;
+}
+
+class ScriptResult {
+  final dynamic result;
+  final String? error;
+
+  const ScriptResult({
+    this.result,
+    this.error,
+  });
+}
+
+ScriptResult _loadScript(
+    {required String scriptCode,
+    Map<String, dynamic> predefinedValues = const {}}) {
+  LuaState state = LuaState.newState();
+  state.openLibs();
+
+  for (final singleValue in predefinedValues.entries) {
+    _setPredefinedVariableInLua(state, singleValue.key, singleValue.value);
+  }
+
+  final error = _executeLuaCode(state, scriptCode);
+  if (error == null) {
+    return ScriptResult(
+      result: _getValueFromState(state, "result"),
+      error: null,
+    );
+  } else {
+    return ScriptResult(
+      result: null,
+      error: error,
+    );
+  }
+}
 
 class AlreadyAPieceThereException implements Exception {}
 
-class ReturnedValueNotABooleanException implements Exception {}
+class ResultNotABooleanException implements Exception {}
+
+class MissingResultException implements Exception {}
 
 const commonConstantsPredefinedValues = <String, dynamic>{
   "FileA": 0,
@@ -29,27 +108,32 @@ const commonConstantsPredefinedValues = <String, dynamic>{
   "Rank8": 7,
 };
 
-(bool, List<InterpretationError>) evaluateScript({
-  required TranslationsWrapper translations,
+bool executeScript({
+  required String scriptTypeStr,
   required String script,
   required Map<String, dynamic> predefinedValues,
 }) {
-  final interpreter = ScriptInterpreter(translations: translations);
-  final values = interpreter.interpretScript(script, predefinedValues);
-  final errors = interpreter.getErrors();
-  if (errors.isNotEmpty) {
-    return (false, errors);
-  } else {
-    final returnedValue = values?['return'];
-    if (returnedValue == null) {
-      throw MissingReturnStatementException();
-    }
-    if (returnedValue is! bool) {
-      throw ReturnedValueNotABooleanException();
-    }
-
-    return (returnedValue, []);
+  final execResult = _loadScript(
+    scriptCode: script,
+    predefinedValues: predefinedValues,
+  );
+  if (execResult.error != null) {
+    throw PositionGenerationError(
+      message: execResult.error!,
+      scriptType: scriptTypeStr,
+    );
   }
+
+  final returnedValue = execResult.result;
+  if (returnedValue == null) {
+    throw MissingResultException();
+  }
+  final valueConvertedAsNonNull = returnedValue;
+  if (valueConvertedAsNonNull is! bool) {
+    throw ResultNotABooleanException();
+  }
+
+  return returnedValue;
 }
 
 class BoardCoordinate {
@@ -167,14 +251,14 @@ chess.Piece _pieceKindToChessPiece(PieceKind kind, bool whitePiece) {
   };
 }
 
-class PositionGeneratorFromAntlr {
-  PositionGeneratorFromAntlr({
+class PositionGeneratorFromLuaVM {
+  PositionGeneratorFromLuaVM({
     required this.translations,
   });
 
   final TranslationsWrapper translations;
   final _randomNumberGenerator = Random();
-  final List<InterpretationError> _errors = [];
+  final List<PositionGenerationError> _errors = [];
 
   var _allConstraints = noConstraint;
 
@@ -182,7 +266,7 @@ class PositionGeneratorFromAntlr {
     _allConstraints = constraints;
   }
 
-  (bool, List<InterpretationError>) checkScriptCorrectness() {
+  (bool, List<PositionGenerationError>) checkScriptCorrectness() {
     _errors.clear();
 
     final playerHasWhite = _randomNumberGenerator.nextBool();
@@ -215,7 +299,10 @@ class PositionGeneratorFromAntlr {
     // checks player king constraints
     if (_allConstraints.playerKingConstraint != null) {
       try {
-        final (_, errors) = evaluateScript(
+        executeScript(
+          scriptTypeStr: translations.fromScriptType(
+            scriptType: ScriptType.playerKingConstraint,
+          ),
           script: _allConstraints.playerKingConstraint!,
           predefinedValues: <String, dynamic>{
             "file": playerKingCell.file,
@@ -223,35 +310,38 @@ class PositionGeneratorFromAntlr {
             "playerHasWhite": playerHasWhite,
             ...commonConstantsPredefinedValues,
           },
-          translations: translations,
         );
-
-        if (errors.isNotEmpty) {
-          _errors.addAll(
-            errors.map(
-              (err) => err.withScriptType(
-                translations.fromScriptType(
-                  scriptType: ScriptType.playerKingConstraint,
-                ),
-              ),
-            ),
-          );
-        }
-      } on MissingReturnStatementException catch (ex) {
+      } on PositionGenerationError catch (ex) {
+        Logger().e(ex);
+        rethrow;
+      } on MissingResultException catch (ex) {
         final scriptTypeLabel = translations.fromScriptType(
             scriptType: ScriptType.playerKingConstraint);
-        final message = translations.missingReturnStatement;
+        final message = translations.missingResultValue;
         Logger().e(ex);
-        throw InterpretationError(
+        throw PositionGenerationError(
           message: message,
           scriptType: scriptTypeLabel,
         );
-      } on ReturnedValueNotABooleanException catch (ex) {
+      } on ResultNotABooleanException catch (ex) {
         final scriptTypeLabel = translations.fromScriptType(
             scriptType: ScriptType.playerKingConstraint);
-        final message = translations.returnStatementNotABoolean;
+        final message = translations.missingResultValue;
         Logger().e(ex);
-        throw InterpretationError(
+        throw PositionGenerationError(
+          message: message,
+          scriptType: scriptTypeLabel,
+        );
+      } on Exception catch (ex) {
+        final scriptTypeLabel = translations.fromScriptType(
+            scriptType: ScriptType.playerKingConstraint);
+        String message = ex.toString();
+        // we need to find the last before the last index of ":"
+        int position = message.lastIndexOf(":", message.lastIndexOf(":") - 1);
+        message = message.substring(position).trim();
+        message = message.replaceFirst(":", "@");
+        Logger().e(ex);
+        throw PositionGenerationError(
           message: message,
           scriptType: scriptTypeLabel,
         );
@@ -268,42 +358,49 @@ class PositionGeneratorFromAntlr {
     // checks computer king constraints
     if (_allConstraints.computerKingConstraint != null) {
       try {
-        final (_, errors) = evaluateScript(
+        executeScript(
           script: _allConstraints.computerKingConstraint!,
+          scriptTypeStr: translations.fromScriptType(
+            scriptType: ScriptType.computerKingConstraint,
+          ),
           predefinedValues: <String, dynamic>{
             "file": computerKingCell.file,
             "rank": computerKingCell.rank,
             "playerHasWhite": !playerHasWhite,
             ...commonConstantsPredefinedValues,
           },
-          translations: translations,
         );
-        if (errors.isNotEmpty) {
-          _errors.addAll(
-            errors.map(
-              (err) => err.withScriptType(
-                translations.fromScriptType(
-                  scriptType: ScriptType.computerKingConstraint,
-                ),
-              ),
-            ),
-          );
-        }
-      } on MissingReturnStatementException catch (ex) {
+      } on PositionGenerationError catch (ex) {
+        Logger().e(ex);
+        rethrow;
+      } on MissingResultException catch (ex) {
         final scriptTypeLabel = translations.fromScriptType(
             scriptType: ScriptType.computerKingConstraint);
-        final message = translations.missingReturnStatement;
+        final message = translations.missingResultValue;
         Logger().e(ex);
-        throw InterpretationError(
+        throw PositionGenerationError(
           message: message,
           scriptType: scriptTypeLabel,
         );
-      } on ReturnedValueNotABooleanException catch (ex) {
+      } on ResultNotABooleanException catch (ex) {
         final scriptTypeLabel = translations.fromScriptType(
             scriptType: ScriptType.computerKingConstraint);
-        final message = translations.returnStatementNotABoolean;
+        final message = translations.missingResultValue;
         Logger().e(ex);
-        throw InterpretationError(
+        throw PositionGenerationError(
+          message: message,
+          scriptType: scriptTypeLabel,
+        );
+      } on Exception catch (ex) {
+        final scriptTypeLabel = translations.fromScriptType(
+            scriptType: ScriptType.computerKingConstraint);
+        String message = ex.toString();
+        // we need to find the last before the last index of ":"
+        int position = message.lastIndexOf(":", message.lastIndexOf(":") - 1);
+        message = message.substring(position).trim();
+        message = message.replaceFirst(":", "@");
+        Logger().e(ex);
+        throw PositionGenerationError(
           message: message,
           scriptType: scriptTypeLabel,
         );
@@ -313,8 +410,11 @@ class PositionGeneratorFromAntlr {
     // checks kings mutual constraints
     if (_allConstraints.kingsMutualConstraint != null) {
       try {
-        final (_, errors) = evaluateScript(
+        executeScript(
           script: _allConstraints.kingsMutualConstraint!,
+          scriptTypeStr: translations.fromScriptType(
+            scriptType: ScriptType.mutualKingConstraint,
+          ),
           predefinedValues: <String, dynamic>{
             "playerKingFile": playerKingCell.file,
             "playerKingRank": playerKingCell.rank,
@@ -323,34 +423,38 @@ class PositionGeneratorFromAntlr {
             "playerHasWhite": playerHasWhite,
             ...commonConstantsPredefinedValues,
           },
-          translations: translations,
         );
-        if (errors.isNotEmpty) {
-          _errors.addAll(
-            errors.map(
-              (err) => err.withScriptType(
-                translations.fromScriptType(
-                  scriptType: ScriptType.mutualKingConstraint,
-                ),
-              ),
-            ),
-          );
-        }
-      } on MissingReturnStatementException catch (ex) {
+      } on PositionGenerationError catch (ex) {
+        Logger().e(ex);
+        rethrow;
+      } on MissingResultException catch (ex) {
         final scriptTypeLabel = translations.fromScriptType(
             scriptType: ScriptType.mutualKingConstraint);
-        final message = translations.missingReturnStatement;
+        final message = translations.missingResultValue;
         Logger().e(ex);
-        throw InterpretationError(
+        throw PositionGenerationError(
           message: message,
           scriptType: scriptTypeLabel,
         );
-      } on ReturnedValueNotABooleanException catch (ex) {
+      } on ResultNotABooleanException catch (ex) {
         final scriptTypeLabel = translations.fromScriptType(
             scriptType: ScriptType.mutualKingConstraint);
-        final message = translations.returnStatementNotABoolean;
+        final message = translations.missingResultValue;
         Logger().e(ex);
-        throw InterpretationError(
+        throw PositionGenerationError(
+          message: message,
+          scriptType: scriptTypeLabel,
+        );
+      } on Exception catch (ex) {
+        final scriptTypeLabel = translations.fromScriptType(
+            scriptType: ScriptType.mutualKingConstraint);
+        String message = ex.toString();
+        // we need to find the last before the last index of ":"
+        int position = message.lastIndexOf(":", message.lastIndexOf(":") - 1);
+        message = message.substring(position).trim();
+        message = message.replaceFirst(":", "@");
+        Logger().e(ex);
+        throw PositionGenerationError(
           message: message,
           scriptType: scriptTypeLabel,
         );
@@ -378,9 +482,13 @@ class PositionGeneratorFromAntlr {
               .otherPiecesGlobalConstraints[pieceKindCount.pieceKind] !=
           null) {
         try {
-          final (_, errors) = evaluateScript(
+          executeScript(
             script: _allConstraints
                 .otherPiecesGlobalConstraints[pieceKindCount.pieceKind]!,
+            scriptTypeStr: translations.fromScriptType(
+              scriptType: ScriptType.otherPiecesGlobalConstraint,
+              pieceKind: pieceKindCount.pieceKind,
+            ),
             predefinedValues: <String, dynamic>{
               "file": piece1Coord.file,
               "rank": piece1Coord.rank,
@@ -391,41 +499,55 @@ class PositionGeneratorFromAntlr {
               "playerHasWhite": playerHasWhite,
               ...commonConstantsPredefinedValues,
             },
+          );
+        } on PositionGenerationError catch (ex) {
+          final morePreciseEx = ex.withComplexScriptType(
+            typeLabel: translations.fromScriptType(
+              scriptType: ScriptType.otherPiecesGlobalConstraint,
+              pieceKind: pieceKindCount.pieceKind,
+            ),
+            pieceKind: pieceKindCount.pieceKind,
             translations: translations,
           );
-          if (errors.isNotEmpty) {
-            final scriptTypeLabel = translations.fromScriptType(
-                scriptType: ScriptType.otherPiecesGlobalConstraint);
-            for (final currentError in errors) {
-              _errors.add(
-                currentError.withComplexScriptType(
-                  typeLabel: scriptTypeLabel,
-                  pieceKind: pieceKindCount.pieceKind,
-                  translations: translations,
-                ),
-              );
-            }
-          }
-        } on MissingReturnStatementException catch (ex) {
+          Logger().e(morePreciseEx);
+          throw morePreciseEx;
+        } on MissingResultException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
             scriptType: ScriptType.otherPiecesGlobalConstraint,
             pieceKind: pieceKindCount.pieceKind,
           );
-          final message = translations.missingReturnStatement;
+          final message = translations.missingResultValue;
           Logger().e(ex);
-          throw InterpretationError(
+          throw PositionGenerationError(
                   scriptType: scriptTypeLabel, message: message)
               .withComplexScriptType(
             typeLabel: scriptTypeLabel,
             pieceKind: pieceKindCount.pieceKind,
             translations: translations,
           );
-        } on ReturnedValueNotABooleanException catch (ex) {
+        } on ResultNotABooleanException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
               scriptType: ScriptType.otherPiecesGlobalConstraint);
-          final message = translations.returnStatementNotABoolean;
+          final message = translations.missingResultValue;
           Logger().e(ex);
-          throw InterpretationError(
+          throw PositionGenerationError(
+            message: message,
+            scriptType: scriptTypeLabel,
+          ).withComplexScriptType(
+            typeLabel: scriptTypeLabel,
+            pieceKind: pieceKindCount.pieceKind,
+            translations: translations,
+          );
+        } on Exception catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.otherPiecesGlobalConstraint);
+          String message = ex.toString();
+          // we need to find the last before the last index of ":"
+          int position = message.lastIndexOf(":", message.lastIndexOf(":") - 1);
+          message = message.substring(position).trim();
+          message = message.replaceFirst(":", "@");
+          Logger().e(ex);
+          throw PositionGenerationError(
             message: message,
             scriptType: scriptTypeLabel,
           ).withComplexScriptType(
@@ -441,9 +563,13 @@ class PositionGeneratorFromAntlr {
               .otherPiecesMutualConstraints[pieceKindCount.pieceKind] !=
           null) {
         try {
-          final (passedConditions3, errors) = evaluateScript(
+          executeScript(
             script: _allConstraints
                 .otherPiecesMutualConstraints[pieceKindCount.pieceKind]!,
+            scriptTypeStr: translations.fromScriptType(
+              scriptType: ScriptType.otherPiecesMutualConstraint,
+              pieceKind: pieceKindCount.pieceKind,
+            ),
             predefinedValues: <String, dynamic>{
               "firstPieceFile": piece1Coord.file,
               "firstPieceRank": piece1Coord.rank,
@@ -452,41 +578,55 @@ class PositionGeneratorFromAntlr {
               "playerHasWhite": playerHasWhite,
               ...commonConstantsPredefinedValues,
             },
+          );
+        } on PositionGenerationError catch (ex) {
+          final morePreciseEx = ex.withComplexScriptType(
+            typeLabel: translations.fromScriptType(
+              scriptType: ScriptType.otherPiecesMutualConstraint,
+              pieceKind: pieceKindCount.pieceKind,
+            ),
+            pieceKind: pieceKindCount.pieceKind,
             translations: translations,
           );
-          if (errors.isNotEmpty) {
-            final scriptTypeLabel = translations.fromScriptType(
-                scriptType: ScriptType.otherPiecesMutualConstraint);
-            for (final currentError in errors) {
-              _errors.add(
-                currentError.withComplexScriptType(
-                  typeLabel: scriptTypeLabel,
-                  pieceKind: pieceKindCount.pieceKind,
-                  translations: translations,
-                ),
-              );
-            }
-          }
-        } on MissingReturnStatementException catch (ex) {
+          Logger().e(morePreciseEx);
+          throw morePreciseEx;
+        } on MissingResultException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
             scriptType: ScriptType.otherPiecesMutualConstraint,
             pieceKind: pieceKindCount.pieceKind,
           );
-          final message = translations.missingReturnStatement;
+          final message = translations.missingResultValue;
           Logger().e(ex);
-          throw InterpretationError(
+          throw PositionGenerationError(
                   scriptType: scriptTypeLabel, message: message)
               .withComplexScriptType(
             typeLabel: scriptTypeLabel,
             pieceKind: pieceKindCount.pieceKind,
             translations: translations,
           );
-        } on ReturnedValueNotABooleanException catch (ex) {
+        } on ResultNotABooleanException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
               scriptType: ScriptType.otherPiecesMutualConstraint);
-          final message = translations.returnStatementNotABoolean;
+          final message = translations.missingResultValue;
           Logger().e(ex);
-          throw InterpretationError(
+          throw PositionGenerationError(
+            message: message,
+            scriptType: scriptTypeLabel,
+          ).withComplexScriptType(
+            typeLabel: scriptTypeLabel,
+            pieceKind: pieceKindCount.pieceKind,
+            translations: translations,
+          );
+        } on Exception catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.otherPiecesMutualConstraint);
+          String message = ex.toString();
+          // we need to find the last before the last index of ":"
+          int position = message.lastIndexOf(":", message.lastIndexOf(":") - 1);
+          message = message.substring(position).trim();
+          message = message.replaceFirst(":", "@");
+          Logger().e(ex);
+          throw PositionGenerationError(
             message: message,
             scriptType: scriptTypeLabel,
           ).withComplexScriptType(
@@ -502,9 +642,13 @@ class PositionGeneratorFromAntlr {
               .otherPiecesIndexedConstraints[pieceKindCount.pieceKind] !=
           null) {
         try {
-          final (_, errors) = evaluateScript(
+          executeScript(
             script: _allConstraints
                 .otherPiecesIndexedConstraints[pieceKindCount.pieceKind]!,
+            scriptTypeStr: translations.fromScriptType(
+              scriptType: ScriptType.otherPiecesIndexedConstraint,
+              pieceKind: pieceKindCount.pieceKind,
+            ),
             predefinedValues: <String, dynamic>{
               "file": piece1Coord.file,
               "rank": piece1Coord.rank,
@@ -512,41 +656,55 @@ class PositionGeneratorFromAntlr {
               "playerHasWhite": playerHasWhite,
               ...commonConstantsPredefinedValues,
             },
+          );
+        } on PositionGenerationError catch (ex) {
+          final morePreciseEx = ex.withComplexScriptType(
+            typeLabel: translations.fromScriptType(
+              scriptType: ScriptType.otherPiecesIndexedConstraint,
+              pieceKind: pieceKindCount.pieceKind,
+            ),
+            pieceKind: pieceKindCount.pieceKind,
             translations: translations,
           );
-          if (errors.isNotEmpty) {
-            final scriptTypeLabel = translations.fromScriptType(
-                scriptType: ScriptType.otherPiecesIndexedConstraint);
-            for (final currentError in errors) {
-              _errors.add(
-                currentError.withComplexScriptType(
-                  typeLabel: scriptTypeLabel,
-                  pieceKind: pieceKindCount.pieceKind,
-                  translations: translations,
-                ),
-              );
-            }
-          }
-        } on MissingReturnStatementException catch (ex) {
+          Logger().e(morePreciseEx);
+          throw morePreciseEx;
+        } on MissingResultException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
             scriptType: ScriptType.otherPiecesIndexedConstraint,
             pieceKind: pieceKindCount.pieceKind,
           );
-          final message = translations.missingReturnStatement;
+          final message = translations.missingResultValue;
           Logger().e(ex);
-          throw InterpretationError(
+          throw PositionGenerationError(
                   scriptType: scriptTypeLabel, message: message)
               .withComplexScriptType(
             typeLabel: scriptTypeLabel,
             pieceKind: pieceKindCount.pieceKind,
             translations: translations,
           );
-        } on ReturnedValueNotABooleanException catch (ex) {
+        } on ResultNotABooleanException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
               scriptType: ScriptType.otherPiecesIndexedConstraint);
-          final message = translations.returnStatementNotABoolean;
+          final message = translations.missingResultValue;
           Logger().e(ex);
-          throw InterpretationError(
+          throw PositionGenerationError(
+            message: message,
+            scriptType: scriptTypeLabel,
+          ).withComplexScriptType(
+            typeLabel: scriptTypeLabel,
+            pieceKind: pieceKindCount.pieceKind,
+            translations: translations,
+          );
+        } on Exception catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.otherPiecesIndexedConstraint);
+          String message = ex.toString();
+          // we need to find the last before the last index of ":"
+          int position = message.lastIndexOf(":", message.lastIndexOf(":") - 1);
+          message = message.substring(position).trim();
+          message = message.replaceFirst(":", "@");
+          Logger().e(ex);
+          throw PositionGenerationError(
             message: message,
             scriptType: scriptTypeLabel,
           ).withComplexScriptType(
@@ -567,7 +725,7 @@ class PositionGeneratorFromAntlr {
 
   // can throw
   // PositionGenerationLoopException
-  (String?, List<InterpretationError>) generatePosition() {
+  (String?, List<PositionGenerationError>) generatePosition() {
     String? finalPosition;
 
     _errors.clear();
@@ -614,34 +772,45 @@ class PositionGeneratorFromAntlr {
           ...commonConstantsPredefinedValues,
         };
         try {
-          final (passedConditions, errors) = evaluateScript(
+          final success = executeScript(
             script: _allConstraints.playerKingConstraint!,
+            scriptTypeStr: translations.fromScriptType(
+              scriptType: ScriptType.playerKingConstraint,
+            ),
             predefinedValues: predefinedValues,
-            translations: translations,
           );
-          if (errors.isNotEmpty) {
-            final scriptTypeLabel = translations.fromScriptType(
-                scriptType: ScriptType.playerKingConstraint);
-            for (final currentError in errors) {
-              _errors.add(currentError.withScriptType(scriptTypeLabel));
-            }
-          }
-          return passedConditions;
-        } on MissingReturnStatementException catch (ex) {
+          return success;
+        } on PositionGenerationError catch (ex) {
+          Logger().e(ex);
+          rethrow;
+        } on MissingResultException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
               scriptType: ScriptType.playerKingConstraint);
-          final message = translations.missingReturnStatement;
+          final message = translations.missingResultValue;
           Logger().e(ex);
-          throw InterpretationError(
+          throw PositionGenerationError(
             message: message,
             scriptType: scriptTypeLabel,
           );
-        } on ReturnedValueNotABooleanException catch (ex) {
+        } on ResultNotABooleanException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
               scriptType: ScriptType.playerKingConstraint);
-          final message = translations.returnStatementNotABoolean;
+          final message = translations.missingResultValue;
           Logger().e(ex);
-          throw InterpretationError(
+          throw PositionGenerationError(
+            message: message,
+            scriptType: scriptTypeLabel,
+          );
+        } on Exception catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.playerKingConstraint);
+          String message = ex.toString();
+          // we need to find the last before the last index of ":"
+          int position = message.lastIndexOf(":", message.lastIndexOf(":") - 1);
+          message = message.substring(position).trim();
+          message = message.replaceFirst(":", "@");
+          Logger().e(ex);
+          throw PositionGenerationError(
             message: message,
             scriptType: scriptTypeLabel,
           );
@@ -712,34 +881,45 @@ class PositionGeneratorFromAntlr {
           ...commonConstantsPredefinedValues,
         };
         try {
-          final (passedConditions, errors) = evaluateScript(
+          final success = executeScript(
             script: _allConstraints.computerKingConstraint!,
+            scriptTypeStr: translations.fromScriptType(
+              scriptType: ScriptType.computerKingConstraint,
+            ),
             predefinedValues: computerKingConstraintPredefinedValues,
-            translations: translations,
           );
-          if (errors.isNotEmpty) {
-            final scriptTypeLabel = translations.fromScriptType(
-                scriptType: ScriptType.computerKingConstraint);
-            for (final currentError in errors) {
-              _errors.add(currentError.withScriptType(scriptTypeLabel));
-            }
-          }
-          return passedConditions;
-        } on MissingReturnStatementException catch (ex) {
+          return success;
+        } on PositionGenerationError catch (ex) {
+          Logger().e(ex);
+          rethrow;
+        } on MissingResultException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
               scriptType: ScriptType.computerKingConstraint);
-          final message = translations.missingReturnStatement;
+          final message = translations.missingResultValue;
           Logger().e(ex);
-          throw InterpretationError(
+          throw PositionGenerationError(
             message: message,
             scriptType: scriptTypeLabel,
           );
-        } on ReturnedValueNotABooleanException catch (ex) {
+        } on ResultNotABooleanException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
               scriptType: ScriptType.computerKingConstraint);
-          final message = translations.returnStatementNotABoolean;
+          final message = translations.missingResultValue;
           Logger().e(ex);
-          throw InterpretationError(
+          throw PositionGenerationError(
+            message: message,
+            scriptType: scriptTypeLabel,
+          );
+        } on Exception catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.computerKingConstraint);
+          String message = ex.toString();
+          // we need to find the last before the last index of ":"
+          int position = message.lastIndexOf(":", message.lastIndexOf(":") - 1);
+          message = message.substring(position).trim();
+          message = message.replaceFirst(":", "@");
+          Logger().e(ex);
+          throw PositionGenerationError(
             message: message,
             scriptType: scriptTypeLabel,
           );
@@ -758,34 +938,45 @@ class PositionGeneratorFromAntlr {
           ...commonConstantsPredefinedValues,
         };
         try {
-          final (passedConditions2, errors2) = evaluateScript(
+          final success = executeScript(
             script: _allConstraints.kingsMutualConstraint!,
+            scriptTypeStr: translations.fromScriptType(
+              scriptType: ScriptType.mutualKingConstraint,
+            ),
             predefinedValues: kingsMutualConstraintPredefinedValues,
-            translations: translations,
           );
-          if (errors2.isNotEmpty) {
-            final scriptTypeLabel = translations.fromScriptType(
-                scriptType: ScriptType.mutualKingConstraint);
-            for (final currentError in errors2) {
-              _errors.add(currentError.withScriptType(scriptTypeLabel));
-            }
-          }
-          return passedConditions2;
-        } on MissingReturnStatementException catch (ex) {
+          return success;
+        } on PositionGenerationError catch (ex) {
+          Logger().e(ex);
+          rethrow;
+        } on MissingResultException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
               scriptType: ScriptType.mutualKingConstraint);
-          final message = translations.missingReturnStatement;
+          final message = translations.missingResultValue;
           Logger().e(ex);
-          throw InterpretationError(
+          throw PositionGenerationError(
             message: message,
             scriptType: scriptTypeLabel,
           );
-        } on ReturnedValueNotABooleanException catch (ex) {
+        } on ResultNotABooleanException catch (ex) {
           final scriptTypeLabel = translations.fromScriptType(
               scriptType: ScriptType.mutualKingConstraint);
-          final message = translations.returnStatementNotABoolean;
+          final message = translations.missingResultValue;
           Logger().e(ex);
-          throw InterpretationError(
+          throw PositionGenerationError(
+            message: message,
+            scriptType: scriptTypeLabel,
+          );
+        } on Exception catch (ex) {
+          final scriptTypeLabel = translations.fromScriptType(
+              scriptType: ScriptType.mutualKingConstraint);
+          String message = ex.toString();
+          // we need to find the last before the last index of ":"
+          int position = message.lastIndexOf(":", message.lastIndexOf(":") - 1);
+          message = message.substring(position).trim();
+          message = message.replaceFirst(":", "@");
+          Logger().e(ex);
+          throw PositionGenerationError(
             message: message,
             scriptType: scriptTypeLabel,
           );
@@ -876,45 +1067,63 @@ class PositionGeneratorFromAntlr {
               ...commonConstantsPredefinedValues,
             };
             try {
-              final (passedConditions1, errors1) = evaluateScript(
+              final success = executeScript(
                 script: currentPieceGlobalConstraint,
+                scriptTypeStr: translations.fromScriptType(
+                  scriptType: ScriptType.otherPiecesGlobalConstraint,
+                ),
                 predefinedValues: otherPiecesGlobalConstraintPredefinedValues,
+              );
+              return success;
+            } on PositionGenerationError catch (ex) {
+              final morePreciseEx = ex.withComplexScriptType(
+                typeLabel: translations.fromScriptType(
+                  scriptType: ScriptType.otherPiecesGlobalConstraint,
+                  pieceKind: pieceCountConstraint.pieceKind,
+                ),
+                pieceKind: pieceCountConstraint.pieceKind,
                 translations: translations,
               );
-              if (errors1.isNotEmpty) {
-                final scriptTypeLabel = translations.fromScriptType(
-                    scriptType: ScriptType.otherPiecesGlobalConstraint);
-                for (final currentError in errors1) {
-                  _errors.add(
-                    currentError.withComplexScriptType(
-                      typeLabel: scriptTypeLabel,
-                      pieceKind: pieceCountConstraint.pieceKind,
-                      translations: translations,
-                    ),
-                  );
-                }
-              }
-              return passedConditions1;
-            } on MissingReturnStatementException catch (ex) {
+              Logger().e(morePreciseEx);
+              throw morePreciseEx;
+            } on MissingResultException catch (ex) {
               final scriptTypeLabel = translations.fromScriptType(
                 scriptType: ScriptType.otherPiecesGlobalConstraint,
                 pieceKind: pieceCountConstraint.pieceKind,
               );
-              final message = translations.missingReturnStatement;
+              final message = translations.missingResultValue;
               Logger().e(ex);
-              throw InterpretationError(
+              throw PositionGenerationError(
                       scriptType: scriptTypeLabel, message: message)
                   .withComplexScriptType(
                 typeLabel: scriptTypeLabel,
                 pieceKind: pieceCountConstraint.pieceKind,
                 translations: translations,
               );
-            } on ReturnedValueNotABooleanException catch (ex) {
+            } on ResultNotABooleanException catch (ex) {
               final scriptTypeLabel = translations.fromScriptType(
                   scriptType: ScriptType.otherPiecesGlobalConstraint);
-              final message = translations.returnStatementNotABoolean;
+              final message = translations.missingResultValue;
               Logger().e(ex);
-              throw InterpretationError(
+              throw PositionGenerationError(
+                message: message,
+                scriptType: scriptTypeLabel,
+              ).withComplexScriptType(
+                typeLabel: scriptTypeLabel,
+                pieceKind: pieceCountConstraint.pieceKind,
+                translations: translations,
+              );
+            } on Exception catch (ex) {
+              final scriptTypeLabel = translations.fromScriptType(
+                  scriptType: ScriptType.otherPiecesGlobalConstraint);
+              String message = ex.toString();
+              // we need to find the last before the last index of ":"
+              int position =
+                  message.lastIndexOf(":", message.lastIndexOf(":") - 1);
+              message = message.substring(position).trim();
+              message = message.replaceFirst(":", "@");
+              Logger().e(ex);
+              throw PositionGenerationError(
                 message: message,
                 scriptType: scriptTypeLabel,
               ).withComplexScriptType(
@@ -937,45 +1146,63 @@ class PositionGeneratorFromAntlr {
               ...commonConstantsPredefinedValues,
             };
             try {
-              final (passedConditions2, errors2) = evaluateScript(
+              final success = executeScript(
                 script: currentPieceIndexedConstraint,
+                scriptTypeStr: translations.fromScriptType(
+                  scriptType: ScriptType.otherPiecesIndexedConstraint,
+                ),
                 predefinedValues: otherPieceIndexedConstraintPredefinedValues,
+              );
+              return success;
+            } on PositionGenerationError catch (ex) {
+              final morePreciseEx = ex.withComplexScriptType(
+                typeLabel: translations.fromScriptType(
+                  scriptType: ScriptType.otherPiecesGlobalConstraint,
+                  pieceKind: pieceCountConstraint.pieceKind,
+                ),
+                pieceKind: pieceCountConstraint.pieceKind,
                 translations: translations,
               );
-              if (errors2.isNotEmpty) {
-                final scriptTypeLabel = translations.fromScriptType(
-                    scriptType: ScriptType.otherPiecesIndexedConstraint);
-                for (final currentError in errors2) {
-                  _errors.add(
-                    currentError.withComplexScriptType(
-                      typeLabel: scriptTypeLabel,
-                      pieceKind: pieceCountConstraint.pieceKind,
-                      translations: translations,
-                    ),
-                  );
-                }
-              }
-              return passedConditions2;
-            } on MissingReturnStatementException catch (ex) {
+              Logger().e(morePreciseEx);
+              throw morePreciseEx;
+            } on MissingResultException catch (ex) {
               final scriptTypeLabel = translations.fromScriptType(
                 scriptType: ScriptType.otherPiecesIndexedConstraint,
                 pieceKind: pieceCountConstraint.pieceKind,
               );
-              final message = translations.missingReturnStatement;
+              final message = translations.missingResultValue;
               Logger().e(ex);
-              throw InterpretationError(
+              throw PositionGenerationError(
                       scriptType: scriptTypeLabel, message: message)
                   .withComplexScriptType(
                 typeLabel: scriptTypeLabel,
                 pieceKind: pieceCountConstraint.pieceKind,
                 translations: translations,
               );
-            } on ReturnedValueNotABooleanException catch (ex) {
+            } on ResultNotABooleanException catch (ex) {
               final scriptTypeLabel = translations.fromScriptType(
                   scriptType: ScriptType.otherPiecesIndexedConstraint);
-              final message = translations.returnStatementNotABoolean;
+              final message = translations.missingResultValue;
               Logger().e(ex);
-              throw InterpretationError(
+              throw PositionGenerationError(
+                message: message,
+                scriptType: scriptTypeLabel,
+              ).withComplexScriptType(
+                typeLabel: scriptTypeLabel,
+                pieceKind: pieceCountConstraint.pieceKind,
+                translations: translations,
+              );
+            } on Exception catch (ex) {
+              final scriptTypeLabel = translations.fromScriptType(
+                  scriptType: ScriptType.otherPiecesIndexedConstraint);
+              String message = ex.toString();
+              // we need to find the last before the last index of ":"
+              int position =
+                  message.lastIndexOf(":", message.lastIndexOf(":") - 1);
+              message = message.substring(position).trim();
+              message = message.replaceFirst(":", "@");
+              Logger().e(ex);
+              throw PositionGenerationError(
                 message: message,
                 scriptType: scriptTypeLabel,
               ).withComplexScriptType(
@@ -1004,45 +1231,63 @@ class PositionGeneratorFromAntlr {
               };
 
               try {
-                final (passedConditions3, errors3) = evaluateScript(
+                final success = executeScript(
                   script: currentPieceMutualConstraint,
+                  scriptTypeStr: translations.fromScriptType(
+                    scriptType: ScriptType.otherPiecesMutualConstraint,
+                  ),
                   predefinedValues: otherPieceMutualConstraintIntValues,
+                );
+                return success;
+              } on PositionGenerationError catch (ex) {
+                final morePreciseEx = ex.withComplexScriptType(
+                  typeLabel: translations.fromScriptType(
+                    scriptType: ScriptType.otherPiecesGlobalConstraint,
+                    pieceKind: pieceCountConstraint.pieceKind,
+                  ),
+                  pieceKind: pieceCountConstraint.pieceKind,
                   translations: translations,
                 );
-                if (errors3.isNotEmpty) {
-                  final scriptTypeLabel = translations.fromScriptType(
-                      scriptType: ScriptType.otherPiecesMutualConstraint);
-                  for (final currentError in errors3) {
-                    _errors.add(
-                      currentError.withComplexScriptType(
-                        typeLabel: scriptTypeLabel,
-                        pieceKind: pieceCountConstraint.pieceKind,
-                        translations: translations,
-                      ),
-                    );
-                  }
-                }
-                return passedConditions3;
-              } on MissingReturnStatementException catch (ex) {
+                Logger().e(morePreciseEx);
+                throw morePreciseEx;
+              } on MissingResultException catch (ex) {
                 final scriptTypeLabel = translations.fromScriptType(
                   scriptType: ScriptType.otherPiecesMutualConstraint,
                   pieceKind: pieceCountConstraint.pieceKind,
                 );
-                final message = translations.missingReturnStatement;
+                final message = translations.missingResultValue;
                 Logger().e(ex);
-                throw InterpretationError(
+                throw PositionGenerationError(
                         scriptType: scriptTypeLabel, message: message)
                     .withComplexScriptType(
                   typeLabel: scriptTypeLabel,
                   pieceKind: pieceCountConstraint.pieceKind,
                   translations: translations,
                 );
-              } on ReturnedValueNotABooleanException catch (ex) {
+              } on ResultNotABooleanException catch (ex) {
                 final scriptTypeLabel = translations.fromScriptType(
                     scriptType: ScriptType.otherPiecesMutualConstraint);
-                final message = translations.returnStatementNotABoolean;
+                final message = translations.missingResultValue;
                 Logger().e(ex);
-                throw InterpretationError(
+                throw PositionGenerationError(
+                  message: message,
+                  scriptType: scriptTypeLabel,
+                ).withComplexScriptType(
+                  typeLabel: scriptTypeLabel,
+                  pieceKind: pieceCountConstraint.pieceKind,
+                  translations: translations,
+                );
+              } on Exception catch (ex) {
+                final scriptTypeLabel = translations.fromScriptType(
+                    scriptType: ScriptType.otherPiecesMutualConstraint);
+                String message = ex.toString();
+                // we need to find the last before the last index of ":"
+                int position =
+                    message.lastIndexOf(":", message.lastIndexOf(":") - 1);
+                message = message.substring(position).trim();
+                message = message.replaceFirst(":", "@");
+                Logger().e(ex);
+                throw PositionGenerationError(
                   message: message,
                   scriptType: scriptTypeLabel,
                 ).withComplexScriptType(

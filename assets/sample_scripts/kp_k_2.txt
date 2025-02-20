@@ -3,7 +3,7 @@
 -- player's king must be on its first rank
 if playerHasWhite then expectedRank = Rank1 else expectedRank = Rank8 end
 isRightRank = rank == expectedRank
-return isRightRank
+result = isRightRank
 
 @@@@@@
 
@@ -12,7 +12,7 @@ return isRightRank
 -- computer king must be on its fifth's rank
 if playerHasWhite then expectedRank = Rank4 else expectedRank = Rank5 end
 isRightRank = rank == expectedRank
-return isRightRank
+result = isRightRank
 
 @@@@@@
 
@@ -23,7 +23,7 @@ distanceBetweenKings = playerKingFile - computerKingFile
 if distanceBetweenKings > 0 then absDistanceBetweenKings = distanceBetweenKings else absDistanceBetweenKings = -distanceBetweenKings end
 kingsAreOnNeighboursColumns = absDistanceBetweenKings <= 1
 
-return kingsAreOnNeighboursColumns
+result = kingsAreOnNeighboursColumns
 
 @@@@@@
 
@@ -40,7 +40,7 @@ computer pawn : 1
 isRightRank = rank == computerKingRank
 isRightFile = file == playerKingFile
 
-return isRightFile and isRightRank
+result = isRightFile and isRightRank
 
 @@@@@@
 
