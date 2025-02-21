@@ -247,10 +247,6 @@ class ScriptTextTransformer {
   // UnRecognizedScriptTypeException
   (PositionGeneratorConstraintsExpr, List<PositionGenerationError>)
       transformTextIntoConstraints() {
-        //////////////////////////////////////
-        debugPrint("all scripts : ");
-        debugPrint(allConstraintsScriptText);
-        //////////////////////////////////////
     final errors = <PositionGenerationError>[];
     final scripts = allConstraintsScriptText.split(scriptsSeparator);
     for (final singleScript in scripts) {
