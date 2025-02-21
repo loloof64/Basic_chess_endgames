@@ -1,3 +1,7 @@
+## 4.3.3
+
+* More robust error handling when checking/execting scripts
+
 ## 4.3.2
 
 Fix AppImage runtime error : failing to load libstockfish_chess_engine.so
