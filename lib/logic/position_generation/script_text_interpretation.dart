@@ -177,8 +177,10 @@ class TranslationsWrapper {
 bool overallScriptGoalIsToWin(String overallScriptContent) {
   final parts = overallScriptContent.split(scriptsSeparator);
   final goalPart = parts.where((singleScript) {
-    final lines =
-        singleScript.split(RegExp(r'\r?\n')).map((line) => line.trim()).toList();
+    final lines = singleScript
+        .split(RegExp(r'\r?\n'))
+        .map((line) => line.trim())
+        .toList();
     return lines.contains('# goal');
   });
   if (goalPart.isEmpty) return true; // winning goal by default
@@ -336,6 +338,14 @@ class ScriptTextTransformer {
           scriptType: translations.undefinedScriptType,
         )
       ];
+    } on Exception catch (ex) {
+      final message = ex.toString();
+      return <PositionGenerationError>[
+        PositionGenerationError(
+          message: message,
+          scriptType: translations.undefinedScriptType,
+        )
+      ];
     }
   }
 
@@ -459,12 +469,22 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
             ].map((e) => e.toJson()).toList(),
           ),
         );
+      } on Exception catch (ex) {
+        Logger().e(ex.toString());
+        parameters.sendPort.send((
+          null,
+          <PositionGenerationError>[
+            PositionGenerationError(
+              scriptType: "",
+              message: ex.toString(),
+            )
+          ].map((e) => e.toJson()).toList(),
+        ));
       }
     }
   } on PositionGenerationError catch (e) {
     parameters.sendPort.send((null, <PositionGenerationError>[e]));
-  } 
-  on MissingOtherPieceScriptTypeException {
+  } on MissingOtherPieceScriptTypeException {
     parameters.sendPort.send((
       null,
       <PositionGenerationError>[
@@ -482,6 +502,16 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
           scriptType: "",
           message:
               parameters.translations.unrecognizedScriptType(Type: ex.type),
+        )
+      ].map((e) => e.toJson()).toList()
+    ));
+  } on Exception catch (ex) {
+    parameters.sendPort.send((
+      null,
+      <PositionGenerationError>[
+        PositionGenerationError(
+          scriptType: "",
+          message: ex.toString(),
         )
       ].map((e) => e.toJson()).toList()
     ));
@@ -537,6 +567,17 @@ void checkScriptCorrectness(SampleScriptGenerationParameters parameters) {
           false,
           <PositionGenerationError>[ex].map((e) => e.toJson()).toList(),
         ));
+      } on Exception catch (ex) {
+        Logger().e(ex.toString());
+        parameters.sendPort.send((
+          false,
+          <PositionGenerationError>[
+            PositionGenerationError(
+              scriptType: "",
+              message: ex.toString(),
+            )
+          ].map((e) => e.toJson()).toList(),
+        ));
       }
     }
   } on MissingOtherPieceScriptTypeException {
@@ -557,6 +598,16 @@ void checkScriptCorrectness(SampleScriptGenerationParameters parameters) {
           scriptType: "",
           message:
               parameters.translations.unrecognizedScriptType(Type: ex.type),
+        )
+      ].map((e) => e.toJson()).toList()
+    ));
+  } on Exception catch (ex) {
+    parameters.sendPort.send((
+      false,
+      <PositionGenerationError>[
+        PositionGenerationError(
+          scriptType: "",
+          message: ex.toString(),
         )
       ].map((e) => e.toJson()).toList()
     ));
