@@ -29,7 +29,7 @@ if playerHasWhite then expectedRank = Rank5 else expectedRank = Rank4 end
 isRightRank = rank == expectedRank
 result = isRightRank
 
----
+€€€
 
 [computer pawn]
 
@@ -45,7 +45,7 @@ result = isRightRank
 
 result = file == apparitionIndex
 
----
+€€€
 
 [computer pawn]
 

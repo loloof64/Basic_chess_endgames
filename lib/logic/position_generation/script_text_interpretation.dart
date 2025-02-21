@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 const scriptsSeparator = '@@@@@@';
-const otherPiecesSingleScriptSeparator = '---';
+const otherPiecesSingleScriptSeparator = '€€€';
 
 @immutable
 class PositionGenerationError {
@@ -247,6 +247,10 @@ class ScriptTextTransformer {
   // UnRecognizedScriptTypeException
   (PositionGeneratorConstraintsExpr, List<PositionGenerationError>)
       transformTextIntoConstraints() {
+        //////////////////////////////////////
+        debugPrint("all scripts : ");
+        debugPrint(allConstraintsScriptText);
+        //////////////////////////////////////
     final errors = <PositionGenerationError>[];
     final scripts = allConstraintsScriptText.split(scriptsSeparator);
     for (final singleScript in scripts) {

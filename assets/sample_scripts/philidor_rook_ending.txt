@@ -39,7 +39,7 @@ fileOnPlayerKingFile = (file == playerKingFile)
 if playerHasWhite then pawnOnPlayerFourthRank = (rank == Rank4) else pawnOnPlayerFourthRank = (rank == Rank5) end
 result = fileOnPlayerKingFile and pawnOnPlayerFourthRank
 
----
+€€€
 
 [player rook]
 
@@ -47,7 +47,7 @@ if (playerKingFile <= FileD) then isRightFile = (file == FileH) else isRightFile
 if playerHasWhite then isRightRank = (rank == Rank8) else isRightRank = (rank == Rank1) end
 result = isRightFile and isRightRank
 
----
+€€€
 
 [computer rook]
 

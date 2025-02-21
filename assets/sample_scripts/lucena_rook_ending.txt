@@ -40,7 +40,7 @@ computer rook : 1
 if playerHasWhite then expectedRank = Rank7 else expectedRank = Rank2 end
 result = (file == playerKingFile) and (rank == expectedRank)
 
----
+€€€
 
 [player rook]
 
@@ -53,7 +53,7 @@ isRightRank = rank == expectedRank
 
 result = isRightFile and isRightRank
 
----
+€€€
 
 [computer rook]
 
