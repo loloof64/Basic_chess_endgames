@@ -29,21 +29,6 @@ Whenever game is finished, you can see the history of moves.
 
 ## Developpers
 
-### Antlr4
-
-If you want to generate Antlr4 base from the Lua.g4, simply go into the lib/antlr4 folder, and run :
-
-```
-antlr4 -o generated -no-listener -visitor -Dlanguage=Dart Lua.g4
-
-```
-
-And in LuaLexer.dart file, make LuaLexer extend LuaLexerBase instead of Lexer :
-
-```dart
-class LuaLexer extends LuaLexerBase {
-```
-
 ### Translations
 
 In order to update translations, run
