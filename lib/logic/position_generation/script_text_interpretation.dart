@@ -410,7 +410,8 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
     if (generationErrors.isNotEmpty) {
       parameters.sendPort.send(
         (
-          [],
+          <String>[],
+          <String>[],
           generationErrors
               .map(
                 (singleErr) => singleErr.toJson(),
@@ -428,7 +429,7 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
         for (var attemptIndex = 0;
             attemptIndex < parameters.positionsCount;
             attemptIndex++) {
-          final (singleGeneratedPosition, rejectedFinalizedPositions ,errors) =
+          final (singleGeneratedPosition, rejectedFinalizedPositions, errors) =
               positionGenerator.generatePosition();
 
           // We limit the number of errors to process
@@ -439,8 +440,8 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
               Logger().e("${error.message} <= ${error.scriptType}");
             }
             parameters.sendPort.send((
-              [],
-              [],
+              <String>[],
+              <String>[],
               limitedErrors
                   .map(
                     (e) => e.toJson(),
@@ -450,8 +451,8 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
           } else {
             if (singleGeneratedPosition == null) {
               parameters.sendPort.send((
-                [],
-                [],
+                <String>[],
+                <String>[],
                 <PositionGenerationError>[
                   PositionGenerationError(
                     scriptType: "",
@@ -475,8 +476,8 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
       } on PositionGenerationError catch (ex) {
         Logger().e("${ex.message} <= ${ex.scriptType}");
         parameters.sendPort.send((
-          [],
-          [],
+          <String>[],
+          <String>[],
           <PositionGenerationError>[ex].map((e) => e.toJson()).toList(),
         ));
       } on PositionGenerationLoopException catch (ex) {
@@ -484,8 +485,8 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
 
         parameters.sendPort.send(
           (
-            [],
-            [],
+            <String>[],
+            <String>[],
             <PositionGenerationError>[
               PositionGenerationError(
                 scriptType: "",
@@ -497,8 +498,8 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
       } on Exception catch (ex) {
         Logger().e(ex.toString());
         parameters.sendPort.send((
-          [],
-          [],
+          <String>[],
+          <String>[],
           <PositionGenerationError>[
             PositionGenerationError(
               scriptType: "",
@@ -509,11 +510,15 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
       }
     }
   } on PositionGenerationError catch (e) {
-    parameters.sendPort.send(([], [], <PositionGenerationError>[e]));
+    parameters.sendPort.send((
+      <String>[],
+      <String>[],
+      <PositionGenerationError>[e],
+    ));
   } on MissingOtherPieceScriptTypeException {
     parameters.sendPort.send((
-      [],
-      [],
+      <String>[],
+      <String>[],
       <PositionGenerationError>[
         PositionGenerationError(
           scriptType: "",
@@ -523,8 +528,8 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
     ));
   } on UnRecognizedScriptTypeException catch (ex) {
     parameters.sendPort.send((
-      [],
-      [],
+      <String>[],
+      <String>[],
       <PositionGenerationError>[
         PositionGenerationError(
           scriptType: "",
@@ -535,8 +540,8 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
     ));
   } on Exception catch (ex) {
     parameters.sendPort.send((
-      [],
-      [],
+      <String>[],
+      <String>[],
       <PositionGenerationError>[
         PositionGenerationError(
           scriptType: "",
