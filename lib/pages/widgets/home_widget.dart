@@ -133,8 +133,8 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         _isBusy = false;
       });
       newPositionGenerationStream.cancel();
-      final (generatedPositions, errorsList) =
-          newPositionData as (List<String>, List<Map<String, dynamic>>);
+      final (generatedPositions, rejectedFinalizedPositions, errorsList) =
+          newPositionData as (List<String>, List<String>, List<Map<String, dynamic>>);
       final noError = errorsList.isEmpty && generatedPositions.isNotEmpty;
       if (noError) {
         final newPosition = generatedPositions.first;
@@ -214,8 +214,8 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         _isBusy = false;
       });
 
-      final (newPositions, errorsJson) =
-          message as (List<String>, List<Map<String, dynamic>>);
+      final (newPositions, rejectedPositions, errorsJson) =
+          message as (List<String>, List<String>, List<Map<String, dynamic>>);
 
       if (newPositions.isEmpty) {
         final errors = errorsJson
@@ -237,7 +237,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
           ),
         );
       } else {
-        receivePort.sendPort.send(newPositions);
+        receivePort.sendPort.send((newPositions, rejectedPositions));
       }
     });
   }
@@ -479,8 +479,8 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
 
       newPositionsGenerationStream.cancel();
 
-      final (newPositions, errorsList) =
-          newPositionData as (List<String>, List<Map<String, dynamic>>);
+      final (newPositions, rejectedFinalizedPositions, errorsList) =
+          newPositionData as (List<String>, List<String>, List<Map<String, dynamic>>);
       final noError = errorsList.isEmpty && newPositions.isNotEmpty;
 
       if (!mounted) return;
@@ -490,6 +490,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
             builder: (context) {
               return RandomTestingPage(
                 generatedPositions: newPositions,
+                rejectedFinalizedPositions: rejectedFinalizedPositions,
               );
             },
           ),

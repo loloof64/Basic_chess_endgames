@@ -274,6 +274,8 @@ class _TranslationsRandomTestingFr extends TranslationsRandomTestingEn {
 	// Translations
 	@override late final _TranslationsRandomTestingParametersDialogFr parameters_dialog = _TranslationsRandomTestingParametersDialogFr._(_root);
 	@override String get title => 'Test aléatoire';
+	@override String get tab_generated_positions => 'Générées';
+	@override String get tab_rejected_positions => 'Rejetées';
 }
 
 // Path: home.menu_buttons

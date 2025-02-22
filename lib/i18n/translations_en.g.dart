@@ -277,6 +277,8 @@ class TranslationsRandomTestingEn {
 	// Translations
 	late final TranslationsRandomTestingParametersDialogEn parameters_dialog = TranslationsRandomTestingParametersDialogEn.internal(_root);
 	String get title => 'Random testing';
+	String get tab_generated_positions => 'Generated';
+	String get tab_rejected_positions => 'Rejected';
 }
 
 // Path: home.menu_buttons

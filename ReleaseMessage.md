@@ -1,1 +1,1 @@
-* Added random testing feature
+* Added random testing feature where you can preview generated positions from your script, as well as the rejected generated position because of being illegal.

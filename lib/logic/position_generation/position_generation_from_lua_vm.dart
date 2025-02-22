@@ -259,6 +259,7 @@ class PositionGeneratorFromLuaVM {
   final TranslationsWrapper translations;
   final _randomNumberGenerator = Random();
   final List<PositionGenerationError> _errors = [];
+  final List<String> _rejectedFinalizedPositions = [];
 
   var _allConstraints = noConstraint;
 
@@ -268,6 +269,7 @@ class PositionGeneratorFromLuaVM {
 
   (bool, List<PositionGenerationError>) checkScriptCorrectness() {
     _errors.clear();
+    _rejectedFinalizedPositions.clear();
 
     final playerHasWhite = _randomNumberGenerator.nextBool();
     String currentFen = "8/8/8/8/8/8/8/8 ${playerHasWhite ? 'w' : 'b'} - - 0 1";
@@ -723,12 +725,17 @@ class PositionGeneratorFromLuaVM {
     return (true, []);
   }
 
+  // Returns a Record with
+  // 1) String? : the generated position or null
+  // 2) List<String> : the list of reject "finalized" positions because of illegals
+  // 3) List<PositionGenerationError> : the list of errors
   // can throw
   // PositionGenerationLoopException
-  (String?, List<PositionGenerationError>) generatePosition() {
+  (String?, List<String>, List<PositionGenerationError>) generatePosition() {
     String? finalPosition;
 
     _errors.clear();
+    _rejectedFinalizedPositions.clear();
 
     final playerHasWhite = _randomNumberGenerator.nextBool();
     final startFen = "8/8/8/8/8/8/8/8 ${playerHasWhite ? 'w' : 'b'} - - 0 1";
@@ -739,7 +746,7 @@ class PositionGeneratorFromLuaVM {
     );
 
     if (_errors.isNotEmpty) {
-      return (null, [..._errors]);
+      return (null, [], _errors);
     }
 
     if (finalPosition == null) {
@@ -747,7 +754,7 @@ class PositionGeneratorFromLuaVM {
           message: "Failed to place pieces !");
     }
 
-    return (finalPosition, []);
+    return (finalPosition, _rejectedFinalizedPositions, []);
   }
 
   String? _placePiecesStepPlayerKing({
@@ -1325,6 +1332,9 @@ class PositionGeneratorFromLuaVM {
                 chess.Chess.fromFEN(testPosition, check_validity: true);
             successForCurrentIndex = true;
             break;
+          }
+          else {
+            _rejectedFinalizedPositions.add(testPosition);
           }
         }
         if (!successForCurrentIndex) {

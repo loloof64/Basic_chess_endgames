@@ -261,3 +261,5 @@ random_testing:
     title: "Parámetros de aleatorio para probar"
     images_count: "Nombre de imágenes"
   title: "Generación aleatoria para probar"
+  tab_generated_positions: "Generadas"
+  tab_rejected_positions: "Rechazadas"

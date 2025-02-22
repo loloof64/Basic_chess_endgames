@@ -41,7 +41,7 @@ dependencies:
   intl: any
   flutter_native_splash: ^2.4.4
   flutter_svg: ^2.0.15
-  simple_chess_board: ^1.5.0
+  simple_chess_board: ^1.6.0
   fast_equatable: ^1.1.0
   chess_vectors_flutter: ^1.1.0
   chess: ^0.8.1

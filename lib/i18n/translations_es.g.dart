@@ -274,6 +274,8 @@ class _TranslationsRandomTestingEs extends TranslationsRandomTestingEn {
 	// Translations
 	@override late final _TranslationsRandomTestingParametersDialogEs parameters_dialog = _TranslationsRandomTestingParametersDialogEs._(_root);
 	@override String get title => 'Generación aleatoria para probar';
+	@override String get tab_generated_positions => 'Generadas';
+	@override String get tab_rejected_positions => 'Rechazadas';
 }
 
 // Path: home.menu_buttons

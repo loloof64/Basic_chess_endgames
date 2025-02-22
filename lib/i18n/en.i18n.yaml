@@ -260,3 +260,5 @@ random_testing:
     title: "Random testing parameters"
     images_count: "Images count"
   title: "Random testing"
+  tab_generated_positions: "Generated"
+  tab_rejected_positions: "Rejected"
