@@ -486,7 +486,7 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
         parameters.sendPort.send(
           (
             <String>[],
-            <String>[],
+            rejectedPositions,
             <PositionGenerationError>[
               PositionGenerationError(
                 scriptType: "",

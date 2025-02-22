@@ -134,7 +134,11 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       });
       newPositionGenerationStream.cancel();
       final (generatedPositions, rejectedFinalizedPositions, errorsList) =
-          newPositionData as (List<String>, List<String>, List<Map<String, dynamic>>);
+          newPositionData as (
+        List<String>,
+        List<String>,
+        List<Map<String, dynamic>>
+      );
       final noError = errorsList.isEmpty && generatedPositions.isNotEmpty;
       if (noError) {
         final newPosition = generatedPositions.first;
@@ -480,7 +484,11 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       newPositionsGenerationStream.cancel();
 
       final (newPositions, rejectedFinalizedPositions, errorsList) =
-          newPositionData as (List<String>, List<String>, List<Map<String, dynamic>>);
+          newPositionData as (
+        List<String>,
+        List<String>,
+        List<Map<String, dynamic>>
+      );
       final noError = errorsList.isEmpty && newPositions.isNotEmpty;
 
       if (!mounted) return;
@@ -490,6 +498,18 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
             builder: (context) {
               return RandomTestingPage(
                 generatedPositions: newPositions,
+                rejectedFinalizedPositions: rejectedFinalizedPositions,
+              );
+            },
+          ),
+        );
+      } else if (rejectedFinalizedPositions.isNotEmpty) {
+        if (!mounted) return;
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return RandomTestingPage(
+                generatedPositions: [],
                 rejectedFinalizedPositions: rejectedFinalizedPositions,
               );
             },
