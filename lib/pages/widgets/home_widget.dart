@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:isolate';
 import 'dart:io';
 
@@ -6,6 +7,8 @@ import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:basicchessendgamestrainer/pages/script_editor_page.dart';
 import 'package:basicchessendgamestrainer/pages/sample_game_chooser_page.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/random_testing_parameters_dialog.dart';
+import 'package:basicchessendgamestrainer/pages/random_testing_page.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
 import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
@@ -121,20 +124,60 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
   }
 
   Future<void> _tryGeneratingAndPlayingPositionFromString(String script) async {
-    final receivePort = ReceivePort();
+    final newPositionGenerationStream =
+        await _tryGeneratingPositionsFromScript(script, 1);
+    final goalString = script.trim().split("\n").last;
+    final gameGoal = goalString == winningString ? Goal.win : Goal.draw;
+    newPositionGenerationStream.onData((newPositionData) {
+      setState(() {
+        _isBusy = false;
+      });
+      newPositionGenerationStream.cancel();
+      final (generatedPositions, errorsList) =
+          newPositionData as (List<String>, List<Map<String, dynamic>>);
+      final noError = errorsList.isEmpty && generatedPositions.isNotEmpty;
+      if (noError) {
+        final newPosition = generatedPositions.first;
+        _tryPlayingGeneratedPosition(newPosition, gameGoal);
+      } else {
+        final errors = errorsList
+            .map(
+              (e) => PositionGenerationError.fromJson(e),
+            )
+            .toList();
 
-    if (!mounted) return;
+        if (!mounted) return;
+        showGenerationErrorsPopup(
+          errors: errors,
+          context: context,
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              t.home.failed_generating_position,
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  Future<StreamSubscription<dynamic>> _tryGeneratingPositionsFromScript(
+      String script, int positionsCount) async {
+    final receivePort = ReceivePort();
 
     setState(() {
       _isBusy = true;
     });
 
     _positionGenerationIsolate = await Isolate.spawn(
-      generatePositionFromScript,
+      generatePositionsFromScript,
       SampleScriptGenerationParameters(
         gameScript: script,
         translations: getTranslations(context),
         sendPort: receivePort.sendPort,
+        positionsCount: positionsCount,
       ),
     );
     setState(() {});
@@ -161,7 +204,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       });
     });
 
-    receivePort.listen((message) async {
+    return receivePort.listen((message) async {
       receivePort.close();
       _positionGenerationIsolate?.kill(
         priority: Isolate.immediate,
@@ -171,10 +214,10 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         _isBusy = false;
       });
 
-      final (newPosition, errorsJson) =
-          message as (String?, List<Map<String, dynamic>>);
+      final (newPositions, errorsJson) =
+          message as (List<String>, List<Map<String, dynamic>>);
 
-      if (newPosition == null) {
+      if (newPositions.isEmpty) {
         final errors = errorsJson
             .map(
               (e) => PositionGenerationError.fromJson(e),
@@ -194,9 +237,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
           ),
         );
       } else {
-        final goalString = script.trim().split("\n").last;
-        final gameGoal = goalString == winningString ? Goal.win : Goal.draw;
-        _tryPlayingGeneratedPosition(newPosition, gameGoal);
+        receivePort.sendPort.send(newPositions);
       }
     });
   }
@@ -272,55 +313,20 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
   }
 
   void _purposeLoadScript() async {
-    String script;
-
-    if (Platform.isAndroid) {
-      final loadedScript = await _openSaveFileDialogsPlugin.openFileDialog();
-      if (!mounted) return;
-      if (loadedScript == null) {
-        debugPrint("File loading cancellation.");
-        return;
-      }
-      script = loadedScript;
-    } else {
-      final loadedPath = await FilePicker.platform.pickFiles(
-        dialogTitle: t.pickers.open_script_title,
-        allowMultiple: false,
-      );
-      if (!mounted) return;
-      if (loadedPath == null) {
-        debugPrint("File loading cancellation.");
-        return;
-      }
-
-      try {
-        File file = File(loadedPath.files.single.path!);
-        script = await file.readAsString();
-      } on FileSystemException {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              t.home.failed_loading_exercise,
-            ),
-          ),
-        );
-        return;
-      }
-    }
+    String? script = await _getScriptFromUser();
+    if (script == null) return;
 
     await _tryGeneratingAndPlayingPositionFromString(script);
   }
 
-  void _purposeEditScript() async {
+  Future<String?> _getScriptFromUser() async {
     String script;
 
     if (Platform.isAndroid) {
       final loadedScript = await _openSaveFileDialogsPlugin.openFileDialog();
-      if (!mounted) return;
       if (loadedScript == null) {
         debugPrint("File loading cancellation.");
-        return;
+        return null;
       }
       script = loadedScript;
     } else {
@@ -328,17 +334,16 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         dialogTitle: t.pickers.open_script_title,
         allowMultiple: false,
       );
-      if (!mounted) return;
       if (loadedPath == null) {
         debugPrint("File loading cancellation.");
-        return;
+        return null;
       }
 
       try {
         File file = File(loadedPath.files.single.path!);
         script = await file.readAsString();
       } on FileSystemException {
-        if (!mounted) return;
+        if (!mounted) return null;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -346,9 +351,16 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
             ),
           ),
         );
-        return;
+        return null;
       }
     }
+
+    return Future.value(script);
+  }
+
+  void _purposeEditScript() async {
+    String? script = await _getScriptFromUser();
+    if (script == null) return;
 
     final initialScriptSet = await _getInitialScriptSetFor(script);
     if (!mounted) return;
@@ -445,6 +457,67 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     );
   }
 
+  Future<void> _generateRandomTesting() async {
+    String? script = await _getScriptFromUser();
+    if (script == null) return;
+
+    if (!mounted) return;
+    final parameters = await showDialog<RandomTestingParameters>(
+        context: context,
+        builder: (context) {
+          return RandomTestingParametersDialog();
+        });
+
+    if (parameters == null) return;
+
+    final newPositionsGenerationStream =
+        await _tryGeneratingPositionsFromScript(script, parameters.imagesCount);
+    newPositionsGenerationStream.onData((newPositionData) async {
+      setState(() {
+        _isBusy = false;
+      });
+
+      newPositionsGenerationStream.cancel();
+
+      final (newPositions, errorsList) =
+          newPositionData as (List<String>, List<Map<String, dynamic>>);
+      final noError = errorsList.isEmpty && newPositions.isNotEmpty;
+
+      if (!mounted) return;
+      if (noError) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return RandomTestingPage(
+                generatedPositions: newPositions,
+              );
+            },
+          ),
+        );
+      } else {
+        final errors = errorsList
+            .map(
+              (e) => PositionGenerationError.fromJson(e),
+            )
+            .toList();
+
+        if (!mounted) return;
+        showGenerationErrorsPopup(
+          errors: errors,
+          context: context,
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              t.home.failed_generating_position,
+            ),
+          ),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final progressBarSize = MediaQuery.of(context).size.shortestSide * 0.80;
@@ -489,6 +562,13 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         onPressed: _openNewScriptEditor,
         child: Text(
           t.home.menu_buttons.new_script,
+          style: const TextStyle(fontSize: fontSize),
+        ),
+      ),
+      ElevatedButton(
+        onPressed: _generateRandomTesting,
+        child: Text(
+          t.home.menu_buttons.generate_random_testing,
           style: const TextStyle(fontSize: fontSize),
         ),
       ),

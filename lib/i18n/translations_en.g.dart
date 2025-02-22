@@ -45,6 +45,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final TranslationsScriptEditorPageEn script_editor_page = TranslationsScriptEditorPageEn.internal(_root);
 	late final TranslationsVariablesTableEn variables_table = TranslationsVariablesTableEn.internal(_root);
 	late final TranslationsSyntaxManualPageEn syntax_manual_page = TranslationsSyntaxManualPageEn.internal(_root);
+	late final TranslationsRandomTestingEn random_testing = TranslationsRandomTestingEn.internal(_root);
 }
 
 // Path: misc
@@ -267,6 +268,17 @@ class TranslationsSyntaxManualPageEn {
 	late final TranslationsSyntaxManualPageGoalOfPositionEn goal_of_position = TranslationsSyntaxManualPageGoalOfPositionEn.internal(_root);
 }
 
+// Path: random_testing
+class TranslationsRandomTestingEn {
+	TranslationsRandomTestingEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final TranslationsRandomTestingParametersDialogEn parameters_dialog = TranslationsRandomTestingParametersDialogEn.internal(_root);
+	String get title => 'Random testing';
+}
+
 // Path: home.menu_buttons
 class TranslationsHomeMenuButtonsEn {
 	TranslationsHomeMenuButtonsEn.internal(this._root);
@@ -280,6 +292,7 @@ class TranslationsHomeMenuButtonsEn {
 	String get edit_script => 'Edit script';
 	String get show_sample_code => 'Show the code of an example';
 	String get clone_sample => 'Clone the code of an example';
+	String get generate_random_testing => 'Generate random testing';
 }
 
 // Path: home.errors_popup_labels
@@ -382,6 +395,17 @@ class TranslationsSyntaxManualPageGoalOfPositionEn {
 	String get title => 'Goal of the position';
 	String get part_1 => 'You can define the goal of the position (to win or to draw).';
 	String get part_2 => 'Keep in mind that it won\'t affect the algorithm : it\'s just an information for the player of the position.';
+}
+
+// Path: random_testing.parameters_dialog
+class TranslationsRandomTestingParametersDialogEn {
+	TranslationsRandomTestingParametersDialogEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Random testing parameters';
+	String get images_count => 'Images count';
 }
 
 // Path: variables_table.rows.file_a

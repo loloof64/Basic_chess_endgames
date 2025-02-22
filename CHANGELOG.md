@@ -1,3 +1,7 @@
+## 4.4.0
+
+* Added random testing feature
+
 ## 4.3.3
 
 * More robust error handling when checking/execting scripts

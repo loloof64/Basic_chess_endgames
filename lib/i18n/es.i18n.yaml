@@ -29,6 +29,7 @@ home:
     edit_script: "Editar un archivo de código"
     show_sample_code: "Mostrar el código de un ejemplo"
     clone_sample: "Clonar el código de un ejemplo"
+    generate_random_testing: "Generar un aleatorio para probar"
   goal_label: "Objectivo"
   win_label: "Ganar"
   draw_label: "Empate"
@@ -255,3 +256,8 @@ syntax_manual_page:
     title: "Objetivo de la posición"
     part_1: "Puedes definir el objetivo de la posición (ganar o empatar)."
     part_2: "Tenga en cuenta que esto no afectará al algoritmo: es solo una información para el jugador de la posición."
+random_testing:
+  parameters_dialog:
+    title: "Parámetros de aleatorio para probar"
+    images_count: "Nombre de imágenes"
+  title: "Generación aleatoria para probar"

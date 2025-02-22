@@ -401,7 +401,7 @@ class ScriptTextTransformer {
   }
 }
 
-void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
+void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
   try {
     final (constraintsExpr, generationErrors) = ScriptTextTransformer(
       allConstraintsScriptText: parameters.gameScript,
@@ -410,7 +410,7 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
     if (generationErrors.isNotEmpty) {
       parameters.sendPort.send(
         (
-          null,
+          [],
           generationErrors
               .map(
                 (singleErr) => singleErr.toJson(),
@@ -422,37 +422,55 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
       final positionGenerator =
           PositionGeneratorFromLuaVM(translations: parameters.translations);
       positionGenerator.setConstraints(constraintsExpr);
+      final generatedPositions = <String>[];
       try {
-        final (generatedPosition, errors) =
-            positionGenerator.generatePosition();
+        for (var attemptIndex = 0;
+            attemptIndex < parameters.positionsCount;
+            attemptIndex++) {
+          final (singleGeneratedPosition, errors) =
+              positionGenerator.generatePosition();
 
-        // We limit the number of errors to process
-        const maxDisplayedErrors = 100;
-        final limitedErrors = errors.take(maxDisplayedErrors).toList();
-        if (limitedErrors.isNotEmpty) {
-          for (final error in limitedErrors) {
-            Logger().e("${error.message} <= ${error.scriptType}");
+          // We limit the number of errors to process
+          const maxDisplayedErrors = 100;
+          final limitedErrors = errors.take(maxDisplayedErrors).toList();
+          if (limitedErrors.isNotEmpty) {
+            for (final error in limitedErrors) {
+              Logger().e("${error.message} <= ${error.scriptType}");
+            }
+            parameters.sendPort.send((
+              [],
+              limitedErrors
+                  .map(
+                    (e) => e.toJson(),
+                  )
+                  .toList(),
+            ));
+          } else {
+            if (singleGeneratedPosition == null) {
+              parameters.sendPort.send((
+                [],
+                <PositionGenerationError>[
+                  PositionGenerationError(
+                    scriptType: "",
+                    message: parameters.translations.failedGeneratingPosition,
+                  )
+                ],
+              ));
+              return;
+            }
+            generatedPositions.add(singleGeneratedPosition);
           }
-          parameters.sendPort.send((
-            null,
-            limitedErrors
-                .map(
-                  (e) => e.toJson(),
-                )
-                .toList(),
-          ));
-        } else {
-          parameters.sendPort.send(
-            (
-              generatedPosition,
-              <Map<String, dynamic>>[],
-            ),
-          );
         }
+        parameters.sendPort.send(
+          (
+            generatedPositions,
+            <Map<String, dynamic>>[],
+          ),
+        );
       } on PositionGenerationError catch (ex) {
         Logger().e("${ex.message} <= ${ex.scriptType}");
         parameters.sendPort.send((
-          null,
+          [],
           <PositionGenerationError>[ex].map((e) => e.toJson()).toList(),
         ));
       } on PositionGenerationLoopException catch (ex) {
@@ -460,7 +478,7 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
 
         parameters.sendPort.send(
           (
-            null,
+            [],
             <PositionGenerationError>[
               PositionGenerationError(
                 scriptType: "",
@@ -472,7 +490,7 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
       } on Exception catch (ex) {
         Logger().e(ex.toString());
         parameters.sendPort.send((
-          null,
+          [],
           <PositionGenerationError>[
             PositionGenerationError(
               scriptType: "",
@@ -483,10 +501,10 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
       }
     }
   } on PositionGenerationError catch (e) {
-    parameters.sendPort.send((null, <PositionGenerationError>[e]));
+    parameters.sendPort.send(([], <PositionGenerationError>[e]));
   } on MissingOtherPieceScriptTypeException {
     parameters.sendPort.send((
-      null,
+      [],
       <PositionGenerationError>[
         PositionGenerationError(
           scriptType: "",
@@ -496,7 +514,7 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
     ));
   } on UnRecognizedScriptTypeException catch (ex) {
     parameters.sendPort.send((
-      null,
+      [],
       <PositionGenerationError>[
         PositionGenerationError(
           scriptType: "",
@@ -507,7 +525,7 @@ void generatePositionFromScript(SampleScriptGenerationParameters parameters) {
     ));
   } on Exception catch (ex) {
     parameters.sendPort.send((
-      null,
+      [],
       <PositionGenerationError>[
         PositionGenerationError(
           scriptType: "",
@@ -657,11 +675,13 @@ Future<void> showGenerationErrorsPopup({
 class SampleScriptGenerationParameters {
   final SendPort sendPort;
   final String gameScript;
+  final int positionsCount;
   final TranslationsWrapper translations;
 
   SampleScriptGenerationParameters({
     required this.gameScript,
     required this.sendPort,
+    this.positionsCount = 1,
     required this.translations,
   });
 }

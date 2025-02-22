@@ -42,6 +42,7 @@ class TranslationsFr extends Translations {
 	@override late final _TranslationsScriptEditorPageFr script_editor_page = _TranslationsScriptEditorPageFr._(_root);
 	@override late final _TranslationsVariablesTableFr variables_table = _TranslationsVariablesTableFr._(_root);
 	@override late final _TranslationsSyntaxManualPageFr syntax_manual_page = _TranslationsSyntaxManualPageFr._(_root);
+	@override late final _TranslationsRandomTestingFr random_testing = _TranslationsRandomTestingFr._(_root);
 }
 
 // Path: misc
@@ -264,6 +265,17 @@ class _TranslationsSyntaxManualPageFr extends TranslationsSyntaxManualPageEn {
 	@override late final _TranslationsSyntaxManualPageGoalOfPositionFr goal_of_position = _TranslationsSyntaxManualPageGoalOfPositionFr._(_root);
 }
 
+// Path: random_testing
+class _TranslationsRandomTestingFr extends TranslationsRandomTestingEn {
+	_TranslationsRandomTestingFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsRandomTestingParametersDialogFr parameters_dialog = _TranslationsRandomTestingParametersDialogFr._(_root);
+	@override String get title => 'Test aléatoire';
+}
+
 // Path: home.menu_buttons
 class _TranslationsHomeMenuButtonsFr extends TranslationsHomeMenuButtonsEn {
 	_TranslationsHomeMenuButtonsFr._(TranslationsFr root) : this._root = root, super.internal(root);
@@ -277,6 +289,7 @@ class _TranslationsHomeMenuButtonsFr extends TranslationsHomeMenuButtonsEn {
 	@override String get edit_script => 'Éditer un script';
 	@override String get show_sample_code => 'Montrer le code d\'un exemple';
 	@override String get clone_sample => 'Cloner le code d\'un exemple';
+	@override String get generate_random_testing => 'Générer un test aléatoire';
 }
 
 // Path: home.errors_popup_labels
@@ -379,6 +392,17 @@ class _TranslationsSyntaxManualPageGoalOfPositionFr extends TranslationsSyntaxMa
 	@override String get title => 'Objectif de la position';
 	@override String get part_1 => 'Vous pouvez définir l\'objectif de la position (gagner ou faire nulle).';
 	@override String get part_2 => 'Gardez à l\'esprit que cela n\'aura aucune incidence sur l\'algorithme : c\'est juste une information pour le joueur de votre position.';
+}
+
+// Path: random_testing.parameters_dialog
+class _TranslationsRandomTestingParametersDialogFr extends TranslationsRandomTestingParametersDialogEn {
+	_TranslationsRandomTestingParametersDialogFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Paramètres de génération aléatoire';
+	@override String get images_count => 'Nombre d\'images';
 }
 
 // Path: variables_table.rows.file_a

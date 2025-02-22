@@ -28,6 +28,7 @@ home:
     edit_script: "Edit script"
     show_sample_code: "Show the code of an example"
     clone_sample: "Clone the code of an example"
+    generate_random_testing: "Generate random testing"
   goal_label: "Goal"
   win_label: "Win"
   draw_label: "Draw"
@@ -254,7 +255,8 @@ syntax_manual_page:
     title: "Goal of the position"
     part_1: "You can define the goal of the position (to win or to draw)."
     part_2: "Keep in mind that it won't affect the algorithm : it's just an information for the player of the position."
-
-
-
-
+random_testing:
+  parameters_dialog:
+    title: "Random testing parameters"
+    images_count: "Images count"
+  title: "Random testing"

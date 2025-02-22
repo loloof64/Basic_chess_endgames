@@ -29,6 +29,7 @@ home:
     edit_script: "Éditer un script"
     show_sample_code: "Montrer le code d'un exemple"
     clone_sample: "Cloner le code d'un exemple"
+    generate_random_testing: "Générer un test aléatoire"
   goal_label: "Objectif"
   win_label: "Gain"
   draw_label: "Nulle"
@@ -257,3 +258,8 @@ syntax_manual_page:
     title: "Objectif de la position"
     part_1: "Vous pouvez définir l'objectif de la position (gagner ou faire nulle)."
     part_2: "Gardez à l'esprit que cela n'aura aucune incidence sur l'algorithme : c'est juste une information pour le joueur de votre position."
+random_testing:
+  parameters_dialog:
+    title: "Paramètres de génération aléatoire"
+    images_count: "Nombre d'images"
+  title: "Test aléatoire"
