@@ -490,6 +490,17 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
             ].map((e) => e.toJson()).toList(),
           ),
         );
+      } on PositionGenerationError catch (ex) {
+        Logger().e(ex.message);
+        parameters.sendPort.send(
+          (
+            <String>[],
+            rejectedPositions,
+            <PositionGenerationError>[
+              ex,
+            ].map((e) => e.toJson()).toList(),
+          ),
+        );
       } on Exception catch (ex) {
         Logger().e(ex.toString());
         parameters.sendPort.send((
