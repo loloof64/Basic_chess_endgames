@@ -58,12 +58,14 @@ class GeneratedPositionsListWidget extends StatelessWidget {
     return ListView.builder(
       itemCount: generatedPositions.length,
       itemBuilder: (context, index) {
+        final fen = generatedPositions[index];
+        final blackAtBottom = fen.split(" ")[1] == 'b';
         return ListTile(
           title: SizedBox(
             width: 200,
             height: 200,
             child: SimpleChessBoard(
-              fen: generatedPositions[index],
+              fen: fen,
               whitePlayerType: PlayerType.computer,
               blackPlayerType: PlayerType.computer,
               onMove: ({required ShortMove move}) {},
@@ -76,6 +78,7 @@ class GeneratedPositionsListWidget extends StatelessWidget {
               onTap: ({required String cellCoordinate}) {},
               chessBoardColors: ChessBoardColors(),
               cellHighlights: <String, Color>{},
+              blackSideAtBottom: blackAtBottom,
             ),
           ),
         );
@@ -97,12 +100,14 @@ class RejectedPositionsWidget extends StatelessWidget {
     return ListView.builder(
       itemCount: rejectedPositions.length,
       itemBuilder: (context, index) {
+        final fen = rejectedPositions[index];
+        final blackAtBottom = fen.split(" ")[1] == 'b';
         return ListTile(
           title: SizedBox(
             width: 200,
             height: 200,
             child: SimpleChessBoard(
-              fen: rejectedPositions[index],
+              fen: fen,
               whitePlayerType: PlayerType.computer,
               blackPlayerType: PlayerType.computer,
               onMove: ({required ShortMove move}) {},
@@ -115,6 +120,7 @@ class RejectedPositionsWidget extends StatelessWidget {
               onTap: ({required String cellCoordinate}) {},
               chessBoardColors: ChessBoardColors(),
               cellHighlights: <String, Color>{},
+              blackSideAtBottom: blackAtBottom,
             ),
           ),
         );
