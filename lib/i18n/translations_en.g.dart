@@ -408,6 +408,10 @@ class TranslationsRandomTestingParametersDialogEn {
 	// Translations
 	String get title => 'Random testing parameters';
 	String get images_count => 'Images count';
+	String get intermediates_positions_level => 'Intermediates positions level';
+	String get intermediates_positions_level_none => 'None';
+	String get intermediates_positions_level_with_max_pieces => 'Only positions which not include only king(s)';
+	String get intermediates_positions_level_all => 'All';
 }
 
 // Path: variables_table.rows.file_a

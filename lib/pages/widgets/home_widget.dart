@@ -124,8 +124,11 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
   }
 
   Future<void> _tryGeneratingAndPlayingPositionFromString(String script) async {
-    final newPositionGenerationStream =
-        await _tryGeneratingPositionsFromScript(script, 1);
+    final newPositionGenerationStream = await _tryGeneratingPositionsFromScript(
+      script,
+      1,
+      IntermediatePositionsLevel.none,
+    );
     final goalString = script.trim().split("\n").last;
     final gameGoal = goalString == winningString ? Goal.win : Goal.draw;
     newPositionGenerationStream.onData((newPositionData) {
@@ -168,7 +171,10 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
   }
 
   Future<StreamSubscription<dynamic>> _tryGeneratingPositionsFromScript(
-      String script, int positionsCount) async {
+    String script,
+    int positionsCount,
+    IntermediatePositionsLevel addIntermediatesPositions,
+  ) async {
     final receivePort = ReceivePort();
 
     setState(() {
@@ -182,6 +188,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         translations: getTranslations(context),
         sendPort: receivePort.sendPort,
         positionsCount: positionsCount,
+        addIntermediatesPositions: addIntermediatesPositions,
       ),
     );
     setState(() {});
@@ -241,7 +248,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
           ),
         );
       } else {
-        receivePort.sendPort.send((newPositions, rejectedPositions));
+        receivePort.sendPort.send((newPositions, rejectedPositions, []));
       }
     });
   }
@@ -475,7 +482,11 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
     if (parameters == null) return;
 
     final newPositionsGenerationStream =
-        await _tryGeneratingPositionsFromScript(script, parameters.imagesCount);
+        await _tryGeneratingPositionsFromScript(
+      script,
+      parameters.imagesCount,
+      parameters.intermediatePositionsLevel,
+    );
     newPositionsGenerationStream.onData((newPositionData) async {
       setState(() {
         _isBusy = false;

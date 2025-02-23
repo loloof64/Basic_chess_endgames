@@ -6,6 +6,7 @@ import 'dart:isolate';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_from_lua_vm.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/random_testing_parameters_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -13,7 +14,7 @@ const scriptsSeparator = '@@@@@@';
 const otherPiecesSingleScriptSeparator = '€€€';
 
 @immutable
-class PositionGenerationError {
+class PositionGenerationError implements Exception {
   final String scriptType;
   final String message;
 
@@ -430,7 +431,9 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
             attemptIndex < parameters.positionsCount;
             attemptIndex++) {
           final (singleGeneratedPosition, rejectedFinalizedPositions, errors) =
-              positionGenerator.generatePosition();
+              positionGenerator
+                  .generatePosition(parameters.addIntermediatesPositions);
+          rejectedPositions.addAll(rejectedFinalizedPositions);
 
           // We limit the number of errors to process
           const maxDisplayedErrors = 100;
@@ -441,7 +444,7 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
             }
             parameters.sendPort.send((
               <String>[],
-              <String>[],
+              rejectedPositions,
               limitedErrors
                   .map(
                     (e) => e.toJson(),
@@ -452,7 +455,7 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
             if (singleGeneratedPosition == null) {
               parameters.sendPort.send((
                 <String>[],
-                <String>[],
+                rejectedPositions,
                 <PositionGenerationError>[
                   PositionGenerationError(
                     scriptType: "",
@@ -463,7 +466,6 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
               return;
             }
             generatedPositions.add(singleGeneratedPosition);
-            rejectedPositions.addAll(rejectedFinalizedPositions);
           }
         }
         parameters.sendPort.send(
@@ -473,13 +475,6 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
             <Map<String, dynamic>>[],
           ),
         );
-      } on PositionGenerationError catch (ex) {
-        Logger().e("${ex.message} <= ${ex.scriptType}");
-        parameters.sendPort.send((
-          <String>[],
-          <String>[],
-          <PositionGenerationError>[ex].map((e) => e.toJson()).toList(),
-        ));
       } on PositionGenerationLoopException catch (ex) {
         Logger().e(ex.message);
 
@@ -499,7 +494,7 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
         Logger().e(ex.toString());
         parameters.sendPort.send((
           <String>[],
-          <String>[],
+          rejectedPositions,
           <PositionGenerationError>[
             PositionGenerationError(
               scriptType: "",
@@ -692,12 +687,14 @@ class SampleScriptGenerationParameters {
   final SendPort sendPort;
   final String gameScript;
   final int positionsCount;
+  final IntermediatePositionsLevel addIntermediatesPositions;
   final TranslationsWrapper translations;
 
   SampleScriptGenerationParameters({
     required this.gameScript,
     required this.sendPort,
     this.positionsCount = 1,
+    this.addIntermediatesPositions = IntermediatePositionsLevel.none,
     required this.translations,
   });
 }

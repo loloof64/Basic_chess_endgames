@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/random_testing_parameters_dialog.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:logger/logger.dart';
 import 'package:lua_dardo/lua.dart';
@@ -157,10 +158,9 @@ class BoardCoordinate {
   }
 }
 
-class PositionGenerationLoopException implements Exception {
-  final String? message;
-
-  PositionGenerationLoopException({this.message});
+class PositionGenerationLoopException extends PositionGenerationError {
+  const PositionGenerationLoopException({required super.message})
+      : super(scriptType: '');
 }
 
 class PositionGeneratorConstraintsExpr {
@@ -731,7 +731,8 @@ class PositionGeneratorFromLuaVM {
   // 3) List<PositionGenerationError> : the list of errors
   // can throw
   // PositionGenerationLoopException
-  (String?, List<String>, List<PositionGenerationError>) generatePosition() {
+  (String?, List<String>, List<PositionGenerationError>) generatePosition(
+      IntermediatePositionsLevel addIntermediatesPositions) {
     String? finalPosition;
 
     _errors.clear();
@@ -743,23 +744,35 @@ class PositionGeneratorFromLuaVM {
     finalPosition = _placePiecesStepPlayerKing(
       startFen: startFen,
       playerHasWhite: playerHasWhite,
+      addIntermediatesPositions: addIntermediatesPositions,
     );
 
-    if (_errors.isNotEmpty) {
-      return (null, [], _errors);
-    }
+    /// We only want to keep unique values of _rejectedFinalizedPositions
+    final rejectedPositions = _rejectedFinalizedPositions.toSet().toList();
+
+    final errorsList = _errors.isNotEmpty
+        ? _errors
+        : <PositionGenerationError>[
+            PositionGenerationLoopException(
+              message: "Failed to place pieces !",
+            ),
+          ];
 
     if (finalPosition == null) {
-      throw PositionGenerationLoopException(
-          message: "Failed to place pieces !");
+      return (
+        finalPosition,
+        rejectedPositions,
+        errorsList,
+      );
     }
 
-    return (finalPosition, _rejectedFinalizedPositions, []);
+    return (finalPosition, rejectedPositions, []);
   }
 
   String? _placePiecesStepPlayerKing({
     required String startFen,
     required bool playerHasWhite,
+    required IntermediatePositionsLevel addIntermediatesPositions,
   }) {
     String? result;
     final kingConstraints = _allConstraints.playerKingConstraint;
@@ -786,6 +799,15 @@ class PositionGeneratorFromLuaVM {
             ),
             predefinedValues: predefinedValues,
           );
+          if (!success &&
+              addIntermediatesPositions == IntermediatePositionsLevel.all) {
+            final rejectedPosition = computePositionFrom(
+              startFen,
+              currentCell,
+              playerHasWhite ? 'K' : 'k',
+            );
+            _rejectedFinalizedPositions.add(rejectedPosition);
+          }
           return success;
         } on PositionGenerationError catch (ex) {
           Logger().e(ex);
@@ -842,6 +864,7 @@ class PositionGeneratorFromLuaVM {
         startFen: testPosition,
         playerHasWhite: playerHasWhite,
         playerKingCell: currentCell,
+        addIntermediatesPositions: addIntermediatesPositions,
       );
       if (result != null) {
         break;
@@ -855,6 +878,7 @@ class PositionGeneratorFromLuaVM {
     required String startFen,
     required bool playerHasWhite,
     required BoardCoordinate playerKingCell,
+    required IntermediatePositionsLevel addIntermediatesPositions,
   }) {
     String? result;
     final computerKingConstraints = _allConstraints.computerKingConstraint;
@@ -895,6 +919,15 @@ class PositionGeneratorFromLuaVM {
             ),
             predefinedValues: computerKingConstraintPredefinedValues,
           );
+          if (!success &&
+              addIntermediatesPositions == IntermediatePositionsLevel.all) {
+            final rejectedPosition = computePositionFrom(
+              startFen,
+              currentCell,
+              playerHasWhite ? 'k' : 'K',
+            );
+            _rejectedFinalizedPositions.add(rejectedPosition);
+          }
           return success;
         } on PositionGenerationError catch (ex) {
           Logger().e(ex);
@@ -952,6 +985,15 @@ class PositionGeneratorFromLuaVM {
             ),
             predefinedValues: kingsMutualConstraintPredefinedValues,
           );
+          if (!success &&
+              addIntermediatesPositions == IntermediatePositionsLevel.all) {
+            final rejectedPosition = computePositionFrom(
+              startFen,
+              currentCell,
+              playerHasWhite ? 'k' : 'K',
+            );
+            _rejectedFinalizedPositions.add(rejectedPosition);
+          }
           return success;
         } on PositionGenerationError catch (ex) {
           Logger().e(ex);
@@ -1009,6 +1051,7 @@ class PositionGeneratorFromLuaVM {
         playerHasWhite: playerHasWhite,
         playerKingCell: playerKingCell,
         computerKingCell: currentCell,
+        addIntermediatesPositions: addIntermediatesPositions,
       );
       if (result != null) {
         break;
@@ -1023,6 +1066,7 @@ class PositionGeneratorFromLuaVM {
     required bool playerHasWhite,
     required BoardCoordinate playerKingCell,
     required BoardCoordinate computerKingCell,
+    required IntermediatePositionsLevel addIntermediatesPositions,
   }) {
     // we check for legality of position once all pieces are placed :
     // because we could miss interesting position where opponent king
@@ -1081,6 +1125,20 @@ class PositionGeneratorFromLuaVM {
                 ),
                 predefinedValues: otherPiecesGlobalConstraintPredefinedValues,
               );
+              if (!success &&
+                  ((addIntermediatesPositions ==
+                          IntermediatePositionsLevel.all) ||
+                      (addIntermediatesPositions ==
+                          IntermediatePositionsLevel.withMoreThanTheKings))) {
+                final pieceFen = pieceCountConstraint.pieceKind
+                    .getFen(playerHasWhite: playerHasWhite);
+                final rejectedPosition = computePositionFrom(
+                  startFen,
+                  currentCell,
+                  pieceFen,
+                );
+                _rejectedFinalizedPositions.add(rejectedPosition);
+              }
               return success;
             } on PositionGenerationError catch (ex) {
               final morePreciseEx = ex.withComplexScriptType(
@@ -1160,6 +1218,20 @@ class PositionGeneratorFromLuaVM {
                 ),
                 predefinedValues: otherPieceIndexedConstraintPredefinedValues,
               );
+              if (!success &&
+                  ((addIntermediatesPositions ==
+                          IntermediatePositionsLevel.all) ||
+                      (addIntermediatesPositions ==
+                          IntermediatePositionsLevel.withMoreThanTheKings))) {
+                final pieceFen = pieceCountConstraint.pieceKind
+                    .getFen(playerHasWhite: playerHasWhite);
+                final rejectedPosition = computePositionFrom(
+                  startFen,
+                  currentCell,
+                  pieceFen,
+                );
+                _rejectedFinalizedPositions.add(rejectedPosition);
+              }
               return success;
             } on PositionGenerationError catch (ex) {
               final morePreciseEx = ex.withComplexScriptType(
@@ -1245,6 +1317,25 @@ class PositionGeneratorFromLuaVM {
                   ),
                   predefinedValues: otherPieceMutualConstraintIntValues,
                 );
+                if (!success &&
+                    ((addIntermediatesPositions ==
+                            IntermediatePositionsLevel.all) ||
+                        (addIntermediatesPositions ==
+                            IntermediatePositionsLevel.withMoreThanTheKings))) {
+                  final pieceFen = pieceCountConstraint.pieceKind
+                      .getFen(playerHasWhite: playerHasWhite);
+                  var rejectedPosition = computePositionFrom(
+                    startFen,
+                    outerLoopCell,
+                    pieceFen,
+                  );
+                  rejectedPosition = computePositionFrom(
+                    rejectedPosition,
+                    innerLoopCell,
+                    pieceFen,
+                  );
+                  _rejectedFinalizedPositions.add(rejectedPosition);
+                }
                 return success;
               } on PositionGenerationError catch (ex) {
                 final morePreciseEx = ex.withComplexScriptType(
@@ -1332,8 +1423,7 @@ class PositionGeneratorFromLuaVM {
                 chess.Chess.fromFEN(testPosition, check_validity: true);
             successForCurrentIndex = true;
             break;
-          }
-          else {
+          } else {
             _rejectedFinalizedPositions.add(testPosition);
           }
         }
@@ -1385,4 +1475,65 @@ List<BoardCoordinate> filterCoordinates(List<BoardCoordinate> originalList,
   }
 
   return result;
+}
+
+String computePositionFrom(
+    String startFen, BoardCoordinate currentCell, String pieceFen) {
+  List<String> parts = startFen.split(" ");
+  final boardFen = parts[0];
+  List<List<String>> boardValues = boardFen
+      .split("/")
+      .map((singleLine) {
+        return singleLine
+            .split("")
+            .map((singleElt) {
+              if (int.tryParse(singleElt) != null) {
+                final holes = int.parse(singleElt);
+                final holesArr = <String>[];
+                for (int i = 0; i < holes; i++) {
+                  holesArr.add("");
+                }
+                return holesArr;
+              } else {
+                return <String>[singleElt];
+              }
+            })
+            .toList()
+            .expand((l) => l)
+            .toList();
+      })
+      .toList()
+      .reversed
+      .toList();
+
+  boardValues[currentCell.rank][currentCell.file] = pieceFen;
+
+  final boardPartResult = boardValues.reversed.toList().map((line) {
+    return _transformBoardLineEltsInLineStr(line);
+  }).join("/");
+
+  parts[0] = boardPartResult;
+  return parts.join(" ");
+}
+
+String _transformBoardLineEltsInLineStr(List<String> elts) {
+  List<String> result = [];
+  for (final elt in elts) {
+    if (elt.isEmpty) {
+      if (result.isEmpty) {
+        result.add("1");
+      } else {
+        if (int.tryParse(result.last) != null) {
+          final currentHoleValue = int.parse(result.last);
+          final lastElementIndex = result.length - 1;
+          result[lastElementIndex] = (currentHoleValue + 1).toString();
+        } else {
+          result.add("1");
+        }
+      }
+    } else {
+      result.add(elt);
+    }
+  }
+  return result.join("");
 }

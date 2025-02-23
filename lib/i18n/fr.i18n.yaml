@@ -262,6 +262,10 @@ random_testing:
   parameters_dialog:
     title: "Paramètres de génération aléatoire"
     images_count: "Nombre d'images"
+    intermediates_positions_level: "Niveau des positions intermédiaires"
+    intermediates_positions_level_none: "Aucune"
+    intermediates_positions_level_with_max_pieces: "Seulement les positions qui n'incluent pas uniquement le(s) roi(s)"
+    intermediates_positions_level_all: "Toutes"
   title: "Test aléatoire"
   tab_generated_positions: "Générées"
   tab_rejected_positions: "Rejetées"

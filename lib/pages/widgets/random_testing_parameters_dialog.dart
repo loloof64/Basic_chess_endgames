@@ -5,10 +5,20 @@ import 'package:flutter/services.dart';
 
 const int defaultImagesCount = 15;
 
+enum IntermediatePositionsLevel {
+  none,
+  withMoreThanTheKings,
+  all,
+}
+
 class RandomTestingParameters {
   final int imagesCount;
+  final IntermediatePositionsLevel intermediatePositionsLevel;
 
-  RandomTestingParameters({required this.imagesCount});
+  RandomTestingParameters({
+    required this.imagesCount,
+    required this.intermediatePositionsLevel,
+  });
 }
 
 class RandomTestingParametersDialog extends HookWidget {
@@ -19,8 +29,29 @@ class RandomTestingParametersDialog extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final imagesCount = useState(defaultImagesCount);
+    final addIntermediatesPositions = useState(IntermediatePositionsLevel.none);
     final TextEditingController imagesCountController =
         useTextEditingController(text: imagesCount.value.toString());
+
+    final dropDownButtons = <DropdownMenuItem<IntermediatePositionsLevel>>[
+      DropdownMenuItem(
+        value: IntermediatePositionsLevel.none,
+        child: Text(
+          t.random_testing.parameters_dialog.intermediates_positions_level_none,
+        ),
+      ),
+      DropdownMenuItem(
+        value: IntermediatePositionsLevel.withMoreThanTheKings,
+        child: Text(t.random_testing.parameters_dialog
+            .intermediates_positions_level_with_max_pieces),
+      ),
+      DropdownMenuItem(
+        value: IntermediatePositionsLevel.all,
+        child: Text(
+          t.random_testing.parameters_dialog.intermediates_positions_level_all,
+        ),
+      ),
+    ];
 
     return AlertDialog(
       title: Text(
@@ -31,17 +62,50 @@ class RandomTestingParametersDialog extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(t.random_testing.parameters_dialog.images_count),
-            TextField(
-            controller: imagesCountController,
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            onChanged: (value) {
-              imagesCount.value = int.parse(value);
-            },
+          Expanded(
+            child: Row(
+              spacing: 10.0,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(t.random_testing.parameters_dialog.images_count),
+                Expanded(
+                  child: TextField(
+                    controller: imagesCountController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    onChanged: (value) {
+                      imagesCount.value = int.parse(value);
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
+          Expanded(
+            child: Row(
+              spacing: 10.0,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(t.random_testing.parameters_dialog
+                    .intermediates_positions_level),
+                DropdownButton<IntermediatePositionsLevel>(
+                  value: addIntermediatesPositions.value,
+                  items: dropDownButtons,
+                  onChanged: (newValue) {
+                    if (newValue != null) {
+                      addIntermediatesPositions.value = newValue;
+                    }
+                  },
+                )
+              ],
+            ),
+          )
         ],
       ),
       actions: [
@@ -64,6 +128,7 @@ class RandomTestingParametersDialog extends HookWidget {
             Navigator.of(context).pop(
               RandomTestingParameters(
                 imagesCount: imagesCount.value,
+                intermediatePositionsLevel: addIntermediatesPositions.value,
               ),
             );
           },

@@ -259,6 +259,10 @@ random_testing:
   parameters_dialog:
     title: "Random testing parameters"
     images_count: "Images count"
+    intermediates_positions_level: "Intermediates positions level"
+    intermediates_positions_level_none: "None"
+    intermediates_positions_level_with_max_pieces: "Only positions which not include only king(s)"
+    intermediates_positions_level_all: "All"
   title: "Random testing"
   tab_generated_positions: "Generated"
   tab_rejected_positions: "Rejected"

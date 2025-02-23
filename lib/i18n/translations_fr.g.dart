@@ -405,6 +405,10 @@ class _TranslationsRandomTestingParametersDialogFr extends TranslationsRandomTes
 	// Translations
 	@override String get title => 'Paramètres de génération aléatoire';
 	@override String get images_count => 'Nombre d\'images';
+	@override String get intermediates_positions_level => 'Niveau des positions intermédiaires';
+	@override String get intermediates_positions_level_none => 'Aucune';
+	@override String get intermediates_positions_level_with_max_pieces => 'Seulement les positions qui n\'incluent pas uniquement le(s) roi(s)';
+	@override String get intermediates_positions_level_all => 'Toutes';
 }
 
 // Path: variables_table.rows.file_a
