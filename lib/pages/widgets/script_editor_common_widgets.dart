@@ -70,11 +70,11 @@ class EditorWidget extends StatelessWidget {
   final TextEditingController controller;
   final bool enabled;
   final bool readOnly;
-  final FocusNode? focusNode;
+  final FocusNode focusNode;
 
   const EditorWidget({
     super.key,
-    this.focusNode,
+    required this.focusNode,
     required this.readOnly,
     required this.controller,
     this.initialContent = "",

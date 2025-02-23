@@ -132,6 +132,10 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
   String _otherPiecesCountConstraintsScript = "";
   String _goalScript = winningString;
 
+  final FocusNode _playerKingConstraintsFocusNode = FocusNode();
+  final FocusNode _computerKingConstraintsFocusNode = FocusNode();
+  final FocusNode _kingsMutualConstraintsFocusNode = FocusNode();
+
   final FocusNode _otherPiecesGlobalConstraintsFocusNode = FocusNode();
   final FocusNode _otherPiecesIndexedConstraintsFocusNode = FocusNode();
   final FocusNode _otherPiecesMutualConstraintsFocusNode = FocusNode();
@@ -171,9 +175,15 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     _scriptCheckerIsolate?.kill(
       priority: Isolate.immediate,
     );
+
+    _playerKingConstraintsFocusNode.dispose();
+    _computerKingConstraintsFocusNode.dispose();
+    _kingsMutualConstraintsFocusNode.dispose();
+
     _otherPiecesGlobalConstraintsFocusNode.dispose();
     _otherPiecesIndexedConstraintsFocusNode.dispose();
     _otherPiecesMutualConstraintsFocusNode.dispose();
+
     _playerKingConstraintsScriptController.dispose();
     _computerKingConstraintsScriptController.dispose();
     _kingsMutualConstraintsScriptController.dispose();
@@ -736,6 +746,32 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         });
   }
 
+
+  void _focusEditor() {
+    if (_selectedTabIndex == playeKingTabIndex) {
+      _playerKingConstraintsFocusNode.requestFocus();
+    } else if (_selectedTabIndex == computerKingTabIndex) {
+      _computerKingConstraintsFocusNode.requestFocus();
+    } else if (_selectedTabIndex == kingsMutualTabIndex) {
+      _kingsMutualConstraintsFocusNode.requestFocus();
+    } else if (_selectedTabIndex == otherPieceGlobalTabIndex) {
+      if (_otherPiecesGlobalConstraintsSelectedPieceKind == null) {
+        return;
+      }
+      _otherPiecesGlobalConstraintsFocusNode.requestFocus();
+    } else if (_selectedTabIndex == otherPiecesIndexedTabIndex) {
+      if (_otherPiecesIndexedConstraintsSelectedPieceKind == null) {
+        return;
+      }
+      _otherPiecesIndexedConstraintsFocusNode.requestFocus();
+    } else if (_selectedTabIndex == otherPiecesMutualTabIndex) {
+      if (_otherPiecesMutualConstraintsSelectedPieceKind == null) {
+        return;
+      }
+      _otherPiecesMutualConstraintsFocusNode.requestFocus();
+    }
+  }
+
   TextEditingController? _getControllerForCurrentScript() {
     TextEditingController? controller;
 
@@ -806,6 +842,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
               onDone: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
+                _focusEditor();
               },
             ),
             actions: [
@@ -1011,14 +1048,17 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
               TabBarView(children: [
                 PlayerKingConstraintsEditorWidget(
                   controller: _playerKingConstraintsScriptController,
+                  focusNode: _playerKingConstraintsFocusNode,
                   readOnly: widget.readOnly,
                 ),
                 ComputerKingContraintsEditorWidget(
                   readOnly: widget.readOnly,
+                  focusNode: _computerKingConstraintsFocusNode,
                   controller: _computerKingConstraintsScriptController,
                 ),
                 KingsMutualConstraintEditorWidget(
                   readOnly: widget.readOnly,
+                  focusNode: _kingsMutualConstraintsFocusNode,
                   controller: _kingsMutualConstraintsScriptController,
                 ),
                 OtherPiecesCountConstraintsEditorWidget(
@@ -1129,11 +1169,13 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
 class PlayerKingConstraintsEditorWidget extends StatelessWidget {
   final TextEditingController controller;
   final bool readOnly;
+  final FocusNode focusNode;
 
   const PlayerKingConstraintsEditorWidget({
     super.key,
     required this.controller,
-    this.readOnly = false,
+    required this.focusNode,
+    required this.readOnly,
   });
 
   @override
@@ -1149,6 +1191,7 @@ class PlayerKingConstraintsEditorWidget extends StatelessWidget {
           child: EditorWidget(
             readOnly: readOnly,
             controller: controller,
+            focusNode: focusNode,
           ),
         ),
       ],
@@ -1159,11 +1202,13 @@ class PlayerKingConstraintsEditorWidget extends StatelessWidget {
 class ComputerKingContraintsEditorWidget extends StatelessWidget {
   final TextEditingController controller;
   final bool readOnly;
+  final FocusNode focusNode;
 
   const ComputerKingContraintsEditorWidget({
     super.key,
     required this.controller,
     required this.readOnly,
+    required this.focusNode,
   });
 
   @override
@@ -1179,6 +1224,7 @@ class ComputerKingContraintsEditorWidget extends StatelessWidget {
           child: EditorWidget(
             readOnly: readOnly,
             controller: controller,
+            focusNode: focusNode,
           ),
         ),
       ],
@@ -1189,11 +1235,13 @@ class ComputerKingContraintsEditorWidget extends StatelessWidget {
 class KingsMutualConstraintEditorWidget extends StatelessWidget {
   final TextEditingController controller;
   final bool readOnly;
+  final FocusNode focusNode;
 
   const KingsMutualConstraintEditorWidget({
     super.key,
     required this.controller,
     required this.readOnly,
+    required this.focusNode,
   });
 
   @override
@@ -1209,6 +1257,7 @@ class KingsMutualConstraintEditorWidget extends StatelessWidget {
           child: EditorWidget(
             controller: controller,
             readOnly: readOnly,
+            focusNode: focusNode,
           ),
         ),
       ],
