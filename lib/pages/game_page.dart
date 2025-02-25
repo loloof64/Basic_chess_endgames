@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:basicchessendgamestrainer/components/history.dart';
 import 'package:basicchessendgamestrainer/data/stockfish_manager.dart';
 import 'package:basicchessendgamestrainer/logic/utils.dart';
@@ -38,10 +40,11 @@ class _GamePageState extends ConsumerState<GamePage> {
   int? _historySelectedNodeIndex;
   bool _engineThinking = false;
   bool _stockfishReady = false;
+  late StreamSubscription<String> _stockfishReader;
 
   @override
   void initState() {
-    stockfishManager.geOutputStream().listen((line) {
+    _stockfishReader = stockfishManager.geOutputStream().listen((line) {
       _processStockfishLine(line);
     });
     stockfishManager.sendCommand('isready');
@@ -58,6 +61,13 @@ class _GamePageState extends ConsumerState<GamePage> {
     }
     _doStartNewGame();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _historyScrollController.dispose();
+    _stockfishReader.cancel();
+    super.dispose();
   }
 
   void _updateHistoryScrollPosition() {

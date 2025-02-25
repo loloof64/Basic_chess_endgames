@@ -65,14 +65,19 @@ dependencies:
   file_picker: ^9.0.0
   stockfish_chess_engine: ^0.8.2
   lua_dardo: ^0.0.5
-  flutter_hooks: ^0.20.5
+  flutter_hooks: ^0.21.2
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  shared_preferences: ^2.5.2
+  hooks_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.14.3
-  custom_lint:
-  riverpod_lint:
+  custom_lint: ^0.6.10
+  riverpod_lint: ^2.6.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -80,6 +85,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  build_runner: ^2.4.15
+  freezed: ^2.5.7
+  json_serializable: ^6.9.0
+  riverpod_generator: ^2.6.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
