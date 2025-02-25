@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 class Page {
   final String title;
@@ -129,25 +130,17 @@ final pages = <Page>[
   goalPage,
 ];
 
-class SyntaxManualPage extends StatefulWidget {
+class SyntaxManualPage extends HookWidget {
   const SyntaxManualPage({super.key});
 
-  @override
-  State<SyntaxManualPage> createState() => _SyntaxManualPageState();
-}
-
-class _SyntaxManualPageState extends State<SyntaxManualPage> {
-  Page _currentPage = pages[0];
-
-  void _handlePageChanged(Page? page) {
-    if (page == null) return;
-    setState(() {
-      _currentPage = page;
-    });
+  void handlePageChanged(ValueNotifier<Page> currentPage, Page? newPage) {
+    if (newPage == null) return;
+    currentPage.value = newPage;
   }
 
   @override
   Widget build(BuildContext context) {
+    final currentPage = useState(pages[0]);
     final dropdownItems = pages.map((currentPage) {
       return DropdownMenuItem<Page>(
         value: currentPage,
@@ -168,11 +161,11 @@ class _SyntaxManualPageState extends State<SyntaxManualPage> {
               padding: const EdgeInsets.all(8.0),
               child: DropdownButton<Page>(
                 items: dropdownItems,
-                onChanged: _handlePageChanged,
-                value: _currentPage,
+                onChanged: (newPage) => handlePageChanged(currentPage, newPage),
+                value: currentPage.value,
               ),
             ),
-            ..._currentPage.toWidgets(),
+            ...currentPage.value.toWidgets(),
           ],
         ),
       ),

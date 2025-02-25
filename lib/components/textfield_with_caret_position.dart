@@ -1,7 +1,8 @@
 import 'package:basicchessendgamestrainer/logic/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class TextfieldWithPositionTracker extends StatefulWidget {
+class TextfieldWithPositionTracker extends HookWidget {
   const TextfieldWithPositionTracker({
     super.key,
     required this.controller,
@@ -12,27 +13,16 @@ class TextfieldWithPositionTracker extends StatefulWidget {
   final FocusNode? focusNode;
   final bool readOnly;
 
-  @override
-  TextfieldWithPositionTrackerState createState() =>
-      TextfieldWithPositionTrackerState();
-}
-
-class TextfieldWithPositionTrackerState
-    extends State<TextfieldWithPositionTracker> {
-  String _cursorPosition = '1:1';
-
-  @override
-  void initState() {
-    super.initState();
-    widget.controller.addListener(_updateCursorPosition);
+  void initState(void Function() listener) {
+    controller.addListener(listener);
   }
 
-  void _updateCursorPosition() {
-    final text = widget.controller.text;
-    final selection = widget.controller.selection;
+  String getUpdatedCursorPosition() {
+    final text = controller.text;
+    final selection = controller.selection;
 
     if (selection.baseOffset == -1) {
-      return;
+      return "1:1";
     }
 
     final beforeCursor = text.substring(0, selection.baseOffset);
@@ -43,10 +33,7 @@ class TextfieldWithPositionTrackerState
     lines = lines.where((elt) => elt != '\n');
 
     if (lines.isEmpty) {
-      setState(() {
-        _cursorPosition = "1:1";
-      });
-      return;
+      return "1:1";
     }
 
     var lineNumber = lines.length;
@@ -58,30 +45,35 @@ class TextfieldWithPositionTrackerState
       columnNumber = 1;
     }
 
-    setState(() {
-      _cursorPosition = '$lineNumber:$columnNumber';
-    });
+    return '$lineNumber:$columnNumber';
   }
 
-  @override
-  void dispose() {
-    widget.controller.removeListener(_updateCursorPosition);
-    super.dispose();
+  void dispose(void Function() listener) {
+    controller.removeListener(listener);
   }
 
   @override
   Widget build(BuildContext context) {
+    final cursorPosition = useState("1:1");
+    useEffect(() {
+      listener() {
+        cursorPosition.value = getUpdatedCursorPosition();
+      }
+      initState(listener);
+      return () => dispose(listener);
+    }, []);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(_cursorPosition),
+        Text(cursorPosition.value),
         const SizedBox(height: 20),
         TextField(
-          readOnly: widget.readOnly,
+          readOnly: readOnly,
           autofocus: true,
-          focusNode: widget.focusNode,
-          controller: widget.controller,
+          focusNode: focusNode,
+          controller: controller,
           minLines: 100,
           maxLines: 100,
           decoration: const InputDecoration(
