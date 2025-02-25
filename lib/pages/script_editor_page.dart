@@ -10,6 +10,7 @@ import 'package:basicchessendgamestrainer/pages/widgets/piece_count_widget.dart'
 import 'package:basicchessendgamestrainer/pages/widgets/script_editor_common_widgets.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/syntax_manual_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
 
@@ -746,7 +747,6 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         });
   }
 
-
   void _focusEditor() {
     if (_selectedTabIndex == playeKingTabIndex) {
       _playerKingConstraintsFocusNode.requestFocus();
@@ -1265,7 +1265,7 @@ class KingsMutualConstraintEditorWidget extends StatelessWidget {
   }
 }
 
-class OtherPiecesCountConstraintsEditorWidget extends StatefulWidget {
+class OtherPiecesCountConstraintsEditorWidget extends HookWidget {
   final String currentScript;
   final bool readOnly;
   final void Function(Map<PieceKind, int> counts) onScriptUpdate;
@@ -1281,41 +1281,41 @@ class OtherPiecesCountConstraintsEditorWidget extends StatefulWidget {
     this.currentScript = "",
   });
 
-  @override
-  State<OtherPiecesCountConstraintsEditorWidget> createState() =>
-      _OtherPiecesCountConstraintsEditorWidgetState();
-}
-
-class _OtherPiecesCountConstraintsEditorWidgetState
-    extends State<OtherPiecesCountConstraintsEditorWidget> {
-  late Map<PieceKind, int> _content;
-  PieceKind? _selectedType;
-  List<PieceKind> _remainingTypes = [];
-
-  @override
-  void initState() {
-    _content = convertScriptToPiecesCounts(widget.currentScript);
-    _content.removeWhere((key, value) {
+  void initState({
+    required ValueNotifier<Map<PieceKind, int>> content,
+    required ValueNotifier<PieceKind?> selectedType,
+    required ValueNotifier<List<PieceKind>> remainingTypes,
+  }) {
+    content.value = convertScriptToPiecesCounts(currentScript);
+    content.value.removeWhere((key, value) {
       final type = key.toEasyString();
       return type == 'player king' || type == 'computer king';
     });
-    _updateAvailableTypes();
-    super.initState();
+    _updateAvailableTypes(
+      content: content,
+      remainingTypes: remainingTypes,
+    );
   }
 
-  void _updateAvailableTypes() {
-    final storedTypes = _content.keys;
-    final remainingTypes = allSelectableTypes
+  void _updateAvailableTypes({
+    required ValueNotifier<Map<PieceKind, int>> content,
+    required ValueNotifier<List<PieceKind>> remainingTypes,
+  }) {
+    final storedTypes = content.value.keys;
+    final tempRemainingTypes = allSelectableTypes
         .where((element) => !storedTypes.contains(element))
         .toList();
-    setState(() {
-      _remainingTypes = remainingTypes;
-    });
+    remainingTypes.value = tempRemainingTypes;
   }
 
-  void _addCurrentCount() {
-    if (_selectedType == null) return;
-    if (!_remainingTypes.contains(_selectedType)) {
+  void _addCurrentCount({
+    required BuildContext context,
+    required ValueNotifier<Map<PieceKind, int>> content,
+    required ValueNotifier<PieceKind?> selectedType,
+    required ValueNotifier<List<PieceKind>> remainingTypes,
+  }) {
+    if (selectedType.value == null) return;
+    if (!remainingTypes.value.contains(selectedType.value)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(t.script_editor_page.type_already_added),
@@ -1323,38 +1323,52 @@ class _OtherPiecesCountConstraintsEditorWidgetState
       );
       return;
     }
-    setState(() {
-      _content[_selectedType!] = 1;
-    });
-    _updateAvailableTypes();
+    content.value[selectedType.value!] = 1;
+    _updateAvailableTypes(
+      content: content,
+      remainingTypes: remainingTypes,
+    );
     // Here the order of following lines is important !
-    widget.onKindAdded(_selectedType!);
-    widget.onScriptUpdate(_content);
+    onKindAdded(selectedType.value!);
+    onScriptUpdate(content.value);
   }
 
   @override
   Widget build(BuildContext context) {
+    final content = useState(<PieceKind, int>{});
+    final selectedType = useState<PieceKind?>(null);
+    final remainingTypes = useState(<PieceKind>[]);
+
+    useEffect(() {
+      initState(
+        content: content,
+        selectedType: selectedType,
+        remainingTypes: remainingTypes,
+      );
+      return null;
+    }, []);
+
     final countChildren = <Widget>[
-      for (var entry in _content.entries)
+      for (var entry in content.value.entries)
         Padding(
           padding: const EdgeInsets.all(10),
           child: PieceCountWidget(
-            readOnly: widget.readOnly,
+            readOnly: readOnly,
             kind: entry.key,
             initialCount: entry.value,
             onChanged: (newValue) {
-              setState(() {
-                _content[entry.key] = newValue;
-                widget.onScriptUpdate(_content);
-              });
+              content.value[entry.key] = newValue;
+              onScriptUpdate(content.value);
             },
             onRemove: (valueToRemove) {
-              setState(() {
-                _content.removeWhere((type, count) => type == valueToRemove);
-              });
-              _updateAvailableTypes();
-              widget.onScriptUpdate(_content);
-              widget.onKindRemoved(valueToRemove);
+              content.value.removeWhere((type, count) => type == valueToRemove);
+
+              _updateAvailableTypes(
+                content: content,
+                remainingTypes: remainingTypes,
+              );
+              onScriptUpdate(content.value);
+              onKindRemoved(valueToRemove);
             },
           ),
         )
@@ -1368,16 +1382,19 @@ class _OtherPiecesCountConstraintsEditorWidgetState
         SectionHeader(
           title: t.script_editor_page.other_pieces_count_constraint,
         ),
-        if (!widget.readOnly)
+        if (!readOnly)
           PieceCountAdderWidget(
-            selectedType: _selectedType,
+            selectedType: selectedType.value,
             onSelectionChanged: (newValue) {
               if (newValue == null) return;
-              setState(() {
-                _selectedType = newValue;
-              });
+              selectedType.value = newValue;
             },
-            onValidate: _addCurrentCount,
+            onValidate: () => _addCurrentCount(
+              context: context,
+              content: content,
+              selectedType: selectedType,
+              remainingTypes: remainingTypes,
+            ),
           ),
         Expanded(
           flex: 6,
@@ -1521,7 +1538,7 @@ class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
   }
 }
 
-class GameGoalEditorWidget extends StatefulWidget {
+class GameGoalEditorWidget extends HookWidget {
   final String script;
   final bool readOnly;
   final void Function(bool) onChanged;
@@ -1534,20 +1551,13 @@ class GameGoalEditorWidget extends StatefulWidget {
   });
 
   @override
-  State<GameGoalEditorWidget> createState() => _GameGoalEditorWidgetState();
-}
-
-class _GameGoalEditorWidgetState extends State<GameGoalEditorWidget> {
-  bool _shouldWin = true;
-
-  @override
-  void initState() {
-    _shouldWin = widget.script.trim() == winningString;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final shouldWin = useState(true);
+    useEffect(() {
+      shouldWin.value = script.trim() == winningString;
+      return null;
+    });
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -1555,12 +1565,12 @@ class _GameGoalEditorWidgetState extends State<GameGoalEditorWidget> {
         SectionHeader(
           title: t.script_editor_page.game_goal,
         ),
-        widget.readOnly
+        readOnly
             ? Flexible(
                 flex: 1,
                 child: Center(
                   child: Text(
-                    _shouldWin
+                    shouldWin.value
                         ? t.script_editor_page.should_win
                         : t.script_editor_page.should_draw,
                     style: const TextStyle(
@@ -1575,28 +1585,24 @@ class _GameGoalEditorWidgetState extends State<GameGoalEditorWidget> {
                   ListTile(
                     title: Text(t.script_editor_page.should_win),
                     leading: Radio<bool>(
-                      groupValue: _shouldWin,
+                      groupValue: shouldWin.value,
                       value: true,
                       onChanged: (newValue) {
                         if (newValue == null) return;
-                        setState(() {
-                          _shouldWin = newValue;
-                          widget.onChanged(newValue);
-                        });
+                        shouldWin.value = newValue;
+                        onChanged(newValue);
                       },
                     ),
                   ),
                   ListTile(
                     title: Text(t.script_editor_page.should_draw),
                     leading: Radio<bool>(
-                      groupValue: _shouldWin,
+                      groupValue: shouldWin.value,
                       value: false,
                       onChanged: (newValue) {
                         if (newValue == null) return;
-                        setState(() {
-                          _shouldWin = newValue;
-                          widget.onChanged(newValue);
-                        });
+                        shouldWin.value = newValue;
+                        onChanged(newValue);
                       },
                     ),
                   ),
