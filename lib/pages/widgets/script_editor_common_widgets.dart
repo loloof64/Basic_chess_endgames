@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 
 class ComplexEditorWidget extends StatelessWidget {
   final List<PieceKind> availablePiecesKinds;
-  final Map<PieceKind, TextEditingController> scriptsControllersByKinds;
+  final ValueNotifier<Map<PieceKind, TextEditingController>>
+      scriptsControllersByKinds;
   final bool readOnly;
   final PieceKind? selectedType;
   final FocusNode focusNode;
-  final void Function(PieceKind kind) onPieceKindSelection; 
+  final void Function(PieceKind kind) onPieceKindSelection;
 
   const ComplexEditorWidget({
     super.key,
@@ -26,8 +27,8 @@ class ComplexEditorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = selectedType == null
         ? TextEditingController()
-        : scriptsControllersByKinds[selectedType!]!;
-
+        : scriptsControllersByKinds.value[selectedType!] ??
+            TextEditingController();
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,

@@ -26,7 +26,7 @@ const playeKingTabIndex = 0;
 const computerKingTabIndex = 1;
 const kingsMutualTabIndex = 2;
 const otherPiecesCountTabIndex = 3;
-const otherPieceGlobalTabIndex = 4;
+const otherPiecesGlobalTabIndex = 4;
 const otherPiecesMutualTabIndex = 5;
 const otherPiecesIndexedTabIndex = 6;
 const goalTabIndex = 7;
@@ -63,16 +63,22 @@ class InitialScriptsSet {
         winningGoal = true;
 }
 
-extension ScriptFiller on Map<PieceKind, TextEditingController> {
+extension ScriptFiller on ValueNotifier<Map<PieceKind, TextEditingController>> {
   void fillFrom(
       String sectionScripts, String otherPiecesCountConstraintsScript) {
     final otherPiecesKinds =
         convertScriptToPiecesCounts(otherPiecesCountConstraintsScript)
             .keys
             .toList();
+    //////////////////////////////
+    print("Other pieces kingd : $otherPiecesKinds");
+    //////////////////////////////
     if (sectionScripts.isNotEmpty) {
       final content = sectionScripts.trim();
       final parts = content.split(otherPiecesSingleScriptSeparator);
+      //////////////////////////////////
+      print("Section scripts splitted : $sectionScripts");
+      //////////////////////////////////
       for (final pieceKindScript in parts) {
         if (pieceKindScript.isEmpty) continue;
         final pieceKindScriptContent = pieceKindScript.trim();
@@ -82,19 +88,19 @@ extension ScriptFiller on Map<PieceKind, TextEditingController> {
 
         final pieceKind =
             PieceKind.from(typeLine.substring(1, typeLine.length - 1));
-        this[pieceKind] = TextEditingController(text: subScript);
+        value[pieceKind] = TextEditingController(text: subScript);
       }
     }
     // setting also TextEditingController for those "fields" which still miss one
     for (final kind in otherPiecesKinds) {
-      if (this[kind] == null) {
-        this[kind] = TextEditingController(text: "");
+      if (value[kind] == null) {
+        value[kind] = TextEditingController(text: "");
       }
     }
   }
 }
 
-class ScriptEditorPage extends StatefulWidget {
+class ScriptEditorPage extends HookWidget {
   final String? originalFileName;
   final bool readOnly;
   final InitialScriptsSet initialScriptsSet;
@@ -106,98 +112,71 @@ class ScriptEditorPage extends StatefulWidget {
     required this.initialScriptsSet,
   });
 
-  @override
-  State<ScriptEditorPage> createState() => _ScriptEditorPageState();
-}
-
-class _ScriptEditorPageState extends State<ScriptEditorPage> {
-  bool _isCheckingPosition = false;
-  bool _isSavingFile = false;
-  Isolate? _scriptCheckerIsolate;
-
-  final TextEditingController _playerKingConstraintsScriptController =
-      TextEditingController(text: "");
-  final TextEditingController _computerKingConstraintsScriptController =
-      TextEditingController(text: "");
-  final TextEditingController _kingsMutualConstraintsScriptController =
-      TextEditingController(text: "");
-  final Map<PieceKind, TextEditingController>
-      _otherPiecesGlobalConstraintsScripts =
-      <PieceKind, TextEditingController>{};
-  final Map<PieceKind, TextEditingController>
-      _otherPiecesMutualConstraintsScripts =
-      <PieceKind, TextEditingController>{};
-  final Map<PieceKind, TextEditingController>
-      _otherPiecesIndexedConstraintsScripts =
-      <PieceKind, TextEditingController>{};
-  String _otherPiecesCountConstraintsScript = "";
-  String _goalScript = winningString;
-
-  final FocusNode _playerKingConstraintsFocusNode = FocusNode();
-  final FocusNode _computerKingConstraintsFocusNode = FocusNode();
-  final FocusNode _kingsMutualConstraintsFocusNode = FocusNode();
-
-  final FocusNode _otherPiecesGlobalConstraintsFocusNode = FocusNode();
-  final FocusNode _otherPiecesIndexedConstraintsFocusNode = FocusNode();
-  final FocusNode _otherPiecesMutualConstraintsFocusNode = FocusNode();
-
-  PieceKind? _otherPiecesGlobalConstraintsSelectedPieceKind;
-  PieceKind? _otherPiecesIndexedConstraintsSelectedPieceKind;
-  PieceKind? _otherPiecesMutualConstraintsSelectedPieceKind;
-
-  int _selectedTabIndex = playeKingTabIndex;
-
-  @override
-  void initState() {
-    _playerKingConstraintsScriptController.text =
-        widget.initialScriptsSet.playerKingConstraints;
-    _computerKingConstraintsScriptController.text =
-        widget.initialScriptsSet.computerKingConstraints;
-    _kingsMutualConstraintsScriptController.text =
-        widget.initialScriptsSet.kingsMutualConstraints;
-    _otherPiecesCountConstraintsScript =
-        widget.initialScriptsSet.otherPiecesCountConstraints;
-    _otherPiecesGlobalConstraintsScripts.fillFrom(
-        widget.initialScriptsSet.otherPiecesGlobalConstaints,
-        _otherPiecesCountConstraintsScript);
-    _otherPiecesMutualConstraintsScripts.fillFrom(
-        widget.initialScriptsSet.otherPiecesMutualConstaints,
-        _otherPiecesCountConstraintsScript);
-    _otherPiecesIndexedConstraintsScripts.fillFrom(
-        widget.initialScriptsSet.otherPiecesIndexedConstaints,
-        _otherPiecesCountConstraintsScript);
-    _goalScript =
-        widget.initialScriptsSet.winningGoal ? winningString : drawingString;
-    super.initState();
+  void initState({
+    required ValueNotifier<Map<PieceKind, TextEditingController>>
+        otherPiecesGlobalConstraintsScripts,
+    required ValueNotifier<Map<PieceKind, TextEditingController>>
+        otherPiecesMutualConstraintsScripts,
+    required ValueNotifier<Map<PieceKind, TextEditingController>>
+        otherPiecesIndexedConstraintsScripts,
+    required String otherPiecesCountConstraintsScript,
+  }) {
+    otherPiecesGlobalConstraintsScripts.fillFrom(
+      initialScriptsSet.otherPiecesGlobalConstaints,
+      otherPiecesCountConstraintsScript,
+    );
+    otherPiecesMutualConstraintsScripts.fillFrom(
+      initialScriptsSet.otherPiecesMutualConstaints,
+      otherPiecesCountConstraintsScript,
+    );
+    otherPiecesIndexedConstraintsScripts.fillFrom(
+      initialScriptsSet.otherPiecesIndexedConstaints,
+      otherPiecesCountConstraintsScript,
+    );
   }
 
-  @override
-  void dispose() {
-    _scriptCheckerIsolate?.kill(
+  void dispose({
+    required ValueNotifier<Isolate?> scriptCheckerIsolate,
+    required FocusNode playerKingConstraintsFocusNode,
+    required FocusNode computerKingConstraintsFocusNode,
+    required FocusNode kingsMutualConstraintsFocusNode,
+    required FocusNode otherPiecesGlobalConstraintsFocusNode,
+    required FocusNode otherPiecesMutualConstraintsFocusNode,
+    required FocusNode otherPiecesIndexedConstraintsFocusNode,
+    required TextEditingController playerKingConstraintsScriptController,
+    required TextEditingController computerKingConstraintsScriptController,
+    required TextEditingController kingsMutualConstraintsScriptController,
+    required ValueNotifier<Map<PieceKind, TextEditingController>>
+        otherPiecesGlobalConstraintsScripts,
+    required ValueNotifier<Map<PieceKind, TextEditingController>>
+        otherPiecesMutualConstraintsScripts,
+    required ValueNotifier<Map<PieceKind, TextEditingController>>
+        otherPiecesIndexedConstraintsScripts,
+  }) {
+    scriptCheckerIsolate.value?.kill(
       priority: Isolate.immediate,
     );
 
-    _playerKingConstraintsFocusNode.dispose();
-    _computerKingConstraintsFocusNode.dispose();
-    _kingsMutualConstraintsFocusNode.dispose();
+    playerKingConstraintsFocusNode.dispose();
+    computerKingConstraintsFocusNode.dispose();
+    kingsMutualConstraintsFocusNode.dispose();
 
-    _otherPiecesGlobalConstraintsFocusNode.dispose();
-    _otherPiecesIndexedConstraintsFocusNode.dispose();
-    _otherPiecesMutualConstraintsFocusNode.dispose();
+    otherPiecesGlobalConstraintsFocusNode.dispose();
+    otherPiecesIndexedConstraintsFocusNode.dispose();
+    otherPiecesMutualConstraintsFocusNode.dispose();
 
-    _playerKingConstraintsScriptController.dispose();
-    _computerKingConstraintsScriptController.dispose();
-    _kingsMutualConstraintsScriptController.dispose();
-    for (var controller in _otherPiecesGlobalConstraintsScripts.values) {
+    playerKingConstraintsScriptController.dispose();
+    computerKingConstraintsScriptController.dispose();
+    kingsMutualConstraintsScriptController.dispose();
+    for (var controller in otherPiecesGlobalConstraintsScripts.value.values) {
       controller.dispose();
     }
-    for (var controller in _otherPiecesMutualConstraintsScripts.values) {
+    for (var controller in otherPiecesMutualConstraintsScripts.value.values) {
       controller.dispose();
     }
-    for (var controller in _otherPiecesIndexedConstraintsScripts.values) {
+    for (var controller in otherPiecesIndexedConstraintsScripts.value.values) {
       controller.dispose();
     }
-    super.dispose();
   }
 
   List<List<String>> _getCommonVariablesData() {
@@ -425,18 +404,45 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     ];
   }
 
-  void _processUserScript() async {
-    if (_isCheckingPosition) return;
-    if (_isSavingFile) return;
+  void _processUserScript({
+    required BuildContext context,
+    required ValueNotifier<bool> isCheckingPosition,
+    required ValueNotifier<bool> isSavingFile,
+    required ValueNotifier<Isolate?> scriptCheckerIsolate,
+    required TextEditingController playerKingConstraintsScriptController,
+    required TextEditingController computerKingConstraintsScriptController,
+    required TextEditingController kingsMutualConstraintsScriptController,
+    required ValueNotifier<String> otherPiecesCountConstraintsScript,
+    required ValueNotifier<Map<PieceKind, TextEditingController>>
+        otherPiecesGlobalConstraintsScripts,
+    required ValueNotifier<Map<PieceKind, TextEditingController>>
+        otherPiecesMutualConstraintsScripts,
+    required ValueNotifier<Map<PieceKind, TextEditingController>>
+        otherPiecesIndexedConstraintsScripts,
+    required String goalScript,
+  }) async {
+    if (isCheckingPosition.value) return;
+    if (isSavingFile.value) return;
 
-    final script = _getWholeScriptContent();
+    final script = _getWholeScriptContent(
+      goalScript: goalScript,
+      playerKingConstraintsScriptController:
+          playerKingConstraintsScriptController,
+      computerKingConstraintsScriptController:
+          computerKingConstraintsScriptController,
+      kingsMutualConstraintsScriptController:
+          kingsMutualConstraintsScriptController,
+      otherPiecesCountConstraintsScript: otherPiecesCountConstraintsScript,
+      otherPiecesGlobalConstraintsScripts: otherPiecesGlobalConstraintsScripts,
+      otherPiecesMutualConstraintsScripts: otherPiecesMutualConstraintsScripts,
+      otherPiecesIndexedConstraintsScripts:
+          otherPiecesIndexedConstraintsScripts,
+    );
     final receivePort = ReceivePort();
 
-    setState(() {
-      _isCheckingPosition = true;
-    });
+    isCheckingPosition.value = true;
 
-    _scriptCheckerIsolate = await Isolate.spawn(
+    scriptCheckerIsolate.value = await Isolate.spawn(
       checkScriptCorrectness,
       SampleScriptGenerationParameters(
         gameScript: script,
@@ -444,13 +450,12 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         sendPort: receivePort.sendPort,
       ),
     );
-    setState(() {});
 
     receivePort.handleError((error) async {
       Logger().e(error);
 
       receivePort.close();
-      _scriptCheckerIsolate?.kill(
+      scriptCheckerIsolate.value?.kill(
         priority: Isolate.immediate,
       );
 
@@ -467,20 +472,16 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
             );
           });
 
-      setState(() {
-        _isCheckingPosition = false;
-      });
+      isCheckingPosition.value = false;
     });
 
     receivePort.listen((message) async {
       receivePort.close();
-      _scriptCheckerIsolate?.kill(
+      scriptCheckerIsolate.value?.kill(
         priority: Isolate.immediate,
       );
 
-      setState(() {
-        _isCheckingPosition = false;
-      });
+      isCheckingPosition.value = false;
 
       final (success, errorsInJsonFormat) =
           message as (bool, List<Map<String, dynamic>>);
@@ -492,7 +493,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
             )
             .toList();
         await showGenerationErrorsPopup(errors: errors, context: context);
-        if (!mounted) return;
+        if (!context.mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -502,20 +503,17 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           ),
         );
       } else {
-        setState(() {
-          _isSavingFile = true;
-        });
+        isSavingFile.value = true;
 
         if (Platform.isAndroid) {
           final filePath =
               await _openSaveFileDialogsPlugin.saveFileDialog(content: script);
           if (filePath == null) {
             debugPrint("File saving cancellation.");
-            setState(() {
-              _isSavingFile = false;
-            });
 
-            if (!mounted) return;
+            isSavingFile.value = false;
+
+            if (!context.mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(t.script_editor_page.exercise_creation_success),
@@ -526,7 +524,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
 
             return;
           } else {
-            if (!mounted) return;
+            if (!context.mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
@@ -543,9 +541,9 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           );
           if (filePath == null) {
             debugPrint("File saving cancellation.");
-            setState(() {
-              _isSavingFile = false;
-            });
+
+            isSavingFile.value = false;
+
             return;
           }
 
@@ -556,11 +554,10 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
               script,
               mode: FileMode.writeOnly,
             );
-            setState(() {
-              _isSavingFile = false;
-            });
 
-            if (!mounted) return;
+            isSavingFile.value = false;
+
+            if (!context.mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(t.script_editor_page.exercise_creation_success),
@@ -571,10 +568,9 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
 
             return;
           } on FileSystemException {
-            setState(() {
-              _isSavingFile = false;
-            });
-            if (!mounted) return;
+            isSavingFile.value = false;
+
+            if (!context.mounted) return;
             showDialog(
                 context: context,
                 builder: (context) {
@@ -593,39 +589,53 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     });
   }
 
-  String _getWholeScriptContent() {
+  String _getWholeScriptContent({
+    required TextEditingController playerKingConstraintsScriptController,
+    required TextEditingController computerKingConstraintsScriptController,
+    required TextEditingController kingsMutualConstraintsScriptController,
+    required ValueNotifier<String> otherPiecesCountConstraintsScript,
+    required ValueNotifier<Map<PieceKind, TextEditingController>>
+        otherPiecesGlobalConstraintsScripts,
+    required ValueNotifier<Map<PieceKind, TextEditingController>>
+        otherPiecesMutualConstraintsScripts,
+    required ValueNotifier<Map<PieceKind, TextEditingController>>
+        otherPiecesIndexedConstraintsScripts,
+    required String goalScript,
+  }) {
     var result = "";
 
-    if (_playerKingConstraintsScriptController.text.isNotEmpty) {
+    if (playerKingConstraintsScriptController.value.text.isNotEmpty) {
       result += "# player king constraints\n\n";
-      result += _playerKingConstraintsScriptController.text;
+      result += playerKingConstraintsScriptController.value.text;
       result += "\n\n$scriptsSeparator\n\n";
     }
 
-    if (_computerKingConstraintsScriptController.text.isNotEmpty) {
+    if (computerKingConstraintsScriptController.value.text.isNotEmpty) {
       result += "# computer king constraints\n\n";
-      result += _computerKingConstraintsScriptController.text;
+      result += computerKingConstraintsScriptController.value.text;
       result += "\n\n$scriptsSeparator\n\n";
     }
 
-    if (_kingsMutualConstraintsScriptController.text.isNotEmpty) {
+    if (kingsMutualConstraintsScriptController.value.text.isNotEmpty) {
       result += "# kings mutual constraints\n\n";
-      result += _kingsMutualConstraintsScriptController.text;
+      result += kingsMutualConstraintsScriptController.value.text;
       result += "\n\n$scriptsSeparator\n\n";
     }
 
-    if (_otherPiecesCountConstraintsScript.isNotEmpty) {
+    if (otherPiecesCountConstraintsScript.value.isNotEmpty) {
       result += "# other pieces counts\n\n";
-      result += _otherPiecesCountConstraintsScript;
+      result += otherPiecesCountConstraintsScript.value;
       result += "\n\n$scriptsSeparator\n\n";
     }
 
-    if (_otherPiecesGlobalConstraintsScripts.isNotEmpty) {
+    if (otherPiecesGlobalConstraintsScripts.value.isNotEmpty) {
       var temp = "";
-      for (var kind in _otherPiecesGlobalConstraintsScripts.keys) {
-        if (_otherPiecesGlobalConstraintsScripts[kind]!.text.isEmpty) continue;
+      for (var kind in otherPiecesGlobalConstraintsScripts.value.keys) {
+        if (otherPiecesGlobalConstraintsScripts.value[kind]!.text.isEmpty) {
+          continue;
+        }
         temp += "[${kind.toEasyString()}]\n\n";
-        temp += _otherPiecesGlobalConstraintsScripts[kind]!.text;
+        temp += otherPiecesGlobalConstraintsScripts.value[kind]!.text;
         temp += "\n\n$otherPiecesSingleScriptSeparator\n\n";
       }
       if (temp.isNotEmpty) {
@@ -635,12 +645,14 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
       }
     }
 
-    if (_otherPiecesMutualConstraintsScripts.isNotEmpty) {
+    if (otherPiecesMutualConstraintsScripts.value.isNotEmpty) {
       var temp = "";
-      for (var kind in _otherPiecesMutualConstraintsScripts.keys) {
-        if (_otherPiecesMutualConstraintsScripts[kind]!.text.isEmpty) continue;
+      for (var kind in otherPiecesMutualConstraintsScripts.value.keys) {
+        if (otherPiecesMutualConstraintsScripts.value[kind]!.text.isEmpty) {
+          continue;
+        }
         temp += "[${kind.toEasyString()}]\n\n";
-        temp += _otherPiecesMutualConstraintsScripts[kind]!.text;
+        temp += otherPiecesMutualConstraintsScripts.value[kind]!.text;
         temp += "\n\n$otherPiecesSingleScriptSeparator\n\n";
       }
       if (temp.isNotEmpty) {
@@ -650,12 +662,14 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
       }
     }
 
-    if (_otherPiecesIndexedConstraintsScripts.isNotEmpty) {
+    if (otherPiecesIndexedConstraintsScripts.value.isNotEmpty) {
       var temp = "";
-      for (var kind in _otherPiecesIndexedConstraintsScripts.keys) {
-        if (_otherPiecesIndexedConstraintsScripts[kind]!.text.isEmpty) continue;
+      for (var kind in otherPiecesIndexedConstraintsScripts.value.keys) {
+        if (otherPiecesIndexedConstraintsScripts.value[kind]!.text.isEmpty) {
+          continue;
+        }
         temp += "[${kind.toEasyString()}]\n\n";
-        temp += _otherPiecesIndexedConstraintsScripts[kind]!.text;
+        temp += otherPiecesIndexedConstraintsScripts.value[kind]!.text;
         temp += "\n\n$otherPiecesSingleScriptSeparator\n\n";
       }
       if (temp.isNotEmpty) {
@@ -666,39 +680,44 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     }
 
     result += "# goal\n\n";
-    result += _goalScript;
+    result += goalScript;
 
     return result;
   }
 
-  void _updateOtherPiecesCountConstraintsScript(Map<PieceKind, int> counts) {
+  void _updateOtherPiecesCountConstraintsScript({
+    required Map<PieceKind, int> counts,
+    required ValueNotifier<String> otherPiecesCountConstraintsScript,
+  }) {
     final script = [
       for (var entry in counts.entries)
         "${entry.key.toEasyString()} : ${entry.value}"
     ].join("\n");
-    setState(() {
-      _otherPiecesCountConstraintsScript = script;
-    });
+    otherPiecesCountConstraintsScript.value = script;
   }
 
-  void _updateGoalScript(bool shouldWin) {
-    setState(() {
-      _goalScript = shouldWin ? winningString : drawingString;
-    });
+  void _updateGoalScript({
+    required bool shouldWin,
+    required ValueNotifier<String> goalScript,
+  }) {
+    goalScript.value = shouldWin ? winningString : drawingString;
   }
 
   List<PieceKind> _getOtherPiecesKindsFromPiecesCountScript(String script) {
     return convertScriptToPiecesCounts(script).keys.toList();
   }
 
-  void _handleExitPage(bool didPop, Object? result) async {
+  void _handleExitPage({
+    required bool didPop,
+    required BuildContext context,
+  }) async {
     if (didPop) return;
-    if (widget.readOnly) {
+    if (readOnly) {
       Navigator.of(context).pop();
       return;
     }
 
-    return await showDialog(
+    await showDialog<bool>(
         context: context,
         builder: (ctx2) {
           return AlertDialog(
@@ -747,83 +766,125 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         });
   }
 
-  void _focusEditor() {
-    if (_selectedTabIndex == playeKingTabIndex) {
-      _playerKingConstraintsFocusNode.requestFocus();
-    } else if (_selectedTabIndex == computerKingTabIndex) {
-      _computerKingConstraintsFocusNode.requestFocus();
-    } else if (_selectedTabIndex == kingsMutualTabIndex) {
-      _kingsMutualConstraintsFocusNode.requestFocus();
-    } else if (_selectedTabIndex == otherPieceGlobalTabIndex) {
-      if (_otherPiecesGlobalConstraintsSelectedPieceKind == null) {
+  void _focusEditor({
+    required int selectedTabIndex,
+    required FocusNode playerKingConstraintsFocusNode,
+    required FocusNode computerKingConstraintsFocusNode,
+    required FocusNode kingsMutualConstraintsFocusNode,
+    required FocusNode otherPiecesGlobalConstraintsFocusNode,
+    required FocusNode otherPiecesMutualConstraintsFocusNode,
+    required FocusNode otherPiecesIndexedConstraintsFocusNode,
+    required ValueNotifier<PieceKind?>
+        otherPiecesGlobalConstraintsSelectedPieceKind,
+    required ValueNotifier<PieceKind?>
+        otherPiecesMutualConstraintsSelectedPieceKind,
+    required ValueNotifier<PieceKind?>
+        otherPiecesIndexedConstraintsSelectedPieceKind,
+  }) {
+    if (selectedTabIndex == playeKingTabIndex) {
+      playerKingConstraintsFocusNode.requestFocus();
+    } else if (selectedTabIndex == computerKingTabIndex) {
+      computerKingConstraintsFocusNode.requestFocus();
+    } else if (selectedTabIndex == kingsMutualTabIndex) {
+      kingsMutualConstraintsFocusNode.requestFocus();
+    } else if (selectedTabIndex == otherPiecesGlobalTabIndex) {
+      if (otherPiecesGlobalConstraintsSelectedPieceKind.value == null) {
         return;
       }
-      _otherPiecesGlobalConstraintsFocusNode.requestFocus();
-    } else if (_selectedTabIndex == otherPiecesIndexedTabIndex) {
-      if (_otherPiecesIndexedConstraintsSelectedPieceKind == null) {
+      otherPiecesGlobalConstraintsFocusNode.requestFocus();
+    } else if (selectedTabIndex == otherPiecesIndexedTabIndex) {
+      if (otherPiecesIndexedConstraintsSelectedPieceKind.value == null) {
         return;
       }
-      _otherPiecesIndexedConstraintsFocusNode.requestFocus();
-    } else if (_selectedTabIndex == otherPiecesMutualTabIndex) {
-      if (_otherPiecesMutualConstraintsSelectedPieceKind == null) {
+      otherPiecesIndexedConstraintsFocusNode.requestFocus();
+    } else if (selectedTabIndex == otherPiecesMutualTabIndex) {
+      if (otherPiecesMutualConstraintsSelectedPieceKind.value == null) {
         return;
       }
-      _otherPiecesMutualConstraintsFocusNode.requestFocus();
+      otherPiecesMutualConstraintsFocusNode.requestFocus();
     }
   }
 
-  TextEditingController? _getControllerForCurrentScript() {
+  TextEditingController? _getControllerForCurrentScript({
+    required int selectedTabIndex,
+    required TextEditingController playerKingConstraintsScriptController,
+    required TextEditingController computerKingConstraintsScriptController,
+    required TextEditingController kingsMutualConstraintsScriptController,
+    required PieceKind? otherPiecesGlobalConstraintsSelectedPieceKind,
+    required PieceKind? otherPiecesMutualConstraintsSelectedPieceKind,
+    required PieceKind? otherPiecesIndexedConstraintsSelectedPieceKind,
+    required Map<PieceKind, TextEditingController>
+        otherPiecesGlobalConstraintsScripts,
+    required Map<PieceKind, TextEditingController>
+        otherPiecesMutualConstraintsScripts,
+    required Map<PieceKind, TextEditingController>
+        otherPiecesIndexedConstraintsScripts,
+  }) {
     TextEditingController? controller;
 
-    if (_selectedTabIndex == playeKingTabIndex) {
-      controller = _playerKingConstraintsScriptController;
-    } else if (_selectedTabIndex == computerKingTabIndex) {
-      controller = _computerKingConstraintsScriptController;
-    } else if (_selectedTabIndex == kingsMutualTabIndex) {
-      controller = _kingsMutualConstraintsScriptController;
-    } else if (_selectedTabIndex == otherPieceGlobalTabIndex) {
-      if (_otherPiecesGlobalConstraintsSelectedPieceKind == null) {
+    if (selectedTabIndex == playeKingTabIndex) {
+      controller = playerKingConstraintsScriptController;
+    } else if (selectedTabIndex == computerKingTabIndex) {
+      controller = computerKingConstraintsScriptController;
+    } else if (selectedTabIndex == kingsMutualTabIndex) {
+      controller = kingsMutualConstraintsScriptController;
+    } else if (selectedTabIndex == otherPiecesGlobalTabIndex) {
+      if (otherPiecesGlobalConstraintsSelectedPieceKind == null) {
         return null;
       }
-      controller = _otherPiecesGlobalConstraintsScripts[
-          _otherPiecesGlobalConstraintsSelectedPieceKind];
-    } else if (_selectedTabIndex == otherPiecesIndexedTabIndex) {
-      if (_otherPiecesIndexedConstraintsSelectedPieceKind == null) {
+      controller = otherPiecesGlobalConstraintsScripts[
+          otherPiecesGlobalConstraintsSelectedPieceKind];
+    } else if (selectedTabIndex == otherPiecesIndexedTabIndex) {
+      if (otherPiecesIndexedConstraintsSelectedPieceKind == null) {
         return null;
       }
-      controller = _otherPiecesIndexedConstraintsScripts[
-          _otherPiecesIndexedConstraintsSelectedPieceKind];
-    } else if (_selectedTabIndex == otherPiecesMutualTabIndex) {
-      if (_otherPiecesMutualConstraintsSelectedPieceKind == null) {
+      controller = otherPiecesIndexedConstraintsScripts[
+          otherPiecesIndexedConstraintsSelectedPieceKind];
+    } else if (selectedTabIndex == otherPiecesMutualTabIndex) {
+      if (otherPiecesMutualConstraintsSelectedPieceKind == null) {
         return null;
       }
-      controller = _otherPiecesMutualConstraintsScripts[
-          _otherPiecesMutualConstraintsSelectedPieceKind];
+      controller = otherPiecesMutualConstraintsScripts[
+          otherPiecesMutualConstraintsSelectedPieceKind];
     }
 
     return controller;
   }
 
-  List<List<String>> _getInsertVariableForCurrentScript() {
-    return switch (_selectedTabIndex) {
+  List<List<String>> _getInsertVariableForCurrentScript(int selectedTabIndex) {
+    return switch (selectedTabIndex) {
       playeKingTabIndex ||
       computerKingTabIndex =>
         _getPlayerKingConstraintsVariablesData(),
       kingsMutualTabIndex => _getKingsMutualConstraintsVariablesData(),
-      otherPieceGlobalTabIndex =>
+      otherPiecesGlobalTabIndex =>
         _getOtherPiecesGlobalConstraintsVariablesData(),
       otherPiecesIndexedTabIndex =>
         _getOtherPiecesIndexedConstraintsVariablesData(),
       otherPiecesMutualTabIndex =>
         _getOtherPiecesMutualConstraintsVariablesData(),
       _ => throw Exception(
-          "Cannot insert variable for this kind of selected tab index : $_selectedTabIndex")
+          "Cannot insert variable for this kind of selected tab index : $selectedTabIndex")
     };
   }
 
   Future<void> _showInsertVariableDialog({
     required List<List<String>> data,
     required TextEditingController? controller,
+    required BuildContext context,
+    required int selectedTabIndex,
+    required FocusNode playerKingConstraintsFocusNode,
+    required FocusNode computerKingConstraintsFocusNode,
+    required FocusNode kingsMutualConstraintsFocusNode,
+    required FocusNode otherPiecesGlobalConstraintsFocusNode,
+    required FocusNode otherPiecesMutualConstraintsFocusNode,
+    required FocusNode otherPiecesIndexedConstraintsFocusNode,
+    required ValueNotifier<PieceKind?>
+        otherPiecesGlobalConstraintsSelectedPieceKind,
+    required ValueNotifier<PieceKind?>
+        otherPiecesMutualConstraintsSelectedPieceKind,
+    required ValueNotifier<PieceKind?>
+        otherPiecesIndexedConstraintsSelectedPieceKind,
   }) async {
     return await showDialog(
         context: context,
@@ -831,7 +892,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         builder: (context) {
           return AlertDialog(
             title: Text(
-              widget.readOnly
+              readOnly
                   ? t.script_editor_page.consult_variables_title
                   : t.script_editor_page.insert_variable_title,
             ),
@@ -842,7 +903,27 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
               onDone: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
-                _focusEditor();
+                _focusEditor(
+                  selectedTabIndex: selectedTabIndex,
+                  playerKingConstraintsFocusNode:
+                      playerKingConstraintsFocusNode,
+                  computerKingConstraintsFocusNode:
+                      computerKingConstraintsFocusNode,
+                  kingsMutualConstraintsFocusNode:
+                      kingsMutualConstraintsFocusNode,
+                  otherPiecesGlobalConstraintsFocusNode:
+                      otherPiecesGlobalConstraintsFocusNode,
+                  otherPiecesMutualConstraintsFocusNode:
+                      otherPiecesMutualConstraintsFocusNode,
+                  otherPiecesIndexedConstraintsFocusNode:
+                      otherPiecesIndexedConstraintsFocusNode,
+                  otherPiecesGlobalConstraintsSelectedPieceKind:
+                      otherPiecesGlobalConstraintsSelectedPieceKind,
+                  otherPiecesMutualConstraintsSelectedPieceKind:
+                      otherPiecesMutualConstraintsSelectedPieceKind,
+                  otherPiecesIndexedConstraintsSelectedPieceKind:
+                      otherPiecesIndexedConstraintsSelectedPieceKind,
+                );
               },
             ),
             actions: [
@@ -868,24 +949,83 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         });
   }
 
-  Future<void> _purposeInsertCommonConstant() async {
+  Future<void> _purposeInsertCommonConstant({
+    required int selectedTabIndex,
+    required BuildContext context,
+    required FocusNode playerKingConstraintsFocusNode,
+    required FocusNode computerKingConstraintsFocusNode,
+    required FocusNode kingsMutualConstraintsFocusNode,
+    required FocusNode otherPiecesGlobalConstraintsFocusNode,
+    required FocusNode otherPiecesMutualConstraintsFocusNode,
+    required FocusNode otherPiecesIndexedConstraintsFocusNode,
+    required ValueNotifier<PieceKind?>
+        otherPiecesGlobalConstraintsSelectedPieceKind,
+    required ValueNotifier<PieceKind?>
+        otherPiecesMutualConstraintsSelectedPieceKind,
+    required ValueNotifier<PieceKind?>
+        otherPiecesIndexedConstraintsSelectedPieceKind,
+    required TextEditingController playerKingConstraintsScriptController,
+    required TextEditingController computerKingConstraintsScriptController,
+    required TextEditingController kingsMutualConstraintsScriptController,
+    required Map<PieceKind, TextEditingController>
+        otherPiecesGlobalConstraintsScripts,
+    required Map<PieceKind, TextEditingController>
+        otherPiecesMutualConstraintsScripts,
+    required Map<PieceKind, TextEditingController>
+        otherPiecesIndexedConstraintsScripts,
+  }) async {
     final data = _getCommonVariablesData();
 
-    if (widget.readOnly) {
+    if (readOnly) {
       await _showInsertVariableDialog(
         data: data,
         controller: null,
+        context: context,
+        selectedTabIndex: selectedTabIndex,
+        playerKingConstraintsFocusNode: playerKingConstraintsFocusNode,
+        computerKingConstraintsFocusNode: computerKingConstraintsFocusNode,
+        kingsMutualConstraintsFocusNode: kingsMutualConstraintsFocusNode,
+        otherPiecesGlobalConstraintsFocusNode:
+            otherPiecesGlobalConstraintsFocusNode,
+        otherPiecesMutualConstraintsFocusNode:
+            otherPiecesMutualConstraintsFocusNode,
+        otherPiecesIndexedConstraintsFocusNode:
+            otherPiecesIndexedConstraintsFocusNode,
+        otherPiecesGlobalConstraintsSelectedPieceKind:
+            otherPiecesGlobalConstraintsSelectedPieceKind,
+        otherPiecesMutualConstraintsSelectedPieceKind:
+            otherPiecesMutualConstraintsSelectedPieceKind,
+        otherPiecesIndexedConstraintsSelectedPieceKind:
+            otherPiecesIndexedConstraintsSelectedPieceKind,
       );
       return;
     }
 
     final isInPiecesCountTabOrInGoalTab =
-        (_selectedTabIndex == 3) || (_selectedTabIndex == 7);
+        (selectedTabIndex == 3) || (selectedTabIndex == 7);
     if (isInPiecesCountTabOrInGoalTab) {
       return;
     }
 
-    final controller = _getControllerForCurrentScript();
+    final controller = _getControllerForCurrentScript(
+      selectedTabIndex: selectedTabIndex,
+      playerKingConstraintsScriptController:
+          playerKingConstraintsScriptController,
+      computerKingConstraintsScriptController:
+          computerKingConstraintsScriptController,
+      kingsMutualConstraintsScriptController:
+          kingsMutualConstraintsScriptController,
+      otherPiecesGlobalConstraintsScripts: otherPiecesGlobalConstraintsScripts,
+      otherPiecesMutualConstraintsScripts: otherPiecesMutualConstraintsScripts,
+      otherPiecesIndexedConstraintsScripts:
+          otherPiecesIndexedConstraintsScripts,
+      otherPiecesGlobalConstraintsSelectedPieceKind:
+          otherPiecesGlobalConstraintsSelectedPieceKind.value,
+      otherPiecesMutualConstraintsSelectedPieceKind:
+          otherPiecesMutualConstraintsSelectedPieceKind.value,
+      otherPiecesIndexedConstraintsSelectedPieceKind:
+          otherPiecesIndexedConstraintsSelectedPieceKind.value,
+    );
     final noTextFieldActive = controller == null;
     if (noTextFieldActive) {
       return;
@@ -894,27 +1034,103 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     return await _showInsertVariableDialog(
       data: data,
       controller: controller,
+      context: context,
+      playerKingConstraintsFocusNode: playerKingConstraintsFocusNode,
+      computerKingConstraintsFocusNode: computerKingConstraintsFocusNode,
+      kingsMutualConstraintsFocusNode: kingsMutualConstraintsFocusNode,
+      otherPiecesGlobalConstraintsFocusNode:
+          otherPiecesGlobalConstraintsFocusNode,
+      otherPiecesMutualConstraintsFocusNode:
+          otherPiecesMutualConstraintsFocusNode,
+      otherPiecesIndexedConstraintsFocusNode:
+          otherPiecesIndexedConstraintsFocusNode,
+      otherPiecesGlobalConstraintsSelectedPieceKind:
+          otherPiecesGlobalConstraintsSelectedPieceKind,
+      otherPiecesMutualConstraintsSelectedPieceKind:
+          otherPiecesMutualConstraintsSelectedPieceKind,
+      otherPiecesIndexedConstraintsSelectedPieceKind:
+          otherPiecesIndexedConstraintsSelectedPieceKind,
+      selectedTabIndex: selectedTabIndex,
     );
   }
 
-  Future<void> _purposeInsertScriptVariable() async {
-    final data = _getInsertVariableForCurrentScript();
+  Future<void> _purposeInsertScriptVariable({
+    required int selectedTabIndex,
+    required BuildContext context,
+    required FocusNode playerKingConstraintsFocusNode,
+    required FocusNode computerKingConstraintsFocusNode,
+    required FocusNode kingsMutualConstraintsFocusNode,
+    required FocusNode otherPiecesGlobalConstraintsFocusNode,
+    required FocusNode otherPiecesMutualConstraintsFocusNode,
+    required FocusNode otherPiecesIndexedConstraintsFocusNode,
+    required ValueNotifier<PieceKind?>
+        otherPiecesGlobalConstraintsSelectedPieceKind,
+    required ValueNotifier<PieceKind?>
+        otherPiecesMutualConstraintsSelectedPieceKind,
+    required ValueNotifier<PieceKind?>
+        otherPiecesIndexedConstraintsSelectedPieceKind,
+    required TextEditingController playerKingConstraintsScriptController,
+    required TextEditingController computerKingConstraintsScriptController,
+    required TextEditingController kingsMutualConstraintsScriptController,
+    required Map<PieceKind, TextEditingController>
+        otherPiecesGlobalConstraintsScripts,
+    required Map<PieceKind, TextEditingController>
+        otherPiecesMutualConstraintsScripts,
+    required Map<PieceKind, TextEditingController>
+        otherPiecesIndexedConstraintsScripts,
+  }) async {
+    final data = _getInsertVariableForCurrentScript(selectedTabIndex);
 
-    if (widget.readOnly) {
+    if (readOnly) {
       await _showInsertVariableDialog(
         data: data,
+        context: context,
         controller: null,
+        playerKingConstraintsFocusNode: playerKingConstraintsFocusNode,
+        computerKingConstraintsFocusNode: computerKingConstraintsFocusNode,
+        kingsMutualConstraintsFocusNode: kingsMutualConstraintsFocusNode,
+        otherPiecesGlobalConstraintsFocusNode:
+            otherPiecesGlobalConstraintsFocusNode,
+        otherPiecesMutualConstraintsFocusNode:
+            otherPiecesMutualConstraintsFocusNode,
+        otherPiecesIndexedConstraintsFocusNode:
+            otherPiecesIndexedConstraintsFocusNode,
+        otherPiecesGlobalConstraintsSelectedPieceKind:
+            otherPiecesGlobalConstraintsSelectedPieceKind,
+        otherPiecesMutualConstraintsSelectedPieceKind:
+            otherPiecesMutualConstraintsSelectedPieceKind,
+        otherPiecesIndexedConstraintsSelectedPieceKind:
+            otherPiecesIndexedConstraintsSelectedPieceKind,
+        selectedTabIndex: selectedTabIndex,
       );
       return;
     }
 
     final isInPiecesCountTabOrInGoalTab =
-        (_selectedTabIndex == 3) || (_selectedTabIndex == 7);
+        (selectedTabIndex == 3) || (selectedTabIndex == 7);
     if (isInPiecesCountTabOrInGoalTab) {
       return;
     }
 
-    final controller = _getControllerForCurrentScript();
+    final controller = _getControllerForCurrentScript(
+      playerKingConstraintsScriptController:
+          playerKingConstraintsScriptController,
+      computerKingConstraintsScriptController:
+          computerKingConstraintsScriptController,
+      kingsMutualConstraintsScriptController:
+          kingsMutualConstraintsScriptController,
+      otherPiecesGlobalConstraintsScripts: otherPiecesGlobalConstraintsScripts,
+      otherPiecesMutualConstraintsScripts: otherPiecesMutualConstraintsScripts,
+      otherPiecesIndexedConstraintsScripts:
+          otherPiecesIndexedConstraintsScripts,
+      otherPiecesGlobalConstraintsSelectedPieceKind:
+          otherPiecesGlobalConstraintsSelectedPieceKind.value,
+      otherPiecesMutualConstraintsSelectedPieceKind:
+          otherPiecesMutualConstraintsSelectedPieceKind.value,
+      otherPiecesIndexedConstraintsSelectedPieceKind:
+          otherPiecesIndexedConstraintsSelectedPieceKind.value,
+      selectedTabIndex: selectedTabIndex,
+    );
     final noTextFieldActive = controller == null;
     if (noTextFieldActive) {
       return;
@@ -923,21 +1139,62 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
     return await _showInsertVariableDialog(
       data: data,
       controller: controller,
+      context: context,
+      selectedTabIndex: selectedTabIndex,
+      playerKingConstraintsFocusNode: playerKingConstraintsFocusNode,
+      computerKingConstraintsFocusNode: computerKingConstraintsFocusNode,
+      kingsMutualConstraintsFocusNode: kingsMutualConstraintsFocusNode,
+      otherPiecesGlobalConstraintsFocusNode:
+          otherPiecesGlobalConstraintsFocusNode,
+      otherPiecesMutualConstraintsFocusNode:
+          otherPiecesMutualConstraintsFocusNode,
+      otherPiecesIndexedConstraintsFocusNode:
+          otherPiecesIndexedConstraintsFocusNode,
+      otherPiecesGlobalConstraintsSelectedPieceKind:
+          otherPiecesGlobalConstraintsSelectedPieceKind,
+      otherPiecesMutualConstraintsSelectedPieceKind:
+          otherPiecesMutualConstraintsSelectedPieceKind,
+      otherPiecesIndexedConstraintsSelectedPieceKind:
+          otherPiecesIndexedConstraintsSelectedPieceKind,
     );
   }
 
-  void _purposeInsertVariable() async {
-    final notATextEditor = (_selectedTabIndex == otherPiecesCountTabIndex) ||
-        (_selectedTabIndex == goalTabIndex);
+  void _purposeInsertVariable({
+    required BuildContext context,
+    required int selectedTabIndex,
+    required ValueNotifier<PieceKind?>
+        otherPiecesGlobalConstraintsSelectedPieceKind,
+    required ValueNotifier<PieceKind?>
+        otherPiecesMutualConstraintsSelectedPieceKind,
+    required ValueNotifier<PieceKind?>
+        otherPiecesIndexedConstraintsSelectedPieceKind,
+    required FocusNode playerKingConstraintsFocusNode,
+    required FocusNode computerKingConstraintsFocusNode,
+    required FocusNode kingsMutualConstraintsFocusNode,
+    required FocusNode otherPiecesGlobalConstraintsFocusNode,
+    required FocusNode otherPiecesMutualConstraintsFocusNode,
+    required FocusNode otherPiecesIndexedConstraintsFocusNode,
+    required TextEditingController playerKingConstraintsScriptController,
+    required TextEditingController computerKingConstraintsScriptController,
+    required TextEditingController kingsMutualConstraintsScriptController,
+    required Map<PieceKind, TextEditingController>
+        otherPiecesGlobalConstraintsScripts,
+    required Map<PieceKind, TextEditingController>
+        otherPiecesMutualConstraintsScripts,
+    required Map<PieceKind, TextEditingController>
+        otherPiecesIndexedConstraintsScripts,
+  }) async {
+    final notATextEditor = (selectedTabIndex == otherPiecesCountTabIndex) ||
+        (selectedTabIndex == goalTabIndex);
     if (notATextEditor) return;
 
     final noPieceKindSelected =
-        (_selectedTabIndex == otherPieceGlobalTabIndex &&
-                _otherPiecesGlobalConstraintsSelectedPieceKind == null) ||
-            (_selectedTabIndex == otherPiecesMutualTabIndex &&
-                _otherPiecesMutualConstraintsSelectedPieceKind == null) ||
-            (_selectedTabIndex == otherPiecesIndexedTabIndex &&
-                _otherPiecesIndexedConstraintsSelectedPieceKind == null);
+        (selectedTabIndex == otherPiecesGlobalTabIndex &&
+                otherPiecesGlobalConstraintsSelectedPieceKind.value == null) ||
+            (selectedTabIndex == otherPiecesMutualTabIndex &&
+                otherPiecesMutualConstraintsSelectedPieceKind.value == null) ||
+            (selectedTabIndex == otherPiecesIndexedTabIndex &&
+                otherPiecesIndexedConstraintsSelectedPieceKind.value == null);
 
     if (noPieceKindSelected) {
       return;
@@ -949,7 +1206,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
         builder: (context) {
           return AlertDialog(
             title: Text(
-              widget.readOnly
+              readOnly
                   ? t.script_editor_page.consult_variables_title
                   : t.script_editor_page.insert_variable_title,
             ),
@@ -961,7 +1218,40 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                    onPressed: _purposeInsertScriptVariable,
+                    onPressed: () => _purposeInsertScriptVariable(
+                      context: context,
+                      playerKingConstraintsFocusNode:
+                          playerKingConstraintsFocusNode,
+                      computerKingConstraintsFocusNode:
+                          computerKingConstraintsFocusNode,
+                      kingsMutualConstraintsFocusNode:
+                          kingsMutualConstraintsFocusNode,
+                      otherPiecesGlobalConstraintsFocusNode:
+                          otherPiecesGlobalConstraintsFocusNode,
+                      otherPiecesMutualConstraintsFocusNode:
+                          otherPiecesMutualConstraintsFocusNode,
+                      otherPiecesIndexedConstraintsFocusNode:
+                          otherPiecesIndexedConstraintsFocusNode,
+                      playerKingConstraintsScriptController:
+                          playerKingConstraintsScriptController,
+                      computerKingConstraintsScriptController:
+                          computerKingConstraintsScriptController,
+                      kingsMutualConstraintsScriptController:
+                          kingsMutualConstraintsScriptController,
+                      otherPiecesGlobalConstraintsScripts:
+                          otherPiecesGlobalConstraintsScripts,
+                      otherPiecesMutualConstraintsScripts:
+                          otherPiecesMutualConstraintsScripts,
+                      otherPiecesIndexedConstraintsScripts:
+                          otherPiecesIndexedConstraintsScripts,
+                      otherPiecesGlobalConstraintsSelectedPieceKind:
+                          otherPiecesGlobalConstraintsSelectedPieceKind,
+                      otherPiecesMutualConstraintsSelectedPieceKind:
+                          otherPiecesMutualConstraintsSelectedPieceKind,
+                      otherPiecesIndexedConstraintsSelectedPieceKind:
+                          otherPiecesIndexedConstraintsSelectedPieceKind,
+                      selectedTabIndex: selectedTabIndex,
+                    ),
                     child: Text(
                       t.script_editor_page.choice_script_variables,
                     ),
@@ -970,7 +1260,40 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                    onPressed: _purposeInsertCommonConstant,
+                    onPressed: () => _purposeInsertCommonConstant(
+                      context: context,
+                      playerKingConstraintsFocusNode:
+                          playerKingConstraintsFocusNode,
+                      computerKingConstraintsFocusNode:
+                          computerKingConstraintsFocusNode,
+                      kingsMutualConstraintsFocusNode:
+                          kingsMutualConstraintsFocusNode,
+                      otherPiecesGlobalConstraintsFocusNode:
+                          otherPiecesGlobalConstraintsFocusNode,
+                      otherPiecesMutualConstraintsFocusNode:
+                          otherPiecesMutualConstraintsFocusNode,
+                      otherPiecesIndexedConstraintsFocusNode:
+                          otherPiecesIndexedConstraintsFocusNode,
+                      playerKingConstraintsScriptController:
+                          playerKingConstraintsScriptController,
+                      computerKingConstraintsScriptController:
+                          computerKingConstraintsScriptController,
+                      kingsMutualConstraintsScriptController:
+                          kingsMutualConstraintsScriptController,
+                      otherPiecesGlobalConstraintsScripts:
+                          otherPiecesGlobalConstraintsScripts,
+                      otherPiecesMutualConstraintsScripts:
+                          otherPiecesMutualConstraintsScripts,
+                      otherPiecesIndexedConstraintsScripts:
+                          otherPiecesIndexedConstraintsScripts,
+                      otherPiecesGlobalConstraintsSelectedPieceKind:
+                          otherPiecesGlobalConstraintsSelectedPieceKind,
+                      otherPiecesMutualConstraintsSelectedPieceKind:
+                          otherPiecesMutualConstraintsSelectedPieceKind,
+                      otherPiecesIndexedConstraintsSelectedPieceKind:
+                          otherPiecesIndexedConstraintsSelectedPieceKind,
+                      selectedTabIndex: selectedTabIndex,
+                    ),
                     child: Text(
                       t.script_editor_page.choice_common_constants,
                     ),
@@ -984,15 +1307,92 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
 
   @override
   Widget build(BuildContext context) {
-    final otherPiecesKinds = _getOtherPiecesKindsFromPiecesCountScript(
-        _otherPiecesCountConstraintsScript);
+    final isCheckingPosition = useState(false);
+    final isSavingFile = useState(false);
+    final scriptCheckerIsolate = useState<Isolate?>(null);
+    final selectedTabIndex = useState(playeKingTabIndex);
 
-    final notATextEditor = (_selectedTabIndex == otherPiecesCountTabIndex) ||
-        (_selectedTabIndex == goalTabIndex);
+    final playerKingConstraintsScriptController =
+        useTextEditingController(text: initialScriptsSet.playerKingConstraints);
+    final computerKingConstraintsScriptController = useTextEditingController(
+        text: initialScriptsSet.computerKingConstraints);
+    final kingsMutualConstraintsScriptController = useTextEditingController(
+        text: initialScriptsSet.kingsMutualConstraints);
+
+    final otherPiecesGlobalConstraintsScripts =
+        useState(<PieceKind, TextEditingController>{});
+    final otherPiecesMutualConstraintsScripts =
+        useState(<PieceKind, TextEditingController>{});
+    final otherPiecesIndexedConstraintsScripts =
+        useState(<PieceKind, TextEditingController>{});
+    final otherPiecesCountConstraintsScript =
+        useState(initialScriptsSet.otherPiecesCountConstraints);
+    final goalScript =
+        useState(initialScriptsSet.winningGoal ? winningString : drawingString);
+
+    final otherPiecesKinds = _getOtherPiecesKindsFromPiecesCountScript(
+        otherPiecesCountConstraintsScript.value);
+
+    final notATextEditor =
+        (selectedTabIndex.value == otherPiecesCountTabIndex) ||
+            (selectedTabIndex.value == goalTabIndex);
+
+    final playerKingConstraintsFocusNode = useFocusNode();
+    final computerKingConstraintsFocusNode = useFocusNode();
+    final kingsMutualConstraintsFocusNode = useFocusNode();
+    final otherPiecesGlobalConstraintsFocusNode = useFocusNode();
+    final otherPiecesIndexedConstraintsFocusNode = useFocusNode();
+    final otherPiecesMutualConstraintsFocusNode = useFocusNode();
+
+    final otherPiecesGlobalConstraintsSelectedPieceKind =
+        useState<PieceKind?>(null);
+    final otherPiecesIndexedConstraintsSelectedPieceKind =
+        useState<PieceKind?>(null);
+    final otherPiecesMutualConstraintsSelectedPieceKind =
+        useState<PieceKind?>(null);
+
+    useEffect(() {
+      initState(
+        otherPiecesGlobalConstraintsScripts:
+            otherPiecesGlobalConstraintsScripts,
+        otherPiecesMutualConstraintsScripts:
+            otherPiecesMutualConstraintsScripts,
+        otherPiecesIndexedConstraintsScripts:
+            otherPiecesIndexedConstraintsScripts,
+        otherPiecesCountConstraintsScript:
+            otherPiecesCountConstraintsScript.value,
+      );
+
+      return () => dispose(
+            scriptCheckerIsolate: scriptCheckerIsolate,
+            playerKingConstraintsFocusNode: playerKingConstraintsFocusNode,
+            computerKingConstraintsFocusNode: computerKingConstraintsFocusNode,
+            kingsMutualConstraintsFocusNode: kingsMutualConstraintsFocusNode,
+            otherPiecesGlobalConstraintsFocusNode:
+                otherPiecesGlobalConstraintsFocusNode,
+            otherPiecesMutualConstraintsFocusNode:
+                otherPiecesMutualConstraintsFocusNode,
+            otherPiecesIndexedConstraintsFocusNode:
+                otherPiecesIndexedConstraintsFocusNode,
+            playerKingConstraintsScriptController:
+                playerKingConstraintsScriptController,
+            computerKingConstraintsScriptController:
+                computerKingConstraintsScriptController,
+            kingsMutualConstraintsScriptController:
+                kingsMutualConstraintsScriptController,
+            otherPiecesGlobalConstraintsScripts:
+                otherPiecesGlobalConstraintsScripts,
+            otherPiecesMutualConstraintsScripts:
+                otherPiecesMutualConstraintsScripts,
+            otherPiecesIndexedConstraintsScripts:
+                otherPiecesIndexedConstraintsScripts,
+          );
+    }, []);
 
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: _handleExitPage,
+      onPopInvokedWithResult: (didPop, result) =>
+          _handleExitPage(context: context, didPop: didPop),
       child: DefaultTabController(
         length: 8,
         child: Builder(builder: (context) {
@@ -1000,9 +1400,7 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
           tabController.addListener(() {
             if (!tabController.indexIsChanging) {
               final index = tabController.index;
-              setState(() {
-                _selectedTabIndex = index;
-              });
+              selectedTabIndex.value = index;
             }
           });
           return Scaffold(
@@ -1013,7 +1411,40 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
               actions: [
                 if (!notATextEditor)
                   IconButton(
-                    onPressed: _purposeInsertVariable,
+                    onPressed: () => _purposeInsertVariable(
+                      context: context,
+                      selectedTabIndex: selectedTabIndex.value,
+                      playerKingConstraintsFocusNode:
+                          playerKingConstraintsFocusNode,
+                      computerKingConstraintsFocusNode:
+                          computerKingConstraintsFocusNode,
+                      kingsMutualConstraintsFocusNode:
+                          kingsMutualConstraintsFocusNode,
+                      otherPiecesGlobalConstraintsFocusNode:
+                          otherPiecesGlobalConstraintsFocusNode,
+                      otherPiecesMutualConstraintsFocusNode:
+                          otherPiecesMutualConstraintsFocusNode,
+                      otherPiecesIndexedConstraintsFocusNode:
+                          otherPiecesIndexedConstraintsFocusNode,
+                      playerKingConstraintsScriptController:
+                          playerKingConstraintsScriptController,
+                      computerKingConstraintsScriptController:
+                          computerKingConstraintsScriptController,
+                      kingsMutualConstraintsScriptController:
+                          kingsMutualConstraintsScriptController,
+                      otherPiecesGlobalConstraintsScripts:
+                          otherPiecesGlobalConstraintsScripts.value,
+                      otherPiecesMutualConstraintsScripts:
+                          otherPiecesMutualConstraintsScripts.value,
+                      otherPiecesIndexedConstraintsScripts:
+                          otherPiecesIndexedConstraintsScripts.value,
+                      otherPiecesGlobalConstraintsSelectedPieceKind:
+                          otherPiecesGlobalConstraintsSelectedPieceKind,
+                      otherPiecesMutualConstraintsSelectedPieceKind:
+                          otherPiecesMutualConstraintsSelectedPieceKind,
+                      otherPiecesIndexedConstraintsSelectedPieceKind:
+                          otherPiecesIndexedConstraintsSelectedPieceKind,
+                    ),
                     icon: const FaIcon(
                       FontAwesomeIcons.book,
                     ),
@@ -1047,104 +1478,105 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
             body: Stack(children: [
               TabBarView(children: [
                 PlayerKingConstraintsEditorWidget(
-                  controller: _playerKingConstraintsScriptController,
-                  focusNode: _playerKingConstraintsFocusNode,
-                  readOnly: widget.readOnly,
+                  controller: playerKingConstraintsScriptController,
+                  focusNode: playerKingConstraintsFocusNode,
+                  readOnly: readOnly,
                 ),
                 ComputerKingContraintsEditorWidget(
-                  readOnly: widget.readOnly,
-                  focusNode: _computerKingConstraintsFocusNode,
-                  controller: _computerKingConstraintsScriptController,
+                  readOnly: readOnly,
+                  focusNode: computerKingConstraintsFocusNode,
+                  controller: computerKingConstraintsScriptController,
                 ),
                 KingsMutualConstraintEditorWidget(
-                  readOnly: widget.readOnly,
-                  focusNode: _kingsMutualConstraintsFocusNode,
-                  controller: _kingsMutualConstraintsScriptController,
+                  readOnly: readOnly,
+                  focusNode: kingsMutualConstraintsFocusNode,
+                  controller: kingsMutualConstraintsScriptController,
                 ),
                 OtherPiecesCountConstraintsEditorWidget(
-                  readOnly: widget.readOnly,
+                  readOnly: readOnly,
                   onScriptUpdate: (counts) {
-                    _updateOtherPiecesCountConstraintsScript(counts);
+                    _updateOtherPiecesCountConstraintsScript(
+                      counts: counts,
+                      otherPiecesCountConstraintsScript:
+                          otherPiecesCountConstraintsScript,
+                    );
                   },
                   onKindAdded: (kind) {
-                    setState(() {
-                      _otherPiecesGlobalConstraintsScripts[kind] =
-                          TextEditingController();
-                      _otherPiecesMutualConstraintsScripts[kind] =
-                          TextEditingController();
-                      _otherPiecesIndexedConstraintsScripts[kind] =
-                          TextEditingController();
-                    });
+                    otherPiecesGlobalConstraintsScripts.value[kind] =
+                        TextEditingController();
+                    otherPiecesMutualConstraintsScripts.value[kind] =
+                        TextEditingController();
+                    otherPiecesIndexedConstraintsScripts.value[kind] =
+                        TextEditingController();
                   },
                   onKindRemoved: (kind) {
-                    setState(() {
-                      // Security cleaning
-                      if (_otherPiecesGlobalConstraintsSelectedPieceKind ==
-                          kind) {
-                        _otherPiecesGlobalConstraintsSelectedPieceKind = null;
-                      }
-                      if (_otherPiecesIndexedConstraintsSelectedPieceKind ==
-                          kind) {
-                        _otherPiecesIndexedConstraintsSelectedPieceKind = null;
-                      }
-                      if (_otherPiecesMutualConstraintsSelectedPieceKind ==
-                          kind) {
-                        _otherPiecesMutualConstraintsSelectedPieceKind = null;
-                      }
+                    // Security cleaning
+                    if (otherPiecesGlobalConstraintsSelectedPieceKind.value ==
+                        kind) {
+                      otherPiecesGlobalConstraintsSelectedPieceKind.value =
+                          null;
+                    }
+                    if (otherPiecesIndexedConstraintsSelectedPieceKind.value ==
+                        kind) {
+                      otherPiecesIndexedConstraintsSelectedPieceKind.value =
+                          null;
+                    }
+                    if (otherPiecesMutualConstraintsSelectedPieceKind.value ==
+                        kind) {
+                      otherPiecesMutualConstraintsSelectedPieceKind.value =
+                          null;
+                    }
 
-                      _otherPiecesGlobalConstraintsScripts.remove(kind);
-                      _otherPiecesMutualConstraintsScripts.remove(kind);
-                      _otherPiecesIndexedConstraintsScripts.remove(kind);
-                    });
+                    otherPiecesGlobalConstraintsScripts.value.remove(kind);
+                    otherPiecesMutualConstraintsScripts.value.remove(kind);
+                    otherPiecesIndexedConstraintsScripts.value.remove(kind);
                   },
-                  currentScript: _otherPiecesCountConstraintsScript,
+                  currentScript: otherPiecesCountConstraintsScript.value,
                 ),
                 OtherPiecesGlobalConstraintEditorWidget(
-                  readOnly: widget.readOnly,
+                  readOnly: readOnly,
                   availablePiecesKinds: otherPiecesKinds,
-                  controllers: _otherPiecesGlobalConstraintsScripts,
-                  focusNode: _otherPiecesGlobalConstraintsFocusNode,
+                  controllers: otherPiecesGlobalConstraintsScripts,
+                  focusNode: otherPiecesGlobalConstraintsFocusNode,
                   selectedPieceKind:
-                      _otherPiecesGlobalConstraintsSelectedPieceKind,
+                      otherPiecesGlobalConstraintsSelectedPieceKind.value,
                   onPieceKindSelection: (kind) {
-                    setState(() {
-                      _otherPiecesGlobalConstraintsSelectedPieceKind = kind;
-                    });
+                    otherPiecesGlobalConstraintsSelectedPieceKind.value = kind;
                   },
                 ),
                 OtherPiecesMutualConstraintEditorWidget(
-                  readOnly: widget.readOnly,
+                  readOnly: readOnly,
                   availablePiecesKinds: otherPiecesKinds,
-                  controllers: _otherPiecesMutualConstraintsScripts,
-                  focusNode: _otherPiecesMutualConstraintsFocusNode,
+                  controllers: otherPiecesMutualConstraintsScripts,
+                  focusNode: otherPiecesMutualConstraintsFocusNode,
                   selectedPieceKind:
-                      _otherPiecesMutualConstraintsSelectedPieceKind,
+                      otherPiecesMutualConstraintsSelectedPieceKind.value,
                   onPieceKindSelection: (kind) {
-                    setState(() {
-                      _otherPiecesMutualConstraintsSelectedPieceKind = kind;
-                    });
+                    otherPiecesMutualConstraintsSelectedPieceKind.value = kind;
                   },
                 ),
                 OtherPiecesIndexedConstraintEditorWidget(
-                  readOnly: widget.readOnly,
+                  readOnly: readOnly,
                   availablePiecesKinds: otherPiecesKinds,
-                  controllers: _otherPiecesIndexedConstraintsScripts,
-                  focusNode: _otherPiecesIndexedConstraintsFocusNode,
-                  selectedType: _otherPiecesIndexedConstraintsSelectedPieceKind,
+                  controllers: otherPiecesIndexedConstraintsScripts,
+                  focusNode: otherPiecesIndexedConstraintsFocusNode,
+                  selectedType:
+                      otherPiecesIndexedConstraintsSelectedPieceKind.value,
                   onPieceKindSelection: (kind) {
-                    setState(() {
-                      _otherPiecesIndexedConstraintsSelectedPieceKind = kind;
-                    });
+                    otherPiecesIndexedConstraintsSelectedPieceKind.value = kind;
                   },
                 ),
                 GameGoalEditorWidget(
-                    readOnly: widget.readOnly,
-                    script: _goalScript,
+                    readOnly: readOnly,
+                    script: goalScript.value,
                     onChanged: (newValue) {
-                      _updateGoalScript(newValue);
+                      _updateGoalScript(
+                        shouldWin: newValue,
+                        goalScript: goalScript,
+                      );
                     }),
               ]),
-              if (_isCheckingPosition || _isSavingFile)
+              if (isCheckingPosition.value || isSavingFile.value)
                 const Center(
                   child: SizedBox(
                     width: 100,
@@ -1153,10 +1585,30 @@ class _ScriptEditorPageState extends State<ScriptEditorPage> {
                   ),
                 )
             ]),
-            floatingActionButton: widget.readOnly
+            floatingActionButton: readOnly
                 ? null
                 : FloatingActionButton(
-                    onPressed: _processUserScript,
+                    onPressed: () => _processUserScript(
+                      context: context,
+                      goalScript: goalScript.value,
+                      isSavingFile: isSavingFile,
+                      isCheckingPosition: isCheckingPosition,
+                      playerKingConstraintsScriptController:
+                          playerKingConstraintsScriptController,
+                      computerKingConstraintsScriptController:
+                          computerKingConstraintsScriptController,
+                      kingsMutualConstraintsScriptController:
+                          kingsMutualConstraintsScriptController,
+                      otherPiecesGlobalConstraintsScripts:
+                          otherPiecesGlobalConstraintsScripts,
+                      otherPiecesMutualConstraintsScripts:
+                          otherPiecesMutualConstraintsScripts,
+                      otherPiecesIndexedConstraintsScripts:
+                          otherPiecesIndexedConstraintsScripts,
+                      otherPiecesCountConstraintsScript:
+                          otherPiecesCountConstraintsScript,
+                      scriptCheckerIsolate: scriptCheckerIsolate,
+                    ),
                     child: const FaIcon(FontAwesomeIcons.solidFloppyDisk),
                   ),
           );
@@ -1414,7 +1866,7 @@ class OtherPiecesCountConstraintsEditorWidget extends HookWidget {
 
 class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
   final List<PieceKind> availablePiecesKinds;
-  final Map<PieceKind, TextEditingController> controllers;
+  final ValueNotifier<Map<PieceKind, TextEditingController>> controllers;
   final bool readOnly;
   final PieceKind? selectedPieceKind;
   final FocusNode focusNode;
@@ -1456,7 +1908,7 @@ class OtherPiecesGlobalConstraintEditorWidget extends StatelessWidget {
 
 class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
   final List<PieceKind> availablePiecesKinds;
-  final Map<PieceKind, TextEditingController> controllers;
+  final ValueNotifier<Map<PieceKind, TextEditingController>> controllers;
   final bool readOnly;
   final PieceKind? selectedPieceKind;
   final FocusNode focusNode;
@@ -1498,7 +1950,7 @@ class OtherPiecesMutualConstraintEditorWidget extends StatelessWidget {
 
 class OtherPiecesIndexedConstraintEditorWidget extends StatelessWidget {
   final List<PieceKind> availablePiecesKinds;
-  final Map<PieceKind, TextEditingController> controllers;
+  final ValueNotifier<Map<PieceKind, TextEditingController>> controllers;
   final bool readOnly;
   final PieceKind? selectedType;
   final FocusNode focusNode;
