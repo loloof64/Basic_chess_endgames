@@ -9,26 +9,26 @@ enum Goal {
 }
 
 @immutable
-class Game {
+class GameSession {
   final String title;
   final String startPosition;
   final Goal goal;
   final bool playerHasWhite;
 
-  const Game({
+  const GameSession({
     required this.title,
     required this.startPosition,
     required this.goal,
     required this.playerHasWhite,
   });
 
-  Game copyWith({
+  GameSession copyWith({
     String? title,
     String? startPosition,
     Goal? goal,
     bool? playerHasWhite,
   }) {
-    return Game(
+    return GameSession(
       title: title ?? this.title,
       startPosition: startPosition ?? this.startPosition,
       goal: goal ?? this.goal,
@@ -45,13 +45,13 @@ class Game {
     };
   }
 
-  factory Game.fromMap(Map<String, String> map) {
+  factory GameSession.fromMap(Map<String, String> map) {
     final titleStr = map['title'];
     final goalStr = map['goal'];
     final goalValue =
         Goal.values.firstWhere((goal) => goal.toString() == 'Goal.$goalStr');
     final playerHasWhite = map['playerHasWhite']!.toLowerCase() == "true";
-    return Game(
+    return GameSession(
       title: titleStr ?? '',
       startPosition: map['startPosition'] as String,
       goal: goalValue,
@@ -61,14 +61,14 @@ class Game {
 
   String toJson() => json.encode(toMap());
 
-  factory Game.fromJson(String source) =>
-      Game.fromMap(json.decode(source) as Map<String, String>);
+  factory GameSession.fromJson(String source) =>
+      GameSession.fromMap(json.decode(source) as Map<String, String>);
 
   @override
-  String toString() => 'Game(startPosition: $startPosition, goal: $goal)';
+  String toString() => 'GameSession(startPosition: $startPosition, goal: $goal)';
 
   @override
-  bool operator ==(covariant Game other) {
+  bool operator ==(covariant GameSession other) {
     if (identical(this, other)) return true;
 
     return other.startPosition == startPosition && other.goal == goal;
@@ -80,10 +80,10 @@ class Game {
 
 const emptyPosition = '8/8/8/8/8/8/8/8 w - - 0 1';
 
-class GameNotifier extends StateNotifier<Game> {
-  GameNotifier()
+class GameSessionNotifier extends StateNotifier<GameSession> {
+  GameSessionNotifier()
       : super(
-          const Game(
+          const GameSession(
             title: '',
             startPosition: emptyPosition,
             goal: Goal.win,
@@ -108,6 +108,6 @@ class GameNotifier extends StateNotifier<Game> {
   }
 }
 
-final gameProvider = StateNotifierProvider<GameNotifier, Game>(
-  (ref) => GameNotifier(),
+final gameSessionProvider = StateNotifierProvider<GameSessionNotifier, GameSession>(
+  (ref) => GameSessionNotifier(),
 );

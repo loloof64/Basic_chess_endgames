@@ -12,7 +12,7 @@ import 'package:basicchessendgamestrainer/pages/widgets/random_testing_parameter
 import 'package:basicchessendgamestrainer/pages/random_testing_page.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
-import 'package:basicchessendgamestrainer/models/providers/game_provider.dart';
+import 'package:basicchessendgamestrainer/models/providers/game_session_provider.dart';
 import 'package:basicchessendgamestrainer/pages/game_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -300,7 +300,7 @@ class HomeWidget extends HookConsumerWidget {
 
     final playerHasWhite = position.split(' ')[1] != 'b';
 
-    final gameNotifier = ref.read(gameProvider.notifier);
+    final gameNotifier = ref.read(gameSessionProvider.notifier);
     gameNotifier.updateStartPosition(position);
     gameNotifier.updateGoal(goal);
     gameNotifier.updatePlayerHasWhite(playerHasWhite);
