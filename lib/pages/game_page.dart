@@ -7,7 +7,8 @@ import 'package:chess_vectors_flutter/chess_vectors_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:simple_chess_board/models/board_arrow.dart';
 import 'package:simple_chess_board/models/piece_type.dart';
 import 'package:simple_chess_board/models/short_move.dart';
@@ -17,187 +18,290 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 const piecesSize = 60.0;
 
-class GamePage extends ConsumerStatefulWidget {
+class GamePage extends HookConsumerWidget {
   const GamePage({super.key});
 
-  @override
-  ConsumerState<GamePage> createState() => _GamePageState();
-}
-
-class _GamePageState extends ConsumerState<GamePage> {
-  chess.Chess? _gameLogic;
-  bool _blackSideAtBottom = false;
-  PlayerType? _whitePlayerType;
-  PlayerType? _blackPlayerType;
-  bool _gameStart = true;
-  bool _gameInProgress = true;
-  BoardArrow? _lastMoveToHighlight;
-  List<HistoryNode> _historyNodesDescriptions = [];
-  final ScrollController _historyScrollController =
-      ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
-  int? _historySelectedNodeIndex;
-  bool _engineThinking = false;
-  bool _stockfishReady = false;
-
-  @override
-  void initState() {
+  void initState({
+    required BuildContext context,
+    required ScrollController historyScrollController,
+    required ValueNotifier<bool> stockfishReady,
+    required WidgetRef ref,
+    required ValueNotifier<PlayerType?> whitePlayerType,
+    required ValueNotifier<PlayerType?> blackPlayerType,
+    required ValueNotifier<bool> blackSideAtBottom,
+    required ValueNotifier<bool> gameStart,
+    required ValueNotifier<bool> gameInProgress,
+    required ValueNotifier<bool> engineThinking,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+  }) {
     stockfishManager.geOutputStream().listen((line) {
-      _processStockfishLine(line);
+      if (!context.mounted) return;
+      _processStockfishLine(
+        line: line,
+        context: context,
+        stockfishReady: stockfishReady,
+        engineThinking: engineThinking,
+        gameInProgress: gameInProgress,
+        gameLogic: gameLogic,
+        gameStart: gameStart,
+        historyNodesDescriptions: historyNodesDescriptions,
+        lastMoveToHighlight: lastMoveToHighlight,
+        historyScrollController: historyScrollController,
+        historySelectedNodeIndex: historySelectedNodeIndex,
+        whitePlayerType: whitePlayerType,
+        blackPlayerType: blackPlayerType,
+      );
     });
     stockfishManager.sendCommand('isready');
     final startPosition = ref.read(gameProvider).startPosition;
     final gameStartAsWhite = startPosition.split(" ")[1] == "w";
     if (gameStartAsWhite) {
-      _whitePlayerType = PlayerType.human;
-      _blackPlayerType = PlayerType.computer;
-      _blackSideAtBottom = false;
+      whitePlayerType.value = PlayerType.human;
+      blackPlayerType.value = PlayerType.computer;
+      blackSideAtBottom.value = false;
     } else {
-      _whitePlayerType = PlayerType.computer;
-      _blackPlayerType = PlayerType.human;
-      _blackSideAtBottom = true;
+      whitePlayerType.value = PlayerType.computer;
+      blackPlayerType.value = PlayerType.human;
+      blackSideAtBottom.value = true;
     }
-    _doStartNewGame();
-    super.initState();
+    _doStartNewGame(
+      engineThinking: engineThinking,
+      gameInProgress: gameInProgress,
+      gameLogic: gameLogic,
+      gameStart: gameStart,
+      historyNodesDescriptions: historyNodesDescriptions,
+      historySelectedNodeIndex: historySelectedNodeIndex,
+      lastMoveToHighlight: lastMoveToHighlight,
+      ref: ref,
+    );
   }
 
-  void _updateHistoryScrollPosition() {
-    setState(() {
-      if (_gameInProgress) {
-        _historyScrollController.animateTo(
-          _historyScrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 50),
-          curve: Curves.linear,
+  void _updateHistoryScrollPosition({
+    required BuildContext context,
+    required ValueNotifier<bool> gameInProgress,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+    required ScrollController historyScrollController,
+  }) {
+    if (gameInProgress.value) {
+      historyScrollController.animateTo(
+        historyScrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 50),
+        curve: Curves.linear,
+      );
+    } else {
+      if (historySelectedNodeIndex.value != null) {
+        final availableScrollExtent =
+            historyScrollController.position.maxScrollExtent;
+        final windowWidth = MediaQuery.of(context).size.width;
+        final elementsCount = historyNodesDescriptions.value.length;
+        final isPortrait =
+            MediaQuery.of(context).orientation == Orientation.portrait;
+        final averageNodeSize = isPortrait
+            ? MediaQuery.of(context).size.width * 0.11
+            : MediaQuery.of(context).size.height * 0.20;
+        final averageItemsPerScreen = windowWidth / averageNodeSize * 0.625;
+        var realIndex =
+            (historySelectedNodeIndex.value! - averageItemsPerScreen)
+                .ceil()
+                .toInt();
+        realIndex = realIndex > 0 ? realIndex : 0;
+        final realElementsCount =
+            (elementsCount - averageItemsPerScreen).toInt();
+        final double averageScroll = realElementsCount > 0
+            ? 1.05 * availableScrollExtent / realElementsCount
+            : 0;
+        final scrollPosition = realIndex * averageScroll;
+
+        historyScrollController.jumpTo(
+          scrollPosition,
         );
       } else {
-        if (_historySelectedNodeIndex != null) {
-          final availableScrollExtent =
-              _historyScrollController.position.maxScrollExtent;
-          final windowWidth = MediaQuery.of(context).size.width;
-          final elementsCount = _historyNodesDescriptions.length;
-          final isPortrait =
-              MediaQuery.of(context).orientation == Orientation.portrait;
-          final averageNodeSize = isPortrait
-              ? MediaQuery.of(context).size.width * 0.11
-              : MediaQuery.of(context).size.height * 0.20;
-          final averageItemsPerScreen = windowWidth / averageNodeSize * 0.625;
-          var realIndex = (_historySelectedNodeIndex! - averageItemsPerScreen)
-              .ceil()
-              .toInt();
-          realIndex = realIndex > 0 ? realIndex : 0;
-          final realElementsCount =
-              (elementsCount - averageItemsPerScreen).toInt();
-          final double averageScroll = realElementsCount > 0
-              ? 1.05 * availableScrollExtent / realElementsCount
-              : 0;
-          final scrollPosition = realIndex * averageScroll;
-
-          _historyScrollController.jumpTo(
-            scrollPosition,
-          );
-        } else {
-          _historyScrollController.animateTo(0.0,
-              duration: const Duration(milliseconds: 50), curve: Curves.linear);
-        }
+        historyScrollController.animateTo(0.0,
+            duration: const Duration(milliseconds: 50), curve: Curves.linear);
       }
-    });
+    }
   }
 
-  void _doStartNewGame() {
+  void _doStartNewGame({
+    required WidgetRef ref,
+    required ValueNotifier<bool> gameStart,
+    required ValueNotifier<bool> gameInProgress,
+    required ValueNotifier<bool> engineThinking,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+  }) {
     final startPosition = ref.read(gameProvider).startPosition;
     final newGameLogic = chess.Chess.fromFEN(startPosition);
     final isWhiteTurn = ref.read(gameProvider).playerHasWhite;
     final moveNumberCaption =
         "${newGameLogic.fen.split(' ')[5]}.${isWhiteTurn ? '' : '..'}";
-    _gameLogic = newGameLogic;
-    _gameStart = true;
-    _lastMoveToHighlight = null;
-    _historyNodesDescriptions = [];
-    _historyNodesDescriptions.add(HistoryNode(caption: moveNumberCaption));
-    _historySelectedNodeIndex = null;
-    _gameInProgress = true;
-    _engineThinking = false;
+    gameLogic.value = newGameLogic;
+    gameStart.value = true;
+    lastMoveToHighlight.value = null;
+    historyNodesDescriptions.value = [];
+    historyNodesDescriptions.value.add(HistoryNode(caption: moveNumberCaption));
+    historySelectedNodeIndex.value = null;
+    gameInProgress.value = true;
+    engineThinking.value = false;
   }
 
-  void _processStockfishLine(String line) {
-    if (!mounted) return;
+  void _processStockfishLine({
+    required String line,
+    required BuildContext context,
+    required ScrollController historyScrollController,
+    required ValueNotifier<bool> stockfishReady,
+    required ValueNotifier<bool> engineThinking,
+    required ValueNotifier<bool> gameStart,
+    required ValueNotifier<bool> gameInProgress,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ValueNotifier<PlayerType?> whitePlayerType,
+    required ValueNotifier<PlayerType?> blackPlayerType,
+  }) {
+    if (!context.mounted) return;
     final trimedLine = line.trim().toLowerCase();
     if (trimedLine == 'readyok') {
-      setState(() {
-        _stockfishReady = true;
-      });
+      stockfishReady.value = true;
     } else if (trimedLine.startsWith("bestmove")) {
-      _processBestMove(trimedLine.split(" ")[1]);
+      _processBestMove(
+        moveUci: trimedLine.split(" ")[1],
+        context: context,
+        engineThinking: engineThinking,
+        gameInProgress: gameInProgress,
+        gameLogic: gameLogic,
+        gameStart: gameStart,
+        stockfishReady: stockfishReady,
+        historyNodesDescriptions: historyNodesDescriptions,
+        lastMoveToHighlight: lastMoveToHighlight,
+        historyScrollController: historyScrollController,
+        historySelectedNodeIndex: historySelectedNodeIndex,
+        whitePlayerType: whitePlayerType,
+        blackPlayerType: blackPlayerType,
+      );
     }
   }
 
-  void _processBestMove(String moveUci) {
-    if (!mounted) return;
+  void _processBestMove({
+    required String moveUci,
+    required BuildContext context,
+    required ValueNotifier<bool> engineThinking,
+    required ValueNotifier<bool> gameStart,
+    required ValueNotifier<bool> gameInProgress,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ScrollController historyScrollController,
+    required ValueNotifier<bool> stockfishReady,
+    required ValueNotifier<PlayerType?> whitePlayerType,
+    required ValueNotifier<PlayerType?> blackPlayerType,
+  }) {
+    if (!context.mounted) return;
     final startSquareStr = moveUci.substring(0, 2);
     final endSquareStr = moveUci.substring(2, 4);
     final promotionStr = moveUci.length >= 5 ? moveUci.substring(5, 6) : null;
-    final moveHasBeenMade = _gameLogic!.move({
+    final moveHasBeenMade = gameLogic.value!.move({
       'from': startSquareStr,
       'to': endSquareStr,
       'promotion': promotionStr,
     });
-    setState(() {
-      _engineThinking = false;
-    });
+    engineThinking.value = false;
     if (moveHasBeenMade) {
-      final whiteMove = _gameLogic!.turn == chess.Color.WHITE;
-      final lastPlayedMove = _gameLogic!.history.last.move;
+      final whiteMove = gameLogic.value!.turn == chess.Color.WHITE;
+      final lastPlayedMove = gameLogic.value!.history.last.move;
 
       /*
       We need to know if it was white move before the move which
       we want to add history node(s).
       */
-      if (!whiteMove && !_gameStart) {
-        final moveNumberCaption = "${_gameLogic!.fen.split(' ')[5]}.";
-        setState(() {
-          _historyNodesDescriptions
-              .add(HistoryNode(caption: moveNumberCaption));
-          _updateHistoryScrollPosition();
-        });
+      if (!whiteMove && !gameStart.value) {
+        final moveNumberCaption = "${gameLogic.value!.fen.split(' ')[5]}.";
+        historyNodesDescriptions.value
+            .add(HistoryNode(caption: moveNumberCaption));
+        _updateHistoryScrollPosition(
+          context: context,
+          gameInProgress: gameInProgress,
+          historyNodesDescriptions: historyNodesDescriptions,
+          historyScrollController: historyScrollController,
+          historySelectedNodeIndex: historySelectedNodeIndex,
+        );
       }
 
       // In order to get move SAN, it must not be done on board yet !
       // So we rollback the move, then we'll make it happen again.
-      _gameLogic!.undo_move();
-      final san = _gameLogic!.move_to_san(lastPlayedMove);
-      _gameLogic!.make_move(lastPlayedMove);
+      gameLogic.value!.undo_move();
+      final san = gameLogic.value!.move_to_san(lastPlayedMove);
+      gameLogic.value!.make_move(lastPlayedMove);
 
       final fan = san.toFan(whiteMove: !whiteMove);
 
-      setState(() {
-        _historyNodesDescriptions.add(
-          HistoryNode(
-            caption: fan,
-            fen: _gameLogic!.fen,
-            move: Move(
-              from: Cell.fromString(startSquareStr),
-              to: Cell.fromString(endSquareStr),
-            ),
+      historyNodesDescriptions.value.add(
+        HistoryNode(
+          caption: fan,
+          fen: gameLogic.value!.fen,
+          move: Move(
+            from: Cell.fromString(startSquareStr),
+            to: Cell.fromString(endSquareStr),
           ),
-        );
-        _lastMoveToHighlight = BoardArrow(
-          from: startSquareStr,
-          to: endSquareStr,
-        );
-        _gameStart = false;
-      });
+        ),
+      );
+      lastMoveToHighlight.value = BoardArrow(
+        from: startSquareStr,
+        to: endSquareStr,
+      );
+      gameStart.value = false;
 
       Future.delayed(const Duration(milliseconds: 50), () {
-        _updateHistoryScrollPosition();
+        if (!context.mounted) return;
+        _updateHistoryScrollPosition(
+          context: context,
+          gameInProgress: gameInProgress,
+          historyNodesDescriptions: historyNodesDescriptions,
+          historyScrollController: historyScrollController,
+          historySelectedNodeIndex: historySelectedNodeIndex,
+        );
       });
 
-      _handleGameEndedIfNeeded();
-      if (_gameInProgress) {
-        _makeComputerPlay();
+      _handleGameEndedIfNeeded(
+        context: context,
+        gameInProgress: gameInProgress,
+        gameLogic: gameLogic,
+        historyNodesDescriptions: historyNodesDescriptions,
+        historyScrollController: historyScrollController,
+        historySelectedNodeIndex: historySelectedNodeIndex,
+        lastMoveToHighlight: lastMoveToHighlight,
+      );
+      if (gameInProgress.value) {
+        _makeComputerPlay(
+          whitePlayerType: whitePlayerType,
+          blackPlayerType: blackPlayerType,
+          engineThinking: engineThinking,
+          gameLogic: gameLogic,
+          stockfishReady: stockfishReady,
+        );
       }
     }
   }
 
-  void _purposeStartNewGame() {
+  void _purposeStartNewGame({
+    required BuildContext context,
+    required WidgetRef ref,
+    required ValueNotifier<bool> gameStart,
+    required ValueNotifier<bool> gameInProgress,
+    required ValueNotifier<bool> engineThinking,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+  }) {
     final confirmationDialog = AlertDialog(
       title: Text(
         t.game_page.new_game_title,
@@ -220,9 +324,16 @@ class _GamePageState extends ConsumerState<GamePage> {
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
-            setState(() {
-              _doStartNewGame();
-            });
+            _doStartNewGame(
+              ref: ref,
+              gameStart: gameStart,
+              engineThinking: engineThinking,
+              gameInProgress: gameInProgress,
+              gameLogic: gameLogic,
+              historyNodesDescriptions: historyNodesDescriptions,
+              historySelectedNodeIndex: historySelectedNodeIndex,
+              lastMoveToHighlight: lastMoveToHighlight,
+            );
           },
           child: Text(
             t.misc.button_ok,
@@ -240,14 +351,22 @@ class _GamePageState extends ConsumerState<GamePage> {
         });
   }
 
-  void _toggleBoardOrientation() {
-    setState(() {
-      _blackSideAtBottom = !_blackSideAtBottom;
-    });
+  void _toggleBoardOrientation({
+    required ValueNotifier<bool> blackSideAtBottom,
+  }) {
+    blackSideAtBottom.value = !blackSideAtBottom.value;
   }
 
-  void _onStopRequested() {
-    final noGameRunning = _gameInProgress == false;
+  void _onStopRequested({
+    required BuildContext context,
+    required ValueNotifier<bool> gameInProgress,
+    required ScrollController historyScrollController,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+  }) {
+    final noGameRunning = gameInProgress.value == false;
     if (noGameRunning) return;
 
     final confirmDialog = AlertDialog(
@@ -268,7 +387,15 @@ class _GamePageState extends ConsumerState<GamePage> {
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
-            _doStopGame();
+            _doStopGame(
+              context: context,
+              gameInProgress: gameInProgress,
+              gameLogic: gameLogic,
+              historyNodesDescriptions: historyNodesDescriptions,
+              historyScrollController: historyScrollController,
+              historySelectedNodeIndex: historySelectedNodeIndex,
+              lastMoveToHighlight: lastMoveToHighlight,
+            );
           },
           child: Text(
             t.misc.button_ok,
@@ -286,20 +413,37 @@ class _GamePageState extends ConsumerState<GamePage> {
         });
   }
 
-  void _doStopGame() {
+  void _doStopGame({
+    required BuildContext context,
+    required ValueNotifier<bool> gameInProgress,
+    required ScrollController historyScrollController,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+  }) {
     final snackBar = SnackBar(
       content: Text(t.game_page.game_stopped),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    setState(() {
-      _gameInProgress = false;
-    });
-    _selectLastHistoryNode();
+    gameInProgress.value = false;
+    _selectLastHistoryNode(
+      context: context,
+      gameInProgress: gameInProgress,
+      gameLogic: gameLogic,
+      historyNodesDescriptions: historyNodesDescriptions,
+      historyScrollController: historyScrollController,
+      historySelectedNodeIndex: historySelectedNodeIndex,
+      lastMoveToHighlight: lastMoveToHighlight,
+    );
   }
 
-  Future<PieceType?> _onPromote() {
-    if (_gameLogic == null) return Future.value(null);
-    final whiteTurn = _gameLogic!.fen.split(' ')[1] == 'w';
+  Future<PieceType?> _onPromote({
+    required BuildContext context,
+    required ValueNotifier<chess.Chess?> gameLogic,
+  }) {
+    if (gameLogic.value == null) return Future.value(null);
+    final whiteTurn = gameLogic.value!.fen.split(' ')[1] == 'w';
 
     return showDialog<PieceType>(
         context: context,
@@ -363,110 +507,165 @@ class _GamePageState extends ConsumerState<GamePage> {
         });
   }
 
-  void _onMove({required ShortMove move}) {
-    if (_gameLogic == null) return;
-    final iswhiteTurn = _gameLogic!.turn == chess.Color.WHITE;
+  void _onMove({
+    required ShortMove move,
+    required ValueNotifier<bool> gameStart,
+    required ValueNotifier<bool> gameInProgress,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+    required ValueNotifier<PlayerType?> whitePlayerType,
+    required ValueNotifier<PlayerType?> blackPlayerType,
+    required BuildContext context,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ScrollController historyScrollController,
+    required ValueNotifier<bool> stockfishReady,
+    required ValueNotifier<bool> engineThinking,
+  }) {
+    if (gameLogic.value == null) return;
+    final iswhiteTurn = gameLogic.value!.turn == chess.Color.WHITE;
     final isPlayerTurn =
-        (iswhiteTurn && _whitePlayerType == PlayerType.human) ||
-            (!iswhiteTurn && _blackPlayerType == PlayerType.human);
+        (iswhiteTurn && whitePlayerType.value == PlayerType.human) ||
+            (!iswhiteTurn && blackPlayerType.value == PlayerType.human);
     if (!isPlayerTurn) return;
-    final moveHasBeenMade = _gameLogic!.move({
+    final moveHasBeenMade = gameLogic.value!.move({
       'from': move.from,
       'to': move.to,
       'promotion': move.promotion?.name,
     });
     if (moveHasBeenMade) {
-      final whiteMove = _gameLogic!.turn == chess.Color.WHITE;
-      final lastPlayedMove = _gameLogic!.history.last.move;
+      final whiteMove = gameLogic.value!.turn == chess.Color.WHITE;
+      final lastPlayedMove = gameLogic.value!.history.last.move;
 
       /*
       We need to know if it was white move before the move which
       we want to add history node(s).
       */
-      if (!whiteMove && !_gameStart) {
-        final moveNumberCaption = "${_gameLogic!.fen.split(' ')[5]}.";
-        setState(() {
-          _historyNodesDescriptions
-              .add(HistoryNode(caption: moveNumberCaption));
-          _updateHistoryScrollPosition();
-        });
+      if (!whiteMove && !gameStart.value) {
+        final moveNumberCaption = "${gameLogic.value!.fen.split(' ')[5]}.";
+        historyNodesDescriptions.value
+            .add(HistoryNode(caption: moveNumberCaption));
+        _updateHistoryScrollPosition(
+          context: context,
+          gameInProgress: gameInProgress,
+          historyNodesDescriptions: historyNodesDescriptions,
+          historyScrollController: historyScrollController,
+          historySelectedNodeIndex: historySelectedNodeIndex,
+        );
       }
 
       // In order to get move SAN, it must not be done on board yet !
       // So we rollback the move, then we'll make it happen again.
-      _gameLogic!.undo_move();
-      final san = _gameLogic!.move_to_san(lastPlayedMove);
-      _gameLogic!.make_move(lastPlayedMove);
+      gameLogic.value!.undo_move();
+      final san = gameLogic.value!.move_to_san(lastPlayedMove);
+      gameLogic.value!.make_move(lastPlayedMove);
 
       final fan = san.toFan(whiteMove: !whiteMove);
 
-      setState(() {
-        _historyNodesDescriptions.add(
-          HistoryNode(
-            caption: fan,
-            fen: _gameLogic!.fen,
-            move: Move(
-              from: Cell.fromString(move.from),
-              to: Cell.fromString(move.to),
-            ),
+      historyNodesDescriptions.value.add(
+        HistoryNode(
+          caption: fan,
+          fen: gameLogic.value!.fen,
+          move: Move(
+            from: Cell.fromString(move.from),
+            to: Cell.fromString(move.to),
           ),
-        );
-        _lastMoveToHighlight = BoardArrow(
-          from: move.from,
-          to: move.to,
-        );
-        _gameStart = false;
-      });
+        ),
+      );
+      lastMoveToHighlight.value = BoardArrow(
+        from: move.from,
+        to: move.to,
+      );
+      gameStart.value = false;
 
-      _updateHistoryScrollPosition();
+      _updateHistoryScrollPosition(
+        context: context,
+        gameInProgress: gameInProgress,
+        historyNodesDescriptions: historyNodesDescriptions,
+        historyScrollController: historyScrollController,
+        historySelectedNodeIndex: historySelectedNodeIndex,
+      );
 
-      _handleGameEndedIfNeeded();
-      if (_gameInProgress) {
-        _makeComputerPlay();
+      _handleGameEndedIfNeeded(
+        context: context,
+        gameInProgress: gameInProgress,
+        gameLogic: gameLogic,
+        historyNodesDescriptions: historyNodesDescriptions,
+        historyScrollController: historyScrollController,
+        historySelectedNodeIndex: historySelectedNodeIndex,
+        lastMoveToHighlight: lastMoveToHighlight,
+      );
+      if (gameInProgress.value) {
+        _makeComputerPlay(
+          gameLogic: gameLogic,
+          stockfishReady: stockfishReady,
+          whitePlayerType: whitePlayerType,
+          blackPlayerType: blackPlayerType,
+          engineThinking: engineThinking,
+        );
       }
     }
   }
 
-  void _handleGameEndedIfNeeded() {
-    if (_gameLogic == null) return;
+  void _handleGameEndedIfNeeded({
+    required BuildContext context,
+    required ValueNotifier<bool> gameInProgress,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ScrollController historyScrollController,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+  }) {
+    if (gameLogic.value == null) return;
     String? snackMessage;
-    if (_gameLogic!.in_checkmate) {
-      final whiteTurnBeforeMove = _gameLogic!.turn == chess.Color.BLACK;
+    if (gameLogic.value!.in_checkmate) {
+      final whiteTurnBeforeMove = gameLogic.value!.turn == chess.Color.BLACK;
       snackMessage = whiteTurnBeforeMove
           ? t.game_page.checkmate_white
           : t.game_page.checkmate_black;
-    } else if (_gameLogic!.in_stalemate) {
+    } else if (gameLogic.value!.in_stalemate) {
       snackMessage = t.game_page.stalemate;
-    } else if (_gameLogic!.in_threefold_repetition) {
+    } else if (gameLogic.value!.in_threefold_repetition) {
       snackMessage = t.game_page.three_fold_repetition;
-    } else if (_gameLogic!.insufficient_material) {
+    } else if (gameLogic.value!.insufficient_material) {
       snackMessage = t.game_page.missing_material;
-    } else if (_gameLogic!.in_draw) {
+    } else if (gameLogic.value!.in_draw) {
       snackMessage = t.game_page.fifty_moves_rule;
     }
 
     if (snackMessage != null) {
-      setState(() {
-        _gameInProgress = false;
-      });
+      gameInProgress.value = false;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(snackMessage),
         ),
       );
-      _selectLastHistoryNode();
+      _selectLastHistoryNode(
+        context: context,
+        gameInProgress: gameInProgress,
+        gameLogic: gameLogic,
+        historyNodesDescriptions: historyNodesDescriptions,
+        historyScrollController: historyScrollController,
+        historySelectedNodeIndex: historySelectedNodeIndex,
+        lastMoveToHighlight: lastMoveToHighlight,
+      );
     }
   }
 
-  void _selectFirstGamePosition() {
-    if (_gameInProgress) return;
+  void _selectFirstGamePosition({
+    required WidgetRef ref,
+    required ValueNotifier<bool> gameInProgress,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ScrollController historyScrollController,
+  }) {
+    if (gameInProgress.value) return;
     final startPosition = ref.read(gameProvider).startPosition;
-    setState(() {
-      _historySelectedNodeIndex = null;
-      _lastMoveToHighlight = null;
-      _gameLogic = chess.Chess.fromFEN(startPosition);
-    });
-    _historyScrollController.animateTo(
+    historySelectedNodeIndex.value = null;
+    lastMoveToHighlight.value = null;
+    gameLogic.value = chess.Chess.fromFEN(startPosition);
+    historyScrollController.animateTo(
       0,
       duration: const Duration(
         milliseconds: 50,
@@ -475,23 +674,30 @@ class _GamePageState extends ConsumerState<GamePage> {
     );
   }
 
-  void _selectPreviousHistoryNode() {
-    if (_gameInProgress) return;
-    if (_historySelectedNodeIndex == null) return;
+  void _selectPreviousHistoryNode({
+    required BuildContext context,
+    required WidgetRef ref,
+    required ValueNotifier<bool> gameInProgress,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+    required ScrollController historyScrollController,
+  }) {
+    if (gameInProgress.value) return;
+    if (historySelectedNodeIndex.value == null) return;
     /*
     We test against value 2 because
     value 0 is for the first move number
     and value 1 is for the first move san
     */
-    if (_historySelectedNodeIndex! < 2) {
+    if (historySelectedNodeIndex.value! < 2) {
       // selecting first game position
       final startPosition = ref.read(gameProvider).startPosition;
-      setState(() {
-        _historySelectedNodeIndex = null;
-        _lastMoveToHighlight = null;
-        _gameLogic = chess.Chess.fromFEN(startPosition);
-      });
-      _historyScrollController.animateTo(
+      historySelectedNodeIndex.value = null;
+      lastMoveToHighlight.value = null;
+      gameLogic.value = chess.Chess.fromFEN(startPosition);
+      historyScrollController.animateTo(
         0,
         duration: const Duration(
           milliseconds: 50,
@@ -500,65 +706,87 @@ class _GamePageState extends ConsumerState<GamePage> {
       );
       return;
     }
-    final previousNodeData = _historyNodesDescriptions
+    final previousNodeData = historyNodesDescriptions.value
         .asMap()
         .entries
         .map((entry) => (entry.key, entry.value))
         .where((element) => element.$2.fen != null)
-        .takeWhile((element) => element.$1 != _historySelectedNodeIndex)
+        .takeWhile((element) => element.$1 != historySelectedNodeIndex.value)
         .lastOrNull;
     if (previousNodeData == null) return;
 
     final moveData = previousNodeData.$2.move!;
 
-    setState(() {
-      _historySelectedNodeIndex = previousNodeData.$1;
-      _gameLogic = chess.Chess.fromFEN(previousNodeData.$2.fen!);
-      _lastMoveToHighlight = BoardArrow(
-        from: moveData.from.getUciString(),
-        to: moveData.to.getUciString(),
-      );
-    });
-    _updateHistoryScrollPosition();
+    historySelectedNodeIndex.value = previousNodeData.$1;
+    gameLogic.value = chess.Chess.fromFEN(previousNodeData.$2.fen!);
+    lastMoveToHighlight.value = BoardArrow(
+      from: moveData.from.getUciString(),
+      to: moveData.to.getUciString(),
+    );
+    _updateHistoryScrollPosition(
+      context: context,
+      gameInProgress: gameInProgress,
+      historyNodesDescriptions: historyNodesDescriptions,
+      historyScrollController: historyScrollController,
+      historySelectedNodeIndex: historySelectedNodeIndex,
+    );
   }
 
-  void _selectNextHistoryNode() {
-    if (_gameInProgress) return;
-    if (_historySelectedNodeIndex == null) {
+  void _selectNextHistoryNode({
+    required BuildContext context,
+    required ScrollController historyScrollController,
+    required ValueNotifier<bool> gameInProgress,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+  }) {
+    if (gameInProgress.value) return;
+    if (historySelectedNodeIndex.value == null) {
       // Move number and first move san, at least
-      if (_historyNodesDescriptions.length >= 2) {
-        setState(() {
-          // First move san
-          _historySelectedNodeIndex = 1;
-        });
+      if (historyNodesDescriptions.value.length >= 2) {
+        // First move san
+        historySelectedNodeIndex.value = 1;
       }
       return;
     }
-    final nextNodeData = _historyNodesDescriptions
+    final nextNodeData = historyNodesDescriptions.value
         .asMap()
         .entries
         .map((entry) => (entry.key, entry.value))
         .where((element) => element.$2.fen != null)
-        .skipWhile((element) => element.$1 != _historySelectedNodeIndex)
+        .skipWhile((element) => element.$1 != historySelectedNodeIndex.value)
         .skip(1)
         .firstOrNull;
     if (nextNodeData == null) return;
 
     final moveData = nextNodeData.$2.move!;
-    setState(() {
-      _historySelectedNodeIndex = nextNodeData.$1;
-      _gameLogic = chess.Chess.fromFEN(nextNodeData.$2.fen!);
-      _lastMoveToHighlight = BoardArrow(
-        from: moveData.from.getUciString(),
-        to: moveData.to.getUciString(),
-      );
-    });
-    _updateHistoryScrollPosition();
+    historySelectedNodeIndex.value = nextNodeData.$1;
+    gameLogic.value = chess.Chess.fromFEN(nextNodeData.$2.fen!);
+    lastMoveToHighlight.value = BoardArrow(
+      from: moveData.from.getUciString(),
+      to: moveData.to.getUciString(),
+    );
+    _updateHistoryScrollPosition(
+      context: context,
+      gameInProgress: gameInProgress,
+      historyNodesDescriptions: historyNodesDescriptions,
+      historyScrollController: historyScrollController,
+      historySelectedNodeIndex: historySelectedNodeIndex,
+    );
   }
 
-  void _selectLastHistoryNode() {
-    if (_gameInProgress) return;
-    final lastNodeData = _historyNodesDescriptions
+  void _selectLastHistoryNode({
+    required BuildContext context,
+    required ScrollController historyScrollController,
+    required ValueNotifier<bool> gameInProgress,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+  }) {
+    if (gameInProgress.value) return;
+    final lastNodeData = historyNodesDescriptions.value
         .asMap()
         .entries
         .map((entry) => (entry.key, entry.value))
@@ -567,50 +795,67 @@ class _GamePageState extends ConsumerState<GamePage> {
     if (lastNodeData == null) return;
 
     final moveData = lastNodeData.$2.move!;
-    setState(() {
-      _historySelectedNodeIndex = lastNodeData.$1;
-      _gameLogic = chess.Chess.fromFEN(lastNodeData.$2.fen!);
-      _lastMoveToHighlight = BoardArrow(
-        from: moveData.from.getUciString(),
-        to: moveData.to.getUciString(),
-      );
-    });
-    _updateHistoryScrollPosition();
+    historySelectedNodeIndex.value = lastNodeData.$1;
+    gameLogic.value = chess.Chess.fromFEN(lastNodeData.$2.fen!);
+    lastMoveToHighlight.value = BoardArrow(
+      from: moveData.from.getUciString(),
+      to: moveData.to.getUciString(),
+    );
+    _updateHistoryScrollPosition(
+      context: context,
+      gameInProgress: gameInProgress,
+      historyNodesDescriptions: historyNodesDescriptions,
+      historyScrollController: historyScrollController,
+      historySelectedNodeIndex: historySelectedNodeIndex,
+    );
   }
 
   void _onHistoryMoveRequest(
-      {required Move historyMove, required int? selectedHistoryNodeIndex}) {
-    if (_gameInProgress || selectedHistoryNodeIndex == null) return;
-    final historyNode = _historyNodesDescriptions[selectedHistoryNodeIndex];
-    setState(() {
-      _historySelectedNodeIndex = selectedHistoryNodeIndex;
-      _gameLogic = chess.Chess.fromFEN(historyNode.fen!);
-      _lastMoveToHighlight = BoardArrow(
-        from: historyNode.move!.from.getUciString(),
-        to: historyNode.move!.to.getUciString(),
-      );
-    });
+      {required Move historyMove,
+      required int? selectedHistoryNodeIndex,
+      required ValueNotifier<bool> gameInProgress,
+      required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+      required ValueNotifier<int?> historySelectedNodeIndexVariable,
+      required ValueNotifier<chess.Chess?> gameLogic,
+      required ValueNotifier<BoardArrow?> lastMoveToHighlight}) {
+    if (gameInProgress.value || selectedHistoryNodeIndex == null) return;
+    final historyNode =
+        historyNodesDescriptions.value[selectedHistoryNodeIndex];
+    historySelectedNodeIndexVariable.value = selectedHistoryNodeIndex;
+    gameLogic.value = chess.Chess.fromFEN(historyNode.fen!);
+    lastMoveToHighlight.value = BoardArrow(
+      from: historyNode.move!.from.getUciString(),
+      to: historyNode.move!.to.getUciString(),
+    );
   }
 
-  void _makeComputerPlay() {
-    if (!_stockfishReady) return;
-    if (_gameLogic == null) return;
+  void _makeComputerPlay({
+    required ValueNotifier<bool> stockfishReady,
+    required ValueNotifier<bool> engineThinking,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ValueNotifier<PlayerType?> whitePlayerType,
+    required ValueNotifier<PlayerType?> blackPlayerType,
+  }) {
+    if (!stockfishReady.value) return;
+    if (gameLogic.value == null) return;
 
-    final iswhiteTurn = _gameLogic!.turn == chess.Color.WHITE;
+    final iswhiteTurn = gameLogic.value!.turn == chess.Color.WHITE;
     final isComputerTurn =
-        (iswhiteTurn && _whitePlayerType == PlayerType.computer) ||
-            (!iswhiteTurn && _blackPlayerType == PlayerType.computer);
+        (iswhiteTurn && whitePlayerType.value == PlayerType.computer) ||
+            (!iswhiteTurn && blackPlayerType.value == PlayerType.computer);
     if (!isComputerTurn) return;
 
-    setState(() {
-      _engineThinking = true;
-    });
+    engineThinking.value = true;
 
-    stockfishManager.sendCommand("position fen ${_gameLogic!.fen}");
+    stockfishManager.sendCommand("position fen ${gameLogic.value!.fen}");
     stockfishManager.sendCommand("go movetime 1200");
   }
 
-  void _handleExitPage(bool didPop, Object? result) async {
+  void _handleExitPage({
+    required bool didPop,
+    Object? result,
+    required BuildContext context,
+  }) async {
     if (didPop) return;
     return await showDialog(
         context: context,
@@ -662,14 +907,40 @@ class _GamePageState extends ConsumerState<GamePage> {
   }
 
   void _onPromotionCommited({
-    required ShortMove moveDone,
     required PieceType pieceType,
+    required ShortMove move,
+    required ValueNotifier<bool> gameStart,
+    required ValueNotifier<bool> gameInProgress,
+    required ValueNotifier<chess.Chess?> gameLogic,
+    required ValueNotifier<BoardArrow?> lastMoveToHighlight,
+    required ValueNotifier<List<HistoryNode>> historyNodesDescriptions,
+    required ValueNotifier<PlayerType?> whitePlayerType,
+    required ValueNotifier<PlayerType?> blackPlayerType,
+    required BuildContext context,
+    required ValueNotifier<int?> historySelectedNodeIndex,
+    required ScrollController historyScrollController,
+    required ValueNotifier<bool> stockfishReady,
+    required ValueNotifier<bool> engineThinking,
   }) {
-    moveDone.promotion = pieceType;
-    _onMove(move: moveDone);
+    move.promotion = pieceType;
+    _onMove(
+      move: move,
+      context: context,
+      whitePlayerType: whitePlayerType,
+      blackPlayerType: blackPlayerType,
+      engineThinking: engineThinking,
+      gameInProgress: gameInProgress,
+      gameLogic: gameLogic,
+      gameStart: gameStart,
+      historyNodesDescriptions: historyNodesDescriptions,
+      historyScrollController: historyScrollController,
+      historySelectedNodeIndex: historySelectedNodeIndex,
+      lastMoveToHighlight: lastMoveToHighlight,
+      stockfishReady: stockfishReady,
+    );
   }
 
-  void _showGamePageHelpDialog() {
+  void _showGamePageHelpDialog(BuildContext context) {
     showDialog(
         context: context,
         builder: (ctx2) {
@@ -686,7 +957,42 @@ class _GamePageState extends ConsumerState<GamePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final gameLogic = useState<chess.Chess?>(null);
+    final blackSideAtBottom = useState(false);
+    final whitePlayerType = useState<PlayerType?>(null);
+    final blackPlayerType = useState<PlayerType?>(null);
+    final gameStart = useState(true);
+    final gameInProgress = useState(true);
+    final lastMoveToHighlight = useState<BoardArrow?>(null);
+    final historyNodesDescriptions = useState(<HistoryNode>[]);
+    final historySelectedNodeIndex = useState<int?>(null);
+    final engineThinking = useState(false);
+    final stockfishReady = useState(false);
+
+    final historyScrollController =
+        useScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
+
+    useEffect(() {
+      initState(
+        context: context,
+        ref: ref,
+        whitePlayerType: whitePlayerType,
+        blackPlayerType: blackPlayerType,
+        blackSideAtBottom: blackSideAtBottom,
+        engineThinking: engineThinking,
+        gameInProgress: gameInProgress,
+        gameLogic: gameLogic,
+        gameStart: gameStart,
+        historyNodesDescriptions: historyNodesDescriptions,
+        historyScrollController: historyScrollController,
+        historySelectedNodeIndex: historySelectedNodeIndex,
+        lastMoveToHighlight: lastMoveToHighlight,
+        stockfishReady: stockfishReady,
+      );
+      return null;
+    });
+
     final isPortrait =
         MediaQuery.of(context).size.width < MediaQuery.of(context).size.height;
     final gameGoal = ref.read(gameProvider).goal;
@@ -694,7 +1000,11 @@ class _GamePageState extends ConsumerState<GamePage> {
 
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: _handleExitPage,
+      onPopInvokedWithResult: (didPop, result) => _handleExitPage(
+        context: context,
+        didPop: didPop,
+        result: result,
+      ),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -703,25 +1013,45 @@ class _GamePageState extends ConsumerState<GamePage> {
           ),
           actions: [
             IconButton(
-              onPressed: _purposeStartNewGame,
+              onPressed: () => _purposeStartNewGame(
+                context: context,
+                engineThinking: engineThinking,
+                gameInProgress: gameInProgress,
+                gameLogic: gameLogic,
+                gameStart: gameStart,
+                historyNodesDescriptions: historyNodesDescriptions,
+                historySelectedNodeIndex: historySelectedNodeIndex,
+                lastMoveToHighlight: lastMoveToHighlight,
+                ref: ref,
+              ),
               icon: const FaIcon(
                 FontAwesomeIcons.plus,
               ),
             ),
             IconButton(
-              onPressed: _toggleBoardOrientation,
+              onPressed: () => _toggleBoardOrientation(
+                blackSideAtBottom: blackSideAtBottom,
+              ),
               icon: const FaIcon(
                 FontAwesomeIcons.arrowsUpDown,
               ),
             ),
             IconButton(
-              onPressed: _onStopRequested,
+              onPressed: () => _onStopRequested(
+                context: context,
+                gameInProgress: gameInProgress,
+                gameLogic: gameLogic,
+                historyNodesDescriptions: historyNodesDescriptions,
+                historyScrollController: historyScrollController,
+                historySelectedNodeIndex: historySelectedNodeIndex,
+                lastMoveToHighlight: lastMoveToHighlight,
+              ),
               icon: const FaIcon(
                 FontAwesomeIcons.hand,
               ),
             ),
             IconButton(
-              onPressed: _showGamePageHelpDialog,
+              onPressed: () => _showGamePageHelpDialog(context),
               icon: const Icon(
                 Icons.question_mark_rounded,
               ),
@@ -733,51 +1063,215 @@ class _GamePageState extends ConsumerState<GamePage> {
             Center(
               child: isPortrait
                   ? PortraitWidget(
-                      gameInProgress: _gameInProgress,
-                      positionFen: _gameLogic?.fen ?? emptyPosition,
-                      isWhiteTurn: _gameLogic?.turn == chess.Color.WHITE,
-                      blackSideAtBottom: _blackSideAtBottom,
-                      whitePlayerType: _whitePlayerType ?? PlayerType.computer,
-                      blackPlayerType: _blackPlayerType ?? PlayerType.computer,
-                      lastMoveToHighlight: _lastMoveToHighlight,
-                      onPromote: _onPromote,
-                      onMove: _onMove,
-                      onPromotionCommited: _onPromotionCommited,
+                      gameInProgress: gameInProgress.value,
+                      positionFen: gameLogic.value?.fen ?? emptyPosition,
+                      isWhiteTurn: gameLogic.value?.turn == chess.Color.WHITE,
+                      blackSideAtBottom: blackSideAtBottom.value,
+                      whitePlayerType:
+                          whitePlayerType.value ?? PlayerType.computer,
+                      blackPlayerType:
+                          blackPlayerType.value ?? PlayerType.computer,
+                      lastMoveToHighlight: lastMoveToHighlight.value,
+                      onPromote: () => _onPromote(
+                        context: context,
+                        gameLogic: gameLogic,
+                      ),
+                      onMove: ({required ShortMove move}) => _onMove(
+                        gameStart: gameStart,
+                        gameInProgress: gameInProgress,
+                        gameLogic: gameLogic,
+                        move: move,
+                        whitePlayerType: whitePlayerType,
+                        blackPlayerType: blackPlayerType,
+                        historyNodesDescriptions: historyNodesDescriptions,
+                        lastMoveToHighlight: lastMoveToHighlight,
+                        context: context,
+                        engineThinking: engineThinking,
+                        historyScrollController: historyScrollController,
+                        historySelectedNodeIndex: historySelectedNodeIndex,
+                        stockfishReady: stockfishReady,
+                      ),
+                      onPromotionCommited: ({
+                        required ShortMove moveDone,
+                        required PieceType pieceType,
+                      }) =>
+                          _onPromotionCommited(
+                        whitePlayerType: whitePlayerType,
+                        blackPlayerType: blackPlayerType,
+                        context: context,
+                        engineThinking: engineThinking,
+                        gameInProgress: gameInProgress,
+                        gameLogic: gameLogic,
+                        gameStart: gameStart,
+                        historyNodesDescriptions: historyNodesDescriptions,
+                        historyScrollController: historyScrollController,
+                        historySelectedNodeIndex: historySelectedNodeIndex,
+                        lastMoveToHighlight: lastMoveToHighlight,
+                        move: moveDone,
+                        pieceType: pieceType,
+                        stockfishReady: stockfishReady,
+                      ),
                       gameGoal: gameGoal,
-                      historySelectedNodeIndex: _historySelectedNodeIndex,
-                      historyNodesDescriptions: _historyNodesDescriptions,
-                      historyScrollController: _historyScrollController,
-                      requestGotoFirst: _selectFirstGamePosition,
-                      requestGotoPrevious: _selectPreviousHistoryNode,
-                      requestGotoNext: _selectNextHistoryNode,
-                      requestGotoLast: _selectLastHistoryNode,
-                      requestHistoryMove: _onHistoryMoveRequest,
-                      engineThinking: _engineThinking,
+                      historySelectedNodeIndex: historySelectedNodeIndex.value,
+                      historyNodesDescriptions: historyNodesDescriptions.value,
+                      historyScrollController: historyScrollController,
+                      requestGotoFirst: () => _selectFirstGamePosition(
+                        ref: ref,
+                        gameInProgress: gameInProgress,
+                        gameLogic: gameLogic,
+                        lastMoveToHighlight: lastMoveToHighlight,
+                        historyScrollController: historyScrollController,
+                        historySelectedNodeIndex: historySelectedNodeIndex,
+                      ),
+                      requestGotoPrevious: () => _selectPreviousHistoryNode(
+                        context: context,
+                        gameInProgress: gameInProgress,
+                        gameLogic: gameLogic,
+                        ref: ref,
+                        lastMoveToHighlight: lastMoveToHighlight,
+                        historyNodesDescriptions: historyNodesDescriptions,
+                        historyScrollController: historyScrollController,
+                        historySelectedNodeIndex: historySelectedNodeIndex,
+                      ),
+                      requestGotoNext: () => _selectNextHistoryNode(
+                        context: context,
+                        gameInProgress: gameInProgress,
+                        gameLogic: gameLogic,
+                        lastMoveToHighlight: lastMoveToHighlight,
+                        historyNodesDescriptions: historyNodesDescriptions,
+                        historyScrollController: historyScrollController,
+                        historySelectedNodeIndex: historySelectedNodeIndex,
+                      ),
+                      requestGotoLast: () => _selectLastHistoryNode(
+                        context: context,
+                        historyScrollController: historyScrollController,
+                        historyNodesDescriptions: historyNodesDescriptions,
+                        historySelectedNodeIndex: historySelectedNodeIndex,
+                        gameInProgress: gameInProgress,
+                        gameLogic: gameLogic,
+                        lastMoveToHighlight: lastMoveToHighlight,
+                      ),
+                      requestHistoryMove: (
+                              {required Move historyMove,
+                              required int? selectedHistoryNodeIndex}) =>
+                          _onHistoryMoveRequest(
+                              gameInProgress: gameInProgress,
+                              gameLogic: gameLogic,
+                              historyMove: historyMove,
+                              historyNodesDescriptions:
+                                  historyNodesDescriptions,
+                              historySelectedNodeIndexVariable:
+                                  historySelectedNodeIndex,
+                              lastMoveToHighlight: lastMoveToHighlight,
+                              selectedHistoryNodeIndex:
+                                  selectedHistoryNodeIndex),
+                      engineThinking: engineThinking.value,
                     )
                   : LandscapeWidget(
-                      gameInProgress: _gameInProgress,
-                      positionFen: _gameLogic?.fen ?? emptyPosition,
-                      isWhiteTurn: _gameLogic?.turn == chess.Color.WHITE,
-                      blackSideAtBottom: _blackSideAtBottom,
-                      whitePlayerType: _whitePlayerType ?? PlayerType.computer,
-                      blackPlayerType: _blackPlayerType ?? PlayerType.computer,
-                      lastMoveToHighlight: _lastMoveToHighlight,
-                      onPromote: _onPromote,
-                      onMove: _onMove,
-                      onPromotionCommited: _onPromotionCommited,
+                      gameInProgress: gameInProgress.value,
+                      positionFen: gameLogic.value?.fen ?? emptyPosition,
+                      isWhiteTurn: gameLogic.value?.turn == chess.Color.WHITE,
+                      blackSideAtBottom: blackSideAtBottom.value,
+                      whitePlayerType:
+                          whitePlayerType.value ?? PlayerType.computer,
+                      blackPlayerType:
+                          blackPlayerType.value ?? PlayerType.computer,
+                      lastMoveToHighlight: lastMoveToHighlight.value,
+                      onPromote: () => _onPromote(
+                        context: context,
+                        gameLogic: gameLogic,
+                      ),
+                      onMove: ({required ShortMove move}) => _onMove(
+                        move: move,
+                        whitePlayerType: whitePlayerType,
+                        blackPlayerType: blackPlayerType,
+                        gameInProgress: gameInProgress,
+                        gameLogic: gameLogic,
+                        gameStart: gameStart,
+                        historyNodesDescriptions: historyNodesDescriptions,
+                        lastMoveToHighlight: lastMoveToHighlight,
+                        context: context,
+                        engineThinking: engineThinking,
+                        historyScrollController: historyScrollController,
+                        historySelectedNodeIndex: historySelectedNodeIndex,
+                        stockfishReady: stockfishReady,
+                      ),
+                      onPromotionCommited: (
+                              {required ShortMove moveDone,
+                              required PieceType pieceType}) =>
+                          _onPromotionCommited(
+                        move: moveDone,
+                        pieceType: pieceType,
+                        whitePlayerType: whitePlayerType,
+                        blackPlayerType: blackPlayerType,
+                        context: context,
+                        engineThinking: engineThinking,
+                        gameInProgress: gameInProgress,
+                        gameLogic: gameLogic,
+                        gameStart: gameStart,
+                        historyNodesDescriptions: historyNodesDescriptions,
+                        historyScrollController: historyScrollController,
+                        historySelectedNodeIndex: historySelectedNodeIndex,
+                        lastMoveToHighlight: lastMoveToHighlight,
+                        stockfishReady: stockfishReady,
+                      ),
                       gameGoal: gameGoal,
-                      historySelectedNodeIndex: _historySelectedNodeIndex,
-                      historyNodesDescriptions: _historyNodesDescriptions,
-                      historyScrollController: _historyScrollController,
-                      requestGotoFirst: _selectFirstGamePosition,
-                      requestGotoPrevious: _selectPreviousHistoryNode,
-                      requestGotoNext: _selectNextHistoryNode,
-                      requestGotoLast: _selectLastHistoryNode,
-                      requestHistoryMove: _onHistoryMoveRequest,
-                      engineThinking: _engineThinking,
+                      historySelectedNodeIndex: historySelectedNodeIndex.value,
+                      historyNodesDescriptions: historyNodesDescriptions.value,
+                      historyScrollController: historyScrollController,
+                      requestGotoFirst: () => _selectFirstGamePosition(
+                        gameInProgress: gameInProgress,
+                        gameLogic: gameLogic,
+                        ref: ref,
+                        historyScrollController: historyScrollController,
+                        historySelectedNodeIndex: historySelectedNodeIndex,
+                        lastMoveToHighlight: lastMoveToHighlight,
+                      ),
+                      requestGotoPrevious: () => _selectPreviousHistoryNode(
+                        context: context,
+                        gameInProgress: gameInProgress,
+                        gameLogic: gameLogic,
+                        historyNodesDescriptions: historyNodesDescriptions,
+                        historyScrollController: historyScrollController,
+                        historySelectedNodeIndex: historySelectedNodeIndex,
+                        lastMoveToHighlight: lastMoveToHighlight,
+                        ref: ref,
+                      ),
+                      requestGotoNext: () => _selectNextHistoryNode(
+                        context: context,
+                        gameInProgress: gameInProgress,
+                        gameLogic: gameLogic,
+                        historyNodesDescriptions: historyNodesDescriptions,
+                        historyScrollController: historyScrollController,
+                        historySelectedNodeIndex: historySelectedNodeIndex,
+                        lastMoveToHighlight: lastMoveToHighlight,
+                      ),
+                      requestGotoLast: () => _selectLastHistoryNode(
+                        context: context,
+                        gameInProgress: gameInProgress,
+                        gameLogic: gameLogic,
+                        historyNodesDescriptions: historyNodesDescriptions,
+                        historyScrollController: historyScrollController,
+                        historySelectedNodeIndex: historySelectedNodeIndex,
+                        lastMoveToHighlight: lastMoveToHighlight,
+                      ),
+                      requestHistoryMove: (
+                              {required Move historyMove,
+                              required int? selectedHistoryNodeIndex}) =>
+                          _onHistoryMoveRequest(
+                        gameInProgress: gameInProgress,
+                        gameLogic: gameLogic,
+                        historyMove: historyMove,
+                        historyNodesDescriptions: historyNodesDescriptions,
+                        historySelectedNodeIndexVariable:
+                            historySelectedNodeIndex,
+                        lastMoveToHighlight: lastMoveToHighlight,
+                        selectedHistoryNodeIndex: selectedHistoryNodeIndex,
+                      ),
+                      engineThinking: engineThinking.value,
                     ),
             ),
-            if (!_stockfishReady)
+            if (!stockfishReady.value)
               Center(
                 child: SizedBox(
                   width: loadingSpinnerSize,
