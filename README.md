@@ -36,3 +36,14 @@ In order to update translations, run
 ```
 dart run slang
 ```
+
+## Credits
+
+### Svg icons
+
+Some svg icons have been downloaded from [SvgRepo](https://www.svgrepo.com/)
+
+- computer.svg : https://www.svgrepo.com/svg/477108/computer
+- handshake.svg : https://www.svgrepo.com/svg/300894/handshake
+- trophy.svg : https://www.svgrepo.com/svg/398519/trophy
+- user.svg : https://www.svgrepo.com/svg/467435/user-9

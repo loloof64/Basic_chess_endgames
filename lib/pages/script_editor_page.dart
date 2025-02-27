@@ -70,15 +70,9 @@ extension ScriptFiller on ValueNotifier<Map<PieceKind, TextEditingController>> {
         convertScriptToPiecesCounts(otherPiecesCountConstraintsScript)
             .keys
             .toList();
-    //////////////////////////////
-    print("Other pieces kingd : $otherPiecesKinds");
-    //////////////////////////////
     if (sectionScripts.isNotEmpty) {
       final content = sectionScripts.trim();
       final parts = content.split(otherPiecesSingleScriptSeparator);
-      //////////////////////////////////
-      print("Section scripts splitted : $sectionScripts");
-      //////////////////////////////////
       for (final pieceKindScript in parts) {
         if (pieceKindScript.isEmpty) continue;
         final pieceKindScriptContent = pieceKindScript.trim();

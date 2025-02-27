@@ -438,6 +438,7 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
           // We limit the number of errors to process
           const maxDisplayedErrors = 100;
           final limitedErrors = errors.take(maxDisplayedErrors).toList();
+
           if (limitedErrors.isNotEmpty) {
             for (final error in limitedErrors) {
               Logger().e("${error.message} <= ${error.scriptType}");
@@ -477,7 +478,6 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
         );
       } on PositionGenerationLoopException catch (ex) {
         Logger().e(ex.message);
-
         parameters.sendPort.send(
           (
             <String>[],

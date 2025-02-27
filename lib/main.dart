@@ -20,7 +20,6 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
   stockfishManager.init();
   runApp(ProviderScope(child: TranslationProvider(child: home)));
 }
