@@ -2,6 +2,7 @@ import 'package:basicchessendgamestrainer/components/history.dart';
 import 'package:basicchessendgamestrainer/data/stockfish_manager.dart';
 import 'package:basicchessendgamestrainer/logic/utils.dart';
 import 'package:basicchessendgamestrainer/option.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/common_drawer.dart';
 import 'package:basicchessendgamestrainer/providers/game_logic_provider.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/game_page_landscape.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/game_page_portrait.dart';
@@ -869,10 +870,38 @@ class GamePage extends HookConsumerWidget {
         result: result,
       ),
       child: Scaffold(
+        drawer: CommonDrawer(),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(
             t.game_page.title,
+          ),
+          leading: Builder(
+            builder: (context) {
+              return SizedBox(
+                width: 80,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: IconButton(
+                        onPressed: () => Scaffold.of(context).openDrawer(),
+                        icon: Icon(Icons.menu),
+                      ),
+                    ),
+                    Flexible(
+                      child: IconButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: Icon(
+                          Icons.arrow_back,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
           ),
           actions: [
             IconButton(

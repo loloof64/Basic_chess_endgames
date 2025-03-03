@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/common_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
@@ -98,8 +99,36 @@ class SampleGameChooserPage extends StatelessWidget {
     );
 
     return Scaffold(
+      drawer: CommonDrawer(),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(t.sample_chooser.title),
+        leading: Builder(
+          builder: (context) {
+            return SizedBox(
+              width: 80,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: IconButton(
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                      icon: Icon(Icons.menu),
+                    ),
+                  ),
+                  Flexible(
+                    child: IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(
+                        Icons.arrow_back,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        ),
       ),
       body: Column(
         children: [

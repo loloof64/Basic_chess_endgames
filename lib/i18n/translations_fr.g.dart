@@ -43,6 +43,7 @@ class TranslationsFr extends Translations {
 	@override late final _TranslationsVariablesTableFr variables_table = _TranslationsVariablesTableFr._(_root);
 	@override late final _TranslationsSyntaxManualPageFr syntax_manual_page = _TranslationsSyntaxManualPageFr._(_root);
 	@override late final _TranslationsRandomTestingFr random_testing = _TranslationsRandomTestingFr._(_root);
+	@override late final _TranslationsOptionsFr options = _TranslationsOptionsFr._(_root);
 }
 
 // Path: misc
@@ -278,6 +279,17 @@ class _TranslationsRandomTestingFr extends TranslationsRandomTestingEn {
 	@override String get tab_rejected_positions => 'Rejetées';
 }
 
+// Path: options
+class _TranslationsOptionsFr extends TranslationsOptionsEn {
+	_TranslationsOptionsFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Options';
+	@override late final _TranslationsOptionsDarkModeFr dark_mode = _TranslationsOptionsDarkModeFr._(_root);
+}
+
 // Path: home.menu_buttons
 class _TranslationsHomeMenuButtonsFr extends TranslationsHomeMenuButtonsEn {
 	_TranslationsHomeMenuButtonsFr._(TranslationsFr root) : this._root = root, super.internal(root);
@@ -409,6 +421,18 @@ class _TranslationsRandomTestingParametersDialogFr extends TranslationsRandomTes
 	@override String get intermediates_positions_level_none => 'Aucune';
 	@override String get intermediates_positions_level_with_max_pieces => 'Seulement les positions qui n\'incluent pas uniquement le(s) roi(s)';
 	@override String get intermediates_positions_level_all => 'Toutes';
+}
+
+// Path: options.dark_mode
+class _TranslationsOptionsDarkModeFr extends TranslationsOptionsDarkModeEn {
+	_TranslationsOptionsDarkModeFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get label => 'Mode sombre';
+	@override String get on => 'actif';
+	@override String get off => 'non actif';
 }
 
 // Path: variables_table.rows.file_a

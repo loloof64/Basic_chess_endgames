@@ -8,6 +8,7 @@ import 'package:basicchessendgamestrainer/logic/position_generation/script_text_
 import 'package:basicchessendgamestrainer/models/isolate_intermediate_message.dart';
 import 'package:basicchessendgamestrainer/pages/script_editor_page.dart';
 import 'package:basicchessendgamestrainer/pages/sample_game_chooser_page.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/common_drawer.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/random_testing_parameters_dialog.dart';
 import 'package:basicchessendgamestrainer/pages/random_testing_page.dart';
 import 'package:chess/chess.dart' as chess;
@@ -712,6 +713,7 @@ class HomeWidget extends HookConsumerWidget {
         dispose(positionGenerationIsolate: positionGenerationIsolate);
       },
       child: Scaffold(
+        drawer: CommonDrawer(),
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(t.home.title),

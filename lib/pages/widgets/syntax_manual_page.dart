@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings, unnecessary_string_interpolations, prefer_adjacent_string_concatenation
 
+import 'package:basicchessendgamestrainer/pages/widgets/common_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -149,8 +150,36 @@ class SyntaxManualPage extends HookWidget {
     }).toList();
 
     return Scaffold(
+      drawer: CommonDrawer(),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(t.syntax_manual_page.title),
+        leading: Builder(
+          builder: (context) {
+            return SizedBox(
+              width: 80,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: IconButton(
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                      icon: Icon(Icons.menu),
+                    ),
+                  ),
+                  Flexible(
+                    child: IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(
+                        Icons.arrow_back,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(

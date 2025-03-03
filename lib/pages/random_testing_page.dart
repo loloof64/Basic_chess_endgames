@@ -1,4 +1,5 @@
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/common_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:simple_chess_board/models/piece_type.dart';
@@ -20,8 +21,36 @@ class RandomTestingPage extends HookWidget {
     final tabController = useTabController(initialLength: 2);
 
     return Scaffold(
+      drawer: CommonDrawer(),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(t.random_testing.title),
+        leading: Builder(
+          builder: (context) {
+            return SizedBox(
+              width: 80,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: IconButton(
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                      icon: Icon(Icons.menu),
+                    ),
+                  ),
+                  Flexible(
+                    child: IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(
+                        Icons.arrow_back,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        ),
       ),
       body: TabBarView(
         controller: tabController,

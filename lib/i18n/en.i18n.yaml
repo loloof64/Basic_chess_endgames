@@ -266,3 +266,9 @@ random_testing:
   title: "Random testing"
   tab_generated_positions: "Generated"
   tab_rejected_positions: "Rejected"
+options:
+  title: "Options"
+  dark_mode: 
+    label: "Dark mode"
+    on: "on"
+    off: "off"

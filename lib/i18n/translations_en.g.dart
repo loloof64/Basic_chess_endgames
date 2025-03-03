@@ -46,6 +46,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final TranslationsVariablesTableEn variables_table = TranslationsVariablesTableEn.internal(_root);
 	late final TranslationsSyntaxManualPageEn syntax_manual_page = TranslationsSyntaxManualPageEn.internal(_root);
 	late final TranslationsRandomTestingEn random_testing = TranslationsRandomTestingEn.internal(_root);
+	late final TranslationsOptionsEn options = TranslationsOptionsEn.internal(_root);
 }
 
 // Path: misc
@@ -281,6 +282,17 @@ class TranslationsRandomTestingEn {
 	String get tab_rejected_positions => 'Rejected';
 }
 
+// Path: options
+class TranslationsOptionsEn {
+	TranslationsOptionsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Options';
+	late final TranslationsOptionsDarkModeEn dark_mode = TranslationsOptionsDarkModeEn.internal(_root);
+}
+
 // Path: home.menu_buttons
 class TranslationsHomeMenuButtonsEn {
 	TranslationsHomeMenuButtonsEn.internal(this._root);
@@ -412,6 +424,18 @@ class TranslationsRandomTestingParametersDialogEn {
 	String get intermediates_positions_level_none => 'None';
 	String get intermediates_positions_level_with_max_pieces => 'Only positions which not include only king(s)';
 	String get intermediates_positions_level_all => 'All';
+}
+
+// Path: options.dark_mode
+class TranslationsOptionsDarkModeEn {
+	TranslationsOptionsDarkModeEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get label => 'Dark mode';
+	String get on => 'on';
+	String get off => 'off';
 }
 
 // Path: variables_table.rows.file_a

@@ -43,6 +43,7 @@ class TranslationsEs extends Translations {
 	@override late final _TranslationsVariablesTableEs variables_table = _TranslationsVariablesTableEs._(_root);
 	@override late final _TranslationsSyntaxManualPageEs syntax_manual_page = _TranslationsSyntaxManualPageEs._(_root);
 	@override late final _TranslationsRandomTestingEs random_testing = _TranslationsRandomTestingEs._(_root);
+	@override late final _TranslationsOptionsEs options = _TranslationsOptionsEs._(_root);
 }
 
 // Path: misc
@@ -278,6 +279,17 @@ class _TranslationsRandomTestingEs extends TranslationsRandomTestingEn {
 	@override String get tab_rejected_positions => 'Rechazadas';
 }
 
+// Path: options
+class _TranslationsOptionsEs extends TranslationsOptionsEn {
+	_TranslationsOptionsEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Opciones';
+	@override late final _TranslationsOptionsDarkModeEs dark_mode = _TranslationsOptionsDarkModeEs._(_root);
+}
+
 // Path: home.menu_buttons
 class _TranslationsHomeMenuButtonsEs extends TranslationsHomeMenuButtonsEn {
 	_TranslationsHomeMenuButtonsEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -409,6 +421,18 @@ class _TranslationsRandomTestingParametersDialogEs extends TranslationsRandomTes
 	@override String get intermediates_positions_level_none => 'Ninguna';
 	@override String get intermediates_positions_level_with_max_pieces => 'Solo posiciones que no incluyan solo rey(s)';
 	@override String get intermediates_positions_level_all => 'Todas';
+}
+
+// Path: options.dark_mode
+class _TranslationsOptionsDarkModeEs extends TranslationsOptionsDarkModeEn {
+	_TranslationsOptionsDarkModeEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get label => 'Modo oscuro';
+	@override String get on => 'activado';
+	@override String get off => 'inactivado';
 }
 
 // Path: variables_table.rows.file_a

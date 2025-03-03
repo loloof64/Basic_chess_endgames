@@ -6,6 +6,7 @@ import 'package:basicchessendgamestrainer/components/variable_insertor.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/common_drawer.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/piece_count_widget.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/script_editor_common_widgets.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/syntax_manual_page.dart';
@@ -1398,9 +1399,37 @@ class ScriptEditorPage extends HookWidget {
             }
           });
           return Scaffold(
+            drawer: CommonDrawer(),
             appBar: AppBar(
+              automaticallyImplyLeading: false,
               title: Text(
                 t.script_editor_page.title,
+              ),
+              leading: Builder(
+                builder: (context) {
+                  return SizedBox(
+                    width: 80,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: IconButton(
+                            onPressed: () => Scaffold.of(context).openDrawer(),
+                            icon: Icon(Icons.menu),
+                          ),
+                        ),
+                        Flexible(
+                          child: IconButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            icon: Icon(
+                              Icons.arrow_back,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
               ),
               actions: [
                 if (!notATextEditor)

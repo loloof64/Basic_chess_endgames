@@ -269,3 +269,9 @@ random_testing:
   title: "Test aléatoire"
   tab_generated_positions: "Générées"
   tab_rejected_positions: "Rejetées"
+options:
+  title: "Options"
+  dark_mode: 
+    label: "Mode sombre"
+    on: "actif"
+    off: "non actif"

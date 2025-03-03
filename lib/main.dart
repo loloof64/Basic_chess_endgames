@@ -2,6 +2,7 @@ import 'dart:io' show Platform;
 
 import 'package:basicchessendgamestrainer/data/stockfish_manager.dart';
 import 'package:basicchessendgamestrainer/pages/home.dart';
+import 'package:basicchessendgamestrainer/providers/dark_theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -24,7 +25,7 @@ void main() async {
   runApp(ProviderScope(child: TranslationProvider(child: home)));
 }
 
-class AppMobile extends StatelessWidget {
+class AppMobile extends ConsumerWidget {
   const AppMobile({super.key});
 
   void _handleExit(bool didPop, Object? result) {
@@ -34,7 +35,8 @@ class AppMobile extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final inDarkMode = ref.watch(darkThemeProvider);
     return ProviderScope(
       child: PopScope(
         canPop: false,
@@ -47,7 +49,7 @@ class AppMobile extends StatelessWidget {
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
           theme: FlexThemeData.light(scheme: FlexScheme.greenM3),
           darkTheme: FlexThemeData.dark(scheme: FlexScheme.blueWhale),
-          themeMode: ThemeMode.system,
+          themeMode: inDarkMode ? ThemeMode.dark : ThemeMode.light,
           home: const HomePage(),
         ),
       ),
@@ -55,14 +57,14 @@ class AppMobile extends StatelessWidget {
   }
 }
 
-class AppDesktop extends StatefulWidget {
+class AppDesktop extends ConsumerStatefulWidget {
   const AppDesktop({super.key});
 
   @override
-  State<AppDesktop> createState() => _AppDesktopState();
+  ConsumerState<AppDesktop> createState() => _AppDesktopState();
 }
 
-class _AppDesktopState extends State<AppDesktop> with WindowListener {
+class _AppDesktopState extends ConsumerState<AppDesktop> with WindowListener {
   void _handleExit(bool didPop, Object? result) {
     if (didPop) return;
     stockfishManager.dispose();
@@ -89,6 +91,7 @@ class _AppDesktopState extends State<AppDesktop> with WindowListener {
 
   @override
   Widget build(BuildContext context) {
+    final inDarkMode = ref.watch(darkThemeProvider);
     return ProviderScope(
       child: PopScope(
         canPop: false,
@@ -101,7 +104,7 @@ class _AppDesktopState extends State<AppDesktop> with WindowListener {
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
           theme: FlexThemeData.light(scheme: FlexScheme.greenM3),
           darkTheme: FlexThemeData.dark(scheme: FlexScheme.blueWhale),
-          themeMode: ThemeMode.system,
+          themeMode: inDarkMode ? ThemeMode.dark : ThemeMode.light,
           home: const HomePage(),
         ),
       ),
