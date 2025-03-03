@@ -1,5 +1,5 @@
 import 'package:basicchessendgamestrainer/components/history.dart';
-import 'package:basicchessendgamestrainer/models/providers/game_session_provider.dart';
+import 'package:basicchessendgamestrainer/providers/game_session_provider.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/player_turn_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_chess_board/models/board_arrow.dart';

@@ -12,7 +12,7 @@ import 'package:basicchessendgamestrainer/pages/widgets/random_testing_parameter
 import 'package:basicchessendgamestrainer/pages/random_testing_page.dart';
 import 'package:chess/chess.dart' as chess;
 import 'package:basicchessendgamestrainer/data/asset_games.dart';
-import 'package:basicchessendgamestrainer/models/providers/game_session_provider.dart';
+import 'package:basicchessendgamestrainer/providers/game_session_provider.dart';
 import 'package:basicchessendgamestrainer/pages/game_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
