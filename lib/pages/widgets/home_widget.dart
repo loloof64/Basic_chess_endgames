@@ -578,7 +578,7 @@ class HomeWidget extends HookConsumerWidget {
       } else if (message is GenerationResultReady) {
         newPositionsGenerationStream.cancel();
 
-        final (newPositions, rejectedFinalizedPositions, errorsList) = message;
+        final (newPositions, rejectedPositions, errorsList) = message;
         final noError = errorsList.isEmpty && newPositions.isNotEmpty;
 
         if (!context.mounted) return;
@@ -588,19 +588,20 @@ class HomeWidget extends HookConsumerWidget {
               builder: (context) {
                 return RandomTestingPage(
                   generatedPositions: newPositions,
-                  rejectedFinalizedPositions: rejectedFinalizedPositions,
+
+                  rejectedPositions: rejectedPositions,
                 );
               },
             ),
           );
-        } else if (rejectedFinalizedPositions.isNotEmpty) {
+        } else if (rejectedPositions.isNotEmpty) {
           if (!context.mounted) return;
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
                 return RandomTestingPage(
                   generatedPositions: [],
-                  rejectedFinalizedPositions: rejectedFinalizedPositions,
+                  rejectedPositions: rejectedPositions,
                 );
               },
             ),

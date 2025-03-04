@@ -269,6 +269,7 @@ random_testing:
   title: "Test aléatoire"
   tab_generated_positions: "Générées"
   tab_rejected_positions: "Rejetées"
+  select_page_button: "Choisir"
 options:
   title: "Options"
   dark_mode: 

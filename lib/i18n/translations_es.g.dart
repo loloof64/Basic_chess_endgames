@@ -277,6 +277,7 @@ class _TranslationsRandomTestingEs extends TranslationsRandomTestingEn {
 	@override String get title => 'Generación aleatoria para probar';
 	@override String get tab_generated_positions => 'Generadas';
 	@override String get tab_rejected_positions => 'Rechazadas';
+	@override String get select_page_button => 'Elegir';
 }
 
 // Path: options

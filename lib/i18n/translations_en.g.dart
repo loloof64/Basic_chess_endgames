@@ -280,6 +280,7 @@ class TranslationsRandomTestingEn {
 	String get title => 'Random testing';
 	String get tab_generated_positions => 'Generated';
 	String get tab_rejected_positions => 'Rejected';
+	String get select_page_button => 'Select';
 }
 
 // Path: options

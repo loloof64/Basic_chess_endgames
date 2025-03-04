@@ -1,19 +1,22 @@
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/common_drawer.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/random_testing_result_controls.dart';
+import 'package:basicchessendgamestrainer/pages/widgets/random_testing_result_zone.dart';
+import 'package:basicchessendgamestrainer/providers/random_testing_results_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:simple_chess_board/models/piece_type.dart';
-import 'package:simple_chess_board/models/short_move.dart';
-import 'package:simple_chess_board/widgets/chessboard.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+const boardSize = 115.0;
 
 class RandomTestingPage extends HookWidget {
   final List<String> generatedPositions;
-  final List<String> rejectedFinalizedPositions;
+  final List<String> rejectedPositions;
 
   const RandomTestingPage({
     super.key,
     required this.generatedPositions,
-    required this.rejectedFinalizedPositions,
+    required this.rejectedPositions,
   });
 
   @override
@@ -25,32 +28,30 @@ class RandomTestingPage extends HookWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(t.random_testing.title),
-        leading: Builder(
-          builder: (context) {
-            return SizedBox(
-              width: 80,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Flexible(
-                    child: IconButton(
-                      onPressed: () => Scaffold.of(context).openDrawer(),
-                      icon: Icon(Icons.menu),
+        leading: Builder(builder: (context) {
+          return SizedBox(
+            width: 80,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  child: IconButton(
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                    icon: Icon(Icons.menu),
+                  ),
+                ),
+                Flexible(
+                  child: IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: Icon(
+                      Icons.arrow_back,
                     ),
                   ),
-                  Flexible(
-                    child: IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: Icon(
-                        Icons.arrow_back,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-        ),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
       body: TabBarView(
         controller: tabController,
@@ -59,7 +60,7 @@ class RandomTestingPage extends HookWidget {
             generatedPositions: generatedPositions,
           ),
           RejectedPositionsWidget(
-            rejectedPositions: rejectedFinalizedPositions,
+            rejectedPositions: rejectedPositions,
           ),
         ],
       ),
@@ -74,7 +75,7 @@ class RandomTestingPage extends HookWidget {
   }
 }
 
-class GeneratedPositionsListWidget extends StatelessWidget {
+class GeneratedPositionsListWidget extends HookConsumerWidget {
   const GeneratedPositionsListWidget({
     super.key,
     required this.generatedPositions,
@@ -83,40 +84,51 @@ class GeneratedPositionsListWidget extends StatelessWidget {
   final List<String> generatedPositions;
 
   @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: generatedPositions.length,
-      itemBuilder: (context, index) {
-        final fen = generatedPositions[index];
-        final blackAtBottom = fen.split(" ")[1] == 'b';
-        return ListTile(
-          title: SizedBox(
-            width: 200,
-            height: 200,
-            child: SimpleChessBoard(
-              fen: fen,
-              whitePlayerType: PlayerType.computer,
-              blackPlayerType: PlayerType.computer,
-              onMove: ({required ShortMove move}) {},
-              onPromote: () {
-                return Future.value(null);
-              },
-              onPromotionCommited: (
-                  {required ShortMove moveDone,
-                  required PieceType pieceType}) {},
-              onTap: ({required String cellCoordinate}) {},
-              chessBoardColors: ChessBoardColors(),
-              cellHighlights: <String, Color>{},
-              blackSideAtBottom: blackAtBottom,
-            ),
-          ),
-        );
-      },
+  Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(() {
+      Future.delayed(const Duration(milliseconds: 50)).then((value) {
+        final positionsNotifier =
+            ref.read(successRandomTestingResultsProvider.notifier);
+        positionsNotifier.setResults(generatedPositions);
+      });
+      return null;
+    }, []);
+    final results = ref.watch(successRandomTestingResultsProvider);
+    final positionsNotifier =
+        ref.read(successRandomTestingResultsProvider.notifier);
+    return Column(
+      spacing: 10.0,
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        TestingControls(
+          results: results,
+          onBackwardFast: () {
+            positionsNotifier.goToFirstPage();
+          },
+          onBackwardStep: () {
+            positionsNotifier.goToPreviousPage();
+          },
+          onForwardStep: () {
+            positionsNotifier.goToNextPage();
+          },
+          onForwardFast: () {
+            positionsNotifier.gotoLastPage();
+          },
+          onPageSelectionSubmit: (pageIndex) {
+            positionsNotifier.gotoToPageIndex(pageIndex);
+          },
+        ),
+        TestingResultZone(
+          results: results,
+        ),
+      ],
     );
   }
 }
 
-class RejectedPositionsWidget extends StatelessWidget {
+class RejectedPositionsWidget extends HookConsumerWidget {
   const RejectedPositionsWidget({
     super.key,
     required this.rejectedPositions,
@@ -125,35 +137,46 @@ class RejectedPositionsWidget extends StatelessWidget {
   final List<String> rejectedPositions;
 
   @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: rejectedPositions.length,
-      itemBuilder: (context, index) {
-        final fen = rejectedPositions[index];
-        final blackAtBottom = fen.split(" ")[1] == 'b';
-        return ListTile(
-          title: SizedBox(
-            width: 200,
-            height: 200,
-            child: SimpleChessBoard(
-              fen: fen,
-              whitePlayerType: PlayerType.computer,
-              blackPlayerType: PlayerType.computer,
-              onMove: ({required ShortMove move}) {},
-              onPromote: () {
-                return Future.value(null);
-              },
-              onPromotionCommited: (
-                  {required ShortMove moveDone,
-                  required PieceType pieceType}) {},
-              onTap: ({required String cellCoordinate}) {},
-              chessBoardColors: ChessBoardColors(),
-              cellHighlights: <String, Color>{},
-              blackSideAtBottom: blackAtBottom,
-            ),
-          ),
-        );
-      },
+  Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(() {
+      Future.delayed(const Duration(milliseconds: 50)).then((value) {
+        final positionsNotifier =
+            ref.read(errorsRandomTestingResultsProvider.notifier);
+        positionsNotifier.setResults(rejectedPositions);
+      });
+      return null;
+    }, []);
+    final results = ref.watch(errorsRandomTestingResultsProvider);
+    final positionsNotifier =
+        ref.read(errorsRandomTestingResultsProvider.notifier);
+    return Column(
+      spacing: 10.0,
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        TestingControls(
+          results: results,
+          onBackwardFast: () {
+            positionsNotifier.goToFirstPage();
+          },
+          onBackwardStep: () {
+            positionsNotifier.goToPreviousPage();
+          },
+          onForwardStep: () {
+            positionsNotifier.goToNextPage();
+          },
+          onForwardFast: () {
+            positionsNotifier.gotoLastPage();
+          },
+          onPageSelectionSubmit: (pageIndex) {
+            positionsNotifier.gotoToPageIndex(pageIndex);
+          },
+        ),
+        TestingResultZone(
+          results: results,
+        ),
+      ],
     );
   }
 }
