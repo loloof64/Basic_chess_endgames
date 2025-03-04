@@ -24,6 +24,7 @@ abstract mixin class ResultsPageManager {
     final uniqueResults = results.toSet().toList();
     _page = 0;
     _pagesCount = (uniqueResults.length / itemsPerPage).toInt();
+    if ((uniqueResults.length % itemsPerPage) > 0) _pagesCount++;
     _allResults = uniqueResults;
     updateStateFromBounds(0, itemsPerPage);
   }
