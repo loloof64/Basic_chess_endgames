@@ -9,7 +9,7 @@
 /// Built on 2025-03-05 at 01:19 UTC
 
 // coverage:ignore-file
-// ignore_for_file: type=lint, unused_import
+// ignore_for_file: type=lint, unused_import, unused_element_parameter
 
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';

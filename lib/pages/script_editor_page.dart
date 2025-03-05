@@ -130,17 +130,8 @@ class ScriptEditorPage extends HookWidget {
     );
   }
 
-  void dispose({
+  void disposeResources({
     required ValueNotifier<Isolate?> scriptCheckerIsolate,
-    required FocusNode playerKingConstraintsFocusNode,
-    required FocusNode computerKingConstraintsFocusNode,
-    required FocusNode kingsMutualConstraintsFocusNode,
-    required FocusNode otherPiecesGlobalConstraintsFocusNode,
-    required FocusNode otherPiecesMutualConstraintsFocusNode,
-    required FocusNode otherPiecesIndexedConstraintsFocusNode,
-    required TextEditingController playerKingConstraintsScriptController,
-    required TextEditingController computerKingConstraintsScriptController,
-    required TextEditingController kingsMutualConstraintsScriptController,
     required ValueNotifier<Map<PieceKind, TextEditingController>>
         otherPiecesGlobalConstraintsScripts,
     required ValueNotifier<Map<PieceKind, TextEditingController>>
@@ -152,17 +143,6 @@ class ScriptEditorPage extends HookWidget {
       priority: Isolate.immediate,
     );
 
-    playerKingConstraintsFocusNode.dispose();
-    computerKingConstraintsFocusNode.dispose();
-    kingsMutualConstraintsFocusNode.dispose();
-
-    otherPiecesGlobalConstraintsFocusNode.dispose();
-    otherPiecesIndexedConstraintsFocusNode.dispose();
-    otherPiecesMutualConstraintsFocusNode.dispose();
-
-    playerKingConstraintsScriptController.dispose();
-    computerKingConstraintsScriptController.dispose();
-    kingsMutualConstraintsScriptController.dispose();
     for (var controller in otherPiecesGlobalConstraintsScripts.value.values) {
       controller.dispose();
     }
@@ -1358,23 +1338,8 @@ class ScriptEditorPage extends HookWidget {
             otherPiecesCountConstraintsScript.value,
       );
 
-      return () => dispose(
+      return () => disposeResources(
             scriptCheckerIsolate: scriptCheckerIsolate,
-            playerKingConstraintsFocusNode: playerKingConstraintsFocusNode,
-            computerKingConstraintsFocusNode: computerKingConstraintsFocusNode,
-            kingsMutualConstraintsFocusNode: kingsMutualConstraintsFocusNode,
-            otherPiecesGlobalConstraintsFocusNode:
-                otherPiecesGlobalConstraintsFocusNode,
-            otherPiecesMutualConstraintsFocusNode:
-                otherPiecesMutualConstraintsFocusNode,
-            otherPiecesIndexedConstraintsFocusNode:
-                otherPiecesIndexedConstraintsFocusNode,
-            playerKingConstraintsScriptController:
-                playerKingConstraintsScriptController,
-            computerKingConstraintsScriptController:
-                computerKingConstraintsScriptController,
-            kingsMutualConstraintsScriptController:
-                kingsMutualConstraintsScriptController,
             otherPiecesGlobalConstraintsScripts:
                 otherPiecesGlobalConstraintsScripts,
             otherPiecesMutualConstraintsScripts:
