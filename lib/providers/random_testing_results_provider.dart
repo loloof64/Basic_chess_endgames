@@ -21,11 +21,10 @@ abstract mixin class ResultsPageManager {
   List<String> _allResults = [];
 
   void setResults(List<String> results) {
-    final uniqueResults = results.toSet().toList();
     _page = 0;
-    _pagesCount = (uniqueResults.length / itemsPerPage).toInt();
-    if ((uniqueResults.length % itemsPerPage) > 0) _pagesCount++;
-    _allResults = uniqueResults;
+    _pagesCount = (results.length / itemsPerPage).toInt();
+    if ((results.length % itemsPerPage) > 0) _pagesCount++;
+    _allResults = results;
     updateStateFromBounds(0, itemsPerPage);
   }
 

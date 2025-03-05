@@ -588,8 +588,8 @@ class HomeWidget extends HookConsumerWidget {
               builder: (context) {
                 return RandomTestingPage(
                   generatedPositions: newPositions,
-
-                  rejectedPositions: rejectedPositions,
+                  // Only keeping unique positions
+                  rejectedPositions: rejectedPositions.toSet().toList(),
                 );
               },
             ),
@@ -601,7 +601,8 @@ class HomeWidget extends HookConsumerWidget {
               builder: (context) {
                 return RandomTestingPage(
                   generatedPositions: [],
-                  rejectedPositions: rejectedPositions,
+                  // Only keeping unique positions
+                  rejectedPositions: rejectedPositions.toSet().toList(),
                 );
               },
             ),

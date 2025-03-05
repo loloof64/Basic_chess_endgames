@@ -427,9 +427,8 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
       final generatedPositions = <String>[];
       final rejectedPositions = <String>[];
       try {
-        for (var attemptIndex = 0;
-            attemptIndex < parameters.positionsCount;
-            attemptIndex++) {
+        var attemptIndex = 0;
+        do {
           final (singleGeneratedPosition, rejectedFinalizedPositions, errors) =
               positionGenerator
                   .generatePosition(parameters.addIntermediatesPositions);
@@ -452,6 +451,7 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
                   )
                   .toList(),
             ));
+            return;
           } else {
             if (singleGeneratedPosition == null) {
               parameters.sendPort.send((
@@ -466,9 +466,14 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
               ));
               return;
             }
-            generatedPositions.add(singleGeneratedPosition);
+            final isUnique =
+                !generatedPositions.contains(singleGeneratedPosition);
+            if (isUnique) {
+              generatedPositions.add(singleGeneratedPosition);
+              attemptIndex++;
+            }
           }
-        }
+        } while (attemptIndex < parameters.positionsCount);
         parameters.sendPort.send(
           (
             generatedPositions,
