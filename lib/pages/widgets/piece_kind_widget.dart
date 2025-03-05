@@ -1,10 +1,12 @@
 import 'package:basicchessendgamestrainer/logic/position_generation/position_generation_constraints.dart';
+import 'package:basicchessendgamestrainer/providers/dark_theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 const chessImagesSize = 20.0;
 
-class PieceKindWidget extends StatelessWidget {
+class PieceKindWidget extends ConsumerWidget {
   final PieceKind kind;
   const PieceKindWidget({
     super.key,
@@ -12,25 +14,36 @@ class PieceKindWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final darkMode = ref.watch(darkThemeProvider);
+    final backgroundColor = darkMode ? Colors.white60 : Colors.transparent;
     final assets = pieceKindToAssetPathPair(kind);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          assets.first,
-          fit: BoxFit.cover,
-          width: chessImagesSize,
-          height: chessImagesSize,
-        ),
-        SvgPicture.asset(
-          assets.second,
-          fit: BoxFit.cover,
-          width: chessImagesSize,
-          height: chessImagesSize,
-        )
-      ],
+    return Container(
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(6.0),
+      ),
+      padding: EdgeInsets.all(10.0),
+      child: Row(
+        spacing: 2.0,
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            assets.first,
+            fit: BoxFit.cover,
+            width: chessImagesSize,
+            height: chessImagesSize,
+          ),
+          SvgPicture.asset(
+            assets.second,
+            fit: BoxFit.cover,
+            width: chessImagesSize,
+            height: chessImagesSize,
+          )
+        ],
+      ),
     );
   }
 }
