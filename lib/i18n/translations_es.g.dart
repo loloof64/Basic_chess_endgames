@@ -421,8 +421,8 @@ class _TranslationsRandomTestingParametersDialogEs extends TranslationsRandomTes
 	@override String get images_count => 'Nombre de imágenes';
 	@override String get intermediates_positions_level => 'Nivel de posiciones intermedias';
 	@override String get intermediates_positions_level_none => 'Ninguna';
-	@override String get intermediates_positions_level_with_max_pieces => 'Solo posiciones que no incluyan solo rey(s)';
-	@override String get intermediates_positions_level_all => 'Todas';
+	@override String get intermediates_positions_level_with_max_pieces => 'Los reyes no pueden estar solos.';
+	@override String get intermediates_positions_level_all => 'Los reyes pueden estar solos.';
 }
 
 // Path: options.dark_mode

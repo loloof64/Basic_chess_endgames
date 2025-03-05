@@ -424,8 +424,8 @@ class TranslationsRandomTestingParametersDialogEn {
 	String get images_count => 'Images count';
 	String get intermediates_positions_level => 'Intermediates positions level';
 	String get intermediates_positions_level_none => 'None';
-	String get intermediates_positions_level_with_max_pieces => 'Only positions which not include only king(s)';
-	String get intermediates_positions_level_all => 'All';
+	String get intermediates_positions_level_with_max_pieces => 'Kings can\'t be alone';
+	String get intermediates_positions_level_all => 'Kings can be alone';
 }
 
 // Path: options.dark_mode

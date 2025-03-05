@@ -33,6 +33,9 @@ class RandomTestingParametersDialog extends HookWidget {
     final TextEditingController imagesCountController =
         useTextEditingController(text: imagesCount.value.toString());
 
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     final dropDownButtons = <DropdownMenuItem<IntermediatePositionsLevel>>[
       DropdownMenuItem(
         value: IntermediatePositionsLevel.none,
@@ -53,6 +56,35 @@ class RandomTestingParametersDialog extends HookWidget {
       ),
     ];
 
+    final firstFieldChildren = [
+      Text(t.random_testing.parameters_dialog.images_count),
+      Expanded(
+        child: TextField(
+          controller: imagesCountController,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (value) {
+            imagesCount.value = int.parse(value);
+          },
+        ),
+      ),
+    ];
+
+    final secondFieldChildren = [
+      Text(t.random_testing.parameters_dialog.intermediates_positions_level),
+      DropdownButton<IntermediatePositionsLevel>(
+        value: addIntermediatesPositions.value,
+        items: dropDownButtons,
+        onChanged: (newValue) {
+          if (newValue != null) {
+            addIntermediatesPositions.value = newValue;
+          }
+        },
+      )
+    ];
+
     return AlertDialog(
       title: Text(
         t.random_testing.parameters_dialog.title,
@@ -62,49 +94,43 @@ class RandomTestingParametersDialog extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Expanded(
-            child: Row(
-              spacing: 10.0,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(t.random_testing.parameters_dialog.images_count),
-                Expanded(
-                  child: TextField(
-                    controller: imagesCountController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    onChanged: (value) {
-                      imagesCount.value = int.parse(value);
-                    },
+          isLandscape
+              ? Expanded(
+                  child: Row(
+                    spacing: 10.0,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: firstFieldChildren,
                   ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              spacing: 10.0,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(t.random_testing.parameters_dialog
-                    .intermediates_positions_level),
-                DropdownButton<IntermediatePositionsLevel>(
-                  value: addIntermediatesPositions.value,
-                  items: dropDownButtons,
-                  onChanged: (newValue) {
-                    if (newValue != null) {
-                      addIntermediatesPositions.value = newValue;
-                    }
-                  },
                 )
-              ],
-            ),
+              : Flexible(
+                child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    spacing: 10,
+                    children: firstFieldChildren,
+                  ),
+              ),
+          Expanded(
+            child: isLandscape
+                ? Row(
+                    spacing: 10.0,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: secondFieldChildren,
+                  )
+                : Flexible(
+                  child: Column(
+                      spacing: 10,
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: secondFieldChildren,
+                    ),
+                ),
           )
         ],
       ),
