@@ -268,6 +268,7 @@ random_testing:
   tab_generated_positions: "Generadas"
   tab_rejected_positions: "Rechazadas"
   select_page_button: "Elegir"
+  generated_less_positions: "No se pudieron generar vistas previas en la cantidad solicitada."
 options:
   title: "Opciones"
   dark_mode: 

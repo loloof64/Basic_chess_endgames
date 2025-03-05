@@ -583,6 +583,18 @@ class HomeWidget extends HookConsumerWidget {
 
         if (!context.mounted) return;
         if (noError) {
+          final lessPositionsThanExpected =
+              newPositions.length < parameters.imagesCount;
+          if (lessPositionsThanExpected) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  t.random_testing.generated_less_positions,
+                ),
+              ),
+            );
+          }
+
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {

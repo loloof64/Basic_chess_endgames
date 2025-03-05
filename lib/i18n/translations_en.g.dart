@@ -281,6 +281,7 @@ class TranslationsRandomTestingEn {
 	String get tab_generated_positions => 'Generated';
 	String get tab_rejected_positions => 'Rejected';
 	String get select_page_button => 'Select';
+	String get generated_less_positions => 'Could not generate previews in requested count.';
 }
 
 // Path: options

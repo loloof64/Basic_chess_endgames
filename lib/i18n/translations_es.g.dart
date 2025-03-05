@@ -278,6 +278,7 @@ class _TranslationsRandomTestingEs extends TranslationsRandomTestingEn {
 	@override String get tab_generated_positions => 'Generadas';
 	@override String get tab_rejected_positions => 'Rechazadas';
 	@override String get select_page_button => 'Elegir';
+	@override String get generated_less_positions => 'No se pudieron generar vistas previas en la cantidad solicitada.';
 }
 
 // Path: options

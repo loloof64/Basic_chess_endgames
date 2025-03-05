@@ -428,6 +428,7 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
       final rejectedPositions = <String>[];
       try {
         var attemptIndex = 0;
+        var failedAttemps = 0;
         do {
           final (singleGeneratedPosition, rejectedFinalizedPositions, errors) =
               positionGenerator
@@ -471,6 +472,12 @@ void generatePositionsFromScript(SampleScriptGenerationParameters parameters) {
             if (isUnique) {
               generatedPositions.add(singleGeneratedPosition);
               attemptIndex++;
+            }
+            else {
+              failedAttemps++;
+              if (failedAttemps >= 5*(parameters.positionsCount)) {
+                break;
+              }
             }
           }
         } while (attemptIndex < parameters.positionsCount);
