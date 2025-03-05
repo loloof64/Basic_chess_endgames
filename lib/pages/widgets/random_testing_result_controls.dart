@@ -26,59 +26,93 @@ class TestingControls extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pageFieldController = useTextEditingController(text: "1");
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      spacing: 10.0,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        IconButton(
-          onPressed: onBackwardFast,
-          icon: FaIcon(
-            FontAwesomeIcons.backwardFast,
-          ),
+
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final firstChildrenGroup = [
+      IconButton(
+        onPressed: onBackwardFast,
+        icon: FaIcon(
+          FontAwesomeIcons.backwardFast,
         ),
-        IconButton(
-          onPressed: onBackwardStep,
-          icon: FaIcon(
-            FontAwesomeIcons.backwardStep,
-          ),
+      ),
+      IconButton(
+        onPressed: onBackwardStep,
+        icon: FaIcon(
+          FontAwesomeIcons.backwardStep,
         ),
-        IconButton(
-          onPressed: onForwardStep,
-          icon: FaIcon(
-            FontAwesomeIcons.forwardStep,
-          ),
+      ),
+      Text(
+          "${(results.pageIndex + 1).toString().padLeft(3)} / ${(results.pagesCount).toString().padLeft(3)}"),
+      IconButton(
+        onPressed: onForwardStep,
+        icon: FaIcon(
+          FontAwesomeIcons.forwardStep,
         ),
-        Text(
-            "${(results.pageIndex + 1).toString().padLeft(3)} / ${(results.pagesCount).toString().padLeft(3)}"),
-        IconButton(
-          onPressed: onForwardFast,
-          icon: FaIcon(
-            FontAwesomeIcons.forwardFast,
-          ),
+      ),
+      IconButton(
+        onPressed: onForwardFast,
+        icon: FaIcon(
+          FontAwesomeIcons.forwardFast,
         ),
-        SizedBox(
-          width: 60.0,
-          child: TextField(
-            controller: pageFieldController,
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
+      ),
+    ];
+
+    final secondChildrenGroup = [
+      SizedBox(
+        width: 60.0,
+        child: TextField(
+          controller: pageFieldController,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+        ),
+      ),
+      ElevatedButton(
+        onPressed: () {
+          final pageText = pageFieldController.text;
+          final pageIndex = int.tryParse(pageText);
+          if (pageIndex == null) return;
+          // User thinks about pages from 1.
+          onPageSelectionSubmit(pageIndex - 1);
+        },
+        child: Text(t.random_testing.select_page_button),
+      ),
+    ];
+
+    return isLandscape
+        ? Row(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 10.0,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ...firstChildrenGroup,
+              ...secondChildrenGroup,
             ],
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            final pageText = pageFieldController.text;
-            final pageIndex = int.tryParse(pageText);
-            if (pageIndex == null) return;
-            // User thinks about pages from 1.
-            onPageSelectionSubmit(pageIndex-1);
-          },
-          child: Text(t.random_testing.select_page_button),
-        ),
-      ],
-    );
+          )
+        : Column(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 10,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+                Row(
+                  spacing: 10,
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: firstChildrenGroup,
+                ),
+                Row(
+                  spacing: 10,
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: secondChildrenGroup,
+                ),
+              ]);
   }
 }
