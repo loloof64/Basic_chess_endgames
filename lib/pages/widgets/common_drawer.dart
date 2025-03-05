@@ -17,9 +17,10 @@ class CommonDrawer extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            t.options.title,
-            style: Theme.of(context).textTheme.titleLarge,
+          DrawerHeader(
+            child: Text(
+              t.options.title,
+            ),
           ),
           Row(
             mainAxisSize: MainAxisSize.min,
