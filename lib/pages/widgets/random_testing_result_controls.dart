@@ -73,7 +73,8 @@ class TestingControls extends HookWidget {
             final pageText = pageFieldController.text;
             final pageIndex = int.tryParse(pageText);
             if (pageIndex == null) return;
-            onPageSelectionSubmit(pageIndex);
+            // User thinks about pages from 1.
+            onPageSelectionSubmit(pageIndex-1);
           },
           child: Text(t.random_testing.select_page_button),
         ),
