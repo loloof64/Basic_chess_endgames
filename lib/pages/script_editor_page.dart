@@ -1410,6 +1410,7 @@ class ScriptEditorPage extends HookWidget {
                   return SizedBox(
                     width: 80,
                     child: Row(
+                      spacing: 10,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Flexible(
