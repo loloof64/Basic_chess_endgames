@@ -877,32 +877,31 @@ class GamePage extends HookConsumerWidget {
           title: Text(
             t.game_page.title,
           ),
-          leading: Builder(
-            builder: (context) {
-              return SizedBox(
-                width: 80,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      child: IconButton(
-                        onPressed: () => Scaffold.of(context).openDrawer(),
-                        icon: Icon(Icons.menu),
+          leading: Builder(builder: (context) {
+            return SizedBox(
+              width: 80,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: IconButton(
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                      icon: Icon(Icons.menu),
+                    ),
+                  ),
+                  Flexible(
+                    child: IconButton(
+                      onPressed: () =>
+                          _handleExitPage(didPop: false, context: context),
+                      icon: Icon(
+                        Icons.arrow_back,
                       ),
                     ),
-                    Flexible(
-                      child: IconButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        icon: Icon(
-                          Icons.arrow_back,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
-          ),
+                  ),
+                ],
+              ),
+            );
+          }),
           actions: [
             IconButton(
               onPressed: () => _purposeStartNewGame(
