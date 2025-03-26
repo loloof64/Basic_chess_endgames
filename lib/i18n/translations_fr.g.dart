@@ -239,6 +239,7 @@ class _TranslationsScriptEditorPageFr extends TranslationsScriptEditorPageEn {
 	@override String get before_exit_message => 'Souhaitez-vous quitter la page et annuler l\'édition du script ?';
 	@override String get exercise_creation_success => 'Exercise sauvegardé';
 	@override String get exercise_creation_error => 'Échec de sauvegarde de l\'exercice !';
+	@override String get exercise_creation_cancelled => 'Sauvegarde de l\'exercice annulée';
 	@override String get insert_variable_title => 'Insérer une variable prédéfinie';
 	@override String get consult_variables_title => 'Consulter les variables prédéfinies';
 	@override String get choice_common_constants => 'Constantes communes';

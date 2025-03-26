@@ -122,6 +122,7 @@ script_editor_page:
   beforeExitMessage: "Souhaitez-vous quitter la page et annuler l'édition du script ?"
   exercise_creation_success: "Exercise sauvegardé"
   exercise_creation_error: "Échec de sauvegarde de l'exercice !"
+  exercise_creation_cancelled: "Sauvegarde de l'exercice annulée"
   insert_variable_title: "Insérer une variable prédéfinie"
   consult_variables_title: "Consulter les variables prédéfinies"
   choice_common_constants: "Constantes communes"

@@ -120,6 +120,7 @@ script_editor_page:
   beforeExitMessage: "¿Desea salir de esta página y cancelar la edición del guione?"
   exercise_creation_success: "Ejercicio guardado"
   exercise_creation_error: "¡No se pudo guardar el ejercicio!"
+  exercise_creation_cancelled: "Ejercicio guardado cancelado"
   insert_variable_title: "Insertar una predefinida variable"
   consult_variables_title: "Consultar predefinidas variables"
   choice_common_constants: "Constantes comunes"

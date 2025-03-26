@@ -241,6 +241,7 @@ class TranslationsScriptEditorPageEn {
 	String get before_exit_message => 'Do you want to leave this page and cancel script edition ?';
 	String get exercise_creation_success => 'Saved exercise';
 	String get exercise_creation_error => 'Failed to save exercise !';
+	String get exercise_creation_cancelled => 'Cancelled exercise creation';
 	String get insert_variable_title => 'Insert a predifined variable';
 	String get consult_variables_title => 'Consult predefined variables';
 	String get choice_common_constants => 'Common constants';
