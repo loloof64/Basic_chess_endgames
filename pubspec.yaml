@@ -49,7 +49,7 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   flex_color_scheme: ^8.0.1
   logger: ^2.5.0 
-  http: ^1.2.2
+  http: ^1.3.0
   slang: ^4.4.1
   slang_flutter: ^4.4.0
   path_provider: ^2.1.5

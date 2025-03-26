@@ -13,9 +13,9 @@ import 'translations.g.dart';
 class TranslationsFr extends Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
 	/// Constructing via the enum [AppLocale.build] is preferred.
-	TranslationsFr({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
+	TranslationsFr({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver, TranslationMetadata<AppLocale, Translations>? meta})
 		: assert(overrides == null, 'Set "translation_overrides: true" in order to enable this feature.'),
-		  $meta = TranslationMetadata(
+		  $meta = meta ?? TranslationMetadata(
 		    locale: AppLocale.fr,
 		    overrides: overrides ?? {},
 		    cardinalResolver: cardinalResolver,
@@ -27,6 +27,9 @@ class TranslationsFr extends Translations {
 	@override final TranslationMetadata<AppLocale, Translations> $meta;
 
 	late final TranslationsFr _root = this; // ignore: unused_field
+
+	@override 
+	TranslationsFr $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsFr(meta: meta ?? this.$meta);
 
 	// Translations
 	@override late final _TranslationsMiscFr misc = _TranslationsMiscFr._(_root);
@@ -44,6 +47,7 @@ class TranslationsFr extends Translations {
 	@override late final _TranslationsSyntaxManualPageFr syntax_manual_page = _TranslationsSyntaxManualPageFr._(_root);
 	@override late final _TranslationsRandomTestingFr random_testing = _TranslationsRandomTestingFr._(_root);
 	@override late final _TranslationsOptionsFr options = _TranslationsOptionsFr._(_root);
+	@override late final _TranslationsAdditionalSamplesPageFr additional_samples_page = _TranslationsAdditionalSamplesPageFr._(_root);
 }
 
 // Path: misc
@@ -292,6 +296,22 @@ class _TranslationsOptionsFr extends TranslationsOptionsEn {
 	@override late final _TranslationsOptionsDarkModeFr dark_mode = _TranslationsOptionsDarkModeFr._(_root);
 }
 
+// Path: additional_samples_page
+class _TranslationsAdditionalSamplesPageFr extends TranslationsAdditionalSamplesPageEn {
+	_TranslationsAdditionalSamplesPageFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Exemples supplémentaires';
+	@override String get error_message => 'Impossible de charger les exemples supplémentaires.';
+	@override String get loading => 'Chargement...';
+	@override String confirm_download({required Object Name}) => 'Telecharger l\'exemple \'${Name}\' ?';
+	@override String get download_success => 'Exemple telechargé.';
+	@override String get download_error => 'Échec de telechargement de l\'exemple.';
+	@override String get download_cancelled => 'Téléchargement de l\'exemple annulé.';
+}
+
 // Path: home.menu_buttons
 class _TranslationsHomeMenuButtonsFr extends TranslationsHomeMenuButtonsEn {
 	_TranslationsHomeMenuButtonsFr._(TranslationsFr root) : this._root = root, super.internal(root);
@@ -306,6 +326,7 @@ class _TranslationsHomeMenuButtonsFr extends TranslationsHomeMenuButtonsEn {
 	@override String get show_sample_code => 'Montrer le code d\'un exemple';
 	@override String get clone_sample => 'Cloner le code d\'un exemple';
 	@override String get generate_random_testing => 'Générer un test aléatoire';
+	@override String get additional_samples => 'Exemples supplémentaires';
 }
 
 // Path: home.errors_popup_labels

@@ -6,6 +6,7 @@ import 'package:basicchessendgamestrainer/commons.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/position_generation/script_text_interpretation.dart';
 import 'package:basicchessendgamestrainer/models/isolate_intermediate_message.dart';
+import 'package:basicchessendgamestrainer/pages/additional_samples_page.dart';
 import 'package:basicchessendgamestrainer/pages/script_editor_page.dart';
 import 'package:basicchessendgamestrainer/pages/sample_game_chooser_page.dart';
 import 'package:basicchessendgamestrainer/pages/widgets/common_drawer.dart';
@@ -644,6 +645,16 @@ class HomeWidget extends HookConsumerWidget {
     });
   }
 
+  void _gotoAdditionalSamplesPage(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) {
+          return const AdditionalSamplesPage();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isBusy = useState(false);
@@ -720,6 +731,13 @@ class HomeWidget extends HookConsumerWidget {
           style: const TextStyle(fontSize: fontSize),
         ),
       ),
+      ElevatedButton(
+        onPressed: () => _gotoAdditionalSamplesPage(context),
+        child: Text(
+          t.home.menu_buttons.additional_samples,
+          style: const TextStyle(fontSize: fontSize),
+        ),
+      )
     ];
     return PopScope(
       canPop: true,

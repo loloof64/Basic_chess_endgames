@@ -4,12 +4,12 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 642 (214 per locale)
+/// Strings: 666 (222 per locale)
 ///
-/// Built on 2025-03-05 at 01:19 UTC
+/// Built on 2025-03-26 at 08:51 UTC
 
 // coverage:ignore-file
-// ignore_for_file: type=lint, unused_import, unused_element_parameter
+// ignore_for_file: type=lint, unused_import
 
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -34,8 +34,8 @@ enum AppLocale with BaseAppLocale<AppLocale, Translations> {
 
 	const AppLocale({
 		required this.languageCode,
-		this.scriptCode, // ignore: unused_element
-		this.countryCode, // ignore: unused_element
+		this.scriptCode, // ignore: unused_element, unused_element_parameter
+		this.countryCode, // ignore: unused_element, unused_element_parameter
 	});
 
 	@override final String languageCode;

@@ -29,6 +29,7 @@ home:
     show_sample_code: "Show the code of an example"
     clone_sample: "Clone the code of an example"
     generate_random_testing: "Generate random testing"
+    additional_samples: "Additional samples"
   goal_label: "Goal"
   win_label: "Win"
   draw_label: "Draw"
@@ -101,7 +102,7 @@ sampleScript:
   rookEndingPhilidor: "Philidor rook ending"
 script_editor_page:
   title: "Script editor page"
-  no_content_yet : "Select a piece kind."
+  no_content_yet: "Select a piece kind."
   player_king_constraint: "Player's king's constraints"
   computer_king_constraint: "Computer's king's constraints"
   kings_mutual_constraint: "Kings's mutual constraints"
@@ -270,7 +271,15 @@ random_testing:
   generated_less_positions: "Could not generate previews in requested count."
 options:
   title: "Options"
-  dark_mode: 
+  dark_mode:
     label: "Dark mode"
     on: "on"
     off: "off"
+additional_samples_page:
+  title: "Additional samples"
+  error_message: "Could not load additional samples."
+  loading: "Loading..."
+  confirm_download: "Download sample '$name' ?"
+  download_success: "Sample downloaded."
+  download_error: "Failed to download sample."
+  download_cancelled: "Download cancelled."

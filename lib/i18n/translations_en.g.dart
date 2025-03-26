@@ -17,9 +17,9 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 
 	/// You can call this constructor and build your own translation instance of this locale.
 	/// Constructing via the enum [AppLocale.build] is preferred.
-	Translations({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
+	Translations({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver, TranslationMetadata<AppLocale, Translations>? meta})
 		: assert(overrides == null, 'Set "translation_overrides: true" in order to enable this feature.'),
-		  $meta = TranslationMetadata(
+		  $meta = meta ?? TranslationMetadata(
 		    locale: AppLocale.en,
 		    overrides: overrides ?? {},
 		    cardinalResolver: cardinalResolver,
@@ -30,6 +30,8 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	@override final TranslationMetadata<AppLocale, Translations> $meta;
 
 	late final Translations _root = this; // ignore: unused_field
+
+	Translations $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => Translations(meta: meta ?? this.$meta);
 
 	// Translations
 	late final TranslationsMiscEn misc = TranslationsMiscEn.internal(_root);
@@ -47,6 +49,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final TranslationsSyntaxManualPageEn syntax_manual_page = TranslationsSyntaxManualPageEn.internal(_root);
 	late final TranslationsRandomTestingEn random_testing = TranslationsRandomTestingEn.internal(_root);
 	late final TranslationsOptionsEn options = TranslationsOptionsEn.internal(_root);
+	late final TranslationsAdditionalSamplesPageEn additional_samples_page = TranslationsAdditionalSamplesPageEn.internal(_root);
 }
 
 // Path: misc
@@ -295,6 +298,22 @@ class TranslationsOptionsEn {
 	late final TranslationsOptionsDarkModeEn dark_mode = TranslationsOptionsDarkModeEn.internal(_root);
 }
 
+// Path: additional_samples_page
+class TranslationsAdditionalSamplesPageEn {
+	TranslationsAdditionalSamplesPageEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Additional samples';
+	String get error_message => 'Could not load additional samples.';
+	String get loading => 'Loading...';
+	String confirm_download({required Object Name}) => 'Download sample \'${Name}\' ?';
+	String get download_success => 'Sample downloaded.';
+	String get download_error => 'Failed to download sample.';
+	String get download_cancelled => 'Download cancelled.';
+}
+
 // Path: home.menu_buttons
 class TranslationsHomeMenuButtonsEn {
 	TranslationsHomeMenuButtonsEn.internal(this._root);
@@ -309,6 +328,7 @@ class TranslationsHomeMenuButtonsEn {
 	String get show_sample_code => 'Show the code of an example';
 	String get clone_sample => 'Clone the code of an example';
 	String get generate_random_testing => 'Generate random testing';
+	String get additional_samples => 'Additional samples';
 }
 
 // Path: home.errors_popup_labels
