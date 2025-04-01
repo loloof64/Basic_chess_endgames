@@ -29,5 +29,5 @@ class DarkTheme extends _$DarkTheme {
     save(state);
   }
 
-  bool get isDarkMode => state; 
+  bool isDarkMode() => state; 
 }

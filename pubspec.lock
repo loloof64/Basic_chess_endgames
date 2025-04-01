@@ -339,10 +339,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_picker
-      sha256: "8d938fd5c11dc81bf1acd4f7f0486c683fe9e79a0b13419e27730f9ce4d8a25b"
+      sha256: "36a1652d99cb6bf8ccc8b9f43aded1fd60b234d23ce78af422c07f950a436ef7"
       url: "https://pub.dev"
     source: hosted
-    version: "9.2.1"
+    version: "10.0.0"
   fixnum:
     dependency: transitive
     description:
@@ -695,10 +695,10 @@ packages:
     dependency: "direct main"
     description:
       name: open_save_file_dialogs
-      sha256: "7c7173ccf8f85c0108ae74a5d6c23f47b841dea1099133f485db6324f857f48f"
+      sha256: e95979a0693ad02836599024a9332b6d5c02ea90df7f8f3d077961b181d62380
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.2"
+    version: "0.1.3"
   package_config:
     dependency: transitive
     description:
@@ -919,10 +919,10 @@ packages:
     dependency: "direct main"
     description:
       name: shared_preferences
-      sha256: "846849e3e9b68f3ef4b60c60cf4b3e02e9321bc7f4d8c4692cf87ffa82fc8a3a"
+      sha256: "6e8bf70b7fef813df4e9a36f658ac46d107db4b4cfe1048b477d4e453a8159f5"
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.2"
+    version: "2.5.3"
   shared_preferences_android:
     dependency: transitive
     description:

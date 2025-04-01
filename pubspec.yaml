@@ -61,8 +61,8 @@ dependencies:
       ref: 7738354c211f37421a3703e9184c8e8845f365c9
 
   equatable: ^2.0.7
-  open_save_file_dialogs: ^0.1.2
-  file_picker: ^9.0.0
+  open_save_file_dialogs: ^0.1.3
+  file_picker: ^10.0.0
   stockfish_chess_engine: ^0.8.2
   lua_dardo: ^0.0.5
   flutter_hooks: ^0.21.2
