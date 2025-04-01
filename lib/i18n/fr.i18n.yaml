@@ -287,3 +287,4 @@ additional_samples_page:
   download_success: "Exemple telechargé."
   download_error: "Échec de telechargement de l'exemple."
   download_cancelled: "Téléchargement de l'exemple annulé."
+  no_internet:  "Vous devez avoir une connexion internet pour telecharger des exemples supplémentaires."

@@ -311,6 +311,7 @@ class _TranslationsAdditionalSamplesPageEs extends TranslationsAdditionalSamples
 	@override String get download_success => 'Ejemplo descargado.';
 	@override String get download_error => 'Fallo al descargar el ejemplo.';
 	@override String get download_cancelled => 'Descarga cancelada.';
+	@override String get no_internet => 'Necesitas una conexión a internet para descargar ejemplos adicionales.';
 }
 
 // Path: home.menu_buttons

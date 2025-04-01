@@ -1,19 +1,19 @@
 import 'dart:convert';
 
+import 'package:basicchessendgamestrainer/components/internet_checker.dart';
 import 'package:basicchessendgamestrainer/i18n/translations.g.dart';
 import 'package:basicchessendgamestrainer/logic/save_text_file.dart';
 import 'package:basicchessendgamestrainer/models/available_sample.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:http/http.dart' as http;
 import 'package:basicchessendgamestrainer/models/action_result.dart';
 
-class AdditionalSamplesPage extends StatelessWidget {
+class AdditionalSamplesPage extends HookWidget {
   const AdditionalSamplesPage({super.key});
 
-  Future<AvailableSamplesList> _getAdditionalSamplesNames(
-      BuildContext context) async {
+  Future<AvailableSamplesList> _getAdditionalSamplesNames(Locale locale) async {
     try {
-      final locale = Localizations.localeOf(context);
       final response = await http.get(
           Uri.parse(
               'https://basic-chess-endgames.vercel.app/api/samples_names'),
@@ -129,51 +129,80 @@ class AdditionalSamplesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final samplesList = useState<AvailableSamplesList?>(null);
+    final isLoading = useState<bool>(true);
+    final hasError = useState<bool>(false);
+    final locale = Localizations.localeOf(context);
+
+    // Function to fetch samples
+    Future<void> fetchSamples() async {
+      isLoading.value = true;
+      hasError.value = false;
+      try {
+        samplesList.value = await _getAdditionalSamplesNames(locale);
+      } catch (e) {
+        hasError.value = true;
+        debugPrint(e.toString());
+      } finally {
+        isLoading.value = false;
+      }
+    }
+
+    // Fetch data initially
+    useEffect(() {
+      fetchSamples();
+      return null;
+    }, []);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(t.additional_samples_page.title),
       ),
-      body: Center(
-        child: FutureBuilder<AvailableSamplesList>(
-            future: _getAdditionalSamplesNames(context),
-            builder: (BuildContext context,
-                AsyncSnapshot<AvailableSamplesList> snapshot) {
-              if (snapshot.hasData) {
-                final names = snapshot.data!.samples;
-                return ListView.builder(
-                  itemCount: names.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: ElevatedButton(
-                          onPressed: () => _purposeDownloadSample(
+      body: InternetChecker(
+        onReconnect: fetchSamples, // Retry fetch on every connection change
+        onDisconnect:
+            fetchSamples, // Retry fetch on every connection change (will update UI with the error)
+        child: Center(
+          child: isLoading.value
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 10),
+                    Text(t.additional_samples_page.loading),
+                  ],
+                )
+              : hasError.value
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.error, color: Colors.red, size: 50),
+                        SizedBox(height: 10),
+                        Text(
+                          t.additional_samples_page.error_message,
+                          style: TextStyle(fontSize: 18, color: Colors.red),
+                        ),
+                      ],
+                    )
+                  : ListView.builder(
+                      itemCount: samplesList.value!.samples.length,
+                      itemBuilder: (context, index) {
+                        final sample = samplesList.value!.samples[index];
+                        return ListTile(
+                          title: ElevatedButton(
+                            onPressed: () {
+                              _purposeDownloadSample(
+                                name: sample.name,
+                                label: sample.label,
                                 context: context,
-                                name: names[index].name,
-                                label: names[index].label,
-                              ),
-                          child: Text(names[index].label)),
-                    );
-                  },
-                );
-              } else if (snapshot.hasError) {
-                return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(t.additional_samples_page.error_message),
-                      Text(snapshot.error.toString()),
-                    ]);
-              } else {
-                return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CircularProgressIndicator(),
-                      Text(t.additional_samples_page.loading),
-                    ]);
-              }
-            }),
+                              );
+                            },
+                            child: Text(sample.label),
+                          ),
+                        );
+                      },
+                    ),
+        ),
       ),
     );
   }

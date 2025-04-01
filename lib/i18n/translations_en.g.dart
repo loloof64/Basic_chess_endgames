@@ -313,6 +313,7 @@ class TranslationsAdditionalSamplesPageEn {
 	String get download_success => 'Sample downloaded.';
 	String get download_error => 'Failed to download sample.';
 	String get download_cancelled => 'Download cancelled.';
+	String get no_internet => 'You need an internet connection to download additional samples.';
 }
 
 // Path: home.menu_buttons

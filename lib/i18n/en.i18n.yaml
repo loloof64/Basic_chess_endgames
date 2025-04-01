@@ -284,3 +284,4 @@ additional_samples_page:
   download_success: "Sample downloaded."
   download_error: "Failed to download sample."
   download_cancelled: "Download cancelled."
+  no_internet: "You need an internet connection to download additional samples."

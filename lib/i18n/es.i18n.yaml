@@ -285,3 +285,4 @@ additional_samples_page:
   download_success: "Ejemplo descargado."
   download_error: "Fallo al descargar el ejemplo."
   download_cancelled: "Descarga cancelada."
+  no_internet: "Necesitas una conexión a internet para descargar ejemplos adicionales."
